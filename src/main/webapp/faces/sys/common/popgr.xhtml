@@ -1,0 +1,319 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns:h="http://java.sun.com/jsf/html"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<f:event listener="#{commonBean.setCurrentUserLocale('')}"
+	type="preRenderComponent"></f:event>
+<f:view contentType="text/html">
+	<h:head>
+		<f:facet name="first">
+			<meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
+			<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+			<title></title>
+		</f:facet>
+		<script type="text/javascript">
+			//<![CDATA[                             
+			$(document).ready(function() {
+				var diaObj = window.dialogArguments;
+				var mFunc = diaObj.modalFunc;
+				//设置模态
+				if (mFunc != null && mFunc != undefined) {
+					mFunc();
+				}
+				PrimeFaces.ajax.AjaxRequest({
+					source : 'initButton',
+					process : 'initButton',
+					update : 'popgrForm_id',
+					params : [ {
+						name : 'jsonParam',
+						value : diaObj.jsonData
+					} ],
+					oncomplete : function(xhr, status) {
+						//设置title的值
+						$("title").text($("#titleHidden").val());
+					}
+				});
+			});
+			function handleClose(xhr, status, args) {
+				if (args.info == "close") {
+					setVal();
+					var diaObj = window.dialogArguments;
+					var mlFunc = diaObj.modalLessFunc;
+					//解除模态
+					if (mlFunc != null && mlFunc != undefined) {
+						mlFunc();
+					}
+				}
+			}
+			//点击右上角的x号的时候
+			window.onbeforeunload = function() {
+				var diaObj = window.dialogArguments;
+				var mlFunc = diaObj.modalLessFunc;
+				//解除模态
+				if (mlFunc != null && mlFunc != undefined) {
+					mlFunc();
+				}
+				//return "不选择任何数据离开此页？";
+			}
+			//点击取消按钮
+			function handleCancel() {
+				var diaObj = window.dialogArguments;
+				var mlFunc = diaObj.modalLessFunc;
+				//解除模态
+				if (mlFunc != null && mlFunc != undefined) {
+					mlFunc();
+				}
+				window.close();//关闭当前页面
+			}
+			function setVal() {
+				var diaObj = window.dialogArguments;
+				var afterSureAction = diaObj.rtFunc;
+				//执行回调方法
+				if (afterSureAction != null && afterSureAction != undefined) {
+					afterSureAction($("#selectedTitles").val(), $(
+							"#selectedIds").val());
+				}
+				window.close();//关闭当前页面
+			}
+			function checkClick() {
+				if ($("#choiceSingle").val() == 'true') {
+					PrimeFaces.ajax.AjaxRequest({
+						formId : 'popgrForm_id',
+						source : 'actionPickList',
+						process : 'actionPickList commonPickList',
+						update : 'commonPickList'
+					});
+				}
+
+			}
+
+			$(document).ajaxComplete(function() {
+				$("#commonPickList li").click(function() {
+					var desc = $(this).find("#itemDescDiv").text();
+					$("#descValue").attr("value", desc);
+				});
+			});
+
+			//使自动扩大 目录树的div(未完成)
+			var lastLength = 0;
+			$(document).ajaxComplete(
+					function() {
+						var uiLength = $("div.ui-tree ul").length;
+						var lastLiWidth = $(
+								"div.ui-tree span.ui-tree-node-label:last")
+								.width();
+						if (lastLiWidth > 0) {
+							if (lastLiWidth > lastLength) {
+								lastLength = lastLiWidth;
+							}
+						}
+						var width = (uiLength * 28) + lastLength;
+						$("div.ui-tree").css("width", width);
+					});
+
+			$(document).ajaxComplete(function() {
+				if ($("#choiceSingle").val() == 'true') {
+					$(".ui-picklist-button-remove-all").css("display", "none");
+					$(".ui-picklist-button-add-all").css("display", "none");
+				}
+
+			});
+			//]]>
+		</script>
+		<!-- CSS & JS -->
+		<script type="text/javascript"
+			src="#{request.contextPath}/template/js/jquery.easing.1.3.js" />
+		<script type="text/javascript"
+			src="#{request.contextPath}/template/js/jquery.timer.js" />
+		<script type="text/javascript"
+			src="#{request.contextPath}/template/js/jquery.tooltip.js" />
+		<script type="text/javascript"
+			src="#{request.contextPath}/template/js/main.js" />
+		<link href="#{request.contextPath}/template/css/primefaces/theme.css"
+			rel="stylesheet" type="text/css" />
+		<link href="#{request.contextPath}/template/css/default.css"
+			rel="stylesheet" type="text/css" />
+		<link href="#{request.contextPath}/styles/defaultprimeface.css"
+			rel="stylesheet" type="text/css" />
+		<link href="#{request.contextPath}/styles/syntaxhighlighter.css"
+			rel="stylesheet" type="text/css" />
+		<style>
+.toLeft {
+	text-align: left;
+	width: 120px;
+}
+
+.toRight {
+	text-align: right;
+}
+
+#commonPickList {
+	margin-left: 40px;
+}
+
+.commonPickList {
+	margin-left: 40px;
+}
+
+/* #commonPickList ul.ui-picklist-list {
+	width: 250px;
+	height: 250px;
+} */
+</style>
+	</h:head>
+	<h:body>
+		<p:ajaxStatus id="ajaxSubmit" onsuccess="showTooltip();">
+			<f:facet name="start">
+				<div class="ajaxStatus">
+					<span> <h:graphicImage id="loading_imageId"
+							value="/template/img/loading.gif" /> <br /> <h:outputLabel
+							for="loading_imageId" value="#{msgs.home_data_loading}" />
+					</span>
+				</div>
+			</f:facet>
+			<f:facet name="complete">
+				<h:outputText value="" />
+			</f:facet>
+		</p:ajaxStatus>
+		<ui:include src="/template/oa_ui.xhtml" />
+		<div style="display: none">
+			<p:commandButton id="initButton" process="@this"
+				action="#{oaPopgrBean.initParaData}"
+				update=":popgrForm_id:choiceSingle" />
+			<p:commandButton id="actionPickList"
+				action="#{oaPopgrBean.targetSizeAction}" />
+		</div>
+		<h:form id="popgrForm_id" prependId="false">
+			<h:inputHidden value="#{oaPopgrBean.dialogHeader}" id="titleHidden" />
+			<h:inputHidden value="#{oaPopgrBean.choiceSingle}" id="choiceSingle" />
+			<p:growl for="choiceOne" showDetail="false" showSummary="true"
+				id="choiceMsg" autoUpdate="false" />
+			<p:layout style="min-width:400px;height:500px;">
+				<p:layoutUnit position="west" resizable="false"
+					style="min-width:250px;width:300px;" collapsible="true">
+					<p:layout>
+						<p:layoutUnit position="north" resizable="false"
+							style="min-height:20px;width:250px;">
+							<h:panelGrid columns="2" columnClasses="toLeft,toRight">
+								<h:outputText value="#{sys_common.lab_searchScope}:"
+									styleClass="oa-output-normal" />
+								<p:selectManyCheckbox id="includeSub"
+									disabled="#{oaPopgrBean.includeSubShow == 'true' ? 'false':'true'}"
+									value="#{oaPopgrBean.includeSub}">
+									<p:ajax listener="#{oaPopgrBean.search}"
+										update=":popgrForm_id:commonPickList" process=":popgrForm_id" />
+									<f:selectItem itemValue="true"
+										itemLabel="#{sys_common.lab_includeSub}" />
+								</p:selectManyCheckbox>
+							</h:panelGrid>
+						</p:layoutUnit>
+						<p:layoutUnit position="center" resizable="false"
+							style="min-height:320px;">
+
+							<p:tree value="#{oaPopgrBean.root}" var="popgrDir"
+								id="popgrDtree" dynamic="true" cache="true"
+								selectionMode="single" style="border:0px;width:250px;"
+								selection="#{oaPopgrBean.selectedNode}">
+								<p:ajax event="expand" listener="#{oaPopgrBean.onNodeExpand}" />
+								<p:ajax
+									update=":popgrForm_id:includeSub,:popgrForm_id:rtnTypes,:popgrForm_id:commonPickList"
+									event="select" listener="#{oaPopgrBean.onSelectedNodeResource}"
+									process=":popgrForm_id" />
+								<p:treeNode id="popgrTreeNode" icon="ui-icon-folder-open-self"
+									type="org">
+									<h:outputText value="#{popgrDir.name}" id="popgrLblNode" />
+								</p:treeNode>
+								<p:treeNode id="popgrPostNode" type="post"
+									icon="ui-icon ui-icon-folder-open-self-post">
+									<h:outputText value="#{sys_common.lab_post}"/>
+								</p:treeNode>
+								<p:treeNode id="popgrRoleNode" type="role" 
+									icon="ui-icon ui-icon-folder-open-self-post">
+									<h:outputText value="#{sys_common.lab_role}" />
+								</p:treeNode>
+								<p:treeNode id="popgrGroupNode" type="group" 
+									icon="ui-icon ui-icon-folder-open-self-post">
+									<h:outputText value="#{sys_common.lab_group}" />
+								</p:treeNode>
+							</p:tree>
+						</p:layoutUnit>
+					</p:layout>
+				</p:layoutUnit>
+				<p:layoutUnit position="center" resizable="false"
+					style="width:500px;min-width:500px;" collapsible="true">
+					<p:layout>
+						<p:layoutUnit position="north" resizable="false">
+							<div class="commonPickList">
+								<h:panelGrid columns="4">
+									<h:outputText value="#{sys_common.lab_keyWords}:"
+										styleClass="oa-output-normal" />
+									<p:inputText value="#{oaPopgrBean.keyWords}" id="keywords" />
+									<p:commandButton value="#{msgs.btn_query}"
+										actionListener="#{oaPopgrBean.search}"
+										update=":popgrForm_id:commonPickList" />
+									<p:commandButton value="#{msgs.btn_reset}"
+										actionListener="#{oaPopgrBean.reset}"
+										update=":popgrForm_id:keywords" />
+								</h:panelGrid>
+								<p:selectManyCheckbox
+									disabled="#{oaPopgrBean.includeSubShow == 'true' ? 'false':'true'}"
+									value="#{oaPopgrBean.rtnTypes}" id="rtnTypes">
+									<p:ajax update=":popgrForm_id:commonPickList"
+										listener="#{oaPopgrBean.search}" process=":popgrForm_id" />
+									<f:selectItems value="#{oaPopgrBean.rtnTypesSelect}" />
+								</p:selectManyCheckbox>
+							</div>
+						</p:layoutUnit>
+						<p:layoutUnit position="center" resizable="false">
+							<p:pickList id="commonPickList" onTransfer="checkClick()"
+								value="#{oaPopgrBean.elementDualList}" var="element"
+								itemValue="#{element}" converter="pickListNoIdConverter"
+								itemDisabled="#{oaPopgrBean.choiceSingle ? (oaPopgrBean.size > 0 ? 
+								(element.elementId eq oaPopgrBean.targetFirstItemId ? 'false':'true'):'false' ):'false'}">
+								<f:facet name="sourceCaption">
+									<h:outputText value="#{sys_common.pickList_choiceList}" />
+								</f:facet>
+								<f:facet name="targetCaption">
+									<h:outputText value="#{sys_common.pickList_chooseed}" />
+								</f:facet>
+								<p:column styleClass="#{element.photoCss}" style="width:16px;" />
+								<p:column style="width:184px;">
+									<h:outputText value="#{element.itemTitle}" />
+									<div style="display: none;" id="itemDescDiv">
+										<h:outputText value="#{element.itemDesc}" />
+									</div>
+								</p:column>
+							</p:pickList>
+							<div class="commonPickList">
+								<h:panelGrid style="margin-top:20px">
+									<h:outputText value="#{sys_common.lab_desc}："
+										styleClass="oa-output-normal" />
+									<p:inputTextarea cols="58" rows="3" value="#{oaPopgrBean.desc}"
+										id="descValue" disabled="true" />
+								</h:panelGrid>
+							</div>
+						</p:layoutUnit>
+					</p:layout>
+				</p:layoutUnit>
+				<p:layoutUnit position="south">
+					<h:inputHidden id="selectedIds" value="#{oaPopgrBean.selectedIds}" />
+					<h:inputHidden id="selectedTitles"
+						value="#{oaPopgrBean.selectedTitles}" />
+					<div align="center">
+						<h:panelGrid columns="2">
+							<p:commandButton value="#{msgs.btn_ok}"
+								actionListener="#{oaPopgrBean.sureSelectAction()}"
+								oncomplete="handleClose(xhr, status, args)"
+								update="selectedIds,selectedTitles,:popgrForm_id:choiceMsg" />
+							<p:commandButton value="#{msgs.btn_cancel}"
+								oncomplete="handleCancel()" style="margin-left:20px;" />
+						</h:panelGrid>
+					</div>
+				</p:layoutUnit>
+			</p:layout>
+		</h:form>
+	</h:body>
+</f:view>
+</html>

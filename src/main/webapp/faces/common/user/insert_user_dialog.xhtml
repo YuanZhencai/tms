@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<p:dialog header="新增用户信息" widgetVar="saveUserDialog"
+		id="saveUserDlg" resizable="false" width="580" height="330"
+		modal="true">
+		<p:messages id="errorSaveMsg" showDetail="true" showSummary="false"/>
+		<h:form id="saveUserDialogForm" prependId="false">
+			<h:panelGrid columns="4"
+				columnClasses="column1,column2,column1,column2">
+				<h:panelGroup>
+					<font color="red">*</font>
+					<h:outputText value="用户帐号：" />
+				</h:panelGroup>
+				<p:inputText id="adAccount1" value="#{userBean.usermstr.adAccount}"
+					maxlength="49" styleClass="input_disabled"
+					validator="#{userBean.valid}" required="true" label="用户帐号" />
+				<h:panelGroup>
+					<font color="red">*</font>
+					<h:outputText value="用户姓名：" />
+				</h:panelGroup>
+				<p:inputText value="#{userBean.p.nachn}" 
+					styleClass="input_disabled" required="true" label="用户姓名" maxlength="6"/>
+				<h:outputText value="英文名：" />
+				<p:inputText value="#{userBean.p.name2}" 
+					styleClass="input_disabled" maxlength="49"/>
+				<h:outputText value="所属公司：" />
+				<h:panelGroup>
+				<p:inputText id="companyNameTxt" value="#{userBean.company.companyName}" 
+					styleClass="input_disabled" style="width:110px" readonly="true" />
+				<p:commandButton immediate="true" value="#{msgs.btn_select}"
+					style="width: 70px;" image="ui-icon ui-icon-zoomin"
+					actionListener="#{userBean.clear}"
+					oncomplete="companyDialogVar.show();" update="companyForm">
+					<f:setPropertyActionListener
+						target="#{userBean.companySelectBean.method}"
+						value="userBean.getSelectedCompany" />
+				</p:commandButton>	
+				</h:panelGroup>
+				<h:outputText value="邮件地址：" />
+				<p:inputText value="#{userBean.p.email}" 
+					styleClass="input_disabled" />
+				<h:outputText value="电话号码：" />
+				<p:inputText value="#{userBean.p.telno}" 
+					styleClass="input_disabled" />
+				<h:outputText value="手机号码：" />
+				<p:inputText value="#{userBean.p.celno}" 
+					styleClass="input_disabled" />
+				<h:outputText value="性别：" />
+				<h:selectOneMenu value="#{userBean.p.gesch}" 
+					styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+					style="width:189px;">
+					<f:selectItem itemLabel="男" itemValue="男" />
+					<f:selectItem itemLabel="女" itemValue="女" />
+				</h:selectOneMenu>
+			</h:panelGrid>
+			<h:panelGrid columns="2" columnClasses="column1,column2">
+				<h:outputText value="背景说明：" />
+				<p:inputTextarea value="#{userBean.usermstr.backgroundInfo}"
+					style="width:401px;height:60px;" effectDuration="400"
+					maxlength="198" />
+			</h:panelGrid>
+			
+			<div style="text-align: center; margin-top: 5px;">
+				<p:commandButton value="保存" image="ui-icon ui-icon-disk"
+						style="margin-right: 5px;"
+						oncomplete="handleSaveRequest(xhr, status, args);"
+						actionListener="#{userBean.saveUsermstr}"
+						update="msg,userDataTableForm, errorSaveMsg, :messages" />
+				<p:commandButton type="button" value="关闭" image="ui-icon ui-icon-cancel"
+						onclick="saveUserDialog.hide();" />
+			</div>
+		</h:form>
+	</p:dialog>
+
+	<ui:include src="/faces/process/common/companySelect-dialog.xhtml" />
+</ui:composition>

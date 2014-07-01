@@ -1,0 +1,219 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/template/template.xhtml">
+
+	<ui:define name="title">投资理财产品额度明细表</ui:define>
+
+	<ui:define name="content">
+
+		<input type="hidden" id="menuOne" value="21" />
+		<input type="hidden" id="menuTwo" value="22" />
+
+		<h:form id="dbListForm" prependId="false" onsubmit="statusComplete();">
+			<p:panel styleClass="panel1">
+				<p:breadCrumb preview="true" expandEffectDuration="200"
+					previewWidth="24" style="width: 99.1%">
+					<p:menuitem value="#{msgs.menItem_form}" url="#" />
+					<p:menuitem value="#{msgs.menItem_form}" url="#" />
+					<p:menuitem value="#{msgs.menItem_inveProductFormDetail}" url="#" />
+				</p:breadCrumb>
+
+				<p:messages id="doneMsg" />
+
+				<div class="style1">
+					<h:panelGrid columns="8"
+						columnClasses="column41,column2,column0,column2,column0,column2,column0,column2">
+						<h:outputLabel value="#{msgs.lab_applyTime}：" />
+						<h:panelGroup>
+							<p:inputText id="reqStartDate"
+								value="#{inveProductReportBean.conditionMap['reqStartDate']}"
+								styleClass="ui-date" style="font-size: 9px;width:90px;"
+								title="#{msgs.txt_startTime}"
+								onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'reqEndDate\')}'});">
+								<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+							</p:inputText>
+							<h:outputText value="~" />
+							<p:inputText id="reqEndDate"
+								value="#{inveProductReportBean.conditionMap['reqEndDate']}"
+								styleClass="ui-date" style="font-size: 9px;width:90px;"
+								title="#{msgs.txt_endTime}"
+								onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'reqStartDate\')}'});">
+								<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+							</p:inputText>
+						</h:panelGroup>
+
+						<h:outputLabel value="#{msgs.lab_replyTime}：" />
+						<h:panelGroup>
+							<p:inputText id="passStartDate"
+								value="#{inveProductReportBean.conditionMap['passStartDate']}"
+								styleClass="ui-date" style="font-size: 9px;width:90px;"
+								title="#{msgs.txt_startTime}"
+								onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'passEndDate\')}'});">
+								<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+							</p:inputText>
+							<h:outputText value="~" />
+							<p:inputText id="passEndDate"
+								value="#{inveProductReportBean.conditionMap['passEndDate']}"
+								styleClass="ui-date" style="font-size: 9px;width:90px;"
+								title="#{msgs.txt_endTime}"
+								onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'passStartDate\')}'});">
+								<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+							</p:inputText>
+						</h:panelGroup>
+
+						<h:outputLabel value="#{msgs.col_companyName}："
+							rendered="#{!inveProductReportBean.isCopUser}" />
+						<h:panelGroup rendered="#{!inveProductReportBean.isCopUser}">
+							<h:selectOneMenu id="companyName" name="companyName"
+								style="width:330px;"
+								value="#{inveProductReportBean.conditionMap['companyId']}"
+								styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+								<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" itemValue="" />
+								<f:selectItems value="#{inveProductReportBean.companySelect}" />
+								<p:ajax update="childBankName"
+									listener="#{inveProductReportBean.ajaxChildBank}">
+								</p:ajax>
+							</h:selectOneMenu>
+						</h:panelGroup>
+						<h:outputText value=""
+							rendered="#{!inveProductReportBean.isCopUser}" />
+						<h:outputLabel value="#{msgs.col_companyName}："
+							rendered="#{inveProductReportBean.isCopUser}" />
+						<h:panelGroup rendered="#{inveProductReportBean.isCopUser}">
+							<p:inputText id="companyNameTwo" disabled="true"
+								style="width: 320px;"
+								value="#{inveProductReportBean.company.companyName}" />
+						</h:panelGroup>
+						<p:commandButton immediate="true" value="#{msgs.btn_select}"
+							style="width: 70px;" image="ui-icon ui-icon-zoomin"
+							rendered="#{inveProductReportBean.isCopUser}"
+							actionListener="#{inveProductReportBean.clear}"
+							oncomplete="companyDialogVar.show();" update="companyForm">
+							<f:setPropertyActionListener
+								target="#{inveProductReportBean.companySelectBean.method}"
+								value="inveProductReportBean.getSelectedCompany;inveProductReportBean.ajaxChildBank" />
+						</p:commandButton>
+						<h:outputText value="" />
+						<h:outputLabel value="#{msgs.lbl_BankName_Subbranch}：" />
+						<h:panelGroup>
+							<h:selectOneMenu id="childBankName" name="childBankName"
+								style="width: 210px;"
+								value="#{inveProductReportBean.conditionMap['bankId']}"
+								styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+								<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" itemValue="" />
+								<f:selectItems value="#{inveProductReportBean.childBankSelect}" />
+							</h:selectOneMenu>
+						</h:panelGroup>
+
+					</h:panelGrid>
+					<div>
+						<p:commandButton id="query"
+							action="#{inveProductReportBean.searchInveProductDetail}"
+							update="doneMsg,inveProductReportPl" value="#{msgs.btn_query}"
+							image="ui-icon ui-icon-search" />
+						<p:commandButton value="#{msgs.btn_reset}" style="margin: 5px;"
+							icon="ui-icon ui-icon-arrowrefresh-1-e"
+							action="#{inveProductReportBean.reset}"
+							update="reqStartDate,reqEndDate,passStartDate,passEndDate,companyName,companyNameTwo,childBankName" />
+					</div>
+				</div>
+				<br />
+
+				<p:outputPanel id="inveProductReportPl">
+					<p:dataTable var="inveProductDetail" id="inveProductReports"
+						value="#{inveProductReportBean.inveProductDetails}"
+						rowKey="#{inveProductDetail.id}"
+						emptyMessage="#{msgs.dataTable_empty}">
+
+						<f:facet name="header">#{msgs.menItem_inveProductFormDetail}</f:facet>
+
+
+						<p:column headerText="#{msgs.col_procInstId}">
+							<h:outputText value="#{inveProductDetail.procInstId}" />
+						</p:column>
+
+						<p:column headerText="#{msgs.col_applyCompanyName}">
+							<h:outputText value="#{inveProductDetail.company.companyName}" />
+						</p:column>
+
+						<p:column headerText="#{msgs.col_bankName}">
+							<h:outputText value="#{inveProductDetail.bank.bankName}" />
+						</p:column>
+
+						<p:column headerText="#{msgs.col_inveProductName}">
+							<h:outputText value="#{inveProductDetail.productName}" />
+						</p:column>
+
+						<p:column headerText="#{msgs.col_currency}">
+							<h:outputText
+								value="#{commonBean.getValueByDictCatAndKey('TMS_TAX_PROJECT_CURRENCY_TYPE',inveProductDetail.amountCu)}" />
+						</p:column>
+
+						<p:column headerText="#{msgs.col_moneyLimit}">
+							<h:panelGroup>
+								<h:outputText value="#{inveProductDetail.amount}">
+									<f:convertNumber pattern="#,##0.####" />
+								</h:outputText>
+								<h:outputLabel>万</h:outputLabel>
+							</h:panelGroup>
+						</p:column>
+
+						<p:column headerText="#{msgs.col_productLimit}">
+							<h:panelGroup>
+								<h:outputText value="#{inveProductDetail.limit}">
+									<f:convertNumber pattern="0" />
+								</h:outputText>
+								<h:outputText
+									value="#{commonBean.getValueByDictCatAndKey('TMS_LIMIT_DATE_UNIT_TYPE',inveProductDetail.limitUnit)}" />
+							</h:panelGroup>
+						</p:column>
+
+						<p:column headerText="#{msgs.col_productStru}">
+							<h:outputText value="#{inveProductDetail.productForm}" />
+						</p:column>
+
+						<p:column headerText="#{msgs.col_applyDay}">
+							<h:outputText value="#{inveProductDetail.requestDate}">
+								<f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd" />
+							</h:outputText>
+						</p:column>
+
+						<p:column headerText="#{msgs.col_replyDay}">
+							<h:outputText value="#{inveProductDetail.passDate}">
+								<f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd" />
+							</h:outputText>
+						</p:column>
+
+					</p:dataTable>
+				</p:outputPanel>
+			</p:panel>
+		</h:form>
+		<ui:include src="/faces/process/common/companySelect-dialog.xhtml" />
+
+		<script type="text/javascript">
+			function handleSaveRequest(xhr, status, args) {
+				if (args.issucc == "yes") {
+					companyDialogVar.hide();
+				}
+			}
+			function handleUpdateRequest(xhr, status, args) {
+				if (args.issucc == "yes") {
+					companyDialogVar.hide();
+				}
+			}
+			function handleTreeRequest(xhr, status, args) {
+				if (args.issucc == "yes") {
+					companyDialogVar.hide();
+				}
+			}
+		</script>
+
+	</ui:define>
+</ui:composition>
+
+

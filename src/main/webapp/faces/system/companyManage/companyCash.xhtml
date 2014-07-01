@@ -1,0 +1,284 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/template/template.xhtml">
+	<ui:define name="title">公司账户</ui:define>
+
+	<ui:define name="content">
+
+		<input type="hidden" id="menuOne" value="27" />
+		<input type="hidden" id="menuTwo" value="29" />
+
+		<p:panel styleClass="panel1">
+			<p:breadCrumb preview="true" expandEffectDuration="200"
+				previewWidth="24">
+				<p:menuitem value="系统管理" url="#" />
+				<p:menuitem value="主数据管理" url="#" />
+				<p:menuitem value="公司信息管理" url="#" />
+			</p:breadCrumb>
+			<h:form prependId="false" id="companyBanknFormId"
+				onsubmit="statusComplete();">
+				<p:message id="msg" for="msg" />
+				<div style="position: relative; margin-top: 5px;">
+					<div class="style1">
+						<h:panelGrid id="cashQueryPanel" columns="6"
+							columnClasses="column1,column2,column1,column2,column1,column2" footerClass="footer1">
+							<h:outputLabel value="头寸类型：" />
+							<h:selectOneMenu id="cashType"
+									value="#{companyCashBean.cashType}"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									style="width:330px" >
+									<f:selectItem itemLabel="全部" />
+									<f:selectItems value="#{companyCashBean.cashTypeSelect}" />
+							</h:selectOneMenu>
+						<h:outputLabel value="品种类型：" />
+						<h:panelGroup>
+								<h:selectOneMenu id="varietyType"
+									value="#{companyCashBean.varietyType}"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									style="width:200px" required="false" requiredMessage="请选择品种类型">
+									<f:selectItem itemLabel="请选择" itemValue=""/>
+									<f:selectItems value="#{companyCashBean.varietyTypeSelect}" />
+								<p:ajax  listener="#{companyCashBean.initVarietySelect}"
+								 update="variety"/>
+								</h:selectOneMenu>
+						</h:panelGroup>
+							<h:outputLabel value="品种：" />
+							<h:selectOneMenu id="variety"
+									value="#{companyCashBean.variety}"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									style="width:330px" >
+									<f:selectItem itemLabel="全部" />
+									<f:selectItems value="#{companyCashBean.varietySelect}" />
+							</h:selectOneMenu>
+						</h:panelGrid>
+						<div>
+							<p:commandButton value="查询" icon="ui-icon ui-icon-search"
+								update="msg,cashTable"
+								action="#{companyCashBean.searchCashByCondition}" />
+							<p:commandButton value="新增" icon="ui-icon ui-icon-plus"
+								update="msg,cashTable,cashForm1" oncomplete="addCashDialog.show()" 
+								action="#{companyCashBean.clearAddHistory}"/>
+						</div>
+					</div>
+				</div>
+				<p:outputPanel id="cashTablePanel">
+					<p:dataTable var="cash" id="cashTable"
+						value="#{companyCashBean.cashVoList}"
+						rowKey="#{cash.id}" paginator="true" rows="10"
+						paginatorPosition="bottom"
+						paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
+						currentPageReportTemplate="{currentPage}/{totalPage}"
+						emptyMessage="无满足条件数据！">
+						<f:facet name="header">公司头寸列表</f:facet>
+						<p:column headerText="头寸类型">
+							<h:outputText value="#{cash.appType == 'T' ? '贸易' : '生产'}" />
+						</p:column>
+
+						<p:column headerText="品种">
+							<h:outputText value="#{cash.varietyName}" />
+						</p:column>
+
+						<p:column headerText="头寸（吨）">
+							<h:outputText value="#{cash.totalCash}" >
+								<f:convertNumber pattern="#,##0.00" />
+							</h:outputText>
+						</p:column>
+
+						<p:column headerText="金额（万元）">
+							<h:outputText value="#{cash.totalCashAmount}" >
+								<f:convertNumber pattern="#,##0.00" />
+							</h:outputText>
+						</p:column>
+
+						<p:column headerText="起始日期 ">
+							<h:outputText value="#{cash.startDate}">
+								<f:convertDateTime timeZone="GMT+8"
+									pattern="yyyy-MM-dd" />
+							</h:outputText>
+						</p:column>
+
+						<p:column headerText="截止日期">
+							<h:outputText value="#{cash.endDate}">
+								<f:convertDateTime timeZone="GMT+8"
+									pattern="yyyy-MM-dd" />
+							</h:outputText>
+						</p:column>
+						
+						<p:column headerText="状态">
+							<h:outputText value="#{cash.status}" />
+						</p:column>
+						
+						<p:column headerText="操作" styleClass="operating_90">
+							<p:commandButton title="修改" oncomplete="cashDialog.show()"
+								icon="ui-icon ui-icon-pencil" update="msg,cashForm">
+								<f:setPropertyActionListener
+									target="#{companyCashBean.companyCashVo}"
+									value="#{cash}" />
+							</p:commandButton>
+						</p:column>
+					</p:dataTable>
+				</p:outputPanel>
+
+				<p:confirmDialog message="是否删除此公司头寸信息？" header="删除警告"
+					severity="alert" widgetVar="cashConfirm">
+					<div align="center">
+						<p:commandButton update="msg,cashPanlId" value="确定"
+							icon="ui-icon ui-icon-check" oncomplete="cashConfirm.hide();"
+							action="#{companyCashBean.del}" />
+						&#160;&#160;
+						<p:commandButton value="取消" onclick="cashConfirm.hide()"
+							icon="ui-icon ui-icon-cancel" type="button" />
+					</div>
+				</p:confirmDialog>
+			</h:form>
+
+			<h:form prependId="false" id="cashForm">
+				<p:dialog header="修改公司头寸信息"
+					widgetVar="cashDialog" resizable="false" width="400"
+					modal="true">
+					<p:messages id="cashMsg" />
+					<h:panelGrid columns="2"
+						columnClasses="column41,column2">
+						<h:outputLabel value="头寸：" />
+						<h:panelGroup>
+							<p:inputText id="totalCash" value="#{companyCashBean.companyCashVo.cashMain.totalCash}" style="width:200px" label="头寸">
+								<f:validateDoubleRange maximum="99999999.99" minimum="0" />
+								<f:convertNumber pattern="#,##0.00" />
+								<p:ajax event="blur"  update="cashMsg,totalCash"/>
+							</p:inputText>
+							<h:outputLabel value="吨"/>
+						</h:panelGroup>
+							
+						<h:outputLabel value="金额：" />
+						<h:panelGroup>
+							<p:inputText id="totalCashAmount" value="#{companyCashBean.companyCashVo.cashMain.totalCashAmount}" style="width:200px" label="金额">
+								<f:validateDoubleRange maximum="99999999.99" minimum="0" />
+								<f:convertNumber pattern="#,##0.00" />
+								<p:ajax event="blur"  update="cashMsg,totalCashAmount"/>
+							</p:inputText>
+							<h:outputLabel value="万元"/>
+						</h:panelGroup>
+					</h:panelGrid>
+					<div align="center">
+						<p:commandButton id="save" action="#{companyCashBean.saveCash}" value="保存"  oncomplete="cashDialog.hide()" 
+						update="cashMsg,cashTable" image="ui-icon ui-icon-disk" />
+						<p:commandButton value="取消" onclick="cashDialog.hide()"
+						type="button" id="cancel" icon="ui-icon ui-icon-cancel" />
+					</div>
+				</p:dialog>
+			</h:form>	
+			<h:form prependId="false" id="cashForm1">	
+				<p:dialog header="新增公司头寸信息"
+					widgetVar="addCashDialog" resizable="false" width="800"
+					modal="true">
+					<p:messages id="addCashMsg" />
+					<h:panelGrid columns="4" columnClasses="column41,column2,column41,column2">
+						
+						<h:outputLabel value="类型：" />
+							<h:panelGroup>
+									<p:selectOneRadio id="appType" required="true" 
+										requiredMessage="请选择类型" 
+										value="#{companyCashBean.prodOrTradeCashMain.appType}">
+										<f:selectItem itemLabel="贸易" itemValue="T" />
+										<f:selectItem itemLabel="生产" itemValue="P" />
+									</p:selectOneRadio>
+							</h:panelGroup>
+							
+						<h:outputLabel value="" />
+						<h:outputLabel value="" />	
+						
+						<h:outputLabel value="品种类型：" />
+							<h:panelGroup>
+									<h:selectOneMenu id="varietyType1" 
+										value="#{companyCashBean.varietyTypeAddCash}"
+										styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+										style="width:214px" required="true" requiredMessage="请选择品种类型">
+										<f:selectItem itemLabel="请选择" itemValue=""/>
+										<f:selectItems value="#{companyCashBean.varietyTypeSelect}" />
+									<p:ajax  listener="#{companyCashBean.initVarietySelectAddSelect}"
+									 update="addCashMsg,variety1"/>
+									</h:selectOneMenu>
+									<h:outputText style="color:red;" value=" *" />
+							</h:panelGroup>
+							
+						
+						<h:outputLabel value="品种：" />
+						<h:panelGroup>
+								<h:selectOneMenu id="variety1" 
+									value="#{companyCashBean.prodOrTradeCashMain.variety}"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									style="width:210px" required="true" requiredMessage="请选择品种">
+									<f:selectItem itemLabel="请选择" itemValue=""/>
+									<f:selectItems value="#{companyCashBean.varietySelectAdd}" />
+								</h:selectOneMenu>
+								<h:outputText style="color:red;" value=" *" />
+						</h:panelGroup>
+						<h:outputLabel value="头寸：" />
+						<h:panelGroup>
+							<p:inputText id="totalCash1" required="true" requiredMessage="请填写头寸"
+							value="#{companyCashBean.prodOrTradeCashMain.totalCash}" style="width:204px" label="头寸">
+								<f:validateDoubleRange maximum="99999999.99" minimum="0" />
+								<f:convertNumber pattern="#,##0.00" />
+								<p:ajax event="blur"  update="addCashMsg,totalCash1"/>
+							</p:inputText>
+							<h:outputLabel value="吨"/>
+							<h:outputText style="color:red;" value=" *" />
+						</h:panelGroup>
+							
+						<h:outputLabel value="金额：" />
+						<h:panelGroup>
+							<p:inputText id="totalCashAmount1" required="true" requiredMessage="请填写金额"
+							value="#{companyCashBean.prodOrTradeCashMain.totalCashAmount}" style="width:200px" label="金额">
+								<f:validateDoubleRange maximum="99999999.99" minimum="0" />
+								<f:convertNumber pattern="#,##0.00" />
+								<p:ajax event="blur"  update="addCashMsg,totalCashAmount1"/>
+							</p:inputText>
+							<h:outputLabel value="万"/>
+							<h:outputText style="color:red;" value=" *" />
+						</h:panelGroup>
+					<h:outputLabel value="期限：" />
+						<h:panelGroup>
+							<p:inputText id="startDate" required="true" requiredMessage="请填写期限上限"
+								value="#{companyCashBean.prodOrTradeCashMain.startDate}" styleClass="ui-date"
+								style="font-size: 9px;width:92px;" title="#{msgs.txt_startTime}" 
+								onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'endDate\')}'});">
+								<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+							</p:inputText>
+						<h:outputText value="到" />
+							<p:inputText id="endDate" required="true" requiredMessage="请填写期限下限"
+								value="#{companyCashBean.prodOrTradeCashMain.endDate}" styleClass="ui-date"
+								style="font-size: 9px;width:92px;" title="#{msgs.txt_endTime}"
+								onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'startDate\')}'});">
+								<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+							</p:inputText>
+							<h:outputText style="color:red;" value=" *" />
+						</h:panelGroup>
+					</h:panelGrid>
+					<h:panelGrid columns="2" columnClasses="column41,column2">
+						<h:outputLabel value="小品种(如果选择杂粮品种,需要在这里注明详细的小品种总头寸吨数和头寸金额)" />
+						<h:panelGroup>
+							<p:inputTextarea id="smallVariety" cols="85" rows="3" autoResize="false" required="false" requiredMessage="请填写下拨资金描述"
+							 validatorMessage="小品种内容超过最大长度2000" value="#{companyCashBean.prodOrTradeCashMain.smallVariety}">
+							<f:validateLength maximum="2000" for="smallVariety" />
+							</p:inputTextarea>
+						</h:panelGroup>
+					</h:panelGrid>
+					<div align="center">
+						<p:commandButton id="add" action="#{companyCashBean.addCash}" value="保存"  oncomplete="handleComplete(addCashDialog,args)" 
+						update="addCashMsg,cashTable" image="ui-icon ui-icon-disk" />
+						<p:commandButton value="取消" onclick="addCashDialog.hide()"
+						type="button" id="cancel1" icon="ui-icon ui-icon-cancel" />
+					</div>
+				</p:dialog>
+			</h:form>
+
+		</p:panel>
+	</ui:define>
+</ui:composition>
+
+

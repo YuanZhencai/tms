@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:shiro="http://shiro.apache.org/tags">
+
+<f:view contentType="text/html">
+	<ui:insert name="metadata" />
+	<h:head>
+		<f:facet name="first">
+			<meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
+			<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+			<title>欢迎使用益海嘉里《TMS前置流程平台》</title>
+		</f:facet>
+
+		<!-- CSS & JS -->
+		<script type="text/javascript"
+			src="#{request.contextPath}/template/js/jquery.timer.js" />
+		<script type="text/javascript"
+			src="#{request.contextPath}/template/js/jquery.easing.1.3.js" />
+
+		<script type="text/javascript"
+			src="#{request.contextPath}/template/js/jquery.tooltip.js" />
+		<script type="text/javascript"
+			src="#{facesContext.externalContext.requestContextPath}/styles/skin.js"></script>
+		<script type="text/javascript"
+			src="#{request.contextPath}/template/js/main.js" />
+		<script type="text/javascript"
+			src="#{facesContext.externalContext.requestContextPath}/script/My97DatePicker/My97DatePicker/WdatePicker.js"></script>
+		<link href="#{request.contextPath}/template/css/primefaces/theme.css"
+			rel="stylesheet" type="text/css" />
+		<link href="#{request.contextPath}/template/css/default.css"
+			rel="stylesheet" type="text/css" />
+		<ui:insert name="styleAndScript"></ui:insert>
+
+	</h:head>
+	<h:body>
+
+		<!-- 通知提醒 -->
+		<p:notificationBar id="notificationBarId" position="bottom"
+			effect="fade" widgetVar="bottomBar"
+			style="z-index: 1000;width:200px;height:150px;right:2px;margin-bottom:4px;">
+		</p:notificationBar>
+
+		<div class="top" style="z-index: 3">
+			<div id="top_up">
+				<div id="top_up_left">
+					<div id="title">
+						<img height="22" src="#{request.contextPath}/images/logo_01.gif"
+							alt="" /><span id="titleName">益海嘉里《#{applicationScope['SYS_NAME']}</span>-<span
+							id="versionName">#{applicationScope['SYS_VERSION_NAME']}》</span>
+					</div>
+				</div>
+
+				<ui:include src="top.xhtml" />
+				<div id="top_up_right"></div>
+			</div>
+			<div id="top_down" style="z-index: 2">
+				<div id="top_down_left">
+					<h:inputHidden id="requestContextPath"
+						value="#{request.contextPath}" />
+					<h:inputHidden id="SYS_SKIN"
+						value="#{applicationScope['SYS_SKIN']}" />
+				</div>
+				<div id="top_down_center" style="z-index: 1">
+
+					<ui:include src="navigation.xhtml" />
+
+				</div>
+				<div id="top_down_right">
+					<span class="img"> <img
+						src="#{request.contextPath}/images/user.gif" alt="" />
+					</span> <span class="fon">当前用户：<h:outputText
+							value="#{currentUser.getCurrentCN()}" /> <!-- #{loginBean.user.name} -->
+					</span>
+				</div>
+			</div>
+		</div>
+
+		<div id="main_id" class="main">
+			<ui:insert name="content">
+				<ui:include src="main.xhtml" />
+			</ui:insert>
+		</div>
+		<div class="bottom">
+			<div id="down_left">
+				<img src="#{request.contextPath}/images/logo_15.gif" alt="" />&copy;2012
+				丰益(上海)信息技术有限公司,版权所有. &#160;&#160;<span id="version-number">v#{applicationScope['SYS_VERSION']}</span>
+			</div>
+
+			<div id="down_right">
+				<div id="down_right_time">现在时刻：</div>
+				<div id="down_right_timer"></div>
+				&nbsp;&nbsp;&nbsp;
+			</div>
+		</div>
+		<p:ajaxStatus id="ajaxSubmit" onsuccess="showTooltip();">
+			<f:facet name="start">
+				<div class="ajaxStatus">
+					<span> <h:graphicImage value="/template/img/loading.gif" />
+						<br /> <h:outputLabel value="数据加载中,请稍后..." />
+					</span>
+				</div>
+			</f:facet>
+			<f:facet name="complete">
+				<h:outputText value="" />
+			</f:facet>
+		</p:ajaxStatus>
+		<div id="submitDiv" style="display: none;">
+			<div class="ajaxStatus">
+				<span> <h:graphicImage value="/template/img/loading.gif" />
+					<br /> <h:outputLabel value="数据加载中,请稍后..." />
+				</span>
+			</div>
+		</div>
+	</h:body>
+</f:view>
+</html>

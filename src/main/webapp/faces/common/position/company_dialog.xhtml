@@ -1,0 +1,64 @@
+<ui:composition xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<p:dialog id="company_id" widgetVar="company_dialog" resizable="false"
+		width="500" height="400" header="其它公司选择" modal="true">
+		<h:form prependId="false" id="company_form">
+			<div class="style1">
+				<h:panelGrid columns="4"
+					columnClasses="column1, column2, column1, column2">
+					<h:outputText value="公司名称： " />
+					<p:inputText value="#{positionBean.companyQuery['stext']}" />
+					<h:outputText value="机构代码： " />
+					<p:inputText value="#{positionBean.companyQuery['bukrs']}" />
+					<h:outputText value="公司地址： " />
+					<p:inputText value="#{positionBean.companyQuery['address']}" />
+				</h:panelGrid>
+
+				<div>
+					<p:commandButton value="查询" image="ui-icon ui-icon-search"
+						style="margin-right: 5px;"
+						actionListener="#{positionBean.searchOtherCompany}"
+						update="company_form" />
+					<p:commandButton value="重置" oncomplete="company_form.reset();" />
+				</div>
+			</div>
+			<p:dataTable id="company_datatable" var="c" rows="6" lazy="true"
+				value="#{positionBean.notBelongedCompany}" style="margin-top: 5px;"
+				paginatorPosition="bottom" rowIndexVar="index" paginator="true"
+				paginatorTemplate="{FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+				rowStyleClass="#{index mod 2 == 1 ? 'lazy_datatable_row' : null}"
+				selection="#{positionBean.notPositionCompany}" emptyMessage="没有记录">
+				<f:facet name="header">
+				集团公司列表
+				<div
+						style="text-align: right; position: relative; margin: -13px -5px 0px 0px; vertical-align: middle">
+						<p:commandButton value="数据同步" update="company_id"
+							actionListener="#{positionBean.synchData}"
+							image="ui-icon ui-icon-search" />
+					</div>
+				</f:facet>
+				<p:column selectionMode="multiple" style="width: 50%;"/>
+				<p:column headerText="公司名称" style="width: 80%;">
+					<h:outputText value="#{c.stext}" title="#{c.stext}" />
+				</p:column>
+				<p:column headerText="公司地址" style="width: 80%;">
+					<h:outputText value="#{c.address}" title="#{c.address}" />
+				</p:column>
+				<p:column headerText="联系电话" style="width: 80%;">
+					<h:outputText value="#{c.telphone}" title="#{c.telphone}" />
+				</p:column>
+			</p:dataTable>
+			<div style="text-align: right; position: relative; margin-top: 5px;">
+				<p:commandButton image="ui-icon ui-icon-disk" value="确定"
+					oncomplete="company_dialog.hide();"
+					actionListener="#{positionBean.mergeVO}"
+					update="position_company_form" style="margin-right: 5px;" />
+				<p:commandButton image="ui-icon ui-icon-cancel" value="关闭"
+					oncomplete="company_dialog.hide();" />
+			</div>
+		</h:form>
+	</p:dialog>
+</ui:composition>

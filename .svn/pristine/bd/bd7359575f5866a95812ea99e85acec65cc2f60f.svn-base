@@ -1,0 +1,279 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/template/template.xhtml">
+
+	<ui:define name="title">已提交的流程patch</ui:define>
+	<ui:define name="content">
+
+		<input type="hidden" id="menuOne" value="15" />
+		<input type="hidden" id="menuTwo" value="17" />
+
+		<h:form id="piListForm" prependId="false" onsubmit="statusComplete();">
+			<h:inputHidden value="17" id="menu2" />
+			<p:panel styleClass="panel1">
+				<p:breadCrumb preview="true" expandEffectDuration="200"
+					previewWidth="24" style="width: 99.1%">
+					<p:menuitem value="#{msgs.menItem_process}" url="#" />
+					<p:menuitem value="#{msgs.menItem_process}" url="#" />
+					<p:menuitem value="已提交的流程patch" url="#" />
+				</p:breadCrumb>
+
+				<p:messages id="doneMsg" />
+				<div class="style1">
+					<h:panelGrid columns="8"
+						columnClasses="column0,column2,column0,column2,column0,column2,column0,column2">
+
+						<h:outputLabel value="#{msgs.col_procInstId}：" />
+						<h:inputText id="exceptionDocNo" class="input_165"
+							value="#{patchProcessSubedBean.conditionMap['procInstId']}" />
+
+						<h:outputLabel value="#{msgs.txt_submittedTime}：" />
+						<h:panelGroup>
+							<p:inputText id="startDate" title="#{msgs.txt_statingTime}"
+								value="#{patchProcessSubedBean.conditionMap['startDate']}" 
+								styleClass="ui-date" style="font-size: 12px;width:80px;"
+								onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'endDate\')}'});">
+								<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+							</p:inputText>
+							<h:outputText value="~" />
+							<p:inputText id="endDate" title="#{msgs.txt_statingTime}"
+								value="#{patchProcessSubedBean.conditionMap['endDate']}"
+								styleClass="ui-date" style="font-size: 12px;width:80px;"
+								onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'startDate\')}'});">
+								<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+							</p:inputText>
+						</h:panelGroup>
+						
+						<h:outputLabel value="结束时间：" />
+						<h:panelGroup>
+							<p:inputText id="endFromTime" title="结束时间"
+								value="#{patchProcessSubedBean.conditionMap['endFromTime']}" 
+								styleClass="ui-date" style="font-size: 12px;width:80px;"
+								onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'#F{$dp.$D(\'endToTime\')}'});">
+								<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" timeZone="GMT+8" />
+							</p:inputText>
+							<h:outputText value="~" />
+							<p:inputText id="endToTime" title="结束时间"
+								value="#{patchProcessSubedBean.conditionMap['endToTime']}"
+								styleClass="ui-date" style="font-size: 12px;width:80px;"
+								onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'endFromTime\')}'});">
+								<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" timeZone="GMT+8" />
+							</p:inputText>
+						</h:panelGroup>
+
+						<h:outputLabel value="#{msgs.col_processName}：" />
+						<h:selectOneMenu id="processName" style="width:280px;"
+							value="#{patchProcessSubedBean.conditionMap['processId']}"
+							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+							<f:selectItem itemLabel="#{msgs.lbl_all}" itemValue="0" />
+							<f:selectItems value="#{patchProcessSubedBean.processNameSelect}" />
+						</h:selectOneMenu>
+
+						<h:outputLabel value="#{msgs.txt_processStatus}：" />
+						<h:selectOneMenu id="exeStatus"
+							value="#{patchProcessSubedBean.conditionMap['exeStatus']}"
+							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+							<f:selectItem itemLabel="#{msgs.lbl_active}" itemValue="1" />
+							<f:selectItem itemLabel="#{msgs.lbl_ended}" itemValue="2" />
+						</h:selectOneMenu>
+
+						<h:outputLabel value="#{msgs.col_companyName}："
+							rendered="#{!patchProcessSubedBean.isCopUser}" />
+						<h:panelGroup rendered="#{!patchProcessSubedBean.isCopUser}">
+							<h:selectOneMenu id="companyId" name="companyId"
+								style="width:260px;"
+								value="#{patchProcessSubedBean.conditionMap['companyId']}"
+								styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+								<f:selectItem itemLabel="#{msgs.lbl_all}" itemValue="" />
+								<f:selectItems value="#{patchProcessSubedBean.companySelect}" />
+							</h:selectOneMenu>
+						</h:panelGroup>
+
+						<h:outputLabel value="#{msgs.col_companyName}："
+							rendered="#{patchProcessSubedBean.isCopUser}" />
+						<h:panelGroup rendered="#{patchProcessSubedBean.isCopUser}">
+							<p:inputText id="companyNameTwo" disabled="true"
+								style="width: 252px;"
+								value="#{patchProcessSubedBean.company.companyName}" />
+						</h:panelGroup>
+						<p:commandButton immediate="true" value="#{msgs.btn_select}"
+							style="width: 70px;" image="ui-icon ui-icon-zoomin"
+							rendered="#{patchProcessSubedBean.isCopUser}"
+							actionListener="#{patchProcessSubedBean.clear}"
+							oncomplete="companyDialogVar.show();" update="companyForm">
+							<f:setPropertyActionListener
+								target="#{patchProcessSubedBean.companySelectBean.method}"
+								value="patchProcessSubedBean.getSelectedCompany" />
+						</p:commandButton>
+					</h:panelGrid>
+					<div>
+						<p:commandButton id="query"
+							action="#{patchProcessSubedBean.searchSubedProcessInstance}"
+							update="doneMsg,processInstanceVosPl" value="#{msgs.btn_query}"
+							image="ui-icon ui-icon-search" />
+							
+							<p:commandButton id="cleanData"
+							action="#{patchProcessSubedBean.clearAllTMPData}"
+							update="doneMsg,processInstanceVosPl" value="清理Patch表数据"
+							image="ui-icon ui-icon-search" />
+							
+						<p:commandButton id="exportData"
+							action="#{patchProcessSubedBean.exportData2TMP}"
+							update="doneMsg,processInstanceVosPl" value="导出到Patch表"
+							image="ui-icon ui-icon-search" />
+					</div>
+				</div>
+				<br />
+
+				<p:outputPanel id="processInstanceVosPl">
+					<p:dataTable var="processInstanceVo" id="processInstanceVos"
+						value="#{patchProcessSubedBean.processInstanceVos}"
+						rowKey="#{processInstanceVo.procInstId}" paginator="true"
+						rows="10" paginatorPosition="bottom"
+						paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
+						currentPageReportTemplate="{currentPage}/{totalPage}"
+						emptyMessage="#{msgs.dataTable_empty}">
+
+						<f:facet name="header">#{msgs.txt_submittedProcessList}</f:facet>
+
+
+						<p:column headerText="#{msgs.col_procInstId}">
+							<h:outputText value="#{processInstanceVo.pidTms}" />
+						</p:column>
+
+						<p:column headerText="#{msgs.col_companyName}">
+							<h:outputText value="#{processInstanceVo.companyName}" />
+						</p:column>
+
+						<p:column headerText="#{msgs.col_processName}">
+							<h:outputText value="#{processInstanceVo.processName}" />
+						</p:column>
+
+						<p:column headerText="#{msgs.col_processDesc}">
+							<h:outputText value="#{processInstanceVo.describle}" />
+						</p:column>
+
+						<p:column headerText="#{msgs.col_processVersion}">
+							<h:outputText value="#{processInstanceVo.processVersion}" />
+						</p:column>
+
+						<p:column headerText="#{msgs.txt_currentTask}">
+							<h:outputText value="#{processInstanceVo.nodeName}" />
+						</p:column>
+						
+						<p:column headerText="提交人">
+							<h:outputText value="#{processInstanceVo.originator}" />
+						</p:column>
+						
+						<p:column headerText="提交人姓名">
+							<h:outputText value="#{processInstanceVo.originator == '' ? '' : currentUser.exchange2CN(processInstanceVo.originator)}" />
+						</p:column>
+
+						<p:column headerText="#{msgs.txt_currentManager}">
+							<h:outputText
+								value="#{processInstanceVo.nodeExer == '' ? '' : currentUser.exchange2CN(processInstanceVo.nodeExer)}" />
+						</p:column>
+
+						<p:column headerText="#{msgs.txt_submittedTime}">
+							<h:outputText value="#{processInstanceVo.submitDate}">
+								<f:convertDateTime timeZone="GMT+8"
+									pattern="yyyy-MM-dd HH:mm:ss" />
+							</h:outputText>
+						</p:column>
+
+						<p:column headerText="#{msgs.txt_endTime}">
+							<h:outputText value="#{processInstanceVo.processEndDate}">
+								<f:convertDateTime timeZone="GMT+8"
+									pattern="yyyy-MM-dd HH:mm:ss" />
+							</h:outputText>
+						</p:column>
+
+						<p:column styleClass="operating_90"
+							headerText="#{msgs.col_operate}">
+
+							<p:commandButton oncomplete="confirmation.show()"
+								image="ui-icon ui-icon-close" title="#{msgs.txt_endProcess}"
+								update="processInstanceVosPl,doneMsg"
+								rendered="#{processInstanceVo.terminalFlag ? false : true}">
+								<f:setPropertyActionListener value="#{processInstanceVo}"
+									target="#{patchProcessSubedBean.processInstanceVo}" />
+							</p:commandButton>
+
+							<p:commandButton action="#{patchProcessSubedBean.toView}"
+								process="@this" oncomplete="doPopup(xhr, status, args);"
+								image="ui-icon ui-icon-zoomin" title="#{msgs.txt_checkAll}">
+								<f:setPropertyActionListener value="#{processInstanceVo}"
+									target="#{patchProcessSubedBean.processInstanceVo}" />
+							</p:commandButton>
+						</p:column>
+
+					</p:dataTable>
+				</p:outputPanel>
+
+				<p:confirmDialog message="#{msgs.txt_sureToStopProcess}"
+					header="#{msgs.txt_endProcess}" severity="alert"
+					widgetVar="confirmation">
+					<div align="center">
+						<p:commandButton update="processInstanceVosPl,doneMsg"
+							value="#{msgs.btn_stop}" oncomplete="confirmation.hide()"
+							action="#{patchProcessSubedBean.doTerminal}" />
+						&#160;&#160;
+						<p:commandButton value="#{msgs.btn_cancel}"
+							onclick="confirmation.hide()" type="button" />
+					</div>
+				</p:confirmDialog>
+			</p:panel>
+		</h:form>
+
+		<ui:include src="/faces/process/common/companySelect-dialog.xhtml" />
+
+		<script type="text/javascript">
+			function handleSaveRequest(xhr, status, args) {
+				if (args.issucc == "yes") {
+					companyDialogVar.hide();
+				}
+			}
+			function handleUpdateRequest(xhr, status, args) {
+				if (args.issucc == "yes") {
+					companyDialogVar.hide();
+				}
+			}
+			function handleTreeRequest(xhr, status, args) {
+				if (args.issucc == "yes") {
+					companyDialogVar.hide();
+				}
+			}
+		</script>
+
+		<script type="text/javascript">
+			//<![CDATA[	
+			function doPopup(xhr, status, args) {
+				if (args.viewPage != null || args.viewPage != "") {
+					var url = args.viewPage;
+					var op = args.op;
+					var menu2 = args.menu2;
+					var procInstId = args.procInstId;
+					var stepName = args.stepName;
+
+					var h = screen.height - 200;
+					var w = screen.width - 200;
+
+					var left = (screen.width - w) / 2;
+					var top = (screen.height - h) / 2;
+
+					var param = encodeURI("?op=" + op + "&menu2=" + menu2 + "&procInstId=" + procInstId + "&stepName=" + stepName);
+					var popup = window.open(url + param, "popup", "height=" + h + ",width=" + w + ",left=" + left + ",top=" + top + ",toolbar=no,status=yes,menubar=no,scrollbars=yes,,resizable=yes");
+					popup.focus();
+				}
+			}
+			//]]>
+		</script>
+	</ui:define>
+</ui:composition>
+
+

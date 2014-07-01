@@ -1,0 +1,685 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FileNet>
+	<!-- process属性说明 (className ==== FileNet PE 流程名字 || code ==== TMS对应的流程系统编号 
+		|| entityClass ==== TMS 流程实体类 ||viewPage ==== 流程查看页面 || cePath ==== 流程传输至CE的存储路径 
+		|| appPage ==== 流程申请页面 ) step属性说明( name ==== 节点名称 || inputable ==== 需要编辑的字段，以字符串形式分隔 
+		|| copStep ==== 是否是集团需要处理的节点 || createrCheck ==== 是否需要校验创建人 ) || acrossCompany 
+		=== 是否可以跨公司查看 || drawOperater ==== 是否通过节点参数取操作人进行人员检查 || confirmView ==== 
+		是否要查看确认单的View || workFlowGroupName === FileNet PE中工作流组名 || payDetail === 
+		付款明细表说明(明细表实体类#主表关联属性,如:ProcDailyPayDetail#proDailyPayLoanTran) || passValue 
+		= 节点通过后返回值 || nopassValue = 节点驳回后返回值 || inputable = 需要编辑的字段，以字符串形式分隔 || visibility 
+		= 哪些属性是否可见，以字符串形式分隔 accessoryView=附件可操作 || notVisibleProperty = 界面不显示的字段 || isCashPoolProcess = 是否为现金池流程标识-->
+	<PE-Process id="pe">
+		<!-- Sprint1 -->
+		<!-- 外债申请和外债展期申请审批流程 -->
+		<process id="DebtBorrow" name="外债申请和外债展期申请审批流程" code="TMS_BPM_RA_007"
+			className="TMS_DebtBorrow" entityClass="ProcDebtBorrow" isCashPoolProcess = "N"
+			appPage="/faces/process/debtBorrow/debtBorrow-new.xhtml" viewPage="/faces/process/debtBorrow/debtBorrow-view.xhtml"
+			cePath="/TMS/Process/外债申请和外债展期申请审批流程">
+			<step name="申请" copStep="false" createrCheck="true" queueName="TMS_Requester">
+				<parameter type="filenet.vw.api.VWAttachment">TMS_Requester_Attach</parameter>
+			</step>
+			<step name="工厂财务经理审批" copStep="false" createrCheck="false"
+				passMemo="批准。" nopassMemo="退回。" queueName="TMS_Fac_Finance">
+				<parameter type="java.lang.Boolean">TMS_Fac_Finance_Pass</parameter>
+			</step>
+			<step name="工厂总经理审批" copStep="false" createrCheck="false"
+				passMemo="批准。" nopassMemo="退回。" queueName="TMS_Fac_Manager">
+				<parameter type="java.lang.Boolean">TMS_Fac_Manager_Pass</parameter>
+			</step>
+			<step name="集团项目经理审批" inputable="corpAudit,corpAuditCu,corpAuditLi,corpAuditRa"
+				passMemo="批准。" nopassMemo="退回。" copStep="true" createrCheck="false"
+				queueName="TMS_Cop_PM">
+				<parameter type="java.lang.Boolean">TMS_Cop_PM_Pass</parameter>
+			</step>
+			<step name="集团资金部门经理审批" copStep="true" createrCheck="false"
+				passMemo="批准。" nopassMemo="退回。" queueName="TMS_Cop_Fund_Dep_M">
+				<parameter type="java.lang.Boolean">TMS_Cop_Fund_Dep_Pass</parameter>
+			</step>
+			<step name="财务总监审批" copStep="true" createrCheck="false"
+				passMemo="批准。" nopassMemo="退回。" queueName="TMS_Cop_CFO">
+				<parameter type="java.lang.Boolean">TMS_Cop_CFO_Pass</parameter>
+			</step>
+			<step name="集团项目经理知会新加坡" copStep="true" createrCheck="false"
+				passMemo="完成邮件发送。" queueName="TMS_Cop_PM">
+			</step>
+		</process>
+
+		<!-- 注册资本金申请审批流程 -->
+		<process id="RegiCapital" entityClass="ProcRegiCapital" name="注册资本金申请审批流程"
+			code="TMS_BPM_RA_006" className="TMS_RegiCapital" isCashPoolProcess = "N"
+			appPage="/faces/process/regiCapital/registerCaptial-list.xhtml"
+			viewPage="/faces/process/regiCapital/registerCaptial-view.xhtml"
+			cePath="/TMS/Process/注册资本金申请审批流程">
+			<step name="申请" entityClass="ProcRegiCapital" copStep="false"
+				queueName="TMS_Requester" createrCheck="true" upload="true">
+				<parameter type="filenet.vw.api.VWAttachment">TMS_Requester_Attach</parameter>
+			</step>
+			<step name="工厂财务经理审批" copStep="false" createrCheck="false"
+				queueName="TMS_Fac_Finance" passMemo="批准。" nopassMemo="退回。">
+				<parameter type="java.lang.Boolean">TMS_Fac_Finance_Pass</parameter>
+			</step>
+			<step name="工厂总经理审批" copStep="false" createrCheck="false"
+				queueName="TMS_Fac_Manager" passMemo="批准。" nopassMemo="退回。">
+				<parameter type="java.lang.Boolean">TMS_Fac_Manager_Pass</parameter>
+			</step>
+			<step name="集团项目经理审批" inputable="actualAudit,actualAuditCu"
+				passMemo="批准。" nopassMemo="退回。" copStep="true" createrCheck="false"
+				queueName="TMS_Cop_PM">
+				<parameter type="java.lang.Boolean">TMS_Cop_PM_Pass</parameter>
+			</step>
+			<step name="集团资金部门经理审批" copStep="true" createrCheck="false"
+				passMemo="批准。" nopassMemo="退回。" queueName="TMS_Cop_Fund_Dep_M">
+				<parameter type="java.lang.Boolean">TMS_Cop_Fund_Dep_M_Pass</parameter>
+			</step>
+			<step name="财务总监审批" copStep="true" createrCheck="false"
+				passMemo="批准。" nopassMemo="退回。" queueName="TMS_Cop_CFO">
+				<parameter type="java.lang.Boolean">TMS_Cop_CFO_Pass</parameter>
+			</step>
+			<step name="集团项目经理知会新加坡" copStep="true" createrCheck="false"
+				passMemo="完成邮件发送。" queueName="TMS_Cop_PM">
+			</step>
+		</process>
+
+
+		<!-- Sprint2 -->
+		<!-- 投资理财产品额度审批流程 -->
+		<process id="InveProduct" name="投资理财产品额度审批流程" code="TMS_BPM_RA_005"
+			className="TMS_InveProduct" entityClass="ProcInveProduct" isCashPoolProcess = "N"
+			appPage="/faces/process/inveProduct/inveProduct-new.xhtml" viewPage="/faces/process/inveProduct/inveProduct-view.xhtml"
+			cePath="/TMS/Process/投资理财产品额度审批流程">
+			<step name="申请" copStep="true" createrCheck="true" upload="true"
+				queueName="TMS_Cop_Fund_Dep_3">
+				<parameter type="filenet.vw.api.VWAttachment">TMS_Cop_Fund_Dep_3_Attach</parameter>
+			</step>
+			<step name="集团资金总监或集团财务总监审批" inputable="limit,limitUnit,amount,amountCu,reason"
+				passMemo="批准。" nopassMemo="退回。" copStep="true" createrCheck="false"
+				queueName="TMS_Cop_CFOs">
+				<parameter type="java.lang.Boolean">TMS_Cop_CFOs_Pass</parameter>
+			</step>
+			<step name="新加坡审批" inputable="limit,limitUnit,amount,amountCu,reason"
+				passMemo="批准。" nopassMemo="退回。" copStep="true" createrCheck="false"
+				confirm="true" queueName="TMS_Singapore">
+				<parameter type="java.lang.Boolean">TMS_Singapore_Pass</parameter>
+			</step>
+			<!-- <step name="申请人确认" inputable="" copStep="true" createrCheck="true"> 
+				</step> -->
+		</process>
+
+
+
+		<!-- 银行授信申请 -->
+		<process id="BankCreditId" name="银行授信申请审批流程" code="TMS_BPM_RA_001"
+			className="TMS_BankCreditReg" entityClass="ProcBankCredit" isCashPoolProcess = "N"
+			appPage="/faces/process/bankCredit/bankCredit-new.xhtml" viewPage="/faces/process/bankCredit/bankCredit-view.xhtml"
+			viewConfirmPage="/faces/process/bankCredit/bankCredit-confirm-view.xhtml"
+			cePath="/TMS/Process/银行授信申请审批流程">
+			<step name="申请" copStep="false" createrCheck="true" queueName="TMS_Requester">
+			</step>
+			<step name="工厂财务经理审批" passMemo="批准。" nopassMemo="退回。"
+				inputable="creditLine,guaranteeCd,guaranteeMg,guaranteeQm,guaranteeGr,guaranteeOt,
+			   liquCred,liquCredRa,liquCredPonit,liquCredAp,bankAcpt,bankAcptGp,bankAcptFe,bankAcptEf,
+			   importCredit,importCreditGp,importCreditFe,importFinance,importFinanceLink,importFinancePonit,
+			   exportFinance,exportFinanceLink,exportFinancePonit,dollarFlowFinance,
+			   dollarFlowLink,dollarFlowPoint,domesticCred,domesticCredGp,domesticCredFe,
+			   domesticCredDf,bussTicket,bussTicketGp,bussTicketFe,bussTicketDc,cooperationReason,rptBankCredit"
+				copStep="false" createrCheck="false" queueName="TMS_Fac_Finance_Sp2">
+				<parameter type="java.lang.Boolean">TMS_Fac_Finance_Pass</parameter>
+			</step>
+			<step name="集团资金部门人员-授信组审批" passMemo="批准。" nopassMemo="退回。"
+				inputable="notarizeCreditLine,guaranteeCd,guaranteeMg,guaranteeQm,guaranteeGr,guaranteeOt,
+			   liquCred,liquCredRa,liquCredPonit,liquCredAp,bankAcpt,bankAcptGp,bankAcptFe,bankAcptEf,
+			   importCredit,importCreditGp,importCreditFe,importFinance,importFinanceLink,importFinancePonit,
+			   exportFinance,exportFinanceLink,exportFinancePonit,dollarFlowFinance,
+			   dollarFlowLink,dollarFlowPoint,domesticCred,domesticCredGp,domesticCredFe,
+			   domesticCredDf,bussTicket,bussTicketGp,bussTicketFe,bussTicketDc,cooperationReason,rptBankCredit"
+				copStep="true" createrCheck="false" queueName="TMS_Cop_Fund_Dep_1">
+				<parameter type="java.lang.Boolean">TMS_Cop_Fund_Dep_1_Pass</parameter>
+			</step>
+			<step name="集团资金部门经理审批" copStep="true" createrCheck="false"
+				passMemo="批准。" nopassMemo="退回。" inputable="notarizeCreditLine"
+				queueName="TMS_Cop_Fund_Dep_M_Sx">
+				<parameter type="java.lang.Boolean">TMS_Cop_Fund_Dep_M_Sx_Pass</parameter>
+			</step>
+			<step name="申请人确认" copStep="false" createrCheck="true" confirm="true"
+				queueName="TMS_Requester" confirmView="true" upload="true">
+				<parameter type="filenet.vw.api.VWAttachment">TMS_Requester_Attach</parameter>
+			</step>
+			<step name="风险管理组管理人员确认" copStep="true" createrCheck="false"
+				upload="true" queueName="TMS_Cop_ENVC" confirmView="true" passMemo="风险管理组管理人员确认。">
+				<parameter type="filenet.vw.api.VWAttachment">TMS_Requester_Attach</parameter>
+			</step>
+			<step name="WCS-TMS运维人员维护" copStep="true" createrCheck="false"
+				queueName="TMS_Cop_OPS" confirmView="true" passMemo="WCS-TMS运维人员维护。">
+			</step>
+		</process>
+
+		<!-- 银行授信额度调剂申请 -->
+		<process id="BankCreditAdjust" name="银行授信额度调剂申请审批流程" code="TMS_BPM_RA_003"
+			className="TMS_BankCreditAdjust" entityClass="ProcBankCreditAdjust"
+			appPage="/faces/process/bankCreditAdjust/bankCreditAdjust-new.xhtml"
+			appPage1="/faces/process/bankCreditAdjust/bankCreditAdjust-newCop.xhtml"
+			viewPage="/faces/process/bankCreditAdjust/bankCreditAdjust-view.xhtml"
+			cePath="/TMS/Process/银行授信额度调剂申请审批流程" isCashPoolProcess = "N">
+			<step name="申请" copStep="false" createrCheck="true" queueName="TMS_Requester"
+				xmlPage="/faces/process/bankCreditAdjust/bankCreditAdjust-reNewCop.xhtml">
+			</step>
+			<step name="工厂财务经理审批" copStep="false" createrCheck="false"
+				queueName="TMS_Fac_Finance_Sp2" passMemo="批准。" nopassMemo="退回。">
+				<parameter type="java.lang.Boolean">TMS_Fac_Finance_Pass</parameter>
+			</step>
+			<step name="集团资金部门人员-授信组审批" copStep="true" createrCheck="false"
+				queueName="TMS_Cop_Fund_Dep_1" passMemo="批准。" nopassMemo="退回。">
+				<parameter type="java.lang.Boolean">TMS_Cop_Fund_Dep_1_Pass</parameter>
+			</step>
+			<step name="集团资金部门经理审批" copStep="true" createrCheck="false"
+				queueName="TMS_Cop_Fund_Dep_M_Sx" passMemo="批准。" nopassMemo="退回。">
+				<parameter type="java.lang.Boolean">TMS_Cop_Fund_Dep_M_Pass</parameter>
+			</step>
+			<step name="集团资金部门人员-授信组确认" copStep="true" createrCheck="false"
+				queueName="TMS_Cop_Fund_Dep_1" passMemo="已确认。" nopassMemo="已确认。">
+			</step>
+			<step name="集团资金部门经理确认" copStep="true" createrCheck="false"
+				queueName="TMS_Cop_Fund_Dep_M_Sx" passMemo="已确认。" nopassMemo="未通过。">
+			</step>
+		</process>
+
+
+		<!-- 银行授信申请（集团） -->
+		<process id="BankCreditBloc" name="银行授信申请审批流程(集团)" code="TMS_BPM_RA_002"
+			className="TMS_BankCreditBloc" entityClass="ProcBankCreditBloc"
+			appPage="/faces/process/bankCreditBloc/creditBloc-new.xhtml"
+			viewPage="/faces/process/bankCreditBloc/creditBloc-view.xhtml"
+			viewConfirmPage="/faces/process/bankCreditBloc/creditBloc-comfirm-view.xhtml"
+			cePath="/TMS/Process/银行授信申请审批流程(集团)" isCashPoolProcess = "N">
+			<step name="申请" copStep="true" createrCheck="true" queueName="TMS_Cop_Fund_Dep_1">
+			</step>
+			<step name="集团资金部审批" copStep="true" createrCheck="true"
+				inputable="creditLine,guaranteeCd,guaranteeMg,guaranteeQm,guaranteeGr,guaranteeOt,confirmRequest,rejectConfirm"
+				queueName="TMS_Cop_Fund_Dep_1">
+				<parameter type="java.lang.Boolean">TMS_Cop_Fund_Dep_1_Pass</parameter>
+			</step>
+			<step name="集团资金部门经理审批" copStep="true" createrCheck="false"
+				confirm="true" queueName="TMS_Cop_Fund_Dep_M_Sx" inputable="blocCreditOperea">
+				<parameter type="java.lang.Boolean">TMS_Cop_Fund_Dep_M_Pass</parameter>
+			</step>
+			<step name="集团资金部确认授信额度" copStep="true" createrCheck="true"
+				inputable="creditStart,creditEnd,compConfirm,creditLine,guaranteeCd,guaranteeMg,guaranteeQm,guaranteeGr,guaranteeOt" queueName="TMS_Cop_Fund_Dep_1"
+				checkPoint="true" confirmView="true">
+				<parameter type="java.lang.Boolean">TMS_Fac_Finance_CONFIRM_Pass</parameter>
+			</step>
+			<step name="集团资金部门经理确认" copStep="true" createrCheck="false"
+				confirm="true" upload="true" queueName="TMS_Cop_Fund_Dep_M_Sx"
+				confirmView="true" accessoryView="true">
+			</step>
+			<step name="风险管理组管理人员确认" copStep="true" createrCheck="false"
+				upload="true" queueName="TMS_Cop_ENVC" confirmView="true" passMemo="风险管理组管理人员确认。"
+				accessoryView="true">
+			</step>
+			<step name="WCS-TMS运维人员维护" copStep="true" createrCheck="false"
+				queueName="TMS_Cop_OPS" confirmView="true" passMemo="WCS-TMS运维人员维护。">
+			</step>
+		</process>
+
+		<!-- 银行授信申请（集团）工厂申请流程 -->
+		<process id="BankCreditBlocBanch" name="银行授信申请（集团）---工厂申请流程"
+			code="TMS_BPM_RA_002_01" className="TMS_BankCreditBlocBranch"
+			entityClass="ProcBankCreditBlocCompany" appPage="/faces/process/bankCreditBloc/creditBloc-company.xhtml"
+			viewPage="/faces/process/bankCreditBloc/creditBloc-company-view.xhtml"
+			cePath="/TMS/Process/银行授信申请（集团）---工厂申请流程" isCashPoolProcess = "N">
+			<step name="集团发起" copStep="false" createrCheck="false"
+				queueName="TMS_Cop_Fund_Dep_1">
+				<parameter type="java.lang.String">TMS_Fac_Fund_Pos_Exr</parameter>
+			</step>
+			<step name="银行授信申请（集团）--工厂资金岗位人员申请" copStep="false"
+				drawOperater="true" createrCheck="false" queueName="TMS_Fac_Fund_Pos">
+			</step>
+			<step name="银行授信申请（集团）--工厂财务经理审批" copStep="false" createrCheck="false"
+				passMemo="通过。" nopassMemo="退回。" queueName="TMS_Fac_Finance_Sp2">
+				<parameter type="java.lang.Boolean">TMS_Fac_Finance_Pass</parameter>
+			</step>
+		</process>
+
+
+		<!-- Sprint3 -->
+		<!-- 投资、融资保证金及归还银行贷款借款/转款 -->
+		<process id="InveFinaBail" name="投资融资保证金流程" code="TMS_BPM_RA_014"
+			payDetail="ProcInveFinaDetail#procInveFinaBail" className="TMS_InveFinaBail"
+			entityClass="ProcInveFinaBail" appPage="/faces/process/inveFinaMargin/inveFinaMargin-new.xhtml"
+			viewPage="/faces/process/inveFinaMargin/inveFinaMargin-view.xhtml"
+			cePath="/TMS/Process/投资融资保证金流程" isCashPoolProcess = "Y">
+			<step name="申请" copStep="false" createrCheck="true" queueName="TMS_Requester">
+			</step>
+			<step name="工厂财务经理审批" copStep="false" createrCheck="false"
+				passMemo="批准。" nopassMemo="退回。" queueName="TMS_Fac_Finance" inputable="cuAmountId,amount_low">
+				<parameter type="java.lang.Boolean">TMS_Fac_Finance_Pass</parameter>
+			</step>
+			<step name="工厂总经理审批" copStep="false" createrCheck="false"
+				passMemo="批准。" nopassMemo="退回。" queueName="TMS_Fac_Manager" inputable="cuAmountId,amount_low">
+				<parameter type="java.lang.Boolean">TMS_Fac_Manager_Pass</parameter>
+			</step>
+			<!-- 外币 -->
+			<step name="集团转口贸易负责人审批" copStep="true" createrCheck="false"
+				passMemo="批准。" nopassMemo="退回。" queueName="TMS_Cop_Transit_Trade_P" inputable="cuAmountId,amount_low">
+				<parameter type="java.lang.Boolean">TMS_Cop_Transit_Trade_P_Pass</parameter>
+			</step>
+			<step name="集团一般贸易负责人审批" copStep="true" createrCheck="false"
+				passMemo="批准。" nopassMemo="退回。" queueName="TMS_Cop_Ordinary_Trade_P" inputable="cuAmountId,amount_low">
+				<parameter type="java.lang.Boolean">TMS_Cop_Ordinary_Trade_P_Pass</parameter>
+			</step>
+			<!-- 人民币 -->
+			<step name="集团资金部门经理-人民币经理审批" copStep="true" createrCheck="false"
+				passMemo="批准。" nopassMemo="退回。" queueName="TMS_Cop_Fund_Dep_M_Ic" inputable="cuAmountId,amount_low">
+				<parameter type="java.lang.Boolean">TMS_Cop_Fund_Dep_M_Ic_Pass</parameter>
+			</step>
+			<!-- 外币 -->
+			<step name="集团资金部门经理-外币经理审批" copStep="true" createrCheck="false"
+				passMemo="批准。" nopassMemo="退回。" queueName="TMS_Cop_Fund_Dep_M_Fc" inputable="cuAmountId,amount_low">
+			</step>
+			<!-- 类型：投资理财 -->
+			<step name="集团投资理财经理审批" copStep="true" createrCheck="false"
+				passMemo="批准。" nopassMemo="退回。" queueName="TMS_Cop_Invest_Finance_M" >
+				<parameter type="java.lang.Boolean">TMS_Cop_Invest_Finance_M_Pass</parameter>
+			</step>
+			<step name="集团资金计划员付款" copStep="true" createrCheck="false"
+				passMemo="付款。" nopassMemo="终止付款。" queueName="TMS_Cop_Planner">
+			</step>
+		</process>
+
+		<!-- 日常付款借款/转款流程 -->
+		<process id="DailyPayLoanTran" name="日常付款借款转款流程"
+			payDetail="ProcDailyPayDetail#proDailyPayLoanTran" code="TMS_BPM_RA_013"
+			className="TMS_DailyPayLoanTran" entityClass="ProcDailyPayLoanTran"
+			appPage="/faces/process/dailyPayLoanTran/dailyPayLoanTran-new.xhtml"
+			viewPage="/faces/process/dailyPayLoanTran/dailyPayLoanTran-view.xhtml"
+			cePath="/TMS/Process/日常付款借款转款流程" isCashPoolProcess = "Y">
+			<step name="申请" copStep="false" createrCheck="true" upload="true"
+				queueName="TMS_Requester">
+				<parameter type="filenet.vw.api.VWAttachment">TMS_Requester_Attach</parameter>
+			</step>
+			<step name="工厂财务经理审批" inputable="fundsTotal" passMemo="批准。"
+				nopassMemo="退回。"  copStep="false" createrCheck="false" queueName="TMS_Fac_Finance">
+				<parameter type="java.lang.Boolean">TMS_Fac_Finance_Pass</parameter>
+			</step>
+			<step name="工厂总经理审批" inputable="fundsTotal" passMemo="批准。"
+				nopassMemo="退回。"  copStep="false" createrCheck="false" queueName="TMS_Fac_Manager">
+				<parameter type="java.lang.Boolean">TMS_Fac_Manager_Pass</parameter>
+			</step>
+			<step name="集团资金部门经理-人民币经理审批" inputable="fundsTotal" passMemo="批准。"
+				nopassMemo="退回。" copStep="true" createrCheck="false" queueName="TMS_Cop_Fund_Dep_M_Ic">
+				<parameter type="java.lang.Boolean">TMS_Cop_Fund_Dep_M_Ic_Pass</parameter>
+			</step>
+			<step name="集团资金计划员付款" inputable="fundsTotal" passMemo="付款。"
+				nopassMemo="终止付款。" copStep="true" createrCheck="false" queueName="TMS_Cop_Planner">
+			</step>
+		</process>
+
+		<!-- 付工程款股利及归还股东借款流程 -->
+		<process id="PayProject" name="付工程款股利流程" code="TMS_BPM_RA_009"
+			payDetail="ProcPayProjectDetails#procPayProject" className="TMS_PayProject"
+			entityClass="ProcPayProject" appPage="/faces/process/payProject/payProject-new.xhtml"
+			viewPage="/faces/process/payProject/payProject-view.xhtml" cePath="/TMS/Process/付工程款股利流程"
+			isCashPoolProcess = "Y">
+			<step name="申请" copStep="false" createrCheck="true" upload="true"
+				queueName="TMS_Requester">
+				<parameter type="filenet.vw.api.VWAttachment">TMS_Requester_Attach</parameter>
+			</step>
+			<step name="工厂财务经理审批" inputable="fundsTotal" passMemo="批准。"
+				nopassMemo="退回。" copStep="false" createrCheck="false" queueName="TMS_Fac_Finance">
+				<parameter type="java.lang.Boolean">TMS_Fac_Finance_Pass</parameter>
+				<parameter type="java.lang.Boolean">TMS_Fac_Finance_Loan</parameter>
+			</step>
+			<step name="工厂总经理审批" inputable="fundsTotal" passMemo="批准。"
+				nopassMemo="退回。" copStep="false" createrCheck="false" queueName="TMS_Fac_Manager">
+				<parameter type="java.lang.Boolean">TMS_Fac_Manager_Pass</parameter>
+			</step>
+			<step name="集团项目经理审批" inputable="fundsTotal" passMemo="批准。"
+				nopassMemo="退回。" copStep="true" createrCheck="false" queueName="TMS_Cop_PM">
+				<parameter type="java.lang.Boolean">TMS_Cop_PM_Pass</parameter>
+				<parameter type="java.lang.Boolean">TMS_Cop_PM_Loan</parameter>
+			</step>
+			<step name="集团资金部门经理-人民币经理审批" inputable="fundsTotal" passMemo="批准。"
+				nopassMemo="退回。" copStep="true" createrCheck="false" queueName="TMS_Cop_Fund_Dep_M_Ic">
+				<parameter type="java.lang.Boolean">TMS_Cop_Fund_Dep_M_Ic_Pass</parameter>
+			</step>
+			<step name="集团资金计划员付款" inputable="fundsTotal" passMemo="付款。"
+				nopassMemo="停止付款。" copStep="true" createrCheck="false" queueName="TMS_Cop_Planner">
+			</step>
+		</process>
+
+		<!-- 非控股公司借款/转款流程 -->
+		<process id="NoHoldCompLoanTran" name="非控股公司借款转款流程"
+			payDetail="ProcNoHoldCompLoanTranDetail#procNoHoldCompLoanTran" code="TMS_BPM_RA_015"
+			className="TMS_NoHoldCompLoanTran" entityClass="ProcNoHoldCompLoanTran"
+			appPage="/faces/process/noholdcomploantran/noHoldCompLoanTran-new.xhtml"
+			viewPage="/faces/process/noholdcomploantran/noHoldCompLoanTran-view.xhtml"
+			cePath="/TMS/Process/非控股公司借款转款流程" isCashPoolProcess = "Y">
+			<step name="申请" copStep="false" createrCheck="true" upload="true"
+				queueName="TMS_Requester">
+				<parameter type="filenet.vw.api.VWAttachment">TMS_Requester_Attach</parameter>
+			</step>
+			<step name="工厂财务经理审批" inputable="fundsTotal" passMemo="批准。"
+				nopassMemo="退回。" copStep="false" createrCheck="false" queueName="TMS_Fac_Finance">
+				<parameter type="java.lang.Boolean">TMS_Fac_Finance_Pass</parameter>
+			</step>
+			<step name="工厂总经理审批" inputable="fundsTotal" passMemo="批准。"
+				nopassMemo="退回。" copStep="false" createrCheck="false" queueName="TMS_Fac_Manager">
+				<parameter type="java.lang.Boolean">TMS_Fac_Manager_Pass</parameter>
+			</step>
+			<step name="集团资金部门经理-人民币经理审批" inputable="fundsTotal" passMemo="批准。"
+				nopassMemo="退回。" copStep="true" createrCheck="false" queueName="TMS_Cop_Fund_Dep_M_Ic">
+				<parameter type="java.lang.Boolean">TMS_Cop_Fund_Dep_M_Ic_Pass</parameter>
+			</step>
+			<step name="集团财务总监审批" inputable="fundsTotal" passMemo="批准。"
+				nopassMemo="退回。" copStep="true" createrCheck="false" queueName="TMS_Cop_CFO">
+				<parameter type="java.lang.Boolean">TMS_Cop_CFO_Pass</parameter>
+			</step>
+			<step name="集团资金计划员付款" inputable="fundsTotal" passMemo="付款。"
+				nopassMemo="终止付款。" copStep="true" createrCheck="false" queueName="TMS_Cop_Planner">
+			</step>
+		</process>
+		<!-- 其他特殊的借款流程 -->
+		<process id="ElseSpeLoan" name="其他特殊的借款流程" code="TMS_BPM_RA_016"
+			payDetail="ProcElseSpeLoanDetail#procElseSpeLoan" className="TMS_ElseSpeLoan"
+			entityClass="ProcElseSpeLoan" appPage="/faces/process/elseSpeLoan/elseSpeLoan-new.xhtml"
+			viewPage="/faces/process/elseSpeLoan/elseSpeLoan-view.xhtml" cePath="/TMS/Process/其他特殊的借款流程"
+			isCashPoolProcess = "Y">
+			<step name="申请" copStep="false" createrCheck="true" upload="true"
+				queueName="TMS_Requester">
+				<parameter type="filenet.vw.api.VWAttachment">TMS_Requester_Attach</parameter>
+			</step>
+			<step name="工厂财务经理审批" copStep="false" createrCheck="false"
+				passMemo="批准。" nopassMemo="退回。" queueName="TMS_Fac_Finance">
+				<parameter type="java.lang.Boolean">TMS_Fac_Finance_Pass</parameter>
+			</step>
+			<step name="工厂总经理审批" copStep="false" createrCheck="false"
+				passMemo="批准。" nopassMemo="退回。" queueName="TMS_Fac_Manager">
+				<parameter type="java.lang.Boolean">TMS_Fac_Manager_Pass</parameter>
+			</step>
+			<!-- 人民币经理 -->
+			<step name="集团资金部门经理-人民币经理审批" copStep="true" createrCheck="false"
+				passMemo="批准。" nopassMemo="退回。" queueName="TMS_Cop_Fund_Dep_M_Ic">
+				<parameter type="java.lang.Boolean">TMS_Cop_Fund_Dep_M_Ic_Pass</parameter>
+			</step>
+			<step name="集团财务总监审批" copStep="true" createrCheck="false"
+				passMemo="批准。" nopassMemo="退回。" queueName="TMS_Cop_CFO">
+				<parameter type="java.lang.Boolean">TMS_Cop_CFO_Pass</parameter>
+			</step>
+			<step name="集团资金计划员付款" copStep="true" createrCheck="false"
+				passMemo="付款。" nopassMemo="终止付款。" queueName="TMS_Cop_Planner">
+			</step>
+		</process>
+		<!-- 采购资金（贸易）借款/转款流程 -->
+		<process id="PurchaseFundTrade" name="采购资金（贸易）借款转款流程" code="TMS_BPM_RA_011"
+			payDetail="ProcPurchaseFundTradeDetail#procPurchaseFundTrade"
+			className="TMS_PurchaseFundTrade" entityClass="ProcPurchaseFundTrade"
+			appPage="/faces/process/purchaseFundTrade/purchaseFundTrade-new.xhtml"
+			viewPage="/faces/process/purchaseFundTrade/purchaseFundTrade-view.xhtml"
+			cePath="/TMS/Process/采购资金（贸易）借款转款流程" isCashPoolProcess = "Y">
+			<step name="申请" copStep="false" createrCheck="true" upload="true"
+				queueName="TMS_Requester">
+				<parameter type="filenet.vw.api.VWAttachment">TMS_Requester_Attach</parameter>
+			</step>
+			<step name="工厂财务经理审批" copStep="false" createrCheck="false"
+				passMemo="批准。" nopassMemo="退回。" queueName="TMS_Fac_Finance">
+				<parameter type="java.lang.Boolean">TMS_Fac_Finance_Pass</parameter>
+			</step>
+			<step name="工厂总经理审批" copStep="false" createrCheck="false"
+				passMemo="批准。" nopassMemo="退回。" queueName="TMS_Fac_Manager">
+				<parameter type="java.lang.Boolean">TMS_Fac_Manager_Pass</parameter>
+			</step>
+			<step name="集团资金部门经理审批" copStep="true" createrCheck="false"
+				passMemo="批准。" nopassMemo="退回。" queueName="TMS_Cop_Fund_Dep_M">
+				<parameter type="java.lang.Boolean">TMS_Cop_Fund_Dep_M_Pass</parameter>
+			</step>
+			<step name="集团资金计划员付款" copStep="true" createrCheck="false"
+				passMemo="付款。" nopassMemo="终止付款。" queueName="TMS_Cop_Planner">
+			</step>
+		</process>
+		<!-- 采购资金（生产）借款/转款流程 -->
+		<process id="PurchaseFundProd" name="采购资金（生产）借款转款流程" code="TMS_BPM_RA_012"
+			payDetail="ProcPurchaseFundProdDetail#procPurchaseFundProd"
+			className="TMS_PurchaseFundProd" entityClass="ProcPurchaseFundProd"
+			appPage="/faces/process/purchaseFundProd/purchaseFundProd-new.xhtml"
+			viewPage="/faces/process/purchaseFundProd/purchaseFundProd-view.xhtml"
+			cePath="/TMS/Process/采购资金（生产）借款转款流程" isCashPoolProcess = "Y">
+			<step name="申请" copStep="false" createrCheck="true" upload="true"
+				queueName="TMS_Requester">
+				<parameter type="filenet.vw.api.VWAttachment">TMS_Requester_Attach</parameter>
+			</step>
+			<step name="工厂财务经理审批" copStep="false" createrCheck="false"
+				passMemo="批准。" nopassMemo="退回。" queueName="TMS_Fac_Finance">
+				<parameter type="java.lang.Boolean">TMS_Fac_Finance_Pass</parameter>
+			</step>
+			<step name="工厂总经理审批" copStep="false" createrCheck="false"
+				passMemo="批准。" nopassMemo="退回。" queueName="TMS_Fac_Manager">
+				<parameter type="java.lang.Boolean">TMS_Fac_Manager_Pass</parameter>
+			</step>
+			<step name="集团资金部门经理审批" copStep="true" createrCheck="false"
+				passMemo="批准。" nopassMemo="退回。" queueName="TMS_Cop_Fund_Dep_M">
+				<parameter type="java.lang.Boolean">TMS_Cop_Fund_Dep_M_Pass</parameter>
+			</step>
+			<step name="集团资金计划员付款" copStep="true" createrCheck="false"
+				passMemo="付款。" nopassMemo="终止付款。" queueName="TMS_Cop_Planner">
+			</step>
+		</process>
+
+		<!-- 生产或贸易总头寸申请审批流程 -->
+		<process id="ProdOrTradeCash" name="生产或贸易总头寸申请流程" code="TMS_BPM_RA_010"
+			className="TMS_ProdOrTradeCash" entityClass="ProcProdOrTradeCash"
+			appPage="/faces/process/prodortradecash/prodOrTradeCash-new.xhtml"
+			viewPage="/faces/process/prodortradecash/prodOrTradeCash-view.xhtml"
+			cePath="/TMS/Process/生产或贸易总头寸申请流程" isCashPoolProcess = "N">
+			<step name="申请" copStep="false" createrCheck="true" upload="false"
+				queueName="TMS_Requester">
+			</step>
+			<step name="公司贸易经理审批" copStep="false" createrCheck="false"
+				passMemo="批准。" nopassMemo="退回。" queueName="TMS_Com_Trader_M">
+				<parameter type="java.lang.Boolean">TMS_Com_Trader_M_Pass</parameter>
+			</step>
+			<step name="公司总经理审批" copStep="false" createrCheck="false"
+				passMemo="批准。" nopassMemo="退回。" queueName="TMS_Fac_Manager">
+				<parameter type="java.lang.Boolean">TMS_Fac_Manager_Pass</parameter>
+			</step>
+			<step name="集团专项总监审批" copStep="true" createrCheck="false"
+				passMemo="批准。" nopassMemo="退回。" queueName="TMS_Cop_Gv2director">
+				<parameter type="java.lang.Boolean">TMS_Cop_Gv2director_Pass</parameter>
+			</step>
+			<vartymajordomo>
+				<username name="gro1pzzhzj">
+					<varity>1</varity>
+					<varity>2</varity>
+					<varity>3</varity>
+				</username>
+				<username name="b">
+					<varity>2</varity>
+					<varity>3</varity>
+				</username>
+				<username name="c">
+					<varity>3</varity>
+					<varity>2</varity>
+				</username>
+			</vartymajordomo>
+		</process>
+
+		<!-- 银行账户申请 -->
+		<process id="BankAccount" name="银行账户申请审批流程" code="TMS_BPM_RA_008"
+			className="TMS_BankAccount" entityClass="ProcBankAccount"
+			appPage="/faces/process/bankAccount/bankAccount-new.xhtml" viewPage="/faces/process/bankAccount/bankAccount-view.xhtml"
+			viewConfirmPage="/faces/process/bankAccount/bankAccount-confirm-view.xhtml"
+			cePath="/TMS/Process/银行账户申请审批流程" isCashPoolProcess = "N">
+			<step name="申请" copStep="false" createrCheck="true" queueName="TMS_Requester" notVisibleProperty="BSBCode,unionBankNo,city,
+			bocOrganNumber,bankCode,accountPoolCurr,accountCheckFlag,noPersAccountDesc,notPersonalCardPanel2">
+			</step>
+			<step name="工厂财务经理审批" passMemo="批准。" nopassMemo="退回。" copStep="false"
+				createrCheck="false" queueName="TMS_Fac_Finance" notVisibleProperty="BSBCode,unionBankNo,city,
+			bocOrganNumber,bankCode,accountPoolCurr,accountCheckFlag,noPersAccountDesc,notPersonalCardPanel2">
+				<parameter type="java.lang.Boolean">TMS_Fac_Finance_Pass</parameter>
+			</step>
+			<step name="工厂总经理审批" passMemo="批准。" nopassMemo="退回。" copStep="false"
+				createrCheck="false" queueName="TMS_Fac_Manager" notVisibleProperty="BSBCode,unionBankNo,city,
+			bocOrganNumber,bankCode,accountPoolCurr,accountCheckFlag,noPersAccountDesc,notPersonalCardPanel2">
+				<parameter type="java.lang.Boolean">TMS_Fac_Manager_Pass</parameter>
+			</step>
+			<step name="集团会计部门审批" copStep="true" createrCheck="false"
+				passMemo="批准。" nopassMemo="退回。" queueName="TMS_Cop_Account" notVisibleProperty="BSBCode,unionBankNo,city,
+			bocOrganNumber,bankCode,accountPoolCurr,accountCheckFlag,noPersAccountDesc,notPersonalCardPanel2">
+				<parameter type="java.lang.Boolean">TMS_Cop_Account_Pass</parameter>
+			</step>
+			<step name="集团资金部门审批" copStep="true" createrCheck="false"
+				inputable="sapBankSaveCurrSubjNum,sapBusSubj,tmsBankAccountCode"
+				passMemo="批准。" nopassMemo="退回。" queueName="TMS_Cop_Fund_Dep_5" notVisibleProperty="BSBCode,unionBankNo,city,
+			bocOrganNumber,bankCode,accountPoolCurr,accountCheckFlag,noPersAccountDesc,notPersonalCardPanel2">
+				<parameter type="java.lang.Boolean">TMS_Cop_Fund_Dep_5_Pass</parameter>
+			</step>
+			<step name="集团资金部门经理-风险经理审批" copStep="true" createrCheck="false"
+				inputable="sapBankSaveCurrSubjNum,sapBusSubj,tmsBankAccountCode"
+				passMemo="批准。" nopassMemo="退回。" queueName="TMS_Cop_Fund_Dep_M_Fx" notVisibleProperty="BSBCode,unionBankNo,city,
+			bocOrganNumber,bankCode,accountPoolCurr,accountCheckFlag,noPersAccountDesc,notPersonalCardPanel2">
+				<parameter type="java.lang.Boolean">TMS_Cop_Fund_Dep_M_Fx_Pass</parameter>
+			</step>
+			<step name="集团财务总监审批" copStep="true" createrCheck="false"
+				inputable="sapBankSaveCurrSubjNum,sapBusSubj,tmsBankAccountCode"
+				passMemo="批准。" nopassMemo="退回。" queueName="TMS_Cop_CFO" notVisibleProperty="BSBCode,unionBankNo,city,
+			bocOrganNumber,bankCode,accountPoolCurr,accountCheckFlag,noPersAccountDesc,notPersonalCardPanel2">
+				<parameter type="java.lang.Boolean">TMS_Cop_CFO_Pass</parameter>
+			</step>
+		</process>
+
+		<!-- 内部担保申请审批流程 -->
+		<process id="GuaranteeReq" name="内部担保申请流程" code="TMS_BPM_RA_004"
+			className="TMS_GuaranteeReq" entityClass="ProcGuarantee"
+			appPage="/faces/process/guarantee/guarantee-new.xhtml" viewPage="/faces/process/guarantee/guarantee-view.xhtml"
+			viewConfirmPage="/faces/process/guarantee/guarantee-view.xhtml"
+			cePath="/TMS/Process/内部担保申请流程" isCashPoolProcess = "N">
+			<step name="申请" copStep="false" createrCheck="true" queueName="TMS_Requester"
+				passValue="1" nopassValue="1">
+			</step>
+			<step name="工厂财务经理审批" passMemo="批准。" nopassMemo="退回。" passValue="1"
+				nopassValue="1" copStep="false" createrCheck="false" queueName="TMS_Fac_Finance">
+				<parameter type="java.lang.Boolean">TMS_Fac_Finance_Pass</parameter>
+			</step>
+			<step name="受保方总经理审批" passMemo="批准。" nopassMemo="退回。" passValue="1"
+				nopassValue="1" workFlowGroupName="TMS_Insured_Top_Manager" copStep="false"
+				createrCheck="false">
+				<parameter type="java.lang.Boolean">TMS_Insured_Top_Manager_Pass</parameter>
+			</step>
+			<step name="集团资金部门审批" copStep="true" createrCheck="false"
+				inputable="securedCom,securedAssets,guarAmount,allTotalGuarAmount,isNewGuarantee" passMemo="批准。"
+				nopassMemo="退回。" queueName="TMS_Cop_Fund_Dep_2" passValue="2"
+				nopassValue="1" visibility="danbaoInfoDiv">
+				<parameter type="java.lang.Boolean">TMS_Cop_Fund_Dep_2_Pass</parameter>
+			</step>
+			<step name="集团资金部门经理-授信经理审批" copStep="true" createrCheck="false"
+				passMemo="批准。" nopassMemo="退回。" queueName="TMS_Cop_Fund_Dep_M_Sx"
+				passValue="2" nopassValue="1" visibility="danbaoInfoDiv">
+				<parameter type="java.lang.Boolean">TMS_Cop_Fund_Dep_M_Sx_Pass</parameter>
+			</step>
+			<step name="财务总监审批" copStep="true" createrCheck="false"
+				visibility="danbaoInfoDiv" passMemo="批准。" nopassMemo="退回。"
+				queueName="TMS_Cop_CFO" passValue="3" nopassValue="1">
+				<parameter type="java.lang.Boolean">TMS_Cop_CFO_Pass</parameter>
+			</step>
+			<step name="担保方财务经理审批" copStep="true" createrCheck="false"
+				visibility="danbaoInfoDiv" workFlowGroupName="TMS_Secured_Fin_Manager"
+				passMemo="批准。" nopassMemo="退回。" passValue="3" nopassValue="1">
+				<parameter type="java.lang.Boolean">TMS_Secured_Fin_Manager_Pass</parameter>
+			</step>
+			<step name="担保方总经理审批" copStep="true" createrCheck="false"
+				visibility="danbaoInfoDiv" workFlowGroupName="TMS_Secured_Top_Manager"
+				passMemo="批准。" nopassMemo="退回。" passValue="3" nopassValue="1">
+				<parameter type="java.lang.Boolean">TMS_Secured_Top_Manager_Pass</parameter>
+			</step>
+			<step name="申请人确认" copStep="false" createrCheck="true" confirm="true"
+				confirmView="true" inputable="realGuarAmount,guarStart,guarEnd"
+				passValue="3" nopassValue="1" visibility="danbaoInfoDiv,confimInfoDiv">
+				<parameter type="java.lang.Boolean">TMS_ConfirmAmount_GreaterThan_ReqAmount
+				</parameter>
+			</step>
+			<step name="工厂财务经理确认审批" passMemo="批准。" nopassMemo="退回。"
+				passValue="3" nopassValue="3" visibility="danbaoInfoDiv,confimInfoDiv"
+				copStep="false" createrCheck="false" queueName="TMS_Fac_Finance">
+				<parameter type="java.lang.Boolean">TMS_Fac_Finance_Pass</parameter>
+			</step>
+			<step name="受保方总经理确认审批" passMemo="批准。" nopassMemo="退回。"
+				passValue="3" nopassValue="3" workFlowGroupName="TMS_Insured_Top_Manager"
+				copStep="false" createrCheck="false" visibility="danbaoInfoDiv,confimInfoDiv">
+				<parameter type="java.lang.Boolean">TMS_Insured_Top_Manager_Pass</parameter>
+			</step>
+			<step name="集团资金部门确认审批" copStep="true" createrCheck="false"
+				passMemo="批准。" nopassMemo="退回。" queueName="TMS_Cop_Fund_Dep_2"
+				passValue="3" nopassValue="3" visibility="danbaoInfoDiv,confimInfoDiv">
+				<parameter type="java.lang.Boolean">TMS_Cop_Fund_Dep_2_Pass</parameter>
+			</step>
+			<step name="集团资金部门经理-授信经理确认审批" copStep="true" createrCheck="false"
+				passMemo="批准。" nopassMemo="退回。" queueName="TMS_Cop_Fund_Dep_M_Sx"
+				passValue="3" nopassValue="3" visibility="danbaoInfoDiv,confimInfoDiv">
+				<parameter type="java.lang.Boolean">TMS_Cop_Fund_Dep_M_Sx_Pass</parameter>
+			</step>
+			<step name="财务总监确认审批" copStep="true" createrCheck="false"
+				visibility="danbaoInfoDiv,confimInfoDiv" passMemo="批准。" nopassMemo="退回。"
+				queueName="TMS_Cop_CFO" passValue="3" nopassValue="3">
+				<parameter type="java.lang.Boolean">TMS_Cop_CFO_Pass</parameter>
+			</step>
+			<step name="担保方财务经理确认审批" copStep="true" createrCheck="false"
+				workFlowGroupName="TMS_Secured_Fin_Manager" visibility="danbaoInfoDiv,confimInfoDiv"
+				passMemo="批准。" nopassMemo="退回。" passValue="3" nopassValue="3">
+				<parameter type="java.lang.Boolean">TMS_Secured_Fin_Manager_Pass</parameter>
+			</step>
+			<step name="担保方总经理确认审批" copStep="true" createrCheck="false"
+				visibility="danbaoInfoDiv,confimInfoDiv" workFlowGroupName="TMS_Secured_Top_Manager"
+				passMemo="批准。" nopassMemo="退回。" passValue="4" nopassValue="3">
+				<parameter type="java.lang.Boolean">TMS_Secured_Top_Manager_Pass</parameter>
+			</step>
+		</process>
+
+
+		<process id="ProcDebtPayment" name="外债请款申请流程" code="TMS_BPM_RA_018"
+			className="TMS_ProcDebtPayment" entityClass="ProcDebtPayment" isCashPoolProcess = "N"
+			appPage="/faces/process/foreignDebtRequests/foreignDebtRequests-new.xhtml" viewPage="/faces/process/foreignDebtRequests/foreignDebtRequests-view.xhtml"
+			cePath="/TMS/Process/外债请款申请流程">
+			<step name="工厂资金岗位人员申请" copStep="false" createrCheck="true" queueName="TMS_Fac_Fund_Pos">
+			</step>
+			<step name="工厂财务经理审批" copStep="false" createrCheck="false"
+				passMemo="批准。" nopassMemo="退回。" queueName="TMS_Fac_Finance">
+				<parameter type="java.lang.Boolean">TMS_Fac_Finance_Pass</parameter>
+			</step> 
+			<step name="工厂总经理审批" copStep="false" createrCheck="false"
+				passMemo="批准。" nopassMemo="退回。" queueName="TMS_Fac_Manager">
+				<parameter type="java.lang.Boolean">TMS_Fac_Manager_Pass</parameter>
+			</step>
+			<step name="集团项目经理审批" 
+				passMemo="批准。" nopassMemo="退回。" copStep="true" createrCheck="false"
+				queueName="TMS_Cop_PM">
+				<parameter type="java.lang.Boolean">TMS_Cop_PM_Pass</parameter>
+			</step>
+			<step name="财务总监审批" copStep="true" createrCheck="false"
+				passMemo="批准。" nopassMemo="退回。" queueName="TMS_Cop_CFO">
+				<parameter type="java.lang.Boolean">TMS_Cop_CFO_Pass</parameter>
+			</step>
+			<step name="集团项目经理知会新加坡" copStep="true" createrCheck="false"
+				passMemo="完成邮件发送。" queueName="TMS_Cop_PM">
+			</step>
+		</process>
+		  
+		<!-- 注册资本金变更流程 -->
+		<process id="RegiCapitalChange" entityClass="ProcRegiCapitalChange" name="注册资本金变更流程"
+			code="TMS_BPM_RA_019" className="TMS_RegiCapitalChange" isCashPoolProcess = "N"
+			appPage="/faces/process/regiCapitalChange/registerCaptialChange-list.xhtml"
+			viewPage="/faces/process/regiCapitalChange/registerCaptialChange-view.xhtml"
+			cePath="/TMS/Process/注册资本金变更流程">
+			<step name="工厂资金岗位人员申请" entityClass="RegiCapitalChange" copStep="false"
+				queueName="TMS_Fac_Fund_Pos" createrCheck="true" upload="true">
+			</step>
+			<step name="工厂财务经理审批" copStep="false" createrCheck="false"
+				queueName="TMS_Fac_Finance" passMemo="批准。" nopassMemo="退回。">
+				<parameter type="java.lang.Boolean">TMS_Fac_Finance_Pass</parameter>
+			</step>
+			<step name="集团项目经理审批" 
+				passMemo="结束" nopassMemo="退回。" copStep="true" createrCheck="false"
+				queueName="TMS_Cop_PM">
+				<parameter type="java.lang.Boolean">TMS_Cop_PM_Pass</parameter>
+			</step>
+		</process>
+	</PE-Process>
+</FileNet>

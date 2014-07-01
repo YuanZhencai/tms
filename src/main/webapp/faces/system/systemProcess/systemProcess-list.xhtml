@@ -1,0 +1,155 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/template/template.xhtml">
+
+	<ui:define name="title">系统流程管理</ui:define>
+
+	<ui:define name="content">
+
+		<input type="hidden" id="menuOne" value="27" />
+		<input type="hidden" id="menuTwo" value="30" />
+
+		<h:form id="pdListForm" prependId="false" onsubmit="statusComplete();">
+			<p:panel styleClass="panel1">
+				<p:breadCrumb preview="true" expandEffectDuration="200"
+					previewWidth="24" style="width: 99.1%">
+					<p:menuitem value="系统管理" url="#" />
+					<p:menuitem value="主数据管理" url="#" />
+					<p:menuitem value="系统流程管理" url="#" />
+				</p:breadCrumb>
+
+				<p:message id="msg" for="msg" />
+
+				<div class="style1">
+					<h:panelGrid columns="8"
+						columnClasses="column0,column2,column0,column2,column0,column2,column0,column2">
+
+
+						<h:outputLabel value="流程编号：" />
+						<p:inputText id="processCode"
+							value="#{processDefineBean.conditionMap['processCode']}" />
+
+						<h:outputLabel value="流程名称：" />
+						<p:inputText id="processName"
+							value="#{processDefineBean.conditionMap['processName']}" />
+
+						<h:outputLabel value="流程描述：" />
+						<p:inputText id="processMemo"
+							value="#{processDefineBean.conditionMap['processMemo']}" />
+
+					</h:panelGrid>
+
+					<div>
+						<p:commandButton id="query" action="#{processDefineBean.searchPd}"
+							update="processDefineListPl,msg,errorMsg" value="查询" image="ui-icon ui-icon-search" />
+
+						<p:commandButton id="toAdd" action="#{processDefineBean.clear}"
+							update="processDefineListPl,msg,errorMsg" oncomplete="processDefineDialog.show()"
+							value="新建" image="ui-icon ui-icon-plus" />
+					</div>
+				</div>
+				<br />
+				<p:outputPanel id="processDefineListPl">
+					<p:dataTable var="processDefine" id="processDefineList"
+						value="#{processDefineBean.processDefineList}" rowKey="#{processDefine.id}"
+						paginator="true" rows="10" paginatorPosition="bottom"
+						paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
+						currentPageReportTemplate="{currentPage}/{totalPage}"
+						emptyMessage="无满足条件数据！">
+
+						<f:facet name="header">系统流程列表</f:facet>
+
+
+						<p:column headerText="流程编号">
+							<h:outputText value="#{processDefine.processCode}" />
+						</p:column>
+
+						<p:column headerText="流程名称">
+							<h:outputText value="#{processDefine.processName}" />
+						</p:column>
+
+						<p:column headerText="流程描述">
+							<h:outputText value="#{processDefine.processMemo}" />
+						</p:column>
+
+						<p:column headerText="状态">
+							<h:outputText value="#{processDefine.status == 'Y' ? '可用' : '不可用'}" />
+						</p:column>
+
+						<p:column styleClass="operating_90" headerText="操作">
+							
+							<p:commandButton action="#{processDefineBean.disable}"
+								image="ui-icon ui-icon-close" title="禁用/启用"
+								update="processDefineListPl,msg">
+								<f:setPropertyActionListener value="#{processDefine}"
+									target="#{processDefineBean.processDefine}" />
+							</p:commandButton>
+							<p:commandButton action="#{processNodeBean.goList}"
+								image="ui-icon ui-icon-gear" title="流程表单绑定" ajax="false">
+								<f:param name="pnodeId" value="#{processDefine.id}" />
+							</p:commandButton>
+							
+							<p:commandButton action="#{processAuthBean.goProcessAuthList}"
+								image="ui-icon ui-icon-person" title="流程权限" ajax="false">
+								<f:param name="pdefinId" value="#{processDefine.id}" />
+							</p:commandButton>
+							<p:commandButton action="#{processDefineBean.toEdit}"
+								image="ui-icon ui-icon-pencil" title="修改" oncomplete="processDefineDialog.show()"
+								update="processDefineListPl,processDefineDialog,msg,errorMsg">
+								<f:setPropertyActionListener value="#{processDefine}"
+									target="#{processDefineBean.processDefine}" />
+							</p:commandButton>
+						</p:column>
+
+					</p:dataTable>
+				</p:outputPanel>
+			</p:panel>
+		</h:form>
+		<h:form prependId="false" id="pdAddForm">
+			<p:dialog header="#{processDefineBean.op}流程定义" widgetVar="processDefineDialog" resizable="false"
+				modal="true" id="processDefineDialog" width="800">
+				<p:messages id="errorMsg" />
+				<h:panelGrid columns="6"
+					columnClasses="column0,column2,column0,column2,column0,column2">
+					<h:outputLabel value="流程编号：" />
+					<h:panelGroup>
+						<p:inputText id="dia_processCode"
+							value="#{processDefineBean.processDefine.processCode}" disabled="#{processDefineBean.op == '修改' ? true :false}" maxlength="50" required="true" requiredMessage="流程编号：不可为空!"/>
+						<h:outputLabel value="*" style="color:red" />
+					</h:panelGroup>
+
+					<h:outputLabel value="流程名称：" />
+					<h:panelGroup>
+						<p:inputText id="dia_processName"
+							value="#{processDefineBean.processDefine.processName}" maxlength="50"  required="true" requiredMessage="流程名称：不可为空!"/>
+						<h:outputLabel value="*" style="color:red" />
+					</h:panelGroup>
+
+					<h:outputLabel value="流程描述：" />
+					<p:inputText id="dia_processMemo"
+						value="#{processDefineBean.processDefine.processMemo}" maxlength="200" />
+
+				</h:panelGrid>
+				<f:facet name="footer">
+					<p:commandButton action="#{processDefineBean.savePd}" value="保存"
+						id="add" icon="ui-icon ui-icon-disk" update="processDefineListPl,msg,errorMsg"
+						oncomplete="handleComplete(processDefineDialog,args);" />
+						&#160;&#160;
+						<p:commandButton value="取消" onclick="processDefineDialog.hide()"
+						type="button" id="roleBACKID" icon="ui-icon ui-icon-cancel" />
+				</f:facet>
+			</p:dialog>
+
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>
+
+

@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:w="http://www.wcs-global.com/customtaglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<p:dialog header="日常付款明細" widgetVar="cashPoolSumRcfkDialogVar"
+		id="cashPoolSumRcfkDialogId" resizable="false" height="400"
+		modal="true">
+		<h:form id="cashPoolSumRcfkForm">
+			<p:dataTable id="cashPoolSumRcfkTable"
+				value="#{cashPoolSummaryReportBean.cashPoolRcfkVo}" paginator="true"
+				var="rcfkVo" rows="10" paginatorPosition="bottom"
+				style="margin-top:3px;"
+				currentPageReportTemplate="{currentPage}/{totalPage}"
+				paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
+				rowKey="#{rcfkVo.cpId}" emptyMessage="#{msgs.dataTable_empty}">
+				<f:facet name="header">
+					<h:outputText value="日常付款明細" />
+				</f:facet>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="公司名称" />
+					</f:facet>
+					<h:outputText value="#{rcfkVo.cpName}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="总计" />
+					</f:facet>
+					<h:outputText value="#{rcfkVo.total}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="税款" />
+					</f:facet>
+					<h:outputText value="#{rcfkVo.tax}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="辅料/包材/备件" />
+					</f:facet>
+					<h:outputText value="#{rcfkVo.packMater}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="水/电/汽/煤" />
+					</f:facet>
+					<h:outputText value="#{rcfkVo.steam}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="工资/社保/花红" />
+					</f:facet>
+					<h:outputText value="#{rcfkVo.salary}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="运费/港杂费/加工费" />
+					</f:facet>
+					<h:outputText value="#{rcfkVo.freight}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="其他" />
+					</f:facet>
+					<h:outputText value="#{rcfkVo.elseProj}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="小计" />
+					</f:facet>
+					<h:outputText value="#{rcfkVo.xiaoji2}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="营销公司专用" />
+					</f:facet>
+					<h:outputText value="#{rcfkVo.marketDedicted}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="现金池划转" />
+					</f:facet>
+					<h:outputText value="#{rcfkVo.transfer}" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</p:dialog>
+</ui:composition>

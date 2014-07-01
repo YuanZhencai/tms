@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<p:dialog header="添加用户" widgetVar="addUserDialog" id="addUserDlg"
+		resizable="false" width="600" height="380" modal="true">
+		<h:form id="addUserDialogForm" prependId="false">
+			<div class="style1">
+				<h:panelGrid id="addUserFormItems" columns="4"
+					columnClasses="column1,column2,column1,column2">
+					<h:outputText value="用户姓名：" />
+					<p:inputText value="#{userBean.pFormItemsVo.nachn}"
+						styleClass="input_disabled" maxlength="18" />
+					<h:outputText value="员工号：" />
+					<p:inputText value="#{userBean.pFormItemsVo.pernr}"
+						styleClass="input_disabled" maxlength="18" />
+					<h:outputText value="邮件地址：" />
+					<p:inputText value="#{userBean.pFormItemsVo.email}"
+						styleClass="input_disabled" maxlength="48" />
+				</h:panelGrid>
+				<div>
+					<p:commandButton actionListener="#{userBean.searchP}"
+						value="#{msgs.btn_query}" update="addUserDataTable,showBtn1"
+						image="ui-icon ui-icon-search" style="margin-right: 5px;" />
+					<p:commandButton action="#{userBean.resetP}"
+						update="addUserFormItems" value="#{msgs.btn_reset}"
+						image="ui-icon ui-icon-cancel" />
+				</div>
+			</div>
+			<p:dataTable emptyMessage="#{msgs.dataTable_empty}" id="addUserDataTable" var="pVo"
+				value="#{userBean.lazyPVoModel}" lazy="true" paginator="true"
+				rows="5" paginatorPosition="bottom"
+				paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
+				rowIndexVar="index" style="margin-top: 5px;"
+				rowStyleClass="#{index mod 2 == 1 ? 'changeColor' : null}"
+				selection="#{userBean.selectedPVo}">
+				<p:ajax event="rowSelect" listener="#{userBean.onRowSelectShowBtn1}"
+					update="showBtn1" />
+				<f:facet name="header">
+					<h:outputText value="集团用户列表" />
+					<div
+						style="text-align: right; position: relative; margin: -13px -5px 0px 0px; vertical-align: middle">
+						<p:commandButton value="数据同步" action="#{userBean.reset}" />
+					</div>
+				</f:facet>
+				<p:column selectionMode="single" />
+				<p:column headerText="姓名">
+					<h:outputText value="#{pVo.p.nachn}" />
+				</p:column>
+				<p:column headerText="员工号">
+					<h:outputText value="" />
+				</p:column>
+				<p:column headerText="联系电话">
+					<h:outputText value="#{pVo.p.telno}" />
+				</p:column>
+				<p:column headerText="邮箱地址">
+					<h:outputText value="#{pVo.p.email}" />
+				</p:column>
+			</p:dataTable>
+			<div style="text-align: center; position: relative; margin-top: 5px;">
+				<p:commandButton id="showBtn1" action="#{userBean.saveUser}"
+					disabled="#{userBean.showBtn1}" style="margin-right: 5px;"
+					oncomplete="addUserDialog.hide();updateUserDialog.show();"
+					update="updateUserDlg" value="#{msgs.btn_ok}"
+					image="ui-icon ui-icon-check">
+					<f:setPropertyActionListener target="#{userBean.method}"
+						value="insert" />
+				</p:commandButton>
+				<p:commandButton oncomplete="addUserDialog.hide()"
+					value="#{msgs.btn_cancel}" image="ui-icon ui-icon-cancel" />
+			</div>
+		</h:form>
+	</p:dialog>
+
+</ui:composition>

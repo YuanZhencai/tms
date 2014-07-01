@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:w="http://www.wcs-global.com/customtaglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<p:dialog header="账户银行选择" widgetVar="accountBankDialogVar"
+		id="accountBankDialogId" resizable="false" width="1000" height="400"
+		modal="true">
+		<h:form id="accountBankForm" prependId="false">  
+		    <p:dataTable id="accountBankTable" var="accountBank" value="#{accountBankSelectBean.dataModel}" 
+		    			 widgetVar="accountBankTableVar" 
+		    			 paginator="true" rows="10" selectionMode="single"  selection="#{accountBankSelectBean.selectedVO}" 
+		    			 rowKey="#{accountBank.id}" paginatorPosition="bottom"
+                 		 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink} "  
+                 		 currentPageReportTemplate="{currentPage}/{totalPage}"
+		                 emptyMessage="没有数据！" > 
+		                 <p:ajax event="rowSelect" update="accountBankTable,:bankAccountForm:bankName,:bankAccountForm:BSBCode,:bankAccountForm:unionBankNo,:bankAccountForm:noPersAccountDesc,
+		                 									:accountForm:bank" 
+		                 listener="#{accountBankSelectBean.beforeClose}" oncomplete="accountBankDialogVar.hide();" />
+			   	 <p:column >
+			        <f:facet name="header">
+			        	<div>总行</div>
+			        	<h:selectOneMenu id= "topBankId" value="#{accountBankSelectBean.topBankId}"  >
+			        		<f:selectItem itemLabel="请选择"/>
+			        		<f:selectItems value="#{accountBankSelectBean.topBankSelect}" />
+			        		<p:ajax update=":accountBankForm:accountBankTable,topBankId" listener="#{accountBankSelectBean.filterAccountBank}"/>
+			        	</h:selectOneMenu>
+			        </f:facet>
+			        <h:outputText value="#{accountBank.topBank.bankName}"/>
+			     </p:column>
+			     <p:column>
+			        <f:facet name="header">
+			        	<div >银行编码</div>
+			        	<p:inputText id="bankCode" value="#{accountBankSelectBean.bankCode}" >
+					       	<p:ajax event="change" update=":accountBankForm:accountBankTable" listener="#{accountBankSelectBean.filterAccountBank}" />
+					      </p:inputText>
+			        </f:facet>
+			        <h:outputText value="#{accountBank.bankCode}"/>
+			     </p:column>
+			     <p:column>
+			        <f:facet name="header">
+			        	<div >BSB代码</div>
+			        	<p:inputText id="bsbCode" value="#{accountBankSelectBean.bsbCode}" >
+					       	<p:ajax event="change" update=":accountBankForm:accountBankTable" listener="#{accountBankSelectBean.filterAccountBank}" />
+					      </p:inputText>
+			        </f:facet>
+			        <h:outputText value="#{accountBank.bsbCode}"/>
+			     </p:column>
+			     <p:column>
+			        <f:facet name="header">
+			        	<div >联行号</div>
+			        	<p:inputText id="unionBankNo" value="#{accountBankSelectBean.unionBankNo}" >
+					       	<p:ajax event="change" update=":accountBankForm:accountBankTable" listener="#{accountBankSelectBean.filterAccountBank}" />
+					      </p:inputText>
+			        </f:facet>
+			        <h:outputText value="#{accountBank.unionBankNo}"/>
+			     </p:column>
+			     <p:column>
+			        <f:facet name="header">
+			        	<div >银行名称</div>
+			        	<p:inputText id="bankName" value="#{accountBankSelectBean.bankName}" >
+					       	<p:ajax event="change" update=":accountBankForm:accountBankTable" listener="#{accountBankSelectBean.filterAccountBank}" />
+					      </p:inputText>
+			        </f:facet>
+			        <h:outputText value="#{accountBank.bankName}"/>
+			     </p:column>
+		    </p:dataTable>  
+		</h:form>  
+	</p:dialog>
+</ui:composition>

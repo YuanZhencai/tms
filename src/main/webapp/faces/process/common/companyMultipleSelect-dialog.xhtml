@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:w="http://www.wcs-global.com/customtaglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<p:dialog header="公司选择" widgetVar="companyMultipleSelectDialogVar"
+		id="companyMultipleSelectDialogId" resizable="false" width="900" height="400"
+		modal="true">
+		<p:ajax event="close" listener="#{companyMultipleSelectBean.clear}"
+			update="companyMultipleSelectTable" />
+		<h:form id="companyMultipleSelectForm" prependId="false">
+			<p:dataTable id="companyMultipleSelectTable" var="company"
+				value="#{companyMultipleSelectBean.dataModel}"
+				widgetVar="companyMultipleSelectTableVar" paginator="true"
+				paginatorPosition="bottom" selectionMode="multiple"
+				rowKey="#{company.id}" rows="10"
+				selection="#{companyMultipleSelectBean.selectedCompanies}"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+				currentPageReportTemplate="{currentPage}/{totalPage}"
+				emptyMessage="#{msgs.dataTable_empty}" >
+				<p:ajax event="page" listener="#{companyMultipleSelectBean.saveLastPageSelection}"/>
+				<p:column>
+					<f:facet name="header">
+						<div>公司代码</div>
+						<p:inputText id="sapCode" style="width: 100px;" onkeydown="if(event.keyCode==13) { return false; }" onkeyup="if(event.keyCode==13) {document.getElementById('companyMultipleSelectTable:companyName').focus();}"
+							value="#{companyMultipleSelectBean.sapCode}">
+							<p:ajax event="change" update="companyMultipleSelectTable"
+								listener="#{companyMultipleSelectBean.filterCompany}" />
+						</p:inputText>
+					</f:facet>
+					<h:outputText value="#{company.sapCode}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<div>公司名称</div>
+						<p:inputText id="companyName" style="width: 320px;" onkeydown="if(event.keyCode==13) { return false; }" onkeyup="if(event.keyCode==13) {document.getElementById('companyMultipleSelectTable:companyEnName').focus();}"
+							value="#{companyMultipleSelectBean.companyName}">
+							<p:ajax event="change" update="companyMultipleSelectTable"
+								listener="#{companyMultipleSelectBean.filterCompany}" />
+						</p:inputText>
+					</f:facet>
+					<h:outputText value="#{company.companyName}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<div>英文名称</div>
+						<p:inputText di="companyEnName" style="width: 320px;" onkeydown="if(event.keyCode==13) { return false; }" onkeyup="if(event.keyCode==13) {document.getElementById('companyMultipleSelectTable:sapCode').focus();}"
+							value="#{companyMultipleSelectBean.companyEnName}">
+							<p:ajax event="change" update="companyMultipleSelectTable"
+								listener="#{companyMultipleSelectBean.filterCompany}" />
+						</p:inputText>
+					</f:facet>
+					<h:outputText value="#{company.companyEn}" />
+				</p:column>
+				
+				<f:facet name="footer">  
+            		<p:commandButton value="确定" icon="ui-icon-check" 
+            		action="#{companyMultipleSelectBean.beforeClose}" oncomplete="companyMultipleSelectDialogVar.hide();"
+            		update=":dbListForm:receiveCom,:balanceListForm:companyName"/>
+        		</f:facet>
+				
+			</p:dataTable>
+		</h:form>
+	</p:dialog>
+</ui:composition>

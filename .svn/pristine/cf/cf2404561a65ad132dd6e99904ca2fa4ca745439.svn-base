@@ -1,0 +1,185 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:wcs="http://www.wcs-global.com/customtaglib"
+	xmlns:commentProcess="http://java.sun.com/jsf/composite/commentProcess"
+	template="/template/template.xhtml">
+
+	<ui:define name="title">非控股公司借款转款申请</ui:define>
+
+	<ui:define name="content">
+
+		<input type="hidden" id="menuOne" value="15" />
+		<input type="hidden" id="menuTwo" value="16" />
+
+		<p:panel styleClass="panel1">
+			<h:form id="noHoldCompLoanTranForm" prependId="false" onsubmit="statusComplete();">
+				<p:breadCrumb preview="true" expandEffectDuration="200"
+					previewWidth="24" style="width: 99.1%">
+					<p:menuitem value="流程" url="#" />
+					<p:menuitem value="流程" url="#" />
+					<p:menuitem value="非控股公司借款转款申请表" url="#" />
+				</p:breadCrumb>
+
+				<p:messages id="msg" />
+
+				<div class="style1">
+					<h:panelGrid columns="3" columnClasses="column41,column2,column2">
+
+						<h:outputLabel value="是否为借款：" />
+						<h:panelGroup>
+								<p:selectOneRadio id="isLoan" required="true"
+									requiredMessage="是否为借款不能为空"
+									value="#{noHoldCompLoanTranBean.procNoHoldCompLoanTran.loanIden}">
+									<f:selectItem itemLabel="借款" itemValue="L" />
+									<f:selectItem itemLabel="转款" itemValue="T" />
+									<f:selectItem itemLabel="借款+转款" itemValue="A" />
+								</p:selectOneRadio>
+						</h:panelGroup>
+						<h:outputLabel value="（自有资金下拨请选择“转款”，非自有资金请选择“借款”）"/>
+					</h:panelGrid>
+					<h:panelGrid  columns="8" columnClasses="column41,column2,column0,column2,column2,column2,column2,column2">
+
+						<h:outputLabel value="申请公司名称：" />
+						<h:panelGroup>
+								<h:selectOneMenu id="appCompanyName"
+									value="#{noHoldCompLoanTranBean.procNoHoldCompLoanTran.company.id}"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									style="width:330px" required="true" requiredMessage="请选择申请公司名称">
+									<f:selectItem itemLabel="请选择" itemValue=""/>
+									 <f:selectItems value="#{noHoldCompLoanTranBean.companySelect}" />
+									<p:ajax listener="#{noHoldCompLoanTranBean.companyChange}" update="payeeName,msg,openBank,appCompanyNameEn"/>  
+								</h:selectOneMenu>
+								<h:outputText style="color:red;" value=" *" />
+						</h:panelGroup>
+						<h:outputLabel value="收款人户名：" />
+						<p:inputText id="payeeName" style="width:330px"
+							value="#{noHoldCompLoanTranBean.procNoHoldCompLoanTran.payeeName}" disabled="true"/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						
+						<h:outputLabel value="填制时间：" />
+						<p:inputText id="applyDate" style="width:200px"
+							value="#{noHoldCompLoanTranBean.applyDate}" disabled="true"/>
+						<h:outputLabel value="账户描述：" />
+						<h:panelGroup>
+								<h:selectOneMenu id="openBank"
+									value="#{noHoldCompLoanTranBean.procNoHoldCompLoanTran.accountDesc}"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									style="width:340px" required="true" requiredMessage="请选择账户描述">
+									<f:selectItem itemLabel="请选择" itemValue=""/>
+									<f:selectItems value="#{noHoldCompLoanTranBean.bankSelect}" />
+									<p:ajax listener="#{noHoldCompLoanTranBean.bankChange}"
+										update="accountNumber,msg" /> 
+								</h:selectOneMenu>
+								<h:outputText style="color:red;" value=" *" />
+						</h:panelGroup>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						
+						
+						<h:outputLabel value="付款日期：" />
+						<h:panelGroup>
+							<p:inputText id="paymentDate" required="true" requiredMessage="请填写付款日期"
+								value="#{noHoldCompLoanTranBean.procNoHoldCompLoanTran.paymentDate}" styleClass="ui-date"
+								style="font-size: 9px;width:200px" title="付款日期" 
+								onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'applyDate\')}'});">
+								<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+							</p:inputText>
+							<h:outputText style="color:red;" value=" *" />
+						</h:panelGroup>
+						<h:outputLabel value="账号：" />
+						<h:selectOneMenu id="accountNumber"
+									value="#{noHoldCompLoanTranBean.procNoHoldCompLoanTran.accountNumber}"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									style="width:340px" >
+									 <f:selectItems value="#{noHoldCompLoanTranBean.accountSelect}" />
+						</h:selectOneMenu>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						
+						
+						<h:outputLabel value="金额(小写)：" />	
+						<h:panelGroup>
+								<p:inputText id="fundsTotal" label="金额（小写）" style="width:200px" value="#{noHoldCompLoanTranBean.procNoHoldCompLoanTran.amount}" 
+								required="true" requiredMessage="请填写金额">
+									<p:ajax event="blur"  listener="#{noHoldCompLoanTranBean.formatFundsTotal}" update="fundsTotalCh,msg,fundsTotal"
+									/>
+									<f:validateDoubleRange maximum="99999999.99" minimum="0" />
+									<f:convertNumber pattern="#,##0.00" />
+								</p:inputText>
+							<h:outputText  value="万" />
+							<h:outputText style="color:red;" value=" *" />
+						</h:panelGroup>
+						<h:outputLabel value="金额(大写)：" />
+						<p:inputText id="fundsTotalCh" style="width:330px" value="#{noHoldCompLoanTranBean.fundsTotalCh}" title="#{noHoldCompLoanTranBean.fundsTotalCh}" disabled="true"/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						
+					</h:panelGrid>
+					<h:panelGrid columns="2" columnClasses="column41,column2">
+						<h:outputLabel value="下拨资金用途描述:" />
+						<h:panelGroup>
+							<p:inputTextarea id="stirFundsUseDesc" cols="100" rows="5" autoResize="false" 
+							validatorMessage="#{msgs.txt_reasonLonger}200" value="#{noHoldCompLoanTranBean.procNoHoldCompLoanTran.useDesc}">
+								<f:validateLength maximum="200" for="stirFundsUseDesc" />
+							</p:inputTextarea>
+						</h:panelGroup>
+					</h:panelGrid>
+					
+					<div>
+						<p:commandButton id="create" onclick="buttonDisable('create');" action="#{noHoldCompLoanTranBean.createProcInstance}" ajax="false" value="提交" image="ui-icon ui-icon-disk" />
+					</div>
+				</div>
+				<br />
+			</h:form>
+			
+			<!-- 上传附件相关代码 -->
+			<h:form enctype="multipart/form-data" id="fileuploadForm">
+				<wcs:fileUpload updateComponet="msg,attachmentPanel,fileForm"
+					docTableId="fileForm" upListener="#{noHoldCompLoanTranBean}">
+				</wcs:fileUpload>
+			</h:form>
+		
+			<h:form prependId="false" id="fileForm">
+				<div style="position: relative; margin-top: 5px;">
+					<ui:fragment id="fileDIV" rendered="#{noHoldCompLoanTranBean.showDetailDoc}">
+						<p:outputPanel id="attachmentPanel">
+							<commentProcess:newfiledownload 
+								updateComenId="attachmentPanel,msg"
+								dataList="#{noHoldCompLoanTranBean.processFileList}"
+								downloadBean="#{noHoldCompLoanTranBean}" />
+						</p:outputPanel>
+					</ui:fragment>
+				</div>
+			</h:form>
+		</p:panel>
+		<script type="text/javascript">
+			var isFirst = "true";
+			function buttonDisable(buttonId){
+				if("true"==isFirst){
+					isFirst="false";
+					return true;
+				}else{
+					document.getElementById(buttonId).disabled=true;
+					return false;
+				}
+			}
+		</script>
+	</ui:define>
+
+</ui:composition>
+
+

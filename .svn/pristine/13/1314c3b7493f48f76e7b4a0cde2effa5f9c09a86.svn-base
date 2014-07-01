@@ -1,0 +1,225 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/template/template.xhtml">
+
+	<ui:define name="title">集团内部担保明细表</ui:define>
+
+	<ui:define name="content">
+
+		<input type="hidden" id="menuOne" value="21" />
+		<input type="hidden" id="menuTwo" value="22" />
+
+		<h:form id="dbListForm" prependId="false" onsubmit="statusComplete();">
+			<p:panel styleClass="panel1">
+				<p:breadCrumb preview="true" expandEffectDuration="200"
+					previewWidth="24" style="width: 99.1%">
+					<p:menuitem value="#{msgs.menItem_form}" url="#" />
+					<p:menuitem value="#{msgs.menItem_form}" url="#" />
+					<p:menuitem value="集团内部担保明细表" url="#" />
+				</p:breadCrumb>
+
+				<p:messages id="doneMsg"/>
+				
+				<div class="style1">
+					<h:panelGrid columns="6" columnClasses="column0,column2,column0,column2,column0,column2">
+						
+						<h:outputLabel value="填报日期：" />
+						<h:panelGroup>
+							<p:inputText id="writeStartDate"
+								value="#{guaranteeReportBean.conditionMap['writeStartDate']}" styleClass="ui-date"
+								style="font-size: 9px;width:90px;" title="#{msgs.txt_startTime}"
+								onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'writeEndDate\')}'});">
+								<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+							</p:inputText>
+						<h:outputText value="~" />
+							<p:inputText id="writeEndDate"
+								value="#{guaranteeReportBean.conditionMap['writeEndDate']}" styleClass="ui-date"
+								style="font-size: 9px;width:90px;" title="#{msgs.txt_endTime}"
+								onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'writeStartDate\')}'});">
+								<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+							</p:inputText>
+						</h:panelGroup>
+						
+						<h:outputLabel value="生效日期：" />
+						<h:panelGroup>
+							<p:inputText id="effectStartDate"
+								value="#{guaranteeReportBean.conditionMap['effectStartDate']}" styleClass="ui-date"
+								style="font-size: 9px;width:90px;" title="#{msgs.txt_startTime}"
+								onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'effectEndDate\')}'});">
+								<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+							</p:inputText>
+						<h:outputText value="~" />
+							<p:inputText id="effectEndDate"
+								value="#{guaranteeReportBean.conditionMap['effectEndDate']}" styleClass="ui-date"
+								style="font-size: 9px;width:90px;" title="#{msgs.txt_endTime}"
+								onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'effectStartDate\')}'});">
+								<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+							</p:inputText>
+						</h:panelGroup>
+						
+						<h:outputLabel value="终止日期：" />
+						<h:panelGroup>
+							<p:inputText id="terminateStartDate"
+								value="#{guaranteeReportBean.conditionMap['terminateStartDate']}" styleClass="ui-date"
+								style="font-size: 9px;width:90px;" title="#{msgs.txt_startTime}"
+								onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'terminateEndDate\')}'});">
+								<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+							</p:inputText>
+						<h:outputText value="~" />
+							<p:inputText id="terminateEndDate"
+								value="#{guaranteeReportBean.conditionMap['terminateEndDate']}" styleClass="ui-date"
+								style="font-size: 9px;width:90px;" title="#{msgs.txt_endTime}"
+								onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'terminateStartDate\')}'});">
+								<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+							</p:inputText>
+						</h:panelGroup>
+						
+						<h:outputText value="担保方" />
+						<h:panelGroup>
+								<h:selectOneMenu id="securedCompany"
+									value="#{guaranteeReportBean.conditionMap['securedCompanyId']}"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									style="width:330px" >
+									<f:selectItem itemLabel="请选择" />
+									 <f:selectItems value="#{guaranteeReportBean.companySelect}" />
+								</h:selectOneMenu>
+						</h:panelGroup>
+						<h:outputText value="受保方" />
+						<h:panelGroup rendered="#{!guaranteeReportBean.isCopUser}">
+								<h:selectOneMenu id="insuredCompany"
+									value="#{guaranteeReportBean.conditionMap['insuredCompanyId']}"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									style="width:330px" >
+									<f:selectItem itemLabel="请选择" />
+									 <f:selectItems value="#{guaranteeReportBean.companyRelatedSelect}" />
+								</h:selectOneMenu>
+						</h:panelGroup>
+						<h:panelGroup rendered="#{guaranteeReportBean.isCopUser}">
+							<p:inputText id="companyNameTxt" disabled="true"
+								style="width: 320px;"
+								value="#{guaranteeReportBean.company.companyName}" />
+						</h:panelGroup>
+						<p:commandButton immediate="true" value="#{msgs.btn_select}"
+							style="width: 70px;" image="ui-icon ui-icon-zoomin"
+							rendered="#{guaranteeReportBean.isCopUser}"
+							actionListener="#{guaranteeReportBean.clear}"
+							oncomplete="companyDialogVar.show();" update="companyForm">
+							<f:setPropertyActionListener
+								target="#{guaranteeReportBean.companySelectBean.method}"
+								value="guaranteeReportBean.getSelectedCompany" />
+						</p:commandButton>
+
+					</h:panelGrid>
+					<div>
+						<p:commandButton id="query" action="#{guaranteeReportBean.searchGuaranteeDetails}" update="doneMsg,guaranteeReportPl"
+							value="#{msgs.btn_query}" image="ui-icon ui-icon-search" />
+						<p:commandButton value="#{msgs.btn_reset}" icon="ui-icon ui-icon-arrowrefresh-1-e" style="margin: 5px;" type="reset"/>
+					</div>
+				</div>
+				<br />
+				
+				<p:outputPanel id="guaranteeReportPl">
+					<p:dataTable var="guaranteeVo" id="guaranteeReports" value="#{guaranteeReportBean.guaranteeVos}" rowKey="#{guarantee.id}"
+						emptyMessage="#{msgs.dataTable_empty}">
+
+						<f:facet name="header">集团内部担保明细表</f:facet>
+						<p:columnGroup type="header">
+							<p:row>
+								<p:column headerText="填报日期" />
+								<p:column headerText="流程实例编号" />
+								<p:column headerText="担保方" sortBy="#{guaranteeVo.securedCompany.companyName}"/>
+								<p:column headerText="银行" />
+								<p:column headerText="担保用途" />
+								<p:column headerText="受保方" />
+								<p:column headerText="币种" />
+								<p:column headerText="源币种金额" />
+								<p:column headerText="担保总额" />
+								<p:column headerText="担保/预担保" />
+								<p:column headerText="生效日期" />
+								<p:column headerText="终止日期" />
+							</p:row>
+						</p:columnGroup>
+						
+						<p:subTable var="detail" value="#{guaranteeVo.guaranteeReportVos}">
+							<p:column >
+								<h:outputText value="#{detail.createdDatetime}">
+									<f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd"/>
+								</h:outputText>
+							</p:column> 
+							<p:column >
+								#{detail.procInstId}
+							</p:column>
+							<p:column >
+								#{detail.securedCom.companyName}
+							</p:column>
+							<p:column >
+								#{detail.bank.bankName}
+							</p:column>
+							<p:column >
+								#{detail.useDesc}
+							</p:column>
+							<p:column >
+								#{detail.insuredCom.companyName}
+							</p:column>
+							<p:column >
+								#{detail.guarAmountCu}
+							</p:column>
+							<p:column>
+								<h:outputText value="#{detail.securedAssets}">
+									<f:convertNumber pattern="#,##0.000" />
+								</h:outputText>
+							</p:column>
+							<p:column >
+								<h:outputText value="#{detail.guarAmount}">
+									<f:convertNumber pattern="#,##0.000" />
+								</h:outputText>
+							</p:column>
+							<p:column >
+								<h:outputText value="#{detail.securedIdent == 'Y' ? '担保' : '预担保'}">
+								</h:outputText>
+							</p:column>
+							<p:column >
+								<h:outputText value="#{detail.guarStart}">
+									<f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd"/>
+								</h:outputText>
+							</p:column>
+							<p:column >
+								<h:outputText value="#{detail.guarEnd}">
+									<f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd"/>
+								</h:outputText>
+							</p:column>
+							
+							<p:columnGroup type="footer">  
+				                <p:row>  
+				                    <p:column colspan="7" footerText="人民币小计 " style="text-align:center"/>  
+				                    <p:column footerText="#{guaranteeVo.securedAssetsSubtotal}" />  
+				                    <p:column colspan="5" footerText="#{guaranteeVo.guarAmountSubtotal}" />  
+				                </p:row>  
+				            </p:columnGroup>  
+							
+						</p:subTable>	
+						
+						<p:columnGroup type="footer">  
+				              <p:row>  
+				                   <p:column colspan="7" footerText="人民币合计 " style="text-align:center"/>  
+				                   <p:column footerText="#{guaranteeReportBean.securedAssetsTotal}" style="text-align:left"/>  
+				                   <p:column colspan="5" footerText="#{guaranteeReportBean.guarAmountTotal}" style="text-align:left"/>  
+				              </p:row>  
+				        </p:columnGroup>
+											
+					</p:dataTable>
+				</p:outputPanel>
+				
+			</p:panel>
+		</h:form>
+	<ui:include src="/faces/process/common/companySelect-dialog.xhtml" />
+	</ui:define>
+
+</ui:composition>
+
+

@@ -1,0 +1,21 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<h:form prependId="false" id="run_form_id">
+		<p:growl id="run_confirm_growl_Id"
+			showDetail="true" autoUpdate="false" for="forbiddenStart_msg"/>
+		<p:confirmDialog id="run_confirm_dialog_Id"
+			message="确认执行?" header="确认" widgetVar="confirmationRun"
+			width="250" height="100">
+			<div align="center">
+				<p:commandButton value="确认" update=":sysEjbtimerFormId"
+					oncomplete="confirmationRun.hide()"
+					actionListener="#{sysJobBean.confirmDoSth}" />
+				<p:commandButton value="取消" onclick="confirmationRun.hide()"
+					type="button" />
+			</div>
+		</p:confirmDialog>
+	</h:form>
+</ui:composition>

@@ -1,0 +1,70 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+	<p:dialog modal="true" resizable="false"  header="#{companyBean.flag==false?'新增公司':'更新公司'}" widgetVar="companyInsertConfirmDiaLog" id="insertConfirmDiaLog">
+		<h:form id="insertConfirmForm">
+		<script>
+		
+		</script>
+			
+			<h:panelGrid  columns="4">
+			<h:outputText value="公司名称:" />
+			<p:inputText value="#{companyBean.companySaveModel.stext}" disabled="true"  />
+			<h:outputText value="机构代码:" />
+			<p:inputText value="#{companyBean.companySaveModel.jgCode}" disabled="true" />
+			</h:panelGrid>
+			
+			<h:panelGrid  columns="2">
+					<h:outputText value="公司地址:" />
+					<p:inputText value="#{companyBean.companySaveModel.address}" rendered="true"  style="width:338px;"  />
+			</h:panelGrid>
+			
+				<h:panelGrid  columns="4">
+					<h:outputText value="邮政编码:" />
+			<p:inputText value="#{companyBean.companySaveModel.zipcode}" />
+			<h:outputText value="电话号码:" />
+			<p:inputText value="#{companyBean.companySaveModel.telphone}" />
+			</h:panelGrid>
+			<h:inputHidden value="#{companyBean.companySaveModel.id}"/>
+				<h:panelGrid  columns="5">
+					<h:outputText value="公司类型:" />
+			<h:selectOneMenu value="#{companyBean.companySaveModel.type}"  styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+					<f:selectItem itemLabel="贸易公司" itemValue="贸易公司" />
+					<f:selectItem itemLabel="制造工厂" itemValue="制造工厂" />
+					<f:selectItem itemLabel="其它" itemValue="其它" />
+				</h:selectOneMenu>
+				<h:outputText value="所属税务机关:" />
+				<p:inputText value="#{companyBean.companySaveModel.jgName}" disabled="true" id="jgName" style="width:111px;" />
+				<p:commandButton  value="查询" image="ui-icon ui-icon-search" oncomplete="searchFormDialog.show();" actionListener="#{companyBean.searchTax}" update="inertForm2" />
+			</h:panelGrid>
+			<h:panelGrid  columns="2">
+				<h:outputText value="公司描述:" />
+				<p:inputTextarea value="#{companyBean.companySaveModel.desc}"/>
+			</h:panelGrid>
+			
+			<h:panelGrid  columns="3">
+			
+			
+		<h:outputText value="是否有效:" />
+			<h:selectOneRadio value="#{companyBean.companySaveModel.defuctInt}">
+				<f:selectItem itemLabel="生效" itemValue="N" />
+				<f:selectItem itemLabel="失效" itemValue="Y" />
+			</h:selectOneRadio>
+		</h:panelGrid>
+		
+			<div align="center" style="margin-top: 5px;">
+				<p:commandButton  value="确认"
+				disabled="#{companyBean.secondBtn}" style="margin-right: 5px;" update="companySearchForm"   actionListener="#{companyBean.saveOrUpdateCompany}" oncomplete="companyInsertConfirmDiaLog.hide();companyInsertDiaLog.hide();" image="ui-icon ui-icon-disk"/>
+				<p:commandButton  value="关闭"  oncomplete="companyInsertConfirmDiaLog.hide();" image="ui-icon ui-icon-cancel" />
+			</div>
+		
+		</h:form>
+	</p:dialog>
+	<script>
+	
+	
+	</script>
+	</ui:composition>

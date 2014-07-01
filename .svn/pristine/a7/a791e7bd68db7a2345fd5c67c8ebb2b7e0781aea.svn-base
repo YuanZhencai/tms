@@ -1,0 +1,243 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:wcs="http://www.wcs-global.com/customtaglib"
+	xmlns:commentProcess="http://java.sun.com/jsf/composite/commentProcess"
+	template="/template/template.xhtml">
+
+	<ui:define name="title">投资理财产品额度申请</ui:define>
+
+	<ui:define name="content">
+
+		<input type="hidden" id="menuOne" value="15" />
+		<input type="hidden" id="menuTwo" value="16" />
+
+		<p:panel styleClass="panel1">
+			<h:form id="inveProductForm" prependId="false" onsubmit="statusComplete();">
+				<p:breadCrumb preview="true" expandEffectDuration="200"
+					previewWidth="24" style="width: 99.1%">
+					<p:menuitem value="#{msgs.menItem_process}" url="#" />
+					<p:menuitem value="#{msgs.menItem_process}" url="#" />
+					<p:menuitem value="#{msgs.menItem_inveProductLimitApp}" url="#" />
+				</p:breadCrumb>
+
+				<p:messages id="msg" />
+
+				<div class="style1">
+					<h:panelGrid  columns="8" columnClasses="column40,column2,column40,column2,column0,column2,column0,column2">
+
+						<h:outputLabel value="#{msgs.col_applyCompanyName}：" />
+						<h:panelGroup>
+							<h:selectOneMenu id="companyName" name="companyName" style="width:307px;"
+								value="#{inveProductBean.procInveProduct.company.id}" 
+								styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all" required="true" requiredMessage="#{msgs.txt_appCompCanNotNull}">
+								<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" itemValue=""/>
+								<f:selectItems value="#{inveProductBean.companySelect}" />
+								<p:ajax update="msg,parentBankName,parentBankEn,childBankName,childBankEn,bankCredit,bankCreditCu"
+									listener="#{inveProductBean.ajaxChildBank}">
+								</p:ajax>
+							</h:selectOneMenu>
+							<h:outputText style="color:red;" value="*" />
+						</h:panelGroup>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+
+						<h:outputLabel value="#{msgs.lab_bankChinName}：" />
+						<p:inputText id="parentBankName" style="width:297px;"
+							value="#{inveProductBean.parentBank.bankName}" disabled="true"/>
+						<h:outputLabel value="#{msgs.lab_bankEnglName}：" />
+						<p:inputText id="parentBankEn" style="width:297px;"
+							value="#{inveProductBean.parentBank.bankEn}" disabled="true"/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						
+						<h:outputLabel value="#{msgs.lab_branchBankChName}：" />
+						<h:panelGroup>
+							<h:selectOneMenu id="childBankName" name="childBankName" style="width:307px;"
+								value="#{inveProductBean.procInveProduct.bank.id}" 
+								styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all" required="true" requiredMessage="#{msgs.txt_branchBankNotNull}">
+								<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" itemValue=""/>
+								<f:selectItems value="#{inveProductBean.childBankSelect}" />
+								<p:ajax update="msg,parentBankName,parentBankEn,childBankEn,bankCredit,bankCreditCu"
+									listener="#{inveProductBean.ajaxParentBank}">
+								</p:ajax>
+							</h:selectOneMenu>
+							<h:outputText style="color:red;" value="*" />
+						</h:panelGroup>
+						<h:outputLabel value="#{msgs.lab_branchBankEnName}：" />
+						<p:inputText id="childBankEn" style="width:297px;"
+							value="#{inveProductBean.procInveProduct.bank.bankEn}" disabled="true"/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+					</h:panelGrid>
+					<h:panelGrid  columns="8" columnClasses="column40,column2,column40,column2,column0,column2,column0,column2">
+						<h:outputLabel value="#{msgs.lab_bankGrade}：" />
+						<h:panelGroup>
+							<p:inputTextarea id="bankLevel" cols="20" rows="3" autoResize="false" value="#{inveProductBean.procInveProduct.bankLevel}" required="true" requiredMessage="#{msgs.txt_bankGradeNotNull}"
+								validatorMessage="#{msgs.txt_bankGradeLonger}200" style="width:297px;">
+								<f:validateLength maximum="200" for="bankLevel" />
+							</p:inputTextarea>
+							<h:outputText style="color:red;" value="*" />
+						</h:panelGroup>
+						<h:outputLabel value="#{msgs.lab_bankCredit}：" />
+						<h:panelGroup>
+							<p:inputText id="bankCredit"
+								value="#{inveProductBean.procInveProduct.bankCredit}" disabled="true">
+								<f:convertNumber pattern="#,##0.####"/>
+							</p:inputText>
+							<h:outputLabel value="#{msgs.lab_tenThousand}"/>
+						</h:panelGroup>
+						<h:selectOneMenu id="bankCreditCu" name="bankCreditCu"
+							value="#{inveProductBean.procInveProduct.bankCreditCu}"
+							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all" disabled="true">
+							<f:selectItems value="#{inveProductBean.currencySelect}" />
+						</h:selectOneMenu>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+					</h:panelGrid>
+					<h:panelGrid columns="2" columnClasses="column40,column2">
+						<h:outputLabel value="#{msgs.lab_currCooperationStat}：" />
+						<p:inputTextarea id="present" cols="100" rows="5" autoResize="false" value="#{inveProductBean.procInveProduct.present}" validatorMessage="#{msgs.lab_currCooperationStat}#{msgs.txt_lengthLimit}200">
+							<f:validateLength maximum="200" for="present" />
+						</p:inputTextarea>
+					</h:panelGrid>
+				</div>
+				
+				<div class="style1">	
+					<h:panelGrid  columns="8" columnClasses="column40,column2,column0,column2,column0,column2,column0,column2">
+						<h:outputLabel value="#{msgs.lab_inveProductType}：" />
+						<h:panelGroup>
+							<h:selectOneMenu id="productType" name="productType"
+								value="#{inveProductBean.procInveProduct.productType}"
+								styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all" required="true" requiredMessage="#{msgs.txt_inveProductTypeNotNull}">
+								<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" itemValue=""/>
+								<f:selectItems value="#{inveProductBean.prodTypeSelect}" />
+							</h:selectOneMenu>
+							<h:outputText style="color:red;" value="*" />
+						</h:panelGroup>
+						<h:outputLabel value="#{msgs.lab_inveProductName}："/>
+						<h:panelGroup>
+							<p:inputText id="productName" style="width:375px;"
+								value="#{inveProductBean.procInveProduct.productName}" required="true" requiredMessage="#{msgs.txt_inveProdNameNotNull}" maxlength="200"/>
+							<h:outputText style="color:red;" value="*" />
+						</h:panelGroup>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+					</h:panelGrid>
+					<h:panelGrid columns="2" columnClasses="column40,column2">
+						<h:outputLabel value="#{msgs.lab_inveProdStruct}：" />
+						<p:inputTextarea id="productForm" cols="100" rows="5" autoResize="false" value="#{inveProductBean.procInveProduct.productForm}" validatorMessage="#{msgs.lab_inveProdStruct}#{msgs.txt_lengthLimit}200">
+							<f:validateLength maximum="200" for="productForm" />
+						</p:inputTextarea>
+					</h:panelGrid>
+					<h:panelGrid  columns="8" columnClasses="column40,column2,column0,column2,column0,column2,column0,column2">
+						<h:outputLabel value="#{msgs.lab_deadline}：" />
+						<p:inputText id="limit" label="#{msgs.lab_deadline}" 
+							value="#{inveProductBean.procInveProduct.limit}">
+							<f:convertNumber pattern="0"/>
+							<f:validateDoubleRange maximum="9999" minimum="0"></f:validateDoubleRange>
+						</p:inputText>
+						<h:selectOneMenu id="limitUnit" name="limitUnit"
+							value="#{inveProductBean.procInveProduct.limitUnit}"
+							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+							<f:selectItems value="#{inveProductBean.limitUnitSelect}" />
+						</h:selectOneMenu>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						
+						<h:outputLabel value="#{msgs.col_moneyLimit}：" />
+						<h:panelGroup>
+							<p:inputText id="amount" label="#{msgs.col_moneyLimit}" 
+								value="#{inveProductBean.procInveProduct.amount}" required="true" requiredMessage="#{msgs.txt_moneyLimitNotNull}">
+								<f:convertNumber pattern="#,##0.####"/>
+								<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"></f:validateDoubleRange>
+							</p:inputText>
+							<h:outputLabel value="#{msgs.lab_tenThousand}"/>
+							<h:outputText style="color:red;" value="*" />
+						</h:panelGroup>
+						<h:selectOneMenu id="amountCu" name="amountCu"
+							value="#{inveProductBean.procInveProduct.amountCu}"
+							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+							<f:selectItems value="#{inveProductBean.currencySelect}" />
+						</h:selectOneMenu>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+					</h:panelGrid>
+					<h:panelGrid columns="2" columnClasses="column40,column2">
+						<h:outputLabel value="#{msgs.lab_reason}：" />
+						<p:inputTextarea id="reason" cols="100" rows="5" autoResize="false" value="#{inveProductBean.procInveProduct.reason}" validatorMessage="#{msgs.txt_reasonLonger}200">
+							<f:validateLength maximum="200" for="reason" />
+						</p:inputTextarea>
+					</h:panelGrid>
+
+					<div>
+						<p:commandButton id="create" onclick="buttonDisable('create');"  action="#{inveProductBean.createProcInstance}" ajax="false" value="#{msgs.btn_submit}" image="ui-icon ui-icon-disk" />
+						&#160;&#160;
+						<p:commandButton icon="ui-icon ui-icon-arrowthick-1-n"
+							value="#{msgs.btn_upload}" title="#{msgs.txt_inveProdMonLimAppAccessory}" immediate="true"
+							oncomplete="fileUploadDialog.show()" update="fileuploadForm">
+							<f:setPropertyActionListener value="TMS_InveProduct"
+								target="#{inveProductBean.workClassName}" />
+						</p:commandButton>
+
+					</div>
+				</div>
+				<br />
+			</h:form>
+			<h:form enctype="multipart/form-data" id="fileuploadForm">
+				<wcs:fileUpload updateComponet="msg,attachmentPanel,fileForm"
+					docTableId="fileForm" upListener="#{inveProductBean}">
+				</wcs:fileUpload>
+			</h:form>
+		
+			<h:form prependId="false" id="fileForm">
+				<div style="position: relative; margin-top: 5px;">
+					<ui:fragment id="fileDIV" rendered="#{inveProductBean.showDetailDoc}">
+						<p:outputPanel id="attachmentPanel">
+							<commentProcess:newfiledownload
+								updateComenId="attachmentPanel,msg"
+								dataList="#{inveProductBean.processFileList}"
+								downloadBean="#{inveProductBean}" />
+						</p:outputPanel>
+					</ui:fragment>
+				</div>
+			</h:form>
+		</p:panel>
+		<script type="text/javascript">
+			var isFirst = "true";
+			function buttonDisable(buttonId){
+				if("true"==isFirst){
+					isFirst="false";
+					return true;
+				}else{
+					document.getElementById(buttonId).disabled=true;
+					return false;
+				}
+			}
+		</script>
+	</ui:define>
+
+</ui:composition>
+
+

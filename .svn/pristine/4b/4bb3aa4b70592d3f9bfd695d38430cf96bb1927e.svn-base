@@ -1,0 +1,58 @@
+<ui:composition xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:w="http://www.wcs-global.com/customtaglib"
+	>
+
+	<p:dialog id="distributed_person_dialog_id" widgetVar="distributed_person_dialog"
+		resizable="false" width="500" height="250" header="已分配人员列表"
+		modal="true">
+		<h:form prependId="false" id="distributed_person_form">
+			<p:outputPanel>
+				<p:dataTable emptyMessage="#{msgs.dataTable_empty}" id="personDataTable"
+					var="p" value="#{stationBean.personList}" lazy="true"
+					paginator="true" rows="5" paginatorPosition="bottom"
+					rowIndexVar="index"
+					rowStyleClass="#{index mod 2 == 1 ? 'changeColor' : null}"
+					paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
+					currentPageReportTemplate="{currentPage}/{totalPage}"
+					rowKey="#{p.id}">
+					<f:facet name="header">
+						<h:outputText value="人员列表" />
+					</f:facet>
+					<p:column headerText="人员ID">
+						<h:outputText value="#{p.id}" title="#{p.id}"/>
+					</p:column>
+					<p:column headerText="姓名">
+						<h:outputText value="#{p.nachn}" title="#{p.nachn}"/>
+					</p:column>
+					<p:column headerText="英文名">
+						<h:outputText value="#{p.name2}" title="#{p.name2}"/>
+					</p:column>
+					<p:column headerText="所属岗位">
+						<h:outputText value="#{stationBean.station.stext}" title="#{stationBean.station.stext}"/>
+					</p:column>
+					<p:column headerText="操作" styleClass="operating_120">
+						<p:commandButton  title="取消分配" oncomplete="cancelConfirmDialog.show();" 
+							image="ui-icon ui-icon-close">
+							<f:setPropertyActionListener target="#{stationBean.person}"
+								value="#{p}" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+			</p:outputPanel>
+				
+		</h:form>
+	</p:dialog>
+	<h:form>
+			<p:confirmDialog id="cancelConfirmDialogId" message="您确定取消该人员分配吗?"  
+				                header="确定" severity="alert" widgetVar="cancelConfirmDialog">  
+							        <div align="center">
+								        <p:commandButton id="confirm" value="确定"  ajax="false" update="msg" oncomplete="cancelConfirmDialog.hide()"  
+								                    action="#{stationBean.cancelDistribution}" icon="ui-icon ui-icon-check"/>  
+								        <p:commandButton id="decline" value="取消" onclick="cancelConfirmDialog.hide()" type="button" icon="ui-icon ui-icon-cancel"  />   
+					   			 	</div>
+			</p:confirmDialog>
+		</h:form>
+</ui:composition>

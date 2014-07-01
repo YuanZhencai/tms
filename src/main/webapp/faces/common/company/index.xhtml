@@ -1,0 +1,126 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/template/template.xhtml">
+	
+	<ui:define name="title">服务公司管理</ui:define>
+
+	<ui:define name="content">
+		<style type="text/css">
+.changeColor {
+	background: #DEEDF7;
+}
+input[type='checkbox'] {
+	width: 10px;
+}
+
+input[type='radio'] {
+	width: 10px;
+}
+</style>
+<p:panel styleClass="panel1">
+	<p:breadCrumb id="dataTable_breadCrumb" preview="true"
+		expandEffectDuration="200" previewWidth="24" style="margin-bottom: 5px;">
+		<p:menuitem value="系统管理" url="#" />
+		<p:menuitem value="系统管理" url="#" />
+		
+		<p:menuitem value="组织用户管理 " url="#" />
+		<p:menuitem value="所属公司管理" url="#" />
+	</p:breadCrumb>
+		<h:form id="companySearchForm" >
+	<p:fieldset>
+					<h:panelGrid columns="8" columnClasses="column1,column2,column1,column2,column1,column2,column1,column2">
+				<h:outputText value="公司名称:" />
+				<p:inputText value="#{companyBean.companyManagerModel.stext}" />
+				<h:outputText value="地址：" />
+				<p:inputText value="#{companyBean.companyManagerModel.address}" />
+
+				<h:outputText value="所属机关:" />
+				<p:inputText value="#{companyBean.companyManagerModel.jgName}" />
+
+				<h:outputText value="状态 ：" />
+				<h:selectOneMenu value="#{companyBean.companyManagerModel.defuctInt}" styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+					<f:selectItem itemLabel="请选择" itemValue="" />
+					<f:selectItem itemLabel="生效" itemValue="Y" />
+					<f:selectItem itemLabel="失效" itemValue="N" />
+				</h:selectOneMenu>
+			</h:panelGrid>
+			<div align="right">
+				<p:commandButton  value="查询"
+					image="ui-icon ui-icon-search" actionListener="#{companyBean.search}" update="companyDataTable"  style="margin-right: 5px;"/>
+				<p:commandButton  value="重置" actionListener="#{companyBean.resetForm}" update="companySearchForm"  style="margin-right: 5px;" image="ui-icon ui-icon-cancel"/>
+			</div>
+</p:fieldset>
+	
+
+		<p:dataTable id="companyDataTable" var="company"
+			value="#{companyBean.lazyModel}" lazy="true"
+			paginator="true" rows="8" paginatorPosition="bottom"
+			paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {CurrentPageReport}"
+			 rowIndexVar="index"
+			rowStyleClass="#{index mod 2 == 0 ? 'changeColor' : null}" emptyMessage="没有记录" style="margin-top: 5px;">
+
+			<f:facet name="header">
+				<h:outputText value="所属公司列表" />
+				<div
+					style="text-align: right; position: relative; margin: -13px -5px 0px 0px; vertical-align: middle">
+					<p:commandButton value="增加" 	oncomplete="handleSaveRequest(xhr, status, args);" actionListener="#{companyBean.insert}" update="insertConfirmDiaLog,insertDiaLog,searchFormDialog" 	image="ui-icon ui-icon-disk"  />
+				</div>
+			</f:facet>
+
+			<p:column headerText="公司名称">
+				<h:outputText value="#{company.stext}" />
+			</p:column>
+
+			<p:column headerText="地址">
+				<h:outputText value="#{company.address}" />
+			</p:column>
+
+			<p:column headerText="邮编">
+				<h:outputText value="#{company.zipcode}" />
+			</p:column>
+
+			<p:column headerText="联系电话">
+				<h:outputText value="#{company.telphone}" />
+			</p:column>
+
+			<p:column headerText="所属税务机关">
+				<h:outputText value="#{company.jgName}" />
+			</p:column>
+			
+			<p:column headerText="状态">
+				<h:outputText value="#{company.defuctInt=='Y' ?'失效':'有效'}" />
+			</p:column>
+
+			<p:column headerText="操作">
+				<p:commandButton oncomplete="companyInsertConfirmDiaLog.show()"
+					update="insertConfirmDiaLog"  actionListener="#{companyBean.update}" title="编辑" image="ui-icon ui-icon-wrench">
+					<f:setPropertyActionListener target="#{companyBean.companySaveModel}" value="#{company}" />
+				</p:commandButton>
+			</p:column>
+		</p:dataTable>
+	</h:form>
+	<script>
+		 function handleSaveRequest(xhr, status, args) {
+			 var i,myObj;
+			 myObj=document.getElementsByName('insertDataForminsertDataForm:positionDataTable_selection_radio');
+			 
+			 for(i=0;i &lt; myObj.length;i++){
+			 if(myObj[i].checked)
+				 myObj[i].checked=false;
+				 break;
+			 };
+			 companyInsertDiaLog.show();
+			
+		}
+		
+	</script>
+	</p:panel>
+	<ui:include src="CompanyManagerInsertDialog.xhtml" />
+<ui:include src="insertConfirmDiaLog.xhtml" />
+<ui:include src="CompanyManagerSearchDialog.xhtml" />
+</ui:define>
+</ui:composition>

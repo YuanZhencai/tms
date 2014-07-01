@@ -1,0 +1,385 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:wcs="http://www.wcs-global.com/customtaglib"
+	xmlns:commentProcess="http://java.sun.com/jsf/composite/commentProcess"
+	template="/template/template.xhtml">
+
+	<ui:define name="title">#{msgs.title_registerAmountApply}</ui:define>
+	<ui:define name="styleAndScript">
+		<script language="JavaScript">
+		//计算保证金
+		function calculateMarign(){
+				var rest = jQuery("#rest").val();
+				rest = rest.replace(",","");
+				var canUse = jQuery("#canUse").val();
+				canUse = canUse.replace(",","");
+				var insure = rest - canUse;
+				var re = /^[0-9]+.?[0-9]*$/;
+				if(re.test(insure)){
+				  jQuery("#insure").val(insure);
+				}
+				
+			}
+			//计算未付款
+			function calculateNotPay(){
+				var signContract = jQuery("#signContract").val();
+				signContract = signContract.replace(",","");
+				var paidFunds = jQuery("#paidFunds").val();
+				paidFunds =paidFunds.replace(",","");
+				var notpayFounds = signContract- paidFunds;
+				var re = /^[0-9]+.?[0-9]*$/;
+				if(re.test(notpayFounds)){
+				  jQuery("#notpayFounds").val(notpayFounds);
+				}
+			}
+		</script>
+	</ui:define>
+	<ui:define name="content">
+
+		<input type="hidden" id="menuOne" value="15" />
+		<input type="hidden" id="menuTwo" value="16" />
+
+		<p:panel styleClass="panel1">
+			<h:form prependId="false" id="addRegisterForm"
+				onsubmit="statusComplete();">
+				<p:breadCrumb preview="true" expandEffectDuration="200"
+					previewWidth="24" style="width: 99.1%">
+					<p:menuitem value="#{msgs.item_regAmount}" url="#" />
+					<p:menuitem value="#{msgs.item_regAmountApply}" url="#" />
+				</p:breadCrumb>
+				<p:messages id="msg" />
+				<div style="position: relative; margin-top: 5px;">
+					<div class="style1">
+						<h:panelGrid columns="4"
+							columnClasses="column40,column2,column40,column2">
+							<h:outputLabel value="#{msgs.lbl_formFillDate}" />
+							<p:inputText id="registerDate" disabled="true"
+								value="#{registerCaptialBean.registerDate}" />
+
+							<h:outputLabel value="#{msgs.lbl_applyType}" />
+							<h:panelGroup>
+								<p:selectOneRadio id="applyType" required="true"
+									requiredMessage="#{msgs.msg_select_applyType}"
+									value="#{registerCaptialBean.instance.applyType}">
+									<f:selectItem itemLabel="#{msgs.lbl_isProject}" itemValue="Y" />
+									<f:selectItem itemLabel="#{msgs.lbl_notProject}" itemValue="N" />
+								</p:selectOneRadio>
+								<h:outputText
+									style="color:red; position: absolute; left: 684px; top: 17px;"
+									value=" *" />
+							</h:panelGroup>
+				
+							<h:outputLabel value="#{msgs.lbl_companyName_CN}" />
+							<h:panelGroup>
+								<h:selectOneMenu id="companyNameCn" required="true"
+									requiredMessage="#{msgs.msg_select_company}"
+									value="#{registerCaptialBean.companyId}"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									style="width:307px;">
+									<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" />
+									<f:selectItems value="#{registerCaptialBean.companyNameSelect}" />
+									<p:ajax listener="#{registerCaptialBean.companyEnName}"
+										update="companyNameEn,stockholderOutTable,payer" />
+								</h:selectOneMenu>
+								<h:outputText style="color:red;" value=" *" />
+							</h:panelGroup>
+
+							<h:outputLabel value="#{msgs.lbl_companyName_EN}" />
+							<p:inputText id="companyNameEn" disabled="true" style="width:297px;"
+								value="#{registerCaptialBean.companyNameEn}" />
+
+						</h:panelGrid>
+					</div>
+					<div style="position: relative; margin-top: 5px;">
+						<ui:include src="shareholder-list.xhtml" />
+					</div>
+					<div style="position: relative; margin-top: 5px;">
+						<div class="style1">
+							<h:panelGrid columns="4"
+								columnClasses="column41,column2,column21,column2">
+
+								<h:outputLabel value="#{msgs.lbl_presentCompanyAmountRemain}" />
+								<h:panelGroup>
+									<p:inputText id="rest" required="true"
+										requiredMessage="#{msgs.msg_input_presentCompnyAmountRemain}" label="#{msgs.lbl_presentCompanyAmountRemain_1}"
+										value="#{registerCaptialBean.instance.rest}"
+										converterMessage="#{msgs.msg_amountRemain_mustbe}"
+										validatorMessage="#{msgs.msg_amountRemain_mustBetween}">
+										<f:validateDoubleRange maximum="99999999.9999"
+											minimum="0.00" />
+										<f:convertNumber pattern="#,##0.####" />
+										<p:ajax listener="#{registerCaptialBean.calculate}"
+											update="insure,msg,canUse" />
+									</p:inputText>
+									<h:outputText value="#{msgs.lbl_tenThousand}" />
+									<h:outputText style="color:red;" value="  *" />
+								</h:panelGroup>
+								<h:outputLabel value="" />
+								<h:panelGroup>
+									<h:selectOneMenu value="#{registerCaptialBean.instance.restCu}"
+										id="restCu" required="true" requiredMessage="#{msgs.msg_select_currency}"
+										styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+										style="width:140px">
+										<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" />
+										<f:selectItems value="#{registerCaptialBean.currencySelect}" />
+										<p:ajax listener="#{registerCaptialBean.changeCu}"
+											update="canUseCu,insureCu" />
+									</h:selectOneMenu>
+									<h:outputText style="color:red;" value="  *" />
+								</h:panelGroup>
+
+
+								<h:outputLabel value="#{msgs.lbl_amountAvailable}" />
+								<h:panelGroup>
+									<p:inputText id="canUse" required="true"
+										requiredMessage="#{msgs.msg_input_availableAmount}" label="#{msgs.lbl_amountAvailable_1}"
+										value="#{registerCaptialBean.instance.canUse}"
+										converterMessage="#{msgs.msg_availableAmount_mustbeNum}"
+										validatorMessage="#{msgs.msg_availableAmount_mustBetween}">
+										<f:validateDoubleRange maximum="99999999.9999"
+											minimum="0.00" />
+										<f:convertNumber pattern="#,##0.####" />
+										<p:ajax listener="#{registerCaptialBean.calculateMarign}"
+											update="insure,msg,canUse" />
+									</p:inputText>
+									<h:outputText value="#{msgs.lbl_tenThousand}" />
+									<h:outputText style="color:red;" value="  *" />
+								</h:panelGroup>
+								<h:outputLabel value="" />
+								<h:selectOneMenu
+									value="#{registerCaptialBean.instance.canUseCu}" id="canUseCu"
+									disabled="true"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									style="width:140px">
+									<f:selectItems value="#{registerCaptialBean.currencySelect}" />
+								</h:selectOneMenu>
+
+								<h:outputLabel value="#{msgs.lbl_margin}" />
+								<h:panelGroup>
+									<p:inputText id="insure" label="#{msgs.lbl_margin_1}" disabled="true"
+										value="#{registerCaptialBean.instance.insure}"
+										converterMessage="#{msgs.msg_margin_mustbe}"
+										validatorMessage="#{msgs.msg_margin_mustBetween}">
+										<f:validateDoubleRange maximum="99999999.9999"
+											minimum="0.00" />
+										<f:convertNumber pattern="#,##0.####" />
+									</p:inputText>
+									<h:outputText value="#{msgs.lbl_tenThousand}" />
+								</h:panelGroup>
+								<h:outputLabel value="" />
+								<h:selectOneMenu
+									value="#{registerCaptialBean.instance.insureCu}" id="insureCu"
+									disabled="true"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									style="width:140px">
+									<f:selectItems value="#{registerCaptialBean.currencySelect}" />
+								</h:selectOneMenu>
+							</h:panelGrid>
+						</div>
+						<div class="style1">
+							<h:panelGrid columns="4"
+								columnClasses="column41,column2,column21,column2">
+								<h:outputLabel value="#{msgs.lbl_currentApplyAmount}" />
+								<h:panelGroup>
+									<p:inputText id="thisFonds" required="true"
+										requiredMessage="#{msgs.msg_input_currentApplyAmount}" label="#{msgs.lbl_currentApplyAmount_1}"
+										value="#{registerCaptialBean.instance.thisFonds}"
+										converterMessage="#{msgs.msg_currentApplyAmount_mustbe}"
+										validatorMessage="#{msgs.msg_currentApplyAmount_mustBetween}">
+										<f:validateDoubleRange maximum="99999999.9999"
+											minimum="0.00" />
+										<f:convertNumber pattern="#,##0.####" />
+
+									</p:inputText>
+									<h:outputText value="#{msgs.lbl_tenThousand}" />
+									<h:outputText style="color:red;" value="  *" />
+								</h:panelGroup>
+								<h:outputLabel value="" />
+								<h:panelGroup>
+									<h:selectOneMenu
+										value="#{registerCaptialBean.instance.thisFondsCu}"
+										id="thisFondsCu" required="true" requiredMessage="#{msgs.msg_select_currency}"
+										styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+										style="width:140px">
+										<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" />
+										<f:selectItems value="#{registerCaptialBean.currencySelect}" />
+									</h:selectOneMenu>
+									<h:outputText style="color:red;" value="  *" />
+								</h:panelGroup>
+
+								<h:outputLabel value="#{msgs.lbl_shareholder}" />
+								<h:selectOneMenu value="#{registerCaptialBean.instance.payer}"
+									id="payer"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									style="width:145px">
+									<f:selectItems value="#{registerCaptialBean.shareHolderSelect}" />
+								</h:selectOneMenu>
+								<h:outputLabel value="" />
+								<h:outputLabel value="" />
+							</h:panelGrid>
+						</div>
+						<div class="style1">
+							<h:panelGrid columns="4"
+								columnClasses="column41,column2,column21,column2">
+
+								<h:outputLabel value="#{msgs.lbl_signedContractAmount}" />
+								<h:panelGroup>
+									<p:inputText id="signContract" required="true"
+										requiredMessage="#{msgs.lbl_signedContractAmount_1}" label="#{msgs.lbl_signedContractAmount_1}"
+										value="#{registerCaptialBean.instance.signContract}">
+										<f:validateDoubleRange maximum="99999999.9999"
+											minimum="0.00" />
+										<f:convertNumber pattern="#,##0.####" />
+										<p:ajax listener="#{registerCaptialBean.calculatepay}"
+											update="notpayFounds,msg,paidFunds" />
+									</p:inputText>
+									<h:outputText value="#{msgs.lbl_tenThousand}" />
+									<h:outputText style="color:red;" value="  *" />
+								</h:panelGroup>
+								<h:outputLabel value="" />
+								<h:panelGroup>
+									<h:selectOneMenu
+										value="#{registerCaptialBean.instance.signConsCu}"
+										id="signConsCu"
+										styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+										style="width:140px">
+										<f:selectItems value="#{registerCaptialBean.currencySelect}" />
+
+										<p:ajax listener="#{registerCaptialBean.changePayCu}"
+											update="paidFundsCu,notpayCu" />
+									</h:selectOneMenu>
+									<h:outputText style="color:red;" value="  *" />
+								</h:panelGroup>
+
+								<h:outputLabel value="#{msgs.lbl_payedAmount}" />
+								<h:panelGroup>
+									<p:inputText id="paidFunds" required="true"
+										requiredMessage="#{msgs.msg_input_payedAmount}" label="#{msgs.lbl_payedAmount_1}"
+										value="#{registerCaptialBean.instance.paidFunds}">
+										<f:validateDoubleRange maximum="99999999.9999"
+											minimum="0.00" />
+										<f:convertNumber pattern="#,##0.####" />
+										<p:ajax listener="#{registerCaptialBean.calculateNotPay}"
+											update="notpayFounds,msg,paidFunds" />
+									</p:inputText>
+									<h:outputText value="#{msgs.lbl_tenThousand}" />
+									<h:outputText style="color:red;" value="  *" />
+								</h:panelGroup>
+								<h:outputLabel value="" />
+								<h:selectOneMenu
+									value="#{registerCaptialBean.instance.paidFundsCu}"
+									id="paidFundsCu" disabled="true"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									style="width:140px">
+									<f:selectItems value="#{registerCaptialBean.currencySelect}" />
+								</h:selectOneMenu>
+
+								<h:outputLabel value="#{msgs.lbl_notPayed}" />
+								<h:panelGroup>
+									<p:inputText id="notpayFounds" disabled="true"
+										value="#{registerCaptialBean.instance.notPayFounds}">
+										<f:convertNumber pattern="#,##0.####" />
+									</p:inputText>
+									<h:outputText value="#{msgs.lbl_tenThousand}" />
+								</h:panelGroup>
+								<h:outputLabel value="" />
+								<h:selectOneMenu
+									value="#{registerCaptialBean.instance.signConsCu}"
+									id="notpayCu" disabled="true"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									style="width:140px">
+									<f:selectItems value="#{registerCaptialBean.currencySelect}" />
+								</h:selectOneMenu>
+							</h:panelGrid>
+						</div>
+						<div class="style1">
+							<h:panelGrid columns="2" columnClasses="column41,column2">
+								<h:outputLabel value="#{msgs.lbl_amountApplication}" />
+								<h:panelGroup>
+									<p:inputTextarea rows="2" style="width:933px;"
+										autoResize="false" value="#{registerCaptialBean.instance.use}"
+										required="true" requiredMessage="#{msgs.msg_input_amountApplication_current}"
+										validatorMessage="#{msgs.msg_beyondLength_amountApplication}" id="use">
+										<f:validateLength maximum="200" for="use" />
+									</p:inputTextarea>
+									<h:outputText style="color:red;" value="  *" />
+								</h:panelGroup>
+
+								<h:outputLabel value="#{msgs.lbl_remitRouteAndAccountNo}" />
+								<h:panelGroup>
+									<p:inputTextarea rows="5" style="width:933px;"
+										autoResize="false"
+										value="#{registerCaptialBean.instance.pathAndCount}"
+										required="true" requiredMessage="#{msgs.msg_input_remitRouteAndAccountNo}"
+										validatorMessage="#{msgs.msg_beyondLength_remitRouteAndAmountNo}" id="pathAndCount">
+										<f:validateLength maximum="2000" for="pathAndCount" />
+									</p:inputTextarea>
+									<h:outputText style="color:red;" value="  *" />
+								</h:panelGroup>
+
+								<h:outputLabel value="#{msgs.headerText_memo}：" />
+								<h:panelGroup>
+									<p:inputTextarea rows="2" style="width:933px;"
+										autoResize="false" required="true" requiredMessage="#{msgs.msg_input_memo}"
+										value="#{registerCaptialBean.instance.remark}"
+										validatorMessage="#{msgs.msg_beyondLength_memo}" id="pe">
+										<f:validateLength maximum="200" for="pe" />
+									</p:inputTextarea>
+									<h:outputText style="color:red;" value="  *" />
+								</h:panelGroup>
+							</h:panelGrid>
+							<div>
+								<p:commandButton icon="ui-icon ui-icon-arrowthick-1-n"
+									value="#{msgs.btn_upload}" title="#{msgs.title_AFCE_attach}" immediate="true"
+									oncomplete="fileUploadDialog.show()" update="fileuploadForm">
+									<f:setPropertyActionListener value="TMS_RegiCapital"
+										target="#{registerCaptialBean.workClassName}" />
+								</p:commandButton>
+								&#160;&#160;
+								<p:commandButton id="create" onclick="buttonDisable('create');"  icon="ui-icon ui-icon-disk" value="#{msgs.btn_submit}"
+									action="#{registerCaptialBean.applyRegister}" ajax="false" />
+							</div>
+						</div>
+
+
+					</div>
+				</div>
+			</h:form>
+			<h:form enctype="multipart/form-data" id="fileuploadForm">
+				<wcs:fileUpload updateComponet="msg,attachmentPanel,fileForm"
+					docTableId="fileForm" upListener="#{registerCaptialBean}">
+				</wcs:fileUpload>
+			</h:form>
+
+			<h:form prependId="false" id="fileForm">
+				<div style="position: relative; margin-top: 5px;">
+					<ui:fragment rendered="#{registerCaptialBean.showDetailDoc}"
+						id="fileDIV">
+						<p:outputPanel id="attachmentPanel">
+							<commentProcess:newfiledownload
+								updateComenId="attachmentPanel,msg"
+								dataList="#{registerCaptialBean.processFileList}"
+								downloadBean="#{registerCaptialBean}" />
+						</p:outputPanel>
+					</ui:fragment>
+				</div>
+			</h:form>
+		</p:panel>
+		<script type="text/javascript">
+			var isFirst = "true";
+			function buttonDisable(buttonId){
+				if("true"==isFirst){
+					isFirst="false";
+					return true;
+				}else{
+					document.getElementById(buttonId).disabled=true;
+					return false;
+				}
+			}
+		</script>
+	</ui:define>
+</ui:composition>

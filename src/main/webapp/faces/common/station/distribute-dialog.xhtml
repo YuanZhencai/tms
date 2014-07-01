@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:w="http://www.wcs-global.com/customtaglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<p:dialog header="人员选择" widgetVar="personMultipleSelectDialogVar"
+		id="personMultipleSelectDialogId" resizable="false" width="900" height="400"
+		modal="true">
+		<p:ajax event="close" listener="#{stationBean.clear}"
+			update="personMultipleSelectTable" />
+		
+		<h:form id="personMultipleSelectForm" prependId="false">
+			<p:dataTable id="personMultipleSelectTable" var="poVo"
+				value="#{stationBean.personDataModel}"
+				widgetVar="personMultipleSelectTableVar" paginator="true"
+				paginatorPosition="bottom" selectionMode="single"
+				rowKey="#{poVo.pId}" rows="10"
+				selection="#{stationBean.selectedPerson}"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+				currentPageReportTemplate="{currentPage}/{totalPage}"
+				emptyMessage="#{msgs.dataTable_empty}" >
+				<p:column>
+					<f:facet name="header">
+						<div>人员ID</div>
+						<p:inputText id="pId" style="width: 100px;" onkeydown="if(event.keyCode==13) { return false; }" onkeyup="if(event.keyCode==13) {document.getElementById('personMultipleSelectTable:pid').focus();}"
+							value="#{stationBean.personSearchConditionMap['id']}">
+							<p:ajax event="change" update="personMultipleSelectTable"
+								listener="#{stationBean.filterPerson}" />
+						</p:inputText>
+					</f:facet>
+					<h:outputText value="#{poVo.pId}" />
+				</p:column>
+				
+				<p:column>
+					<f:facet name="header">
+						<div>姓名</div>
+						<p:inputText id="pName" style="width: 100px;" onkeydown="if(event.keyCode==13) { return false; }" onkeyup="if(event.keyCode==13) {document.getElementById('personMultipleSelectTable:pName').focus();}"
+							value="#{stationBean.personSearchConditionMap['name']}">
+							<p:ajax event="change" update="personMultipleSelectTable"
+								listener="#{stationBean.filterPerson}" />
+						</p:inputText>
+					</f:facet>
+					<h:outputText value="#{poVo.pName}" /> 
+				</p:column>
+				
+				<p:column>
+					<f:facet name="header">
+						<div>人员帐号</div>
+						<p:inputText id="userName" style="width: 100px;" onkeydown="if(event.keyCode==13) { return false; }" onkeyup="if(event.keyCode==13) {document.getElementById('personMultipleSelectTable:userName').focus();}"
+							value="#{stationBean.personSearchConditionMap['userName']}">
+							<p:ajax event="change" update="personMultipleSelectTable"
+								listener="#{stationBean.filterPerson}" />
+						</p:inputText>
+					</f:facet>
+					<h:outputText value="#{poVo.userName}" />
+				</p:column>
+
+				<f:facet name="footer">  
+            		<p:commandButton value="确定" icon="ui-icon-check"  update="msg"
+            		action="#{stationBean.saveDistribution}" oncomplete="personMultipleSelectDialogVar.hide();"/>
+        		</f:facet>
+				
+			</p:dataTable>
+		</h:form>
+	</p:dialog>
+</ui:composition>

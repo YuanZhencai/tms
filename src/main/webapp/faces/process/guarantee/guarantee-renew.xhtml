@@ -1,0 +1,230 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:wcs="http://www.wcs-global.com/customtaglib"
+	xmlns:commentProcess="http://java.sun.com/jsf/composite/commentProcess"
+	template="/template/template.xhtml">
+
+	<ui:define name="title">内部担保申请</ui:define>
+	<ui:define name="content">
+		<p:panel styleClass="panel1">
+			<h:form id="guaranteeForm" prependId="false" onsubmit="statusComplete();">
+				<p:breadCrumb preview="true" expandEffectDuration="200"
+					previewWidth="24" style="width: 99.1%">
+					<p:menuitem value="#{msgs.menItem_process}" url="#" />
+					<p:menuitem value="#{msgs.menItem_process}" url="#" />
+					<p:menuitem value="内部担保申请" url="#" />
+				</p:breadCrumb>
+
+
+				<p:messages id="msg" autoUpdate="true"/>
+
+				<div class="style11">
+					<h:panelGrid columns="8"
+						columnClasses="column40,column2,column40,column2,column0,column2,column0,column2">
+
+						<h:outputText value="申请公司名称: " />
+						<h:panelGroup>
+							<h:selectOneMenu style="width:307px;"
+								value="#{innerGuaranteeBean.procGuarantee.company.id}"
+								styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+								required="true" requiredMessage="#{msgs.txt_applyCompanyNoNull}">
+								<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" itemValue="" />
+								<f:selectItems value="#{innerGuaranteeBean.companySelect}" />
+								<p:ajax listener="#{innerGuaranteeBean.updateCompany}"
+										update="topBankId" />							
+							</h:selectOneMenu>
+							<h:outputText style="color:red;" value="*" />
+
+						</h:panelGroup>
+
+						<h:outputText value="银行授信申请流程实例编号: " />
+						<h:panelGroup>
+							<p:inputText value="#{innerGuaranteeBean.procGuarantee.crditProcInstId}">
+							</p:inputText>
+						</h:panelGroup>
+					</h:panelGrid>
+
+
+					<h:panelGrid columns="8"
+						columnClasses="column40,column2,column40,column2,column0,column2,column0,column2">
+
+						<h:outputText value="申请担保金额: " />
+						<h:panelGroup>
+							<p:inputText id="applyGuarAmount" value="#{innerGuaranteeBean.procGuarantee.applyGuarAmount}"  converterMessage="申请担保金额：必须是数字"
+							validatorMessage="本次申请资金金额必须在0~100000000"
+							 required="true" requiredMessage="申请担保金额：不可为空!">
+								<f:validateDoubleRange maximum="99999999" minimum="0" />
+								<f:convertNumber pattern="#,##0.000" />
+								<p:ajax event="blur" update="applyGuarAmount"/>
+							</p:inputText>
+							<h:outputText style="color:red;" value="*" />
+							<h:outputText value="#{msgs.lbl_tenThousand}" />
+						</h:panelGroup>
+
+
+						<h:panelGroup>
+							<h:selectOneMenu 
+								value="#{innerGuaranteeBean.procGuarantee.guarAmountCu}"
+								styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+								<f:selectItems value="#{innerGuaranteeBean.currencySelect}" />
+							</h:selectOneMenu>
+						</h:panelGroup>
+
+					</h:panelGrid>
+
+					<h:panelGrid columns="8"
+						columnClasses="column40,column2,column40,column2,column0,column2,column0,column2">
+						<h:outputText value="担保期限（月份）: " />
+						<h:panelGroup>
+							<p:inputText id="limitMonth" validatorMessage="担保期限（月份）：值必须为大于0小于99999999的整数" value="#{innerGuaranteeBean.procGuarantee.limitMonth}" required="true" requiredMessage="担保期限（月份）：不可为空!">
+								<f:validateLongRange minimum="0"></f:validateLongRange>								
+							</p:inputText>
+							<h:outputText style="color:red;" value="*" />	
+						</h:panelGroup>
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+						
+						<h:outputText value="主债权期限（月份）:" />
+						<h:panelGroup>
+							<p:inputText id="creditorLimitMonth" validatorMessage="主债权期限（月份）:值必须为大于0小于99999999的整数" value="#{innerGuaranteeBean.procGuarantee.creditorLimitMonth}" required="true" requiredMessage="主债权期限（月份）：不可为空!">
+								<f:validateLongRange minimum="0"></f:validateLongRange>									
+							</p:inputText>
+							<h:outputText style="color:red;" value="*" />	
+						</h:panelGroup>
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+
+					</h:panelGrid>
+
+					<h:panelGrid columns="3"   width="60%" columnClasses="column40,column2,column2">
+						<h:outputLabel value="受益人:" />
+						<h:panelGroup>
+							<h:selectOneMenu id="topBankId" required="true"
+									label="#{msgs.lbl_topBank}" style="width:307px;"
+									requiredMessage="受益人：总行不可为空！"
+									value="#{innerGuaranteeBean.topBankId}"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+									<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" />
+									<f:selectItems value="#{innerGuaranteeBean.topLevelSelect}" />
+									<p:ajax update="branchSelectId,msg" listener="#{innerGuaranteeBean.bankChange}" />
+								</h:selectOneMenu>
+								<h:outputText style="color:red;" value="*" />							
+						
+						</h:panelGroup>
+						
+						<h:panelGroup>
+								<h:selectOneMenu id="branchSelectId" required="true"
+									label="#{msgs.lbl_branchSelect}" style="width:280px;"
+									requiredMessage="受益人：支行不可为空！"
+									value="#{innerGuaranteeBean.branchSelectId}"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+									<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" />
+									<f:selectItems value="#{innerGuaranteeBean.branchSelect}" />									
+								</h:selectOneMenu>
+								<h:outputText style="color:red;" value="*" />
+							</h:panelGroup>
+					</h:panelGrid>
+					
+					<h:panelGrid columns="2" columnClasses="column40,column2">
+						<h:outputLabel value="用途:" />
+						<h:panelGroup>
+							<p:inputTextarea id="use" validatorMessage="用途：不能超过最大长度200" autoResize="false" cols="100" rows="5" value="#{innerGuaranteeBean.procGuarantee.useDesc}"
+								required="true" requiredMessage="用途：不可为空!">
+								<f:validateLength maximum="200"/>
+							</p:inputTextarea>
+							<h:outputText style="color:red;" value="*" />
+						</h:panelGroup>
+						
+						<h:outputLabel value="#{msgs.lbl_againApplyNote}：" />
+						<h:panelGroup>
+							<p:inputTextarea id="peMemo" label="#{msgs.lbl_againApplyNote}" autoResize="false" cols="100" rows="5" value="#{innerGuaranteeBean.procGuarantee.peMemo}" 
+								validatorMessage="#{msgs.msg_approveRemark_beyend}" required="true" requiredMessage="重新申请备注：不能为空!">
+								<f:validateLength maximum="200" for="peMemo" />
+							</p:inputTextarea>
+							<h:outputText style="color:red;" value="*" />
+						</h:panelGroup>
+					</h:panelGrid>
+					
+
+
+					<div align="right">
+							<h:panelGrid columns="2" columnClasses="column41l,column2">
+								<h:outputLabel value="#{msgs.lbl_doNext}" />
+								<p:selectBooleanCheckbox id="doNext" value="#{innerGuaranteeBean.doNext}"/>
+							</h:panelGrid>						
+							&#160;&#160;
+							<p:commandButton id="pass"  onclick="buttonDisable('pass');" action="#{innerGuaranteeBean.doApprove}" ajax="false" value="#{msgs.btn_submit}" image="ui-icon ui-icon-circle-check" >
+								<f:setPropertyActionListener target="#{innerGuaranteeBean.approveStatus}" value="Y"></f:setPropertyActionListener>
+							</p:commandButton>
+						</div>
+				</div>
+
+			<br />
+
+				<p:outputPanel id="detailVoListPl">
+					<p:dataTable var="detailVo" id="detailVoList"
+						value="#{innerGuaranteeBean.detailVos}" rowKey="#{detailVo.id}"
+						rows="100" emptyMessage="#{msgs.empty_data_msg}">
+
+						<f:facet name="header">#{msgs.head_detailVoList}</f:facet>
+
+						<p:column headerText="#{msgs.headerText_prossNodeName}">
+							<h:outputText value="#{detailVo.prossNodeName}" />
+						</p:column>
+
+						<p:column headerText="#{msgs.headerText_operatorsName}">
+							<h:outputText
+								value="#{currentUser.exchange2CN(detailVo.operatorsName)}" />
+						</p:column>
+
+						<p:column headerText="#{msgs.headerText_operatorTime}">
+							<h:outputText value="#{detailVo.operatorTime}">
+								<f:convertDateTime timeZone="GMT+8"
+									pattern="yyyy-MM-dd HH:mm:ss" />
+							</h:outputText>
+						</p:column>
+
+						<p:column headerText="#{msgs.headerText_remark}">
+							<h:outputText value="#{detailVo.nodeMemo}" />
+						</p:column>
+					</p:dataTable>
+				</p:outputPanel>
+			</h:form>
+
+
+			<h:form prependId="false" id="fileForm">
+				<div style="position: relative; margin-top: 5px;">
+					<p:outputPanel id="attachmentPanel">
+						<commentProcess:filedownload updateComenId="attachmentPanel"
+							isDisable="true" dataList="#{innerGuaranteeBean.processFileList}" />
+					</p:outputPanel>
+				</div>
+			</h:form>
+		</p:panel>
+		<script type="text/javascript">
+			var isFirst = "true";
+			function buttonDisable(buttonId){
+				if("true"==isFirst){
+					isFirst="false";
+					return true;
+				}else{
+					document.getElementById(buttonId).disabled=true;
+					return false;
+				}
+			}
+		</script>
+	</ui:define>
+</ui:composition>

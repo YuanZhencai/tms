@@ -1,0 +1,19 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<p:dialog header="#{msgs.head_fileUploadDialog}" widgetVar="fileUploadDialog" resizable="false"
+		width="800" modal="true" height="500">
+		<p:fileUpload fileUploadListener="#{upListener.handleFileUpload}"
+			styleClass="dialogFileUpload" update="#{updateComponet}"
+			mode="advanced" multiple="true" label="#{msgs.btn_select}" uploadLabel="#{msgs.btn_upload}"
+			cancelLabel="#{msgs.btn_cancel}"
+			allowTypes="/(\.|\/)(gif|jpeg|jpg|png|txt|xls|doc|docx|xlsx|pdf|msg|eml|GIF|JPEG|JPG|PNG|TXT|XLS|DOC|DOCX|XLSX|PDF|MSG|EML)$/"
+			sizeLimit="5242880"
+			invalidSizeMessage="#{msgs.msg_fileUpload_invalidSize}" 
+			invalidFileMessage="#{msgs.msg_fileUpload_invalidFile}" />
+
+	</p:dialog>
+
+</ui:composition>

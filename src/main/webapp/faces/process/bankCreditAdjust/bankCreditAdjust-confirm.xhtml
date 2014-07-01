@@ -1,0 +1,707 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/template/template.xhtml">
+
+	<ui:define name="title">银行授信额度调剂确认</ui:define>
+
+	<ui:define name="content">
+
+		<input type="hidden" id="menuOne" value="15" />
+		<input type="hidden" id="menuTwo" value="20" />
+
+		<h:form id="inveProductForm" prependId="false" onsubmit="statusComplete();">
+			<p:panel styleClass="panel1">
+				<p:breadCrumb preview="true" expandEffectDuration="200"
+					previewWidth="24" style="width: 99.1%">
+					<p:menuitem value="#{msgs.menItem_process} " url="#" />
+					<p:menuitem value="#{msgs.menItem_process}" url="#" />
+					<p:menuitem value="#{msgs.menItem_creditAdjustAffirm}" url="#" />
+				</p:breadCrumb>
+
+				<p:messages id="msg" />
+
+				<div class="style11">
+					<h:panelGrid columns="8" columnClasses="column41,column2,column41,column2,column0,column2,column0,column2">
+
+						<h:outputLabel value="#{msgs.lbl_applicationName}：" />
+						<h:selectOneMenu id="companyName" name="companyName" style="width:307px;"
+							value="#{bankCreditAdjustBean.procBankCreditAdjust.company.id}" 
+							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all" disabled="true">
+							<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" itemValue=""/>
+							<f:selectItems value="#{bankCreditAdjustBean.companySelect}" />
+							<p:ajax update="msg,childBankName,creditOri,creditCu"
+								listener="#{bankCreditAdjustBean.ajaxChildBank}">
+							</p:ajax>
+						</h:selectOneMenu>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						
+						<h:outputLabel value="#{msgs.lbl_creditBank}：" />
+						<h:panelGroup>
+							<h:selectOneMenu id="childBankName" name="childBankName" style="width:307px;"
+								value="#{bankCreditAdjustBean.procBankCreditAdjust.bank.id}" 
+								styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all" disabled="true">
+								<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" itemValue=""/>
+								<f:selectItems value="#{bankCreditAdjustBean.childBankSelect}" />
+								<p:ajax update="msg,creditOri,creditCu"
+									listener="#{bankCreditAdjustBean.ajaxCredit}">
+								</p:ajax>
+							</h:selectOneMenu>
+						</h:panelGroup>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+					</h:panelGrid>
+					<h:panelGrid columns="8" columnClasses="column41,column2,column41,column2,column0,column2,column0,column2">	
+						<h:outputLabel value="#{msgs.lbl_bankApprovedIncrease}：" />
+						<h:panelGroup>
+							<p:inputText id="creditAdd" label="#{msgs.lbl_bankApprovedIncrease}"
+								value="#{bankCreditAdjustBean.procBankCreditAdjust.creditAdd}" required="true" requiredMessage="#{msgs.msg_bankApprovedIncreaseNoNull}">
+								<f:convertNumber pattern="#,##0.####"/>
+								<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"></f:validateDoubleRange>
+								<p:ajax event="blur" update="creditTotal"></p:ajax>	
+							</p:inputText>
+							<h:outputLabel>#{msgs.lbl_tenThousand}</h:outputLabel>
+							<h:outputText style="color:red;" value="*" />
+						</h:panelGroup>
+						<h:outputLabel value="#{msgs.lbl_bankApprovedIncreaseTotal}：" />
+						<h:panelGroup>
+							<p:inputText id="creditTotal"
+								value="#{bankCreditAdjustBean.procBankCreditAdjust.creditOri + bankCreditAdjustBean.procBankCreditAdjust.creditAdd}" disabled="true" >
+								<f:convertNumber pattern="#,##0.####"/>
+							</p:inputText>
+							<h:outputLabel>#{msgs.lbl_tenThousand}</h:outputLabel>
+						</h:panelGroup>
+						<h:outputLabel value="#{msgs.txt_currency}："/>
+						<h:selectOneMenu id="creditCu" name="creditCu"
+							value="#{bankCreditAdjustBean.procBankCreditAdjust.creditCu}"
+							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all" disabled="true">
+							<f:selectItems value="#{bankCreditAdjustBean.currencySelect}" />
+						</h:selectOneMenu>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						
+						<h:outputLabel value="#{msgs.lbl_liquidityPayment}：" />
+						<h:panelGroup>
+							<p:inputText id="liquCred" label="#{msgs.lbl_workingCapitalLoans}"
+								value="#{bankCreditAdjustBean.procBankCreditAdjust.liquCred}" required="true" requiredMessage="#{msgs.msg_workingCapitalLoansNoNull}">
+								<f:convertNumber pattern="#,##0.####"/>
+								<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"></f:validateDoubleRange>
+							</p:inputText>
+							<h:outputLabel>#{msgs.lbl_tenThousand}</h:outputLabel>
+							<h:outputText style="color:red;" value="*" />
+						</h:panelGroup>
+						<h:outputLabel value="#{msgs.lbl_bankAcceptance}：" />
+						<h:panelGroup>
+							<p:inputText id="bankAcpt" label="#{msgs.lbl_bankAcceptance}"
+								value="#{bankCreditAdjustBean.procBankCreditAdjust.bankAcpt}" required="true" requiredMessage="#{msgs.msg_bankAcceptanceNoNull}">
+								<f:convertNumber pattern="#,##0.####"/>
+								<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"></f:validateDoubleRange>
+							</p:inputText>
+							<h:outputLabel>#{msgs.lbl_tenThousand}</h:outputLabel>
+							<h:outputText style="color:red;" value="*" />
+						</h:panelGroup>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						
+						<h:outputLabel value="#{msgs.lbl_inLetterCredit}：" />
+						<h:panelGroup>
+							<p:inputText id="importCredit" label="#{msgs.lbl_inLetterCredit}"
+								value="#{bankCreditAdjustBean.procBankCreditAdjust.importCredit}" required="true" requiredMessage="#{msgs.msg_inLetterCreditNoNull}">
+								<f:convertNumber pattern="#,##0.####"/>
+								<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"></f:validateDoubleRange>
+							</p:inputText>
+							<h:outputLabel>#{msgs.lbl_tenThousand}</h:outputLabel>
+							<h:outputText style="color:red;" value="*" />
+						</h:panelGroup>
+						<h:outputLabel value="#{msgs.lbl_importBillAdvance}：" />
+						<h:panelGroup>
+							<p:inputText id="importFinance" label="#{msgs.lbl_importBillAdvance}"
+								value="#{bankCreditAdjustBean.procBankCreditAdjust.importFinance}" required="true" requiredMessage="#{msgs.msg_importBillAdvanceNoNull}">
+								<f:convertNumber pattern="#,##0.####"/>
+								<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"></f:validateDoubleRange>
+							</p:inputText>
+							<h:outputLabel>#{msgs.lbl_tenThousand}</h:outputLabel>
+							<h:outputText style="color:red;" value="*" />
+						</h:panelGroup>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						
+						<h:outputLabel value="#{msgs.lbl_outportBillAdvance}：" />
+						<h:panelGroup>
+							<p:inputText id="outportFinance" label="#{msgs.lbl_outportBillAdvance}"
+								value="#{bankCreditAdjustBean.procBankCreditAdjust.outportFinance}" required="true" requiredMessage="#{msgs.msg_outportBillAdvanceNoNull}">
+								<f:convertNumber pattern="#,##0.####"/>
+								<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"></f:validateDoubleRange>
+							</p:inputText>
+							<h:outputLabel>#{msgs.lbl_tenThousand}</h:outputLabel>
+							<h:outputText style="color:red;" value="*" />
+						</h:panelGroup>
+						<h:outputLabel value="#{msgs.lbl_dollarFlow}：" />
+						<h:panelGroup>
+							<p:inputText id="dollarFlow" label="#{msgs.lbl_dollarFlow}"
+								value="#{bankCreditAdjustBean.procBankCreditAdjust.dollarFlow}" required="true" requiredMessage="#{msgs.msg_dollarFlowNoNull}">
+								<f:convertNumber pattern="#,##0.####"/>
+								<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"></f:validateDoubleRange>
+							</p:inputText>
+							<h:outputLabel>#{msgs.lbl_tenThousand}</h:outputLabel>
+							<h:outputText style="color:red;" value="*" />
+						</h:panelGroup>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						
+						<h:outputLabel value="#{msgs.lbl_civilLetterCredit}：" />
+						<h:panelGroup>
+							<p:inputText id="domesticCred" label="#{msgs.lbl_civilLetterCredit}"
+								value="#{bankCreditAdjustBean.procBankCreditAdjust.domesticCred}" required="true" requiredMessage="#{msgs.msg_civilLetterCreditNoNull}">
+								<f:convertNumber pattern="#,##0.####"/>
+								<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"></f:validateDoubleRange>
+							</p:inputText>
+							<h:outputLabel>#{msgs.lbl_tenThousand}</h:outputLabel>
+							<h:outputText style="color:red;" value="*" />
+						</h:panelGroup>
+						<h:outputLabel value="#{msgs.lbl_businessTicket}：" />
+						<h:panelGroup>
+							<p:inputText id="bussTicket" label="#{msgs.lbl_businessTicket}"
+								value="#{bankCreditAdjustBean.procBankCreditAdjust.bussTicket}" required="true" requiredMessage="#{msgs.msg_businessTicketNoNull}">
+								<f:convertNumber pattern="#,##0.####"/>
+								<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"></f:validateDoubleRange>
+							</p:inputText>
+							<h:outputLabel>#{msgs.lbl_tenThousand}</h:outputLabel>
+							<h:outputText style="color:red;" value="*" />
+						</h:panelGroup>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						
+						<h:outputLabel value="远期交易："/>
+						<h:panelGroup>
+							<p:inputText id="forwTrade" label="远期交易"
+								value="#{bankCreditAdjustBean.procBankCreditAdjust.forwTrade}" required="true" requiredMessage="远期交易不能为空">
+								<f:convertNumber pattern="#,##0.####"/>
+								<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"></f:validateDoubleRange>
+							</p:inputText>
+							<h:outputLabel>#{msgs.lbl_tenThousand}</h:outputLabel>
+							<h:outputText style="color:red;" value="*" />
+						</h:panelGroup>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+					</h:panelGrid>
+					<h:panelGrid columns="2" columnClasses="column41,column2">
+						<h:outputLabel value="#{msgs.lbl_otherProducts}：" />
+						<p:dataTable var="procRptAdjustO" id="procRptAdjustOs" value="#{bankCreditAdjustBean.procBankCreditAdjust.procRptAdjustOs}" rows="100" emptyMessage="#{msgs.empty_noSatisfactData}" style="width:450px">
+							<p:column headerText="#{msgs.txt_designation}" >
+								<h:outputText value="#{procRptAdjustO.otherName}" />
+							</p:column>
+							<p:column headerText="#{msgs.lbl_line_myriad}">
+								<h:outputText value="#{procRptAdjustO.otherLimit}" >
+									<f:convertNumber pattern="#,##0.####"/>
+								</h:outputText>
+							</p:column>
+							<p:column styleClass="operating_30" headerText="#{msgs.col_operate}">
+								<p:commandButton action="#{bankCreditAdjustBean.toEditRequestOther}"
+									image="ui-icon ui-icon-pencil" title="#{msgs.btn_recompose}" oncomplete="otherDlg.show()"
+									update="otherDlg,msg,errorMsg,errorMsg1,errorMsg2">
+									<f:setPropertyActionListener value="#{procRptAdjustO}"
+										target="#{bankCreditAdjustBean.procRptAdjustO}" />
+								</p:commandButton>
+							</p:column>
+						</p:dataTable>
+					
+						<h:outputLabel value="#{msgs.lbl_purpose}：" />
+						<p:inputTextarea id="use" cols="100" rows="5" autoResize="false" value="#{bankCreditAdjustBean.procBankCreditAdjust.use}" disabled="true"></p:inputTextarea>
+						
+						<h:outputLabel value="#{msgs.lbl_confirmRemark}：" />
+						<h:panelGroup>
+							<p:inputTextarea id="peMemo" cols="100" rows="5" autoResize="false" value="#{bankCreditAdjustBean.procBankCreditAdjust.peMemo}" 
+								validatorMessage="#{msgs.msg_confirmRemarkBeyand}" >
+								<f:validateLength maximum="200" for="peMemo" />
+							</p:inputTextarea>
+							<h:outputText style="color:red;" value="*" />
+						</h:panelGroup>
+					</h:panelGrid>
+					<div align="right">				
+						<h:panelGrid columns="2" columnClasses="column41l,column2">
+							<h:outputLabel value="#{msgs.lbl_doNext}" />
+							<p:selectBooleanCheckbox id="doNext" value="#{bankCreditAdjustBean.doNext}"/>
+						</h:panelGrid>
+						&#160;&#160;	
+						<p:commandButton id="toRequest" oncomplete="requestDlg.show()" value="#{msgs.dia_checkApplicationForm}" image="ui-icon ui-icon-search" />
+						&#160;&#160;
+						<p:commandButton id="pass" onclick="buttonDisable('pass');" action="#{bankCreditAdjustBean.doConfirm}" ajax="false" value="#{msgs.btn_confirm}" image="ui-icon ui-icon-disk" >
+							<f:setPropertyActionListener target="#{bankCreditAdjustBean.approveStatus}" value="N"></f:setPropertyActionListener>
+						</p:commandButton>
+					</div>
+				</div>
+					<p:outputPanel id="providerPl">
+						<p:dataTable var="procRptAdjustProv" id="providerList" value="#{bankCreditAdjustBean.procBankCreditAdjust.procRptAdjustProvs}" rowKey="#{procRptAdjustProv.id}" rows="100" emptyMessage="#{msgs.empty_noSatisfactData}">
+							<f:facet name="header">#{msgs.head_creditProviderList}</f:facet>
+							<p:column headerText="#{msgs.lbl_creditProvider}">
+								<h:outputText value="#{procRptAdjustProv.company.companyName}" />
+							</p:column>
+	
+							<p:column headerText="#{msgs.lbl_creditBank}">
+								<h:outputText value="#{procRptAdjustProv.bank.bankName}" />
+							</p:column>
+	
+							<p:column headerText="#{msgs.lbl_bankRatifReduce_w}">
+								<h:outputText value="#{procRptAdjustProv.creditReduce}" >
+									<f:convertNumber pattern="#,##0.####"/>
+								</h:outputText>
+							</p:column>
+							
+							<p:column styleClass="operating_60" headerText="#{msgs.col_operate}">
+								<p:commandButton action="#{bankCreditAdjustBean.toConfirmProvider}"
+									image="ui-icon ui-icon-pencil" title="#{msgs.btn_recompose}" oncomplete="providerDlg.show()"
+									update="providerDlg,msg,errorMsg,errorMsg1,errorMsg2">
+									<f:setPropertyActionListener value="#{procRptAdjustProv}"
+										target="#{bankCreditAdjustBean.procRptAdjustProv}" />
+								</p:commandButton>
+							</p:column>
+						</p:dataTable>
+					</p:outputPanel>
+					
+				<br />
+				<br />
+				<p:outputPanel id="detailVoListPl">
+					<p:dataTable var="detailVo" id="detailVoList" value="#{bankCreditAdjustBean.detailVos}" rowKey="#{detailVo.id}" rows="100" emptyMessage="#{msgs.empty_noSatisfactData}">
+
+						<f:facet name="header">#{msgs.head_detailVoList}</f:facet>
+
+						<p:column headerText="#{msgs.headerText_prossNodeName}">
+							<h:outputText value="#{detailVo.prossNodeName}" />
+						</p:column>
+
+						<p:column headerText="#{msgs.headerText_operatorsName}">
+							<h:outputText value="#{currentUser.exchange2CN(detailVo.operatorsName)}" />
+						</p:column>
+
+						<p:column headerText="#{msgs.headerText_operatorTime}">
+							<h:outputText value="#{detailVo.operatorTime}" >
+								<f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd HH:mm:ss"/>
+							</h:outputText>
+						</p:column>
+						
+						<p:column headerText="#{msgs.headerText_remark}">
+							<h:outputText value="#{detailVo.nodeMemo}" />
+						</p:column>
+					</p:dataTable>
+				</p:outputPanel>
+			</p:panel>
+		</h:form>
+		
+		<h:form prependId="false" id="providerAddForm">
+			<p:dialog header="#{msgs.lbl_confirmcreditProvider}" widgetVar="providerDlg" resizable="false"
+				modal="true" id="providerDlg" width="1000">
+				<p:messages id="errorMsg"/>
+				<h:panelGrid columns="8"
+					columnClasses="column41,column2,column41,column2,column0,column2,column0,column2">
+					<h:outputLabel value="#{msgs.lbl_creditProvider}：" />
+					<p:inputText id="dia_providerName" style="width:297px;"
+						value="#{bankCreditAdjustBean.procRptAdjustProv.company.companyName}" disabled="true"/>
+					<h:outputLabel value=""/>
+					<h:outputLabel value=""/>
+					<h:outputLabel value=""/>
+					<h:outputLabel value=""/>
+					<h:outputLabel value=""/>
+					<h:outputLabel value=""/>
+					
+					<h:outputLabel value="#{msgs.lbl_creditBank}：" />
+					<p:inputText id="dia_providerBank" style="width:297px;"
+						value="#{bankCreditAdjustBean.procRptAdjustProv.bank.bankName}" disabled="true"/>
+					<h:outputLabel value=""/>
+					<h:outputLabel value=""/>
+					<h:outputLabel value=""/>
+					<h:outputLabel value=""/>
+					<h:outputLabel value=""/>
+					<h:outputLabel value=""/>
+				</h:panelGrid>
+				<h:panelGrid columns="8"
+					columnClasses="column41,column2,column41,column2,column0,column2,column0,column2">	
+					<h:outputLabel value="#{msgs.lbl_bankRatifReduce}：" />
+					<h:panelGroup>
+						<p:inputText id="dia_creditReduce" label="#{msgs.lbl_bankRatifReduce}"
+							value="#{bankCreditAdjustBean.procRptAdjustProv.creditReduce}" required="true" requiredMessage="#{msgs.lbl_bankRatifReduceTotalNoNull}">
+							<f:convertNumber pattern="#,##0.####"/>
+							<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"></f:validateDoubleRange>
+						</p:inputText>
+						<h:outputLabel>#{msgs.lbl_tenThousand}</h:outputLabel>
+						<h:outputText style="color:red;" value="*" />
+					</h:panelGroup>
+					<h:outputLabel value="#{msgs.lbl_bankApprovedIncreaseTotal}：" />
+					<h:panelGroup>
+						<p:inputText id="dia_creditTotal" label="#{msgs.lbl_bankApprovedIncreaseTotal}"
+							value="#{bankCreditAdjustBean.procRptAdjustProv.creditTotal}" required="true" requiredMessage="#{msgs.lbl_bankRatifReduceTotalNoNull}">
+							<f:convertNumber pattern="#,##0.####"/>
+							<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"></f:validateDoubleRange>
+						</p:inputText>
+						<h:outputLabel>#{msgs.lbl_tenThousand}</h:outputLabel>
+						<h:outputText style="color:red;" value="*" />
+					</h:panelGroup>
+					<h:outputLabel value=""/>
+					<h:outputLabel value=""/>
+					<h:outputLabel value=""/>
+					<h:outputLabel value=""/>
+					
+					<h:outputLabel value="#{msgs.lbl_liquidityPayment}：" />
+					<h:panelGroup>
+						<p:inputText id="dia_liquCred" label="#{msgs.lbl_workingCapitalLoans}"
+							value="#{bankCreditAdjustBean.procRptAdjustProv.liquCred}" required="true" requiredMessage="#{msgs.msg_workingCapitalLoansNoNull}">
+							<f:convertNumber pattern="#,##0.####"/>
+							<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"></f:validateDoubleRange>
+						</p:inputText>
+						<h:outputLabel>#{msgs.lbl_tenThousand}</h:outputLabel>
+						<h:outputText style="color:red;" value="*" />
+					</h:panelGroup>
+					<h:outputLabel value="#{msgs.lbl_bankAcceptance}：" />
+					<h:panelGroup>
+						<p:inputText id="dia_bankAcpt" label="#{msgs.lbl_bankAcceptance}"
+							value="#{bankCreditAdjustBean.procRptAdjustProv.bankAcpt}" required="true" requiredMessage="#{msgs.msg_bankAcceptanceNoNull}">
+							<f:convertNumber pattern="#,##0.####"/>
+							<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"></f:validateDoubleRange>
+						</p:inputText>
+						<h:outputLabel>#{msgs.lbl_tenThousand}</h:outputLabel>
+						<h:outputText style="color:red;" value="*" />
+					</h:panelGroup>
+					<h:outputLabel value=""/>
+					<h:outputLabel value=""/>
+					<h:outputLabel value=""/>
+					<h:outputLabel value=""/>
+					
+					<h:outputLabel value="#{msgs.lbl_inLetterCredit}：" />
+					<h:panelGroup>
+						<p:inputText id="dia_importCredit" label="#{msgs.lbl_inLetterCredit}"
+							value="#{bankCreditAdjustBean.procRptAdjustProv.importCredit}" required="true" requiredMessage="#{msgs.msg_inLetterCreditNoNull}">
+							<f:convertNumber pattern="#,##0.####"/>
+							<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"></f:validateDoubleRange>
+						</p:inputText>
+						<h:outputLabel>#{msgs.lbl_tenThousand}</h:outputLabel>
+						<h:outputText style="color:red;" value="*" />
+					</h:panelGroup>
+					<h:outputLabel value="#{msgs.lbl_importBillAdvance}：" />
+					<h:panelGroup>
+						<p:inputText id="dia_importFinance" label="#{msgs.lbl_importBillAdvance}"
+							value="#{bankCreditAdjustBean.procRptAdjustProv.importFinance}" required="true" requiredMessage="#{msgs.msg_importBillAdvanceNoNull}">
+							<f:convertNumber pattern="#,##0.####"/>
+							<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"></f:validateDoubleRange>
+						</p:inputText>
+						<h:outputLabel>#{msgs.lbl_tenThousand}</h:outputLabel>
+						<h:outputText style="color:red;" value="*" />
+					</h:panelGroup>
+					<h:outputLabel value=""/>
+					<h:outputLabel value=""/>
+					<h:outputLabel value=""/>
+					<h:outputLabel value=""/>
+					
+					<h:outputLabel value="#{msgs.lbl_outportBillAdvance}：" />
+					<h:panelGroup>
+						<p:inputText id="dia_outportFinance" label="#{msgs.lbl_outportBillAdvance}"
+							value="#{bankCreditAdjustBean.procRptAdjustProv.outportFinance}" required="true" requiredMessage="#{msgs.msg_outportBillAdvanceNoNull}">
+							<f:convertNumber pattern="#,##0.####"/>
+							<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"></f:validateDoubleRange>
+						</p:inputText>
+						<h:outputLabel>#{msgs.lbl_tenThousand}</h:outputLabel>
+						<h:outputText style="color:red;" value="*" />
+					</h:panelGroup>
+					<h:outputLabel value="#{msgs.lbl_dollarFlow}：" />
+					<h:panelGroup>
+						<p:inputText id="dia_dollarFlow" label="#{msgs.lbl_dollarFlow}"
+							value="#{bankCreditAdjustBean.procRptAdjustProv.dollarFlow}" required="true" requiredMessage="#{msgs.msg_dollarFlowNoNull}">
+							<f:convertNumber pattern="#,##0.####"/>
+							<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"></f:validateDoubleRange>
+						</p:inputText>
+						<h:outputLabel>#{msgs.lbl_tenThousand}</h:outputLabel>
+						<h:outputText style="color:red;" value="*" />
+					</h:panelGroup>
+					<h:outputLabel value=""/>
+					<h:outputLabel value=""/>
+					<h:outputLabel value=""/>
+					<h:outputLabel value=""/>
+					
+					<h:outputLabel value="#{msgs.lbl_civilLetterCredit}：" />
+					<h:panelGroup>
+						<p:inputText id="dia_domesticCred" label="#{msgs.lbl_civilLetterCredit}"
+							value="#{bankCreditAdjustBean.procRptAdjustProv.domesticCred}" required="true" requiredMessage="#{msgs.msg_civilLetterCreditNoNull}">
+							<f:convertNumber pattern="#,##0.####"/>
+							<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"></f:validateDoubleRange>
+						</p:inputText>
+						<h:outputLabel>#{msgs.lbl_tenThousand}</h:outputLabel>
+						<h:outputText style="color:red;" value="*" />
+					</h:panelGroup>
+					<h:outputLabel value="#{msgs.lbl_businessTicket}：" />
+					<h:panelGroup>
+						<p:inputText id="dia_bussTicket" label="#{msgs.lbl_businessTicket}"
+							value="#{bankCreditAdjustBean.procRptAdjustProv.bussTicket}" required="true" requiredMessage="#{msgs.msg_businessTicketNoNull}">
+							<f:convertNumber pattern="#,##0.####"/>
+							<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"></f:validateDoubleRange>
+						</p:inputText>
+						<h:outputLabel>#{msgs.lbl_tenThousand}</h:outputLabel>
+						<h:outputText style="color:red;" value="*" />
+					</h:panelGroup>
+					<h:outputLabel value=""/>
+					<h:outputLabel value=""/>
+					<h:outputLabel value=""/>
+					<h:outputLabel value=""/>
+					
+					<h:outputLabel value="远期交易:"/>
+						<h:panelGroup>
+							<p:inputText id="dia_forwTrade" label="远期交易"
+								value="#{bankCreditAdjustBean.procRptAdjustProv.forwTrade}" required="true" requiredMessage="远期交易不能为空">
+								<f:convertNumber pattern="#,##0.####"/>
+								<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"></f:validateDoubleRange>
+							</p:inputText>
+							<h:outputLabel>#{msgs.lbl_tenThousand}</h:outputLabel>
+							<h:outputText style="color:red;" value="*" />
+						</h:panelGroup>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+				</h:panelGrid>
+				<h:panelGrid columns="2" columnClasses="column41,column2">
+					<h:outputLabel value="#{msgs.lbl_otherProducts}：" />
+					<p:dataTable var="procRptAdjustProvO" id="dia_procRptAdjustProvOs" value="#{bankCreditAdjustBean.procRptAdjustProv.procRptAdjustProvOs}" rows="100" emptyMessage="#{msgs.empty_noSatisfactData}" style="width:450px">
+						<p:column headerText="#{msgs.txt_designation}" >
+							<h:outputText value="#{procRptAdjustProvO.otherName}" />
+						</p:column>
+						<p:column headerText="#{msgs.lbl_line_myriad}">
+							<h:outputText value="#{procRptAdjustProvO.otherLimit}" >
+								<f:convertNumber pattern="#,##0.####"/>
+							</h:outputText>
+						</p:column>
+						<p:column styleClass="operating_30" headerText="#{msgs.col_operate}">
+							<p:commandButton action="#{bankCreditAdjustBean.toEditProviderOther}"
+								image="ui-icon ui-icon-pencil" title="#{msgs.btn_recompose}" oncomplete="provOtherDlg.show()"
+								update="provOtherDlg,msg,errorMsg,errorMsg1">
+								<f:setPropertyActionListener value="#{procRptAdjustProvO}"
+									target="#{bankCreditAdjustBean.procRptAdjustProvO}" />
+							</p:commandButton>
+						</p:column>
+					</p:dataTable>
+				</h:panelGrid>
+				<f:facet name="footer">
+					<p:commandButton action="#{bankCreditAdjustBean.confirmProvider}" value="#{msgs.btn_ok}" 
+						id="add" icon="ui-icon ui-icon-disk" update="providerPl,errorMsg"
+						oncomplete="handleComplete(providerDlg,args);" >
+					</p:commandButton>
+						&#160;&#160;
+					<p:commandButton value="#{msgs.btn_cancel}" onclick="providerDlg.hide()"
+						type="button" id="roleBACKID" icon="ui-icon ui-icon-cancel" />
+				</f:facet>
+			</p:dialog>
+		</h:form>
+		
+		<h:form prependId="false">
+			<p:dialog header="#{msgs.lbl_applyOtherProduce}" widgetVar="otherDlg" resizable="false"
+				modal="true" id="otherDlg" width="850">
+				<p:messages id="errorMsg1"/>
+				<h:panelGrid columns="6"
+					columnClasses="column40,column2,column0,column2,column41,column2">
+					<h:outputLabel value="#{msgs.txt_designation}：" />
+					<h:panelGroup>
+						<p:inputText id="dia_requestOtherName"
+							value="#{bankCreditAdjustBean.procRptAdjustO.otherName}" disabled="true" required="true" requiredMessage="#{msgs.msg_otherProduceNoNull}"/>
+						<h:outputText style="color:red;" value="*" />
+					</h:panelGroup>
+						
+					<h:outputLabel value="#{msgs.lbl_line}：" />
+					<h:panelGroup>
+						<p:inputText id="dia_requestOtherLimit" label="#{msgs.lbl_otherProductsCredit}" value="#{bankCreditAdjustBean.procRptAdjustO.otherLimit}" required="true" requiredMessage="#{msgs.msg_otherProductsCreditNoNull}">
+							<f:convertNumber pattern="#,##0.####"/>
+							<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"></f:validateDoubleRange>
+						</p:inputText>
+						<h:outputText style="color:red;" value="*" />
+					</h:panelGroup>
+				</h:panelGrid>
+				<f:facet name="footer">
+					<p:commandButton action="#{bankCreditAdjustBean.saveRequestOther}" value="#{msgs.btn_ok}" 
+						id="saveRequestOther" icon="ui-icon ui-icon-disk" update="procRptAdjustOs,errorMsg1"
+						oncomplete="handleComplete(otherDlg,args);" >
+					</p:commandButton>
+						&#160;&#160;
+					<p:commandButton value="#{msgs.btn_cancel}" onclick="otherDlg.hide()"
+						type="button" id="roleBACKID1" icon="ui-icon ui-icon-cancel" />
+				</f:facet>
+			</p:dialog>
+		</h:form>
+			
+		<h:form prependId="false">
+			<p:dialog header="#{msgs.head_suplyOtherProduce}" widgetVar="provOtherDlg" resizable="false"
+				modal="true" id="provOtherDlg" width="850">
+				<p:messages id="errorMsg2"/>
+				<h:panelGrid columns="6"
+					columnClasses="column40,column2,column0,column2,column41,column2">
+					<h:outputLabel value="#{msgs.txt_designation}：" />
+					<h:panelGroup>
+						<p:inputText id="dia_providerOtherName"
+							value="#{bankCreditAdjustBean.procRptAdjustProvO.otherName}" disabled="true" required="true" requiredMessage="#{msgs.msg_otherProduceNoNull}"/>
+						<h:outputText style="color:red;" value="*" />
+					</h:panelGroup>
+						
+					<h:outputLabel value="#{msgs.lbl_line}：" />
+					<h:panelGroup>
+						<p:inputText id="dia_providerOtherLimit" label="#{msgs.lbl_otherProductsCredit}" value="#{bankCreditAdjustBean.procRptAdjustProvO.otherLimit}" required="true" requiredMessage="#{msgs.msg_otherProductsCreditNoNull}">
+							<f:convertNumber pattern="#,##0.####"/>
+							<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"></f:validateDoubleRange>
+						</p:inputText>
+						<h:outputText style="color:red;" value="*" />
+					</h:panelGroup>
+				</h:panelGrid>
+				<f:facet name="footer">
+					<p:commandButton action="#{bankCreditAdjustBean.saveProviderOther}" value="#{msgs.btn_ok}" 
+						id="saveProviderOther" icon="ui-icon ui-icon-disk" update="dia_procRptAdjustProvOs,errorMsg2"
+						oncomplete="handleComplete(provOtherDlg,args);" >
+					</p:commandButton>
+						&#160;&#160;
+					<p:commandButton value="#{msgs.btn_cancel}" onclick="provOtherDlg.hide()"
+						type="button" id="roleBACKID2" icon="ui-icon ui-icon-cancel" />
+				</f:facet>
+			</p:dialog>
+		</h:form>
+		
+		<h:form prependId="false" id="requestForm">
+			<p:dialog header="#{msgs.head_checkCreditApplicationList}" widgetVar="requestDlg" resizable="false"
+				modal="true" id="requestDlg" width="1000">
+				<h:panelGrid columns="8" columnClasses="column40,column2,column40,column2,column0,column2,column0,column2">
+
+						<h:outputLabel value="#{msgs.lbl_zh_applyCompanyName}：" />
+						<h:selectOneMenu id="dia_companyName" name="dia_companyName" style="width:307px;"
+							value="#{bankCreditAdjustBean.procBankCreditAdjust.company.id}" 
+							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all" disabled="true">
+							<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" itemValue=""/>
+							<f:selectItems value="#{bankCreditAdjustBean.companySelect}" />
+						</h:selectOneMenu>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						
+						<h:outputLabel value="#{msgs.lbl_subbranchChinaName}：" />
+						<h:selectOneMenu id="dia_childBankName" name="dia_childBankName" style="width:307px;"
+							value="#{bankCreditAdjustBean.procBankCreditAdjust.bank.id}" 
+							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all" required="true" requiredMessage="#{msgs.txt_subbranchNoNull}" disabled="true">
+							<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" itemValue=""/>
+							<f:selectItems value="#{bankCreditAdjustBean.childBankSelect}" />
+						</h:selectOneMenu>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+					</h:panelGrid>
+					<h:panelGrid columns="8" columnClasses="column40,column2,column40,column2,column0,column2,column0,column2">	
+						<h:outputLabel value="#{msgs.lbl_originalCreditLimit}：" />
+						<h:panelGroup>
+							<p:inputText id="dia_creditOri"
+								value="#{bankCreditAdjustBean.procBankCreditAdjust.creditOri}" disabled="true">
+								<f:convertNumber pattern="#,##0.####"/>
+							</p:inputText>
+							<h:outputLabel>#{msgs.lbl_tenThousand}</h:outputLabel>
+						</h:panelGroup>
+						<h:selectOneMenu id="dia_creditCu" name="dia_creditCu"
+							value="#{bankCreditAdjustBean.procBankCreditAdjust.creditCu}"
+							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all" disabled="true">
+							<f:selectItems value="#{bankCreditAdjustBean.currencySelect}" />
+						</h:selectOneMenu>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						
+						<h:outputLabel value="#{msgs.lbl_addCreditLimit}：" />
+						<h:panelGroup>
+							<p:inputText id="dia_creditAdd"
+								value="#{bankCreditAdjustBean.procBankCreditAdjust.creditAdd}" disabled="true">
+								<f:convertNumber pattern="#,##0.####"/>
+							</p:inputText>
+							<h:outputLabel>#{msgs.lbl_tenThousand}</h:outputLabel>
+						</h:panelGroup>
+						<h:selectOneMenu id="dia_bankCreditCu" name="dia_bankCreditCu"
+							value="#{bankCreditAdjustBean.procBankCreditAdjust.creditCu}"
+							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all" disabled="true">
+							<f:selectItems value="#{bankCreditAdjustBean.currencySelect}" />
+						</h:selectOneMenu>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+					</h:panelGrid>
+					<h:panelGrid columns="2" columnClasses="column40,column2">
+						<h:outputLabel value="#{msgs.lbl_purpose}：" />
+						<p:inputTextarea id="dia_use" cols="100" rows="5" autoResize="false" value="#{bankCreditAdjustBean.procBankCreditAdjust.use}" disabled="true"></p:inputTextarea>
+
+					</h:panelGrid>
+					
+					<p:outputPanel id="dia_providerPl">
+						<p:dataTable var="provider" id="dia_providerList" value="#{bankCreditAdjustBean.providers}" rowKey="#{provider.providerId}" rows="100" emptyMessage="#{msgs.empty_noSatisfactData}">
+							<f:facet name="header">#{msgs.head_creditProviderList}</f:facet>
+							<p:column headerText="#{msgs.lbl_creditProvider}">
+								<h:outputText value="#{provider.providerName}" />
+							</p:column>
+	
+							<p:column headerText="#{msgs.lbl_creditBank}">
+								<h:outputText value="#{provider.providerBankName}" />
+							</p:column>
+	
+							<p:column headerText="#{msgs.lbl_confirmCreditTransf_w}">
+								<h:outputText value="#{provider.creditReduce}" >
+									<f:convertNumber pattern="#,##0.####"/>
+								</h:outputText>
+							</p:column>
+							
+						</p:dataTable>
+					</p:outputPanel>
+					
+					<f:facet name="footer">
+						<p:commandButton value="#{msgs.btn_cancel}" onclick="requestDlg.hide()"
+							type="button" id="requestRoleBACKID" icon="ui-icon ui-icon-cancel" />
+					</f:facet>
+			</p:dialog>
+		</h:form>
+		<script type="text/javascript">
+			var isFirst = "true";
+			function buttonDisable(buttonId){
+				if("true"==isFirst){
+					isFirst="false";
+					return true;
+				}else{
+					document.getElementById(buttonId).disabled=true;
+					return false;
+				}
+			}
+		</script>
+	</ui:define>
+
+</ui:composition>
+
+

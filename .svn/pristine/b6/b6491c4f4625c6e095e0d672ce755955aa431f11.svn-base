@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:w="http://www.wcs-global.com/customtaglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<p:dialog header="选择品项" widgetVar="cashPoolSumItemDialogVar"
+		id="cashPoolSumItemDialogId" resizable="false" modal="true">
+		<h:form id="cashPoolSumItemForm">
+			<h:panelGrid columns="2">
+				<h:outputText value="品项分类：" />
+				<h:selectOneMenu id="itemType" style="width:150px;"
+					value="#{cashPoolReportSelectBean.itemType}"
+					styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+					<f:selectItem itemLabel="全部" itemValue="" />
+					<f:selectItem itemLabel="贸易/生产" itemValue="zjmysc" />
+					<f:selectItem itemLabel="日常付款" itemValue="rcfk" />
+					<f:selectItem itemLabel="投融资" itemValue="tzrz" />
+					<f:selectItem itemLabel="工程款" itemValue="gck" />
+					<p:ajax event="change" update=":cashPoolSumItemForm"
+						process=":cashPoolSumItemForm"
+						listener="#{cashPoolReportSelectBean.handleItems()}"></p:ajax>
+				</h:selectOneMenu>
+			</h:panelGrid>
+			<div align="center" style="">
+				<h:panelGrid columns="1">
+					<p:pickList id="cashPoolSumItemPickList"
+						value="#{cashPoolReportSelectBean.itemDualList}" dynamic="true"
+						cache="true" converter="pickListConverter" var="it"
+						iconOnly="false" itemValue="#{it}">
+						<f:facet name="sourceCaption">
+							<h:outputText value="待选" />
+						</f:facet>
+						<f:facet name="targetCaption">
+							<h:outputText value="已选" />
+						</f:facet>
+						<p:column style="width:5%">
+						</p:column>
+						<p:column style="width:95%">
+						 #{it.itemName}
+					</p:column>
+					</p:pickList>
+				</h:panelGrid>
+				<h:panelGrid columns="2">
+					<p:commandButton value="确定" update=":cashPoolListForm"
+						oncomplete="cashPoolSumItemDialogVar.hide()"
+						action="#{cashPoolReportSelectBean.sureSelectItem()}" />
+					<p:commandButton value="取消" update=":cashPoolListForm"
+						style="margin-left:10px;" process="@none"
+						oncomplete="cashPoolSumItemDialogVar.hide()" />
+				</h:panelGrid>
+			</div>
+		</h:form>
+	</p:dialog>
+</ui:composition>

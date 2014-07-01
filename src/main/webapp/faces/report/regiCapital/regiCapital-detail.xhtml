@@ -1,0 +1,219 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/template/template.xhtml">
+
+	<ui:define name="title">注册资本金详细表</ui:define>
+
+	<ui:define name="content">
+
+		<input type="hidden" id="menuOne" value="21" />
+		<input type="hidden" id="menuTwo" value="22" />
+
+		<h:form id="purchaseForm" prependId="false"
+			onsubmit="statusComplete();">
+			<p:panel styleClass="panel1">
+				<p:breadCrumb preview="true" expandEffectDuration="200"
+					previewWidth="24" style="width: 99.1%">
+					<p:menuitem value="#{msgs.menItem_form}" url="#" />
+					<p:menuitem value="#{msgs.menItem_form}" url="#" />
+					<p:menuitem value="注册资本金详细表" url="#" />
+				</p:breadCrumb>
+
+				<p:messages id="doneMsg" />
+
+				<div class="style1">
+					<h:panelGrid columns="8"
+						columnClasses="column0,column2,column0,column2,column2,column2,column2,column2">
+						<h:outputLabel value="申请日期：" />
+						<h:panelGroup>
+							<p:inputText id="startDate" title="#{msgs.txt_startTime}"
+								value="#{regicapitalReportBean.conditionMap['startDate']}"
+								styleClass="ui-date" style="font-size: 12px;width:100px;"
+								onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'endDate\')}'});">
+								<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+							</p:inputText>
+							<h:outputText value="~" />
+							<p:inputText id="endDate" title="#{msgs.txt_endTime}"
+								value="#{regicapitalReportBean.conditionMap['endDate']}"
+								styleClass="ui-date" style="font-size: 12px;width:100px;"
+								onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'startDate\')}'});">
+								<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+							</p:inputText>
+						</h:panelGroup>
+
+						<h:outputLabel value="#{msgs.col_companyName}："
+							rendered="#{!regicapitalReportBean.isCopUser}" />
+						<h:panelGroup rendered="#{!regicapitalReportBean.isCopUser}">
+							<h:selectOneMenu id="companyName" name="companyName"
+								style="width:330px;"
+								value="#{regicapitalReportBean.conditionMap['companyId']}"
+								styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+								<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" itemValue="" />
+								<f:selectItems value="#{regicapitalReportBean.companySelect}" />
+							</h:selectOneMenu>
+						</h:panelGroup>
+
+						<h:outputLabel value="#{msgs.col_companyName}："
+							rendered="#{regicapitalReportBean.isCopUser}" />
+						<h:panelGroup rendered="#{regicapitalReportBean.isCopUser}">
+							<p:inputText id="companyNameTwo" disabled="true"
+								style="width: 320px;"
+								value="#{regicapitalReportBean.company.companyName}" />
+						</h:panelGroup>
+						<p:commandButton immediate="true" value="#{msgs.btn_select}"
+							style="width: 70px;" image="ui-icon ui-icon-zoomin"
+							rendered="#{regicapitalReportBean.isCopUser}"
+							actionListener="#{regicapitalReportBean.clear}"
+							oncomplete="companyDialogVar.show();" update="companyForm">
+							<f:setPropertyActionListener
+								target="#{regicapitalReportBean.companySelectBean.method}"
+								value="regicapitalReportBean.getSelectedCompany" />
+						</p:commandButton>
+					</h:panelGrid>
+					<div>
+						<p:commandButton id="query" value="#{msgs.btn_query}"
+							image="ui-icon ui-icon-search"
+							action="#{regicapitalReportBean.searchRegiCaitalDetail}"
+							update="doneMsg,regiCapitalPl" />
+						<p:commandButton value="#{msgs.btn_reset}" style="margin: 5px;"
+							icon="ui-icon ui-icon-arrowrefresh-1-e"
+							action="#{regicapitalReportBean.reset}"
+							update="startDate,endDate,companyName,companyNameTwo" />
+					</div>
+				</div>
+				<br />
+				<p:outputPanel id="regiCapitalPl">
+
+					<p:dataTable id="regiCapitalTable" var="regiCapitalVo"
+						value="#{regicapitalReportBean.regiCapitalVoModel}" rows="5"
+						paginator="true" paginatorPosition="bottom"
+						sortBy="#{regiCapitalVo.applyDate}" sortOrder="descending"
+						paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+						currentPageReportTemplate="{currentPage}/{totalPage}"
+						emptyMessage="#{msgs.dataTable_empty}">
+
+						<f:facet name="header">注册资本金详细表</f:facet>
+
+						<p:column headerText="申请日期" style="white-space:nowrap;">
+							<h:outputText value="#{regiCapitalVo.applyDate}">
+								<f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="流程编号" style="white-space:nowrap;">
+							<h:outputText value="#{regiCapitalVo.procInstId}" />
+						</p:column>
+						<p:column headerText="公司名称" style="white-space:nowrap;">
+							<h:outputText
+								value="#{regicapitalReportBean.getCompanyName(regiCapitalVo.companyId)}" />
+						</p:column>
+						<p:column headerText="资金提供方" style="white-space:nowrap;">
+							<h:outputText
+								value="#{regicapitalReportBean.getPayerName(regiCapitalVo.payer)}" />
+						</p:column>
+						<p:column headerText="申请币种" style="white-space:nowrap;">
+							<h:outputText
+								value="#{commonBean.getValueByDictCatAndKey('TMS_TAX_PROJECT_CURRENCY_TYPE',regiCapitalVo.applyCu)}" />
+						</p:column>
+						<p:column headerText="申请金额（万）" style="white-space:nowrap;">
+							<h:outputText value="#{regiCapitalVo.applyAmount}">
+								<f:convertNumber pattern="#,##0.00" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="用途"
+							style="white-space:normal;word-wrap:break-word;">
+							<div style="min-width: 300px; max-width: 400px;">
+								<h:outputText value="#{regiCapitalVo.useDesc}" />
+							</div>
+						</p:column>
+						<p:column headerText="币种" style="white-space:nowrap;">
+							<h:outputText
+								value="#{commonBean.getValueByDictCatAndKey('TMS_TAX_PROJECT_CURRENCY_TYPE',regiCapitalVo.companyCu)}" />
+						</p:column>
+						<p:column headerText="投资总额（万）" style="white-space:nowrap;">
+							<h:outputText value="#{regiCapitalVo.companyAmount}">
+								<f:convertNumber pattern="#,##0.00" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="股东信息" style="white-space:nowrap;">
+							<h:dataTable var="shareHolder"
+								value="#{regiCapitalVo.shareHolder}"
+								style="border-bottom-color:#DCDCDC;border-top-color:Transparent;border-left-color:Transparent;border-right-color:Transparent;">
+								<p:column>
+									<h:outputText value="#{shareHolder.shareHolderName}" />
+								</p:column>
+							</h:dataTable>
+						</p:column>
+						<p:column headerText="注册总资本（万）">
+							<h:outputText value="#{regiCapitalVo.regiCapi}" />
+						</p:column>
+						<p:column headerText="已到位注册资本（万）">
+							<h:dataTable var="shareHolder"
+								value="#{regiCapitalVo.shareHolder}"
+								style="border-bottom-color:#DCDCDC;border-top-color:Transparent;border-left-color:Transparent;border-right-color:Transparent;">
+								<p:column>
+									<h:outputText value="#{shareHolder.fondsInPlace}">
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+								</p:column>
+							</h:dataTable>
+						</p:column>
+						<p:column headerText="未到位注册资本（万）">
+							<h:dataTable var="shareHolder"
+								value="#{regiCapitalVo.shareHolder}"
+								style="border-bottom-color:#DCDCDC;border-top-color:Transparent;border-left-color:Transparent;border-right-color:Transparent;">
+								<p:column>
+									<h:outputText
+										value="#{shareHolder.fondsTotal - shareHolder.fondsInPlace}">
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+								</p:column>
+							</h:dataTable>
+						</p:column>
+						<p:column headerText="股权比例">
+							<h:dataTable var="shareHolder"
+								value="#{regiCapitalVo.shareHolder}"
+								style="border-bottom-color:#DCDCDC;border-top-color:Transparent;border-left-color:Transparent;border-right-color:Transparent;">
+								<p:column>
+									#{shareHolder.equityPerc}%
+								</p:column>
+							</h:dataTable>
+						</p:column>
+						<p:column headerText="备注"
+							style="white-space:normal;word-wrap:break-word">
+							<div style="min-width: 300px; max-width: 400px;">
+								<h:outputText value="#{regiCapitalVo.remark}" />
+							</div>
+						</p:column>
+
+					</p:dataTable>
+				</p:outputPanel>
+			</p:panel>
+		</h:form>
+		<ui:include src="/faces/process/common/companySelect-dialog.xhtml" />
+
+		<script type="text/javascript">
+			function handleSaveRequest(xhr, status, args) {
+				if (args.issucc == "yes") {
+					companyDialogVar.hide();
+				}
+			}
+
+			function handleUpdateRequest(xhr, status, args) {
+				if (args.issucc == "yes") {
+					companyDialogVar.hide();
+				}
+			}
+
+			function handleTreeRequest(xhr, status, args) {
+				if (args.issucc == "yes") {
+					companyDialogVar.hide();
+				}
+			}
+		</script>
+	</ui:define>
+</ui:composition>

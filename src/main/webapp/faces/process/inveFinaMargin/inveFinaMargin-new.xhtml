@@ -1,0 +1,384 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:wcs="http://www.wcs-global.com/customtaglib"
+	xmlns:commentProcess="http://java.sun.com/jsf/composite/commentProcess"
+	template="/template/template.xhtml">
+
+	<ui:define name="title">投资、融资保证金及归还银行贷款借款/转款申请</ui:define>
+
+	<ui:define name="content">
+
+		<input type="hidden" id="menuOne" value="15" />
+		<input type="hidden" id="menuTwo" value="16" />
+
+		<p:panel styleClass="panel1">
+			<h:form id="inveFinaMarginForm" prependId="false" onsubmit="statusComplete();">
+				<p:breadCrumb preview="true" expandEffectDuration="200"
+					previewWidth="24" style="width: 99.1%">
+					<p:menuitem value="#{msgs.menItem_process}" url="#" />
+					<p:menuitem value="#{msgs.menItem_process}" url="#" />
+					<p:menuitem value="投资、融资保证金及归还银行贷款借款/转款" url="#" />
+				</p:breadCrumb>
+
+				<p:messages id="msg" />
+				<div style="position: relative; margin-top: 5px;">
+					<div class="style1">
+						<h:panelGrid columns="8"
+							columnClasses="column41,column2,column0,column2,column2,column2,column2,column2">
+							<h:outputLabel value="是否为转口：" />
+							<h:panelGroup>
+								<p:selectOneRadio id="transit"
+									value="#{inveFinaMarginBean.procInveFinaBail.transit}"
+									required="true" requiredMessage="请选择是否为转口">
+									<f:selectItem
+										itemLabel="转口&#160;&#160;&#160;&#160;&#160;&#160;&#160;"
+										itemValue="Y" />
+									<f:selectItem itemLabel="非转口" itemValue="N" />
+								</p:selectOneRadio>
+								<h:outputText
+									style="color:red; position: absolute; left: 281px; top: 16px;"
+									value=" *" />
+							</h:panelGroup>
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+
+							<h:outputLabel value="表单类型：" />
+							<h:panelGroup>
+								<p:selectOneRadio id="formType"
+									value="#{inveFinaMarginBean.procInveFinaBail.formType}"
+									required="true" requiredMessage="请选择表单类型">
+									<f:selectItem itemLabel="投资理财（纯理财）" itemValue="I" />
+									<f:selectItem itemLabel="融资保证金" itemValue="F" />
+									<f:selectItem itemLabel="还贷" itemValue="R" />
+									<f:selectItem itemLabel="利息及融资费用" itemValue="C" />
+									<f:selectItem itemLabel="时点存款" itemValue="D" />
+									<p:ajax listener="#{inveFinaMarginBean.changeAmountCu}"
+										update="amountCu,amountCuId,cuAmount,cuAmountId" />
+									<p:ajax listener="#{inveFinaMarginBean.initFormByTransitAndType}"
+										update="fianceDisplayPanel,repayDisplayPanel" />
+								</p:selectOneRadio>
+								<h:outputText style="color:red;position: absolute;left: 600px; top: 53px;" value=" *" />
+							</h:panelGroup>
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+						</h:panelGrid>
+						<h:panelGrid id="loanIdenPanel" columns="3" columnClasses="column41,column2,column2">
+							<h:outputLabel value="是否为借款：" />
+							<h:panelGroup>
+								<p:selectOneRadio id="loanIdentifier"
+									value="#{inveFinaMarginBean.procInveFinaBail.loanIden}"
+									required="true" requiredMessage="请选择是否为借款">
+									<f:selectItem
+										itemLabel="借款&#160;&#160;&#160;&#160;&#160;&#160;&#160;"
+										itemValue="L" />
+									<f:selectItem
+										itemLabel="转款&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;"
+										itemValue="T" />
+									<f:selectItem itemLabel="借款+转款" itemValue="A" />
+								</p:selectOneRadio>
+								<h:outputText
+									style="color:red; position: absolute; left: 387px; top: 92px;"
+									value=" *" />
+							</h:panelGroup>
+							<h:outputLabel value="（自有资金下拨请选择“转款”，非自有资金请选择“借款”）" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+						</h:panelGrid>
+						
+						<h:panelGrid columns="8"
+							columnClasses="column41,column2,column0,column2,column2,column2,column2,column2">
+							<h:outputLabel value="申请公司名称：" />
+							<h:panelGroup>
+								<h:selectOneMenu id="companyName" name="companyName"
+									style="width:330px" required="true" title="申请公司名称"
+									value="#{inveFinaMarginBean.procInveFinaBail.company.id}"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									requiredMessage="#{msgs.txt_applyCompanyNoNull}">
+									<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" itemValue="" />
+									<f:selectItems value="#{inveFinaMarginBean.companyNameSelect}" />
+									<p:ajax listener="#{inveFinaMarginBean.ajaxCompany}"
+										update="msg,receiverName,depositBank,accounts,amount_up" />
+								</h:selectOneMenu>
+								<h:outputText style="color:red;" value=" *" />
+							</h:panelGroup>
+
+							<h:outputLabel value="收款人户名：" />
+							<p:inputText id="receiverName" disabled="true"
+								style="width:330px"
+								value="#{inveFinaMarginBean.procInveFinaBail.receiverName}" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+
+							<h:outputLabel value="填制时间：" />
+							<p:inputText id="applyTime" disabled="true" style="width:200px"
+								value="#{inveFinaMarginBean.procInveFinaBail.createdDatetime}">
+								<f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd" />
+							</p:inputText>
+
+							<h:outputLabel value="账户描述：" />
+							<h:panelGroup>
+								<h:selectOneMenu id="depositBank" title="账户描述"
+									style="width:340px"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									required="true" requiredMessage="请选择账户描述"
+									value="#{inveFinaMarginBean.procInveFinaBail.accountDesc}">
+									<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" itemValue="" />
+									<f:selectItems value="#{inveFinaMarginBean.depositBankSelect}" />
+									<p:ajax update="msg,accounts,amount_up"
+										listener="#{inveFinaMarginBean.getCompanyBankAccount}">
+									</p:ajax>
+								</h:selectOneMenu>
+								<h:outputText style="color:red;" value=" *" />
+							</h:panelGroup>
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+
+							<h:outputLabel value="付款日期：" />
+							<h:panelGroup>
+								<p:inputText id="payDatetime"
+									value="#{inveFinaMarginBean.procInveFinaBail.paymentDate}"
+									required="true" requiredMessage="请选择付款日期" styleClass="ui-date"
+									style="width:200px" title="付款日期"
+									onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'%y-%M-%d'});">
+									<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+								</p:inputText>
+								<h:outputText style="color:red;" value=" *" />
+							</h:panelGroup>
+
+							<h:outputLabel value="账号：" />
+							<h:panelGroup>
+								<h:selectOneMenu id="accounts" style="width:340px" title="账号"
+									required="true" requiredMessage="请选择账号"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									value="#{inveFinaMarginBean.procInveFinaBail.accountNumber}">
+									<f:selectItems value="#{inveFinaMarginBean.bankAccountSelect}" />
+								</h:selectOneMenu>
+								<h:outputText style="color:red;" value=" *" />
+							</h:panelGroup>
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+
+							<h:outputLabel id="amountCu"
+								value="#{inveFinaMarginBean.amountCuLabel}：" />
+							<h:panelGroup>
+								<h:selectOneMenu id="amountCuId" required="true"
+									style="width:210px" title="#{inveFinaMarginBean.amountCuLabel}"
+									requiredMessage="#{inveFinaMarginBean.requiredMessage}"
+									value="#{inveFinaMarginBean.procInveFinaBail.amountCu}"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+									<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" />
+									<f:selectItems value="#{inveFinaMarginBean.currencySelect}" />
+								</h:selectOneMenu>
+								<h:outputText style="color:red;" value=" *" />
+							</h:panelGroup>
+							<h:outputLabel id="cuAmount"
+								value="#{inveFinaMarginBean.cuAmountLabel}：" />
+							<h:panelGroup>
+								<p:inputText id="cuAmountId" required="true"
+									label="#{inveFinaMarginBean.cuAmountLabel}" style="width:330px"
+									value="#{inveFinaMarginBean.procInveFinaBail.cuAmount}"
+									requiredMessage="#{inveFinaMarginBean.cuAmountReqMess}"
+									validatorMessage="#{inveFinaMarginBean.validatorMessage}">
+									<f:convertNumber pattern="#,##0.00" />
+									<f:validateDoubleRange maximum="99999999.9999" minimum="0" />
+									<p:ajax event="blur" listener="#{inveFinaMarginBean.lowToUp4}"
+										update="msg,cuAmountId" />
+									<p:ajax event="blur" listener="#{inveFinaMarginBean.calculateExchangeRate}"
+										update="exchange_rate,msg" />
+								</p:inputText>
+								<h:outputLabel value="万" />
+								<h:outputText style="color:red;" value=" *" />
+							</h:panelGroup>
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+
+							<h:outputLabel value="金额（小写）：" />
+							<h:panelGroup>
+								<p:inputText id="amount_low" label="金额（小写）" style="width:200px"
+									value="#{inveFinaMarginBean.procInveFinaBail.amount}"
+									required="true" requiredMessage="请输入金额"
+									validatorMessage="金额必须在0~100,000,000之间">
+									<f:convertNumber pattern="#,##0.00" />
+									<f:validateDoubleRange maximum="99999999.9999" minimum="0" />
+									<p:ajax event="blur" listener="#{inveFinaMarginBean.lowToUp}"
+										update="amount_low,amount_up,msg" />
+									<p:ajax event="blur" listener="#{inveFinaMarginBean.calculateExchangeRate}"
+										update="exchange_rate,msg" />
+								</p:inputText>
+								<h:outputLabel value="万 人民币" />
+								<h:outputText style="color:red;" value=" *" />
+							</h:panelGroup>
+							<h:outputLabel value="金额（大写）：" />
+							<p:inputText id="amount_up" style="width:330px" disabled="true"
+								value="#{inveFinaMarginBean.upAmount}" />
+							<h:outputLabel value="人民币" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							
+							<h:outputLabel value="汇率：" />
+							<p:inputText id="exchange_rate" style="width:200px" disabled="true"
+								value="#{inveFinaMarginBean.exchangeRate}" >
+								<f:convertNumber pattern="#,##0.00" />
+							</p:inputText>	
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+						</h:panelGrid>
+						
+						<h:panelGrid id="fianceDisplayPanel" columns="8" columnClasses="column41,column2,column0,column2,column2,column2,column2,column2"
+						style="display:#{inveFinaMarginBean.fianceDisplay}">
+							<h:outputLabel value="含外汇保证金：" />
+							<h:panelGroup>
+								<p:selectOneRadio id="foreignIsContained"
+									value="#{inveFinaMarginBean.procInveFinaBail.foreignIsContained}">
+									<f:selectItem itemLabel="是" itemValue="Y" />
+									<f:selectItem itemLabel="否" itemValue="N" />
+								</p:selectOneRadio>
+								<h:outputText style="color:red;position: absolute;left: 530px; top: 53px;" value=" *" />
+							</h:panelGroup>
+							<h:outputLabel value="归还历史贷款：" />
+							<h:panelGroup>
+								<p:selectOneRadio id="historyLoanIsReturned"
+									value="#{inveFinaMarginBean.procInveFinaBail.historyLoanIsReturned}">
+									<f:selectItem itemLabel="是" itemValue="Y" />
+									<f:selectItem itemLabel="否" itemValue="N" />
+								</p:selectOneRadio>
+							</h:panelGroup>
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							
+							<h:outputLabel value="保证金存入行：总行：" />
+							<p:inputText id="cashParentBank" style="width:200px" validatorMessage="保证金存入行：总行 必须在100个字符以内"
+									value="#{inveFinaMarginBean.procInveFinaBail.cashParentBank}">
+								<f:validateLength maximum="100" />
+							</p:inputText>
+							<h:outputLabel value="城市：" />
+							<p:inputText id="cashCity" style="width:200px" validatorMessage="保证金存入行：城市 必须在50个字符以内"
+									value="#{inveFinaMarginBean.procInveFinaBail.cashCity}">
+								<f:validateLength maximum="50" />
+							</p:inputText>
+							<h:outputLabel value="分支行：" />
+							<p:inputText id="cashBranchBank" style="width:200px" validatorMessage="保证金存入行：分支行 必须在100个字符以内"
+									value="#{inveFinaMarginBean.procInveFinaBail.cashBranchBank}">
+								<f:validateLength maximum="100" />
+							</p:inputText>
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+						</h:panelGrid>
+						
+						<h:panelGrid id="repayDisplayPanel" columns="8" columnClasses="column41,column2,column0,column2,column2,column2,column2,column2"
+						style="display:#{inveFinaMarginBean.repayDisplay}">
+						
+							<h:outputLabel value="还贷行：总行：" />
+							<p:inputText id="repayParentBank" style="width:200px" validatorMessage="还贷行：总行必须在100个字符以内"
+									value="#{inveFinaMarginBean.procInveFinaBail.repayParentBank}">
+								<f:validateLength maximum="100" />
+							</p:inputText>
+							<h:outputLabel value="城市：" />
+							<p:inputText id="repayCity" style="width:200px" validatorMessage="还贷行：城市 必须在50个字符以内"
+									value="#{inveFinaMarginBean.procInveFinaBail.repayCity}">
+								<f:validateLength maximum="50" />
+							</p:inputText>
+							<h:outputLabel value="分支行：" />
+							<p:inputText id="repayBranchBank" style="width:200px" validatorMessage="还贷行：分支行 必须在100个字符以内"
+									value="#{inveFinaMarginBean.procInveFinaBail.repayBranchBank}">
+								<f:validateLength maximum="100" />
+							</p:inputText>
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							
+							<h:outputLabel value="贷款到期日：" />
+							<h:panelGroup>
+								<p:inputText id="loanDate"
+									value="#{inveFinaMarginBean.procInveFinaBail.loanDate}" styleClass="ui-date"
+									style="width:200px" title="贷款到期日" 
+									onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'loanDate\')}'});">
+									<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+								</p:inputText>
+							</h:panelGroup>
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+						</h:panelGrid>
+						
+						<h:panelGrid columns="3" columnClasses="column41,column2,column2">
+							<h:outputLabel value="下拨资金用途描述：" />
+							<h:panelGroup>
+								<p:inputTextarea id="use" rows="4" cols="107"
+									validatorMessage="下拨资金用途描述必须在200个字符以内"
+									value="#{inveFinaMarginBean.procInveFinaBail.useDesc}"
+									autoResize="false" style="width:765px">
+									<f:validateLength maximum="200" />
+								</p:inputTextarea>
+							</h:panelGroup>
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="注：若涉及归还贷款，请在描述中提供此贷款更多明细（金额、银行、原定到期日等）" />
+							<h:outputLabel value="" />
+
+							<h:outputLabel value="业务审批流水号：" />
+							<h:panelGroup>
+								<p:inputText id="serialNumber" style="width:200px;"
+									validatorMessage="业务审批流水号必须在30个字符以内"
+									value="#{inveFinaMarginBean.procInveFinaBail.seriNumb}">
+									<f:validateLength maximum="30" />
+								</p:inputText>
+								<h:outputLabel value="（TMS上线后请填写融资业务审批号）" />
+							</h:panelGroup>
+						</h:panelGrid>
+
+						<div align="right">
+							<p:commandButton id="create" onclick="buttonDisable('create');" icon="ui-icon ui-icon-disk" value="提交"
+								action="#{inveFinaMarginBean.applyMargin}" ajax="false" />
+						</div>
+					</div>
+				</div>
+			</h:form>
+		</p:panel>
+		<script type="text/javascript">
+			var isFirst = "true";
+			function buttonDisable(buttonId){
+				if("true"==isFirst){
+					isFirst="false";
+					return true;
+				}else{
+					document.getElementById(buttonId).disabled=true;
+					return false;
+				}
+			}
+		</script>
+	</ui:define>
+</ui:composition>

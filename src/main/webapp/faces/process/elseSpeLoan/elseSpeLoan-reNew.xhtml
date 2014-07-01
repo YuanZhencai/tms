@@ -1,0 +1,230 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:wcs="http://www.wcs-global.com/customtaglib"
+	xmlns:commentProcess="http://java.sun.com/jsf/composite/commentProcess"
+	template="/template/template.xhtml">
+
+	<ui:define name="title">其他特殊的借款流程申请</ui:define>
+
+	<ui:define name="content">
+
+		<input type="hidden" id="menuOne" value="15" />
+		<input type="hidden" id="menuTwo" value="16" />
+
+		<p:panel styleClass="panel1">
+			<h:form id="elseSpeLoanForm" prependId="false" onsubmit="statusComplete();">
+				<p:breadCrumb preview="true" expandEffectDuration="200"
+					previewWidth="24" style="width: 99.1%">
+					<p:menuitem value="#{msgs.menItem_process}" url="#" />
+					<p:menuitem value="#{msgs.menItem_process}" url="#" />
+					<p:menuitem value="其他特殊的借款流程" url="#" />
+				</p:breadCrumb>
+
+				<p:messages id="msg" />
+				<div style="position: relative; margin-top: 5px;">
+					<div class="style11">
+						<h:panelGrid columns="3" columnClasses="column41,column2,column2">
+							<h:outputLabel value="是否为借款：" />
+							<h:panelGroup>
+								<p:selectOneRadio id="loanIdentifier"
+									value="#{elseSpeLoanBean.procElseSpeLoan.loanIden}"
+									required="true" requiredMessage="请选择是否为借款">
+									<f:selectItem itemLabel="借款" itemValue="L" />
+									<f:selectItem itemLabel="转款" itemValue="T" />
+									<f:selectItem itemLabel="借款+转款" itemValue="A" />
+								</p:selectOneRadio>
+								<h:outputText
+									style="color:red; position: absolute; left: 321px; top: 17px;"
+									value=" *" />
+							</h:panelGroup>
+							<h:outputLabel value="（自有资金下拨请选择“转款”，非自有资金请选择“借款”）" />
+						</h:panelGrid>
+						<h:panelGrid columns="8"
+							columnClasses="column41,column2,column0,column2,column2,column2,column2,column2">
+							<h:outputLabel value="申请公司名称：" />
+							<h:panelGroup>
+								<h:selectOneMenu id="companyName" name="companyName"
+									style="width:330px" title="申请公司名称"
+									value="#{elseSpeLoanBean.procElseSpeLoan.company.id}"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									required="true"
+									requiredMessage="#{msgs.txt_applyCompanyNoNull}">
+									<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" itemValue="" />
+									<f:selectItems value="#{elseSpeLoanBean.companyNameSelect}" />
+									<p:ajax listener="#{elseSpeLoanBean.ajaxCompany}"
+										update="msg,receiverName,depositBank,accounts" />
+								</h:selectOneMenu>
+								<h:outputText style="color:red;" value=" *" />
+							</h:panelGroup>
+
+							<h:outputLabel value="收款人户名：" />
+							<p:inputText id="receiverName" label="收款人户名"
+								value="#{elseSpeLoanBean.procElseSpeLoan.receiverName}"
+								disabled="true" style="width:330px" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+
+							<h:outputLabel value="填制时间：" />
+							<p:inputText id="applyTime" disabled="true" style="width:200px"
+								value="#{elseSpeLoanBean.procElseSpeLoan.createdDatetime}">
+								<f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd" />
+							</p:inputText>
+
+							<h:outputLabel value="账户描述：" />
+							<h:panelGroup>
+								<h:selectOneMenu id="depositBank" name="depositBank"
+									style="width:340px" title="账户描述"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									required="true" requiredMessage="请选择账户描述"
+									value="#{elseSpeLoanBean.procElseSpeLoan.accountDesc}">
+									<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" itemValue="" />
+									<f:selectItems value="#{elseSpeLoanBean.depositBankSelect}" />
+									<p:ajax update="msg,accounts"
+										listener="#{elseSpeLoanBean.getCompanyBankAccount}">
+									</p:ajax>
+								</h:selectOneMenu>
+								<h:outputText style="color:red;" value=" *" />
+							</h:panelGroup>
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+
+							<h:outputLabel value="付款日期：" />
+							<h:panelGroup>
+								<p:inputText id="payDatetime"
+									value="#{elseSpeLoanBean.procElseSpeLoan.paymentDate}"
+									required="true" requiredMessage="请选择付款日期" styleClass="ui-date"
+									style="width:200px" title="付款日期"
+									onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'%y-%M-%d'});">
+									<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+								</p:inputText>
+								<h:outputText style="color:red;" value=" *" />
+							</h:panelGroup>
+
+							<h:outputLabel value="账号：" />
+							<h:panelGroup>
+								<h:selectOneMenu id="accounts" name="accounts" title="账号"
+									style="width:340px" required="true" requiredMessage="请选择账号"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									value="#{elseSpeLoanBean.procElseSpeLoan.accountNumber}">
+									<f:selectItems value="#{elseSpeLoanBean.bankAccountSelect}" />
+								</h:selectOneMenu>
+								<h:outputText style="color:red;" value=" *" />
+							</h:panelGroup>
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+
+							<h:outputLabel value="金额（小写）：" />
+							<h:panelGroup>
+								<p:inputText id="amount_low" label="金额（小写）"
+									value="#{elseSpeLoanBean.procElseSpeLoan.amount}"
+									required="true" requiredMessage="请输入金额" style="width:200px"
+									validatorMessage="金额必须在0~100,000,000之间">
+									<f:convertNumber pattern="#,##0.00" />
+									<f:validateDoubleRange maximum="99999999.9999" minimum="0"></f:validateDoubleRange>
+									<p:ajax event="blur" listener="#{elseSpeLoanBean.lowToUp}"
+										update="msg,amount_up,amount_low" />
+								</p:inputText>
+								<h:outputLabel value="万" />
+								<h:outputText style="color:red;" value=" *" />
+							</h:panelGroup>
+							<h:outputLabel value="金额（大写）：" />
+							<p:inputText id="amount_up" label="金额（大写）" style="width:330px"
+								disabled="true" value="#{elseSpeLoanBean.upAmount}" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+						</h:panelGrid>
+
+						<h:panelGrid columns="2" columnClasses="column41,column2">
+							<h:outputLabel value="下拨资金用途描述：" />
+							<h:panelGroup>
+								<p:inputTextarea id="use" rows="4" cols="107"
+									validatorMessage="下拨资金用途描述必须在200个字符以内"
+									value="#{elseSpeLoanBean.procElseSpeLoan.useDesc}"
+									autoResize="false" style="width:765px">
+									<f:validateLength maximum="200" />
+								</p:inputTextarea>
+							</h:panelGroup>
+							<h:outputLabel value="重新申请备注：" />
+							<h:panelGroup>
+								<p:inputTextarea id="peMemo" rows="4" cols="107" required="true"
+									value="#{elseSpeLoanBean.procElseSpeLoan.peMemo}"
+									validatorMessage="#{msgs.msg_debt_peMemoRemark}"
+									requiredMessage="#{msgs.msg_required_peMemo}"
+									autoResize="false" style="width:765px">
+									<f:validateLength maximum="200" for="peMemo" />
+								</p:inputTextarea>
+								<h:outputText style="color:red;" value=" *" />
+							</h:panelGroup>
+						</h:panelGrid>
+						<div align="right">
+							<h:panelGrid columns="2" columnClasses="column41l,column2">
+								<h:outputLabel value="#{msgs.lbl_doNext}" />
+								<p:selectBooleanCheckbox id="doNext"
+									value="#{elseSpeLoanBean.doNext}" />
+							</h:panelGrid>
+							&#160;&#160;
+							<p:commandButton id="pass" onclick="buttonDisable('pass');" action="#{elseSpeLoanBean.doApprove}"
+								ajax="false" value="#{msgs.btn_submit}"
+								image="ui-icon ui-icon-circle-check">
+								<f:setPropertyActionListener
+									target="#{elseSpeLoanBean.approveStatus}" value="Y"></f:setPropertyActionListener>
+							</p:commandButton>
+						</div>
+						<p:outputPanel id="detailVoListPl">
+							<p:dataTable var="detailVo" id="detailVoList"
+								value="#{elseSpeLoanBean.detailVos}" rowKey="#{detailVo.id}"
+								rows="100" emptyMessage="#{msgs.dataTable_empty}">
+
+								<f:facet name="header">#{msgs.head_detailVoList}</f:facet>
+
+								<p:column headerText="#{msgs.headerText_prossNodeName}">
+									<h:outputText value="#{detailVo.prossNodeName}" />
+								</p:column>
+
+								<p:column headerText="#{msgs.headerText_operatorsName}">
+									<h:outputText
+										value="#{currentUser.exchange2CN(detailVo.operatorsName)}" />
+								</p:column>
+
+								<p:column headerText="#{msgs.headerText_operatorTime}">
+									<h:outputText value="#{detailVo.operatorTime}">
+										<f:convertDateTime timeZone="GMT+8"
+											pattern="yyyy-MM-dd HH:mm:ss" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="#{msgs.headerText_remark}">
+									<h:outputText value="#{detailVo.nodeMemo}" />
+								</p:column>
+							</p:dataTable>
+						</p:outputPanel>
+					</div>
+				</div>
+			</h:form>
+		</p:panel>
+		<script type="text/javascript">
+			var isFirst = "true";
+			function buttonDisable(buttonId){
+				if("true"==isFirst){
+					isFirst="false";
+					return true;
+				}else{
+					document.getElementById(buttonId).disabled=true;
+					return false;
+				}
+			}
+		</script>
+	</ui:define>
+</ui:composition>

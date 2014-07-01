@@ -1,0 +1,39 @@
+<ui:composition xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<p:dialog id="add_dialog_id" widgetVar="add_company_dialog"
+		resizable="false" header="组织机构—添加" modal="true" width="700">
+		<p:messages id="addCompanyErrMsg" showDetail="true" showSummary="false" />
+		<h:form prependId="false" id="add_form">
+			<h2 align="center">新增#{orgManagerBean.selectType == 'root' ? '公司' : '部门'} </h2>
+			<div align="center" style="margin-top: 10px; height: 120px;">
+				<h:panelGrid columns="4">
+					<h:outputText value="#{orgManagerBean.selectType == 'root' ? '公司' : '部门'}名称：" style="color: blue;" />
+					<p:inputText id="orgId" style="width: 230px;" title="请填写真确的#{orgManagerBean.selectType == 'root' ? '公司' : '部门'}名称"
+						value="#{orgManagerBean.org.stext}" required="true"
+						label="#{orgManagerBean.selectType == 'root' ? '公司' : '部门'}名称" validatorMessage="验证错误：名称字符长度必须小于等于15个字符">
+						<f:validateLength maximum="15"/>
+					</p:inputText>
+					<h:outputText value="SAP代码：" style="margin-left:10px;" />
+					<p:inputText style="width: 150px;" disabled="#{orgManagerBean.selectType == 'root' ? 'false' : 'true'}"
+						value="#{orgManagerBean.org.bukrs}" required="true" label="SAP代码" validatorMessage="验证错误：SAP代码字符长度必须小于等于20个字符" >
+						<f:validateLength maximum="20"/>
+					</p:inputText>
+					<h:outputText value="上级公司：" />
+					<p:inputText style="width: 230px;" disabled="true"
+						value="#{orgManagerBean.parentOrgNode.stext}" />
+				</h:panelGrid>
+			</div>
+			<div align="center" style="margin-top: 10px;">
+				<p:commandButton value="保存" icon="ui-icon ui-icon-disk"
+					action="#{orgManagerBean.saveCompany}"
+					update=":mainForm:treeSingle,:addCompanyErrMsg,:mainForm:msg,:add_form"
+					oncomplete="handleSaveRequest(xhr, status, args);"/>
+				<p:commandButton value="关闭" onclick="add_company_dialog.hide();"
+					icon="ui-icon ui-icon-cancel" style="margin-left:15px;"
+					update=":add_form" type="button" />
+			</div>
+		</h:form>
+	</p:dialog>
+</ui:composition>

@@ -1,0 +1,390 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:wcs="http://www.wcs-global.com/customtaglib"
+	xmlns:commentProcess="http://java.sun.com/jsf/composite/commentProcess"
+	template="/template/dialog_template.xhtml">
+
+	<ui:define name="title">内部担保申请单查看</ui:define>
+	<ui:define name="content">
+		<p:panel styleClass="panel1">
+			<h:form id="busiTripForm" prependId="false">
+				<p:breadCrumb preview="true" expandEffectDuration="200"
+					previewWidth="24" style="width: 99.1%">
+					<p:menuitem value="#{msgs.menItem_process}" url="#" />
+					<p:menuitem value="#{msgs.menItem_process}" url="#" />
+					<p:menuitem value="内部担保申请" url="#" />
+				</p:breadCrumb>
+				<p:messages id="msg" showDetail="true" autoUpdate="true" />
+
+				<div class="style1">
+					<h:panelGrid columns="8"
+						columnClasses="column40,column2,column40,column2,column0,column2,column0,column2">
+
+						<h:outputText value="申请公司名称: " />
+						<h:panelGroup>
+							<h:selectOneMenu style="width:307px;" disabled="true"
+								value="#{innerGuaranteeBean.procGuarantee.company.id}"
+								styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+								required="true" requiredMessage="#{msgs.txt_applyCompanyNoNull}">
+								<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" itemValue="" />
+								<f:selectItems value="#{innerGuaranteeBean.companySelect}" />
+								<p:ajax listener="#{innerGuaranteeBean.updateCompany}"
+										update="topBankId" />							
+							</h:selectOneMenu>
+
+						</h:panelGroup>
+
+						<h:outputText value="银行授信申请流程实例编号: " />
+						<h:panelGroup>
+							<p:inputText value="#{innerGuaranteeBean.procGuarantee.crditProcInstId}" disabled="true">
+							</p:inputText>
+						</h:panelGroup>
+					</h:panelGrid>
+
+
+					<h:panelGrid columns="8"
+						columnClasses="column40,column2,column40,column2,column0,column2,column0,column2">
+
+						<h:outputText value="申请担保金额: " />
+						<h:panelGroup>
+							<p:inputText value="#{innerGuaranteeBean.procGuarantee.applyGuarAmount}" required="true" requiredMessage="申请担保金额：不可为空！" disabled="true">
+								<f:validateDoubleRange maximum="99999999.999" minimum="0.000" />
+									<f:convertNumber pattern="#,##0.000" />
+							</p:inputText>
+							<h:outputText value="#{msgs.lbl_tenThousand}" />
+						</h:panelGroup>
+
+
+						<h:panelGroup>
+							<h:selectOneMenu 
+								value="#{innerGuaranteeBean.procGuarantee.guarAmountCu}" disabled="true"
+								styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+								<f:selectItems value="#{innerGuaranteeBean.currencySelect}" />
+							</h:selectOneMenu>
+						</h:panelGroup>
+
+					</h:panelGrid>
+
+					<h:panelGrid columns="8"
+						columnClasses="column40,column2,column40,column2,column0,column2,column0,column2">
+						<h:outputText value="担保期限（月份）: " />
+						<h:panelGroup>
+							<p:inputText value="#{innerGuaranteeBean.procGuarantee.limitMonth}" disabled="true">								
+							</p:inputText>
+						</h:panelGroup>
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+						
+						<h:outputText value="主债权期限（月份）:" />
+						<h:panelGroup>
+							<p:inputText id="creditorLimitMonth"  value="#{innerGuaranteeBean.procGuarantee.creditorLimitMonth}" disabled="true">
+							</p:inputText>
+						</h:panelGroup>
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+
+					</h:panelGrid>
+
+					<h:panelGrid columns="8" columnClasses="column40,column2,column40,column2,column0,column2,column0,column2">
+						<h:outputLabel value="受益人:" />
+						<h:panelGroup>
+							<h:selectOneMenu id="topBankId" required="true" disabled="true"
+									label="#{msgs.lbl_topBank}" style="width:307px;"
+									requiredMessage="#{msgs.msg_required_topBank}"
+									value="#{innerGuaranteeBean.topBankId}"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+									<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" />
+									<f:selectItems value="#{innerGuaranteeBean.topLevelSelect}" />
+									<p:ajax update="branchSelectId,msg" listener="#{innerGuaranteeBean.bankChange}" />
+								</h:selectOneMenu>
+						
+						</h:panelGroup>
+						
+						<h:panelGroup>
+								<h:selectOneMenu id="branchSelectId" required="true"
+									label="#{msgs.lbl_branchSelect}" style="width:280px;"
+									requiredMessage="#{msgs.msg_required_branchSelect}" disabled="true"
+									value="#{innerGuaranteeBean.branchSelectId}"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+									<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" />
+									<f:selectItems value="#{innerGuaranteeBean.branchSelect}" />									
+								</h:selectOneMenu>
+							</h:panelGroup>
+					</h:panelGrid>
+					
+					<h:panelGrid columns="2" columnClasses="column40,column2">
+						<h:outputLabel value="用途:" />
+						<h:panelGroup>
+							<p:inputTextarea id="use" autoResize="false" cols="100" rows="5" disabled="true" value="#{innerGuaranteeBean.procGuarantee.useDesc}"
+								required="true" requiredMessage="#{msgs.txt_purposeNoNull}">
+								<f:validateLength maximum="200" for="use" />
+							</p:inputTextarea>
+						</h:panelGroup>
+					</h:panelGrid>	
+
+
+					
+				</div>
+				
+				<p:tabView id="tabView" effect="clip" effectDuration="normal" style="#{innerGuaranteeBean.checkVisibleBlock('tabView') ? '':'display:none;'}"> 
+					<!-- 担保方信息 -->
+					<p:tab title="担保方" closable="false"  disabled="false">
+					<div class="style1" id="danbaoInfoDiv" style="#{innerGuaranteeBean.checkVisibleBlock('danbaoInfoDiv') ? '':'display:none;'}">
+						
+						<h:panelGrid columns="2" columnClasses="column40,column2">
+							
+							<h:outputText value="担保方: " />
+							<h:panelGroup>
+								<h:selectOneMenu style="width:307px;" disabled="#{innerGuaranteeBean.checkInputable('securedCom') ? false : true}"
+									required="#{innerGuaranteeBean.checkInputable('securedCom')}"
+									requiredMessage="担保方:不可为空!"
+									value="#{innerGuaranteeBean.procGuarantee.securedCom.id}"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+									<f:selectItem itemLabel="没选择公司" itemValue="" />
+									<f:selectItems value="#{innerGuaranteeBean.guarCompanySelect}" />
+									<p:ajax listener="#{innerGuaranteeBean.ajaxDisplay}"
+											update="msg,alreadyTotalGuarAmount,allTotalGuarAmount,remainGuarAmount,reviewingGuarAmount,alreadyReceCurCompanyAmount" />							
+								</h:selectOneMenu>								
+							</h:panelGroup>
+						</h:panelGrid>
+						
+						<h:panelGrid columns="4"  width="60%" columnClasses="column40,column2,column40,column2">
+							<h:outputLabel value="净资产：" />
+							<h:panelGroup>
+								<p:inputText value="#{innerGuaranteeBean.procGuarantee.securedAssets}"
+								 disabled="#{innerGuaranteeBean.checkInputable('securedAssets') ? false : true}"
+								 required="#{innerGuaranteeBean.checkInputable('securedAssets')}"
+								 requiredMessage="净资产:不可为空!">
+									<f:validateDoubleRange maximum="99999999" minimum="0" />
+									<f:convertNumber pattern="#,##0.000" />
+									<p:ajax listener="#{innerGuaranteeBean.ajaxDisplay}"
+											update="msg,totalGuarAmount,alreadyTotalGuarAmount,allTotalGuarAmount,remainGuarAmount,reviewingGuarAmount,alreadyReceCurCompanyAmount" />							
+								</p:inputText>
+								<h:outputText value="#{msgs.lbl_tenThousand}" />
+							</h:panelGroup>
+							
+							
+							
+							<h:outputLabel value="可担保总额：" />
+							<h:panelGroup>
+								<p:inputText id="totalGuarAmount" value="#{innerGuaranteeBean.guarVO.totalGuarAmount}" disabled="true">
+								<f:convertNumber pattern="#,##0.000" />						
+								</p:inputText>
+								<h:outputText value="#{msgs.lbl_tenThousand}" />
+							</h:panelGroup>
+							
+						</h:panelGrid>
+						
+						<h:panelGrid columns="4"  width="60%" columnClasses="column40,column2,column40,column2">
+							<h:outputLabel value="已担保总额度：" />
+							<h:panelGroup>
+								<p:inputText id="alreadyTotalGuarAmount" value="#{innerGuaranteeBean.guarVO.alreadyTotalGuarAmount}" disabled="true">
+								<f:convertNumber pattern="#,##0.000" />
+								</p:inputText>
+								<h:outputText value="#{msgs.lbl_tenThousand}" />
+							</h:panelGroup>
+							
+							<h:outputLabel value="本次担保额度：" />
+							<h:panelGroup>
+								<p:inputText value="#{innerGuaranteeBean.procGuarantee.guarAmount}"
+								 disabled="#{innerGuaranteeBean.checkInputable('guarAmount') ? false : true}"
+								 required="#{innerGuaranteeBean.checkInputable('guarAmount')}"
+								 requiredMessage="本次担保额度:不可为空!">
+								 	<f:convertNumber pattern="#,##0.000" />
+								 <p:ajax listener="#{innerGuaranteeBean.ajaxDisplay}"
+											update="msg,alreadyTotalGuarAmount,allTotalGuarAmount,remainGuarAmount,reviewingGuarAmount,alreadyReceCurCompanyAmount" />							
+								</p:inputText>
+								<h:outputText value="#{msgs.lbl_tenThousand}" />
+							</h:panelGroup>
+							
+						</h:panelGrid>
+						
+						<h:panelGrid columns="4"  width="60%" columnClasses="column40,column2,column40,column2">
+							<h:outputLabel value="累计担保额度：" />
+							<h:panelGroup>
+								<p:inputText id="allTotalGuarAmount" value="#{innerGuaranteeBean.procGuarantee.allTotalGuarAmount}" disabled="true">
+								<f:convertNumber pattern="#,##0.000" />
+								</p:inputText>
+								<h:outputText value="#{msgs.lbl_tenThousand}" />
+							</h:panelGroup>
+							
+							<h:outputLabel value="是否为新增担保：" />
+							<h:panelGroup>
+								<h:selectOneMenu value="#{innerGuaranteeBean.procGuarantee.isNewGuarantee}"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									disabled="true">
+									<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" itemValue="" />
+									<f:selectItem itemLabel="是" itemValue="Y" />
+									<f:selectItem itemLabel="否" itemValue="N" />
+								</h:selectOneMenu>									
+							</h:panelGroup>
+							
+							<h:outputLabel value="剩余可用担保额度：" />
+							<h:panelGroup>
+								<p:inputText id="remainGuarAmount" value="#{innerGuaranteeBean.guarVO.remainGuarAmount}" disabled="true">
+								<f:convertNumber pattern="#,##0.000" />
+								</p:inputText>
+								<h:outputText value="#{msgs.lbl_tenThousand}" />
+							</h:panelGroup>
+							
+							<h:outputText value="审批中的额度: " />
+							<h:panelGroup>
+								<p:inputText id="reviewingGuarAmount" value="#{innerGuaranteeBean.guarVO.reviewingGuarAmount}" disabled="true">
+									<f:convertNumber pattern="#,##0.000" />
+								</p:inputText>
+								<h:outputText value="#{msgs.lbl_tenThousand}" />
+							</h:panelGroup>
+							
+						</h:panelGrid>
+						
+					</div>
+					</p:tab>
+					<!-- 受保方信息 -->
+					<p:tab title="受保方" closable="false"  disabled="false">
+					<div class="style1" id="danbaoInfoDiv" style="#{innerGuaranteeBean.checkVisibleBlock('danbaoInfoDiv') ? '':'display:none;'}">
+						
+							
+							<h:panelGrid columns="4"  width="60%" columnClasses="column40,column2,column40,column2">
+								<h:outputLabel value="已接受担保总额度：" />
+								<h:panelGroup>
+									<p:inputText id="receivedGuarAmount" value="#{innerGuaranteeBean.guarVO.receivedGuarAmount}" disabled="true">
+										<f:convertNumber pattern="#,##0.000" />
+									</p:inputText>
+									<h:outputText value="#{msgs.lbl_tenThousand}" />
+								</h:panelGroup>
+								
+								<h:outputLabel value="已向外担保总额度：" />
+								<h:panelGroup>
+									<p:inputText id="outerProviderGuarAmount" value="#{innerGuaranteeBean.guarVO.outerProviderGuarAmount}" disabled="true">
+									<f:convertNumber pattern="#,##0.000" />
+									</p:inputText>
+									<h:outputText value="#{msgs.lbl_tenThousand}" />
+								</h:panelGroup>
+								
+							</h:panelGrid>
+							
+							<h:panelGrid columns="4"  width="60%" columnClasses="column40,column2,column40,column2">
+								<h:outputLabel value="审批中的额度：" />
+								<h:panelGroup>
+									<p:inputText id="outerReviewingGuarAmount" value="#{innerGuaranteeBean.guarVO.outerReviewingGuarAmount}" disabled="true">
+									<f:convertNumber pattern="#,##0.000" />
+									</p:inputText>
+									<h:outputText value="#{msgs.lbl_tenThousand}" />
+								</h:panelGroup>
+								
+								<h:outputLabel value="已接受当前担保公司的额度：" />
+								<h:panelGroup>
+									<p:inputText id="alreadyReceCurCompanyAmount" value="#{innerGuaranteeBean.guarVO.alreadyReceCurCompanyAmount}" disabled="true">
+									<f:convertNumber pattern="#,##0.000" />
+									</p:inputText>
+									<h:outputText value="#{msgs.lbl_tenThousand}" />
+								</h:panelGroup>
+								
+							</h:panelGrid>
+							
+						
+					</div>
+					</p:tab>
+						</p:tabView>
+					
+					<!-- 申请人确认信息 -->
+					<div class="style1" id="confimInfoDiv" style="#{innerGuaranteeBean.checkVisibleBlock('confimInfoDiv') ? '':'display:none;'}">
+						<h:panelGrid columns="4"  width="60%" columnClasses="column40,column2,column40,column2">
+							<h:outputLabel value="实际担保额度：" />
+							<h:panelGroup>
+								<p:inputText value="#{innerGuaranteeBean.procGuarantee.realGuarAmount}"  disabled="#{innerGuaranteeBean.checkInputable('realGuarAmount') ? false : true}"
+								 required="#{innerGuaranteeBean.checkInputable('realGuarAmount')}"
+								 requiredMessage="实际担保额度:不可为空!">
+								 <f:convertNumber pattern="#,##0.###" />
+								 </p:inputText>
+								 <h:outputText value="#{msgs.lbl_tenThousand}" />
+							</h:panelGroup>	
+						</h:panelGrid>
+						
+						<h:panelGrid columns="4"  width="60%" columnClasses="column40,column2,column40,column2">
+							<h:outputLabel value="生效担保起始日期：" />
+							<h:panelGroup>
+								<p:inputText id="startDate" disabled="#{innerGuaranteeBean.checkInputable('guarStart') ? false : true}"
+									required="#{innerGuaranteeBean.checkInputable('guarStart')}"
+								 	requiredMessage="生效担保起始日期:不可为空!"
+									value="#{innerGuaranteeBean.procGuarantee.guarStart}" styleClass="ui-date"
+									style="font-size: 9px;width:90px;"
+									onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'endDate\')}'});">
+									<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+								</p:inputText>
+							</h:panelGroup>
+							
+							<h:outputLabel value="生效担保结束日期：" />
+							<h:panelGroup>
+								<p:inputText id="endDate" disabled="#{innerGuaranteeBean.checkInputable('guarEnd') ? false : true}"
+									required="#{innerGuaranteeBean.checkInputable('guarEnd')}"
+								 	requiredMessage="生效担保结束日期:不可为空!"
+									value="#{innerGuaranteeBean.procGuarantee.guarEnd}" styleClass="ui-date"
+									style="font-size: 9px;width:90px;" title="#{msgs.txt_endTime}"
+									onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'startDate\')}'});">
+									<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+								</p:inputText>
+							</h:panelGroup>
+							
+						</h:panelGrid>
+					</div>
+				
+				
+				<br />
+
+				<p:outputPanel id="detailVoListPl">
+					<p:dataTable var="detailVo" id="detailVoList"
+						value="#{innerGuaranteeBean.detailVos}" rowKey="#{detailVo.id}"
+						rows="100" emptyMessage="#{msgs.empty_data_msg}">
+
+						<f:facet name="header">#{msgs.head_detailVoList}</f:facet>
+
+						<p:column headerText="#{msgs.headerText_prossNodeName}">
+							<h:outputText value="#{detailVo.prossNodeName}" />
+						</p:column>
+
+						<p:column headerText="#{msgs.headerText_operatorsName}">
+							<h:outputText
+								value="#{currentUser.exchange2CN(detailVo.operatorsName)}" />
+						</p:column>
+
+						<p:column headerText="#{msgs.headerText_operatorTime}">
+							<h:outputText value="#{detailVo.operatorTime}">
+								<f:convertDateTime timeZone="GMT+8"
+									pattern="yyyy-MM-dd HH:mm:ss" />
+							</h:outputText>
+						</p:column>
+
+						<p:column headerText="#{msgs.headerText_remark}">
+							<h:outputText value="#{detailVo.nodeMemo}" />
+						</p:column>
+					</p:dataTable>
+				</p:outputPanel>
+			</h:form>
+
+
+			<h:form prependId="false" id="fileForm">
+				<div style="position: relative; margin-top: 5px;">
+					<p:outputPanel id="attachmentPanel">
+						<commentProcess:filedownload updateComenId="attachmentPanel"
+							isDisable="true" dataList="#{innerGuaranteeBean.processFileList}" />
+					</p:outputPanel>
+				</div>
+			</h:form>
+
+		</p:panel>
+	</ui:define>
+</ui:composition>

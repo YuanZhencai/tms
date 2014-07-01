@@ -1,0 +1,42 @@
+<ui:composition xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<p:dialog id="insert_dialog_id" widgetVar="insert_dialog_dialog"
+		resizable="false" width="500" height="200" header="添加岗位信息"
+		modal="true">
+		<p:messages id="newErrMsg" showDetail="true" showSummary="true" autoUpdate="true"/>
+		<h:form prependId="false" id="new_form">
+			<h:panelGrid columns="2">
+				<h:outputText value="岗位名称： " />
+				<h:column>
+				<p:inputText id="newName" value="#{positionBean.position.name}"
+					validator="#{positionBean.validPosition}"/>
+				<span style="color: red">*</span>
+				</h:column>
+
+				<h:outputText value="岗位描述： " />
+				<p:inputText id="newDesc" value="#{positionBean.position.desc}"
+					style="width: 350px;" validator="#{positionBean.validPosition}" />
+
+				<h:outputText value="是否有效： " />
+				<h:selectOneRadio id="newDefunctInd"
+					value="#{positionBean.position.defunctInd}"
+					validator="#{positionBean.validPosition}">
+					<f:selectItem itemLabel="生效" itemValue="N" />
+					<f:selectItem itemLabel="失效" itemValue="Y" />
+				</h:selectOneRadio>
+			</h:panelGrid>
+			<div style="text-align: right; margin-top: 3px;">
+				<p:commandButton value="保存" image="ui-icon ui-icon-disk"
+						style="margin-right: 5px;"
+						oncomplete="handleSaveRequest(xhr, status, args);ensureTable();"
+						actionListener="#{positionBean.addPosition}"
+						update="positionQueryForm, new_form" />
+					<p:commandButton value="关闭" image="ui-icon ui-icon-cancel"
+						oncomplete="insert_dialog_dialog.hide();" />
+			</div>
+		</h:form>
+	</p:dialog>
+</ui:composition>

@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/template/template.xhtml">
+	<ui:define name="title">已接收任务</ui:define>
+
+	<ui:define name="content">
+		<input type="hidden" id="menuOne" value="15" />
+		<input type="hidden" id="menuTwo" value="20" />
+		<h:form id="processAccept" prependId="false" onsubmit="statusComplete();">
+			<p:panel styleClass="panel1">
+
+				<p:breadCrumb preview="true" expandEffectDuration="200"
+					previewWidth="24" style="width: 99.1%">
+					<p:menuitem value="#{msgs.menItem_process}" url="#" />
+					<p:menuitem value="#{msgs.menItem_process}" url="#" />
+					<p:menuitem value="#{msgs.txt_receivedTask}" url="#" />
+				</p:breadCrumb>
+
+				<p:message id="msg" for="msg" />
+
+				<div style="position: relative; margin-top: 5px;">
+					<p:outputPanel id="processAcceptTableId">
+						<p:dataTable var="proAccept" id="prAccepTable"
+							value="#{processAcceptedBean.processAcceptModel}"
+							rowKey="#{proAccept.id}" paginator="true" rows="10"
+							paginatorPosition="bottom"
+							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
+							currentPageReportTemplate="{currentPage}/{totalPage}"
+							emptyMessage="#{msgs.empty_data_msg}">
+
+							<f:facet name="header">#{msgs.txt_receiveTaskList}</f:facet>
+
+							<p:column headerText="#{msgs.col_procInstId}">
+								<h:outputText value="#{proAccept.pidTms}" />
+							</p:column>
+							<p:column headerText="#{msgs.col_companyName}">
+								<h:outputText value="#{proAccept.companyName}" />
+							</p:column>
+							<p:column headerText="#{msgs.col_processName}">
+								<h:outputText value="#{proAccept.processName}" />
+							</p:column>
+							<p:column headerText="#{msgs.col_processDesc}">
+								<h:outputText value="#{proAccept.describle}" />
+							</p:column>
+							<p:column headerText="#{msgs.col_processVersion}">
+								<h:outputText value="#{proAccept.processVersion}" />
+							</p:column>
+							<p:column headerText="#{msgs.col_taskName}">
+								<h:outputText value="#{proAccept.nodeName}" />
+							</p:column>
+							<p:column headerText="#{msgs.txt_receiveTime}">
+								<h:outputText value="#{proAccept.acceptDate}">
+									<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"
+										timeZone="GMT+8" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="#{msgs.col_operate}" styleClass="operating_60">
+								<p:commandButton icon="ui-icon ui-icon-unlocked"
+									oncomplete="AcceptConfirmation.show()" title="#{msgs.txt_returnTask}">
+									<f:setPropertyActionListener
+										target="#{processAcceptedBean.workProcessNumber}"
+										value="#{proAccept.procInstId}" />
+								</p:commandButton>
+								<p:commandButton icon="ui-icon ui-icon-gear" title="#{msgs.txt_handleTask}"
+									ajax="false" action="#{processAcceptedBean.processingTask}">
+									<f:setPropertyActionListener
+										target="#{processAcceptedBean.processVo}" value="#{proAccept}" />
+								</p:commandButton>
+
+							</p:column>
+						</p:dataTable>
+
+					</p:outputPanel>
+				</div>
+				<p:confirmDialog message="#{msgs.txt_sureToReturnTask}" header="#{msgs.txt_freeTask}" severity="alert"
+					widgetVar="AcceptConfirmation">
+					<div align="center">
+						<p:commandButton value="#{msgs.btn_ok}" icon="ui-icon ui-icon-check"
+							update="processAcceptTableId,msg"
+							oncomplete="AcceptConfirmation.hide();"
+							action="#{processAcceptedBean.releaseTask}" />
+						&#160;&#160;
+						<p:commandButton value="#{msgs.btn_cancel}" onclick="AcceptConfirmation.hide()"
+							type="button" icon="ui-icon ui-icon-cancel" />
+					</div>
+				</p:confirmDialog>
+			</p:panel>
+		</h:form>
+	</ui:define>
+
+</ui:composition>
+
+

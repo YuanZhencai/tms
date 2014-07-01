@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:w="http://www.wcs-global.com/customtaglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<p:dialog header="流程选择" widgetVar="processNumberSelectDialogVar"
+		id="processNumberSelectDialogId" resizable="false" width="400" height="400"
+		modal="true" >
+		<h:form id="processNumberSelectForm" prependId="false">
+			<p:dataTable id="processNumberSelectTable" var="processMap"
+				value="#{processNumberSelectBean.dataModel}"
+				widgetVar="processNumberSelectTableVar" paginator="true"
+				paginatorPosition="bottom" selectionMode="multiple"
+				rowKey="#{processMap.id}" rows="10"
+				selection="#{processNumberSelectBean.selectedProcessMaps}"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+				currentPageReportTemplate="{currentPage}/{totalPage}"
+				emptyMessage="#{msgs.dataTable_empty}" >
+				<p:ajax event="page" listener="#{processNumberSelectBean.saveLastPageSelection}"/>
+				<p:column>
+					<f:facet name="header">
+						<div>流程实例编号</div>
+						<p:inputText id="tmsNumber" style="width: 100px;"  onkeydown="if(event.keyCode==13) { return false; }" 
+								onkeyup="if(event.keyCode==13) {document.getElementById('processNumberSelectTable:tmsNumber').blur();}"
+							value="#{processNumberSelectBean.tmsNumber}">
+							<p:ajax event="change" update=":processNumberSelectForm:processNumberSelectTable" 
+								listener="#{processNumberSelectBean.filterProcessMap}" />
+						</p:inputText>
+					</f:facet>
+					<h:outputText value="#{processMap.pidTms}" />
+				</p:column>
+
+				<f:facet name="footer">  
+            		<p:commandButton value="确定" icon="ui-icon-check" 
+            		action="#{processNumberSelectBean.beforeClose}" oncomplete="processNumberSelectDialogVar.hide();"
+            		update=":dbListForm:instanceNum"/>
+        		</f:facet>
+				
+			</p:dataTable>
+		</h:form>
+	</p:dialog>
+</ui:composition>

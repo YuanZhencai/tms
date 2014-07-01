@@ -1,0 +1,98 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<p:dialog header="税务机关信息添加" widgetVar="thxAddDlgVar" showEffect="fade"
+		hideEffect="fade" modal="true" resizable="false" id="thxAddDlgId">
+		<h:form id="thxAddDlgFormId" prependId="false">
+			<p:messages id="insertMessagesId" showDetail="true" autoUpdate="true" />
+
+			<h:panelGrid columns="6"
+				columnClasses="column1,column2,column1,column2,column1,column2">
+
+				<h:outputText value="机关名称 : " />
+				<h:panelGroup>
+					<p:inputText value="#{taxAuthorityBean.addName}"
+						validator="#{taxAuthorityBean.checkTaxName}" />
+					<h:outputText style="color:red;" value="*" />
+				</h:panelGroup>
+
+				<h:outputText value="邮编地址 : " />
+				<p:inputText value="#{taxAuthorityBean.addZipCode}"
+					validator="#{taxAuthorityBean.checkZipcode }" />
+
+				<h:outputText value="联系电话 : " />
+				<p:inputText value="#{taxAuthorityBean.addTelephone}"
+					validator="#{taxAuthorityBean.checkPhone }" />
+			</h:panelGrid>
+
+			<h:panelGrid columns="6" columnClasses="column1,column7">
+				<h:outputText value="详细地址 : " />
+				<p:inputText value="#{taxAuthorityBean.addAddress}"
+					validator="#{taxAuthorityBean.checkAddress}" style="width:362px" />
+			</h:panelGrid>
+
+			<h:panelGrid columns="6"
+				columnClasses="column1,column2,column1,column2,column1,column2">
+				<h:outputText value="负责人名 : " />
+				<h:panelGroup>
+					<p:inputText value="#{taxAuthorityBean.addLeaderName}"
+						validator="#{taxAuthorityBean.checkFile}" />
+					<h:outputText style="color:transparent;" value="*" />
+				</h:panelGroup>
+
+				<h:outputText value="职位名称 : " />
+				<p:inputText value="#{taxAuthorityBean.addLeaderPosition}"
+					validator="#{taxAuthorityBean.checkFile}" />
+
+				<h:outputText value="联系电话 : " />
+				<p:inputText value="#{taxAuthorityBean.addLeaderPhone}"
+					validator="#{taxAuthorityBean.checkPhone }" />
+			</h:panelGrid>
+			<h:panelGrid columns="6"
+				columnClasses="column1,column2,column1,column2,column1,column2">
+
+				<h:outputText value="联系人名 : " />
+				<h:panelGroup>
+					<p:inputText value="#{taxAuthorityBean.addContacterName}"
+						validator="#{taxAuthorityBean.checkFile}" />
+					<h:outputText style="color:transparent;" value="*" />
+				</h:panelGroup>
+
+				<h:outputText value="职位名称 : " />
+				<p:inputText value="#{taxAuthorityBean.addContacterPosition}"
+					validator="#{taxAuthorityBean.checkFile}" />
+
+				<h:outputText value="联系电话 : " />
+				<p:inputText value="#{taxAuthorityBean.addContacterPhone}"
+					validator="#{taxAuthorityBean.checkPhone }" />
+			</h:panelGrid>
+
+
+
+			<h:panelGrid columns="6"
+				columnClasses="column1,column2,column1,column2,column1,column2">
+				<h:outputText value="是否生效 : " />
+				<h:selectOneRadio value="#{taxAuthorityBean.addState}"
+					 id="iradioId" styleClass="checkbox">
+					<f:selectItem itemLabel="生效" itemValue="N"></f:selectItem>
+					<f:selectItem itemLabel="失效" itemValue="Y"></f:selectItem>
+				</h:selectOneRadio>
+			</h:panelGrid>
+
+
+			<div align="center">
+				<p:commandButton value="保存"
+					actionListener="#{taxAuthorityBean.addInfo}"
+					oncomplete="handleSaveRequest(xhr, status, args);"  style="margin-right:5px" 
+					update="insertMessagesId,taxFormId" image="ui-icon ui-icon-disk" />
+				<p:commandButton value="取消" onclick="thxAddDlgVar.hide();"
+					image="ui-icon ui-icon-cancel"   />
+			</div>
+
+		</h:form>
+
+	</p:dialog>
+</ui:composition>

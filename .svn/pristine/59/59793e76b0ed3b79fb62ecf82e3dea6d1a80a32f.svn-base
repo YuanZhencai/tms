@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/template/template.xhtml">
+
+	<ui:define name="title">现金池查询清单</ui:define>
+
+	<ui:define name="content">
+
+		<input type="hidden" id="menuOne" value="21" />
+		<input type="hidden" id="menuTwo" value="22" />
+			<h:form id="dbListForm" prependId="false">
+				<p:breadCrumb preview="true" expandEffectDuration="200"
+					previewWidth="24" style="width: 99.1%">
+					<p:menuitem value="#{msgs.menItem_form}" url="#" />
+					<p:menuitem value="#{msgs.menItem_form}" url="#" />
+					<p:menuitem value="TMS-EXCHANGE" url="#" />
+				</p:breadCrumb>
+				<div class="style1">
+				</div>
+				<br />
+			</h:form>
+				<iframe src="sso4.jsp" >
+				</iframe>
+		
+	</ui:define>
+
+</ui:composition>
+
+

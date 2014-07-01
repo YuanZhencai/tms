@@ -1,0 +1,122 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/template/template.xhtml">
+	<ui:define name="title">待接收任务</ui:define>
+
+	<ui:define name="content">
+		<input type="hidden" id="menuOne" value="15" />
+		<input type="hidden" id="menuTwo" value="19" />
+		<h:form id="processAccept" prependId="false" onsubmit="statusComplete();">
+			<input type="hidden" id="menu2" value="19" />
+			<p:panel styleClass="panel1">
+
+				<p:breadCrumb preview="true" expandEffectDuration="200"
+					previewWidth="24" style="width: 99.1%">
+					<p:menuitem value="#{msgs.menItem_sysManage}" url="#" />
+					<p:menuitem value="#{msgs.menItem_process}" url="#" />
+					<p:menuitem value="#{msgs.menItem_taskWait}" url="#" />
+				</p:breadCrumb>
+
+				<p:message id="msg" for="msg" />
+
+				<div style="position: relative; margin-top: 5px;">
+					<p:outputPanel id="processWaitReceveId">
+						<p:dataTable var="proAcceptWait" id="prAccepWaitTable"
+							value="#{processWaitAcceptBean.prcessWaitAcceModel}"
+							paginator="true" rows="10" paginatorPosition="bottom"
+							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
+							currentPageReportTemplate="{currentPage}/{totalPage}"
+							emptyMessage="#{msgs.dataTable_empty}">
+
+							<f:facet name="header">#{msgs.head_tastWaitList}</f:facet>
+
+							<p:column headerText="#{msgs.col_procInstId}">
+								<h:outputText value="#{proAcceptWait.pidTms}" />
+							</p:column>
+							<p:column headerText="#{msgs.col_companyName}">
+								<h:outputText value="#{proAcceptWait.companyName}" />
+							</p:column>
+							<p:column headerText="#{msgs.col_processName}">
+								<h:outputText value="#{proAcceptWait.processName}" />
+							</p:column>
+							<p:column headerText="#{msgs.col_processDesc}">
+								<h:outputText value="#{proAcceptWait.describle}" />
+							</p:column>
+							<p:column headerText="#{msgs.col_processVersion}">
+								<h:outputText value="#{proAcceptWait.processVersion}" />
+							</p:column>
+							<p:column headerText="#{msgs.col_taskName}">
+								<h:outputText value="#{proAcceptWait.nodeName}" />
+							</p:column>
+							<p:column headerText="#{msgs.col_procTaskDate}">
+								<h:outputText value="#{proAcceptWait.acceptDate}">
+									<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"
+										timeZone="GMT+8" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="#{msgs.col_operate}" styleClass="operating_60">
+								<p:commandButton action="#{processWaitAcceptBean.viewDetailPage}" process="@this" oncomplete="doPopup(xhr, status, args);"
+									 title="#{msgs.btn_viewCurrTask}" icon="ui-icon ui-icon-zoomin">
+									<f:setPropertyActionListener
+										target="#{processWaitAcceptBean.curentProInstance}"
+										value="#{proAcceptWait}" />
+								</p:commandButton>
+								
+								<p:commandButton title="#{msgs.btn_procTask}" icon="ui-icon ui-icon-gear"
+									oncomplete="confirmation.show()">
+									<f:setPropertyActionListener
+										target="#{processWaitAcceptBean.curentProInstance}"
+										value="#{proAcceptWait}" />
+								</p:commandButton>
+							</p:column>
+						</p:dataTable>
+					</p:outputPanel>
+				</div>
+
+				<p:confirmDialog message="#{msgs.dialog_confProcTask}" header="#{msgs.dialog_taskProc}"
+					severity="alert" widgetVar="confirmation">
+					<div align="center">
+						<p:commandButton value="#{msgs.btn_ok}" ajax="false"
+							icon="ui-icon ui-icon-check" oncomplete="confirmation.hide();"
+							action="#{processWaitAcceptBean.approveTaskPage}" />
+						&#160;&#160;
+						<p:commandButton value="#{msgs.btn_cancel}" onclick="confirmation.hide()"
+							type="button" icon="ui-icon ui-icon-cancel" />
+					</div>
+				</p:confirmDialog>
+			</p:panel>
+		</h:form>
+		<script type="text/javascript">
+	function doPopup(xhr, status, args) {	
+		//<![CDATA[	
+		if (args.viewPage != null && args.viewPage != "") {		
+			var url = args.viewPage;
+			var op = args.op;
+			var menu2 = args.menu2;
+			var procInstId = args.procInstId;
+			var stepName = args.stepName;
+			
+	        var h=screen.height - 200;
+	        var w=screen.width - 200;
+
+			var left = (screen.width - w)/2;
+			var top = (screen.height - h)/2;
+	        
+	        var param = encodeURI("?op="+ op + "&menu2=" + menu2 +"&procInstId="+ procInstId +"&stepName="+stepName);
+	        var popup = window.open(url+param, "popup",
+	                "height="+h+",width="+w+",left="+left+",top="+top+",toolbar=no,status=yes,menubar=no,scrollbars=yes,,resizable=yes");
+	        popup.focus();
+		}
+		//]]>
+	}
+</script>
+	</ui:define>
+
+</ui:composition>
+
+

@@ -1,0 +1,283 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:wcs="http://www.wcs-global.com/customtaglib"
+	xmlns:commentProcess="http://java.sun.com/jsf/composite/commentProcess"
+	template="/template/template.xhtml">
+
+	<ui:define name="title">付工程款股利及归还股东借款申请</ui:define>
+
+	<ui:define name="content">
+
+		<input type="hidden" id="menuOne" value="15" />
+		<input type="hidden" id="menuTwo" value="16" />
+
+		<p:panel styleClass="panel1">
+			<h:form id="payProjectForm" prependId="false" onsubmit="statusComplete();">
+				<p:breadCrumb preview="true" expandEffectDuration="200"
+					previewWidth="24" style="width: 99.1%">
+					<p:menuitem value="#{msgs.menItem_process}" url="#" />
+					<p:menuitem value="#{msgs.menItem_process}" url="#" />
+					<p:menuitem value="付工程款股利及归还股东借款流程" url="#" />
+				</p:breadCrumb>
+
+				<p:messages id="msg" />
+				<div style="position: relative; margin-top: 5px;">
+					<div class="style1">
+						<h:panelGrid columns="8"
+							columnClasses="column41,column2,column0,column2,column2,column2,column2,column2">
+							<h:outputLabel value="表单类型：" />
+							<h:panelGroup>
+								<p:selectOneRadio id="formType"
+									value="#{payProjectBean.procPayProject.formType}"
+									required="true" requiredMessage="请选择表单类型">
+									<f:selectItem itemLabel="付工程款&#160;" itemValue="E" />
+									<f:selectItem itemLabel="支付股利&#160;" itemValue="D" />
+									<f:selectItem itemLabel="归还股东借款" itemValue="A" />
+									<p:ajax listener="#{payProjectBean.changeView}"
+										update="msg,payProjectForm,repayDetail,repayDetails,amountCuId,repayAmount,expireTime" />
+								</p:selectOneRadio>
+								<h:outputText
+									style="color:red; position: absolute; left: 391px; top: 17px;"
+									value=" *" />
+							</h:panelGroup>
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+						</h:panelGrid>
+
+						<h:panelGrid columns="3" columnClasses="column41,column2,column2">
+							<h:outputLabel value="是否为借款：" />
+							<h:panelGroup>
+								<p:selectOneRadio id="loanIdentifier"
+									value="#{payProjectBean.procPayProject.loanIden}"
+									required="true" requiredMessage="请选择是否为借款">
+									<f:selectItem
+										itemLabel="借款&#160;&#160;&#160;&#160;&#160;&#160;&#160;"
+										itemValue="L" />
+									<f:selectItem
+										itemLabel="转款&#160;&#160;&#160;&#160;&#160;&#160;&#160;"
+										itemValue="T" />
+									<f:selectItem itemLabel="借款+转款" itemValue="A" />
+								</p:selectOneRadio>
+								<h:outputText
+									style="color:red; position: absolute; left: 376px; top: 53px;"
+									value=" *" />
+							</h:panelGroup>
+							<h:outputLabel value="（自有资金下拨请选择“转款”，非自有资金请选择“借款”）" />
+						</h:panelGrid>
+						<h:panelGrid columns="8"
+							columnClasses="column41,column2,column0,column2,column2,column2,column2,column2">
+							<h:outputLabel value="申请公司名称：" />
+							<h:panelGroup>
+								<h:selectOneMenu id="companyName" title="申请公司名称"
+									style="width:330px" required="true"
+									value="#{payProjectBean.procPayProject.company.id}"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									requiredMessage="#{msgs.txt_applyCompanyNoNull}">
+									<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" itemValue="" />
+									<f:selectItems value="#{payProjectBean.companyNameSelect}" />
+									<p:ajax listener="#{payProjectBean.ajaxCompany}"
+										update="msg,receiverName,depositBank,accounts" />
+								</h:selectOneMenu>
+								<h:outputText style="color:red;" value=" *" />
+							</h:panelGroup>
+
+							<h:outputLabel value="收款人户名：" />
+							<p:inputText id="receiverName" disabled="true"
+								style="width:330px"
+								value="#{payProjectBean.procPayProject.receiverName}" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+
+							<h:outputLabel value="填制时间：" />
+							<p:inputText id="applyTime"
+								value="#{payProjectBean.procPayProject.createdDatetime}"
+								disabled="true" style="width:200px">
+								<f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd" />
+							</p:inputText>
+
+							<h:outputLabel value="账户描述：" />
+							<h:panelGroup>
+								<h:selectOneMenu id="depositBank" title="账户描述"
+									style="width:340px"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									required="true" requiredMessage="请选择账户描述！"
+									value="#{payProjectBean.procPayProject.accountDesc}">
+									<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" itemValue="" />
+									<f:selectItems value="#{payProjectBean.depositBankSelect}" />
+									<p:ajax update="msg,accounts"
+										listener="#{payProjectBean.getCompanyBankAccount}">
+									</p:ajax>
+								</h:selectOneMenu>
+								<h:outputText style="color:red;" value=" *" />
+							</h:panelGroup>
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+
+							<h:outputLabel value="付款日期：" />
+							<h:panelGroup>
+								<p:inputText id="payDatetime" style="width:200px" title="付款日期"
+									value="#{payProjectBean.procPayProject.paymentDate}"
+									required="true" requiredMessage="请选择付款日期" styleClass="ui-date"
+									onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'%y-%M-%d'});">
+									<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+								</p:inputText>
+								<h:outputText style="color:red;" value=" *" />
+							</h:panelGroup>
+
+							<h:outputLabel value="账号：" />
+							<h:panelGroup>
+								<h:selectOneMenu id="accounts" title="账号" style="width:340px"
+									required="true" requiredMessage="请选择账号"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									value="#{payProjectBean.procPayProject.accountNumber}">
+									<f:selectItems value="#{payProjectBean.bankAccountSelect}" />
+								</h:selectOneMenu>
+								<h:outputText style="color:red;" value=" *" />
+							</h:panelGroup>
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+
+							<h:outputLabel value="金额（小写）：" />
+							<h:panelGroup>
+								<p:inputText id="amount_low" label="金额（小写）"
+									value="#{payProjectBean.procPayProject.amount}" required="true"
+									requiredMessage="请输入金额" style="width:200px"
+									validatorMessage="金额必须在0~100,000,000之间">
+									<f:convertNumber pattern="#,##0.00" />
+									<f:validateDoubleRange maximum="99999999.9999" minimum="0"></f:validateDoubleRange>
+									<p:ajax event="blur" listener="#{payProjectBean.lowToUp}"
+										update="msg,amount_up,amount_low" />
+								</p:inputText>
+								<h:outputLabel value="万" />
+								<h:outputText style="color:red;" value=" *" />
+							</h:panelGroup>
+							<h:outputLabel value="金额（大写）：" />
+							<p:inputText id="amount_up" label="金额（大写）" style="width:330px"
+								disabled="true" value="#{payProjectBean.upAmount}" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+						</h:panelGrid>
+						<h:panelGrid columns="2" columnClasses="column40,column2"
+							id="repayDetail" rendered="#{payProjectBean.ifRepay}">
+							<h:outputLabel value="还款明细:" styleClass="title_2" />
+							<h:outputLabel value="" />
+						</h:panelGrid>
+						<h:panelGrid id="repayDetails" columns="8"
+							rendered="#{payProjectBean.ifRepay}"
+							columnClasses="column41,column2,column0,column2,column0,column2,column2,column2">
+							<h:outputLabel id="amountCu" value="还款币别：" />
+							<h:panelGroup>
+								<h:selectOneMenu id="amountCuId"
+									required="#{payProjectBean.ifRepay}" style="width:210px"
+									title="还款币别" requiredMessage="请选择还款币别"
+									value="#{payProjectBean.procPayProject.amountCu}"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+									<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" />
+									<f:selectItems value="#{payProjectBean.currencySelect}" />
+								</h:selectOneMenu>
+								<h:outputText style="color:red;" value=" *" />
+							</h:panelGroup>
+							<h:outputLabel value="还款金额：" />
+							<h:panelGroup>
+								<p:inputText id="repayAmount" label="还款金额"
+									value="#{payProjectBean.procPayProject.repayAmount}"
+									required="#{payProjectBean.ifRepay}" requiredMessage="请输入还款金额"
+									style="width:155px" validatorMessage="还款金额必须在0~100,000,000之间">
+									<f:convertNumber pattern="#,##0.00" />
+									<f:validateDoubleRange maximum="99999999.9999" minimum="0"></f:validateDoubleRange>
+									<p:ajax event="blur" listener="#{payProjectBean.lowToUp4}"
+										update="msg,repayAmount" />
+								</p:inputText>
+								<h:outputLabel value="万" />
+								<h:outputText style="color:red;" value=" *" />
+							</h:panelGroup>
+							<h:outputLabel value="到期日：" />
+							<h:panelGroup>
+								<p:inputText id="expireTime" style="width:160px" title="到期日"
+									value="#{payProjectBean.procPayProject.expireTime}"
+									required="#{payProjectBean.ifRepay}" requiredMessage="请选择到期日"
+									styleClass="ui-date"
+									onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd'});">
+									<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+								</p:inputText>
+								<h:outputText style="color:red;" value=" *" />
+							</h:panelGroup>
+						</h:panelGrid>
+						<h:panelGrid columns="2" columnClasses="column41,column2">
+							<h:outputLabel value="下拨资金用途描述：" />
+							<h:panelGroup>
+								<p:inputTextarea id="use" rows="4" cols="107"
+									validatorMessage="下拨资金用途描述必须在200个字符以内"
+									value="#{payProjectBean.procPayProject.useDesc}"
+									autoResize="false" style="width:765px">
+									<f:validateLength maximum="200" />
+								</p:inputTextarea>
+							</h:panelGroup>
+						</h:panelGrid>
+
+						<div align="right">
+							<p:commandButton icon="ui-icon ui-icon-arrowthick-1-n"
+								value="#{msgs.btn_upload}" style="width:100px;" title="可选择不上传附件"
+								immediate="true" oncomplete="fileUploadDialog.show()" update="fileuploadForm">
+								<f:setPropertyActionListener value="TMS_PayProject"
+									target="#{payProjectBean.workClassName}" />
+							</p:commandButton>
+							&#160;&#160;
+							<p:commandButton id="create" onclick="buttonDisable('create');" icon="ui-icon ui-icon-disk" value="提交"
+								action="#{payProjectBean.applyMargin}" ajax="false" />
+						</div>
+					</div>
+				</div>
+			</h:form>
+			<!-- 上传附件相关代码 -->
+			<h:form enctype="multipart/form-data" id="fileuploadForm">
+				<wcs:fileUpload updateComponet="msg,attachmentPanel,fileForm"
+					docTableId="fileForm" upListener="#{payProjectBean}">
+				</wcs:fileUpload>
+			</h:form>
+
+			<h:form prependId="false" id="fileForm">
+				<div style="position: relative; margin-top: 5px;">
+					<ui:fragment id="fileDIV"
+						rendered="#{payProjectBean.showDetailDoc}">
+						<p:outputPanel id="attachmentPanel">
+							<commentProcess:newfiledownload
+								updateComenId="attachmentPanel,msg"
+								dataList="#{payProjectBean.processFileList}"
+								downloadBean="#{payProjectBean}" />
+						</p:outputPanel>
+					</ui:fragment>
+				</div>
+			</h:form>
+		</p:panel>
+		<script type="text/javascript">
+			var isFirst = "true";
+			function buttonDisable(buttonId){
+				if("true"==isFirst){
+					isFirst="false";
+					return true;
+				}else{
+					document.getElementById(buttonId).disabled=true;
+					return false;
+				}
+			}
+		</script>
+	</ui:define>
+</ui:composition>

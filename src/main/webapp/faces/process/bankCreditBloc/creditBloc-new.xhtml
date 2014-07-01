@@ -1,0 +1,123 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/template/template.xhtml">
+
+	<ui:define name="title">#{msgs.title_bankCredAppBloc}</ui:define>
+	<ui:define name="styleAndScript">
+
+	</ui:define>
+	<ui:define name="content">
+		<p:panel styleClass="panel1">
+			<h:form prependId="false" id="addRegisterForm"
+				onsubmit="statusComplete();">
+				<p:breadCrumb preview="true" expandEffectDuration="200"
+					previewWidth="24" style="width: 99.1%">
+					<p:menuitem value="#{msgs.menItem_processNew}" url="#" />
+					<p:menuitem value="#{msgs.title_bankCredAppBloc}" url="#" />
+				</p:breadCrumb>
+				<p:messages id="bankCreditMsg" />
+
+				<div style="position: relative; margin-top: 5px;">
+					<div class="style1">
+						<h:panelGrid columns="2"
+							columnClasses="column41,column2">
+							<h:outputLabel value="#{msgs.lbl_formFillDate}：" />
+							<p:inputText id="registerDate" disabled="true"
+								value="#{bankCreditBlocBean.registerDate}" />
+							<h:outputLabel value="#{msgs.lbl_fondsCurrency}：" />
+							<h:panelGroup>
+								<h:selectOneMenu
+									value="#{bankCreditBlocBean.instance.creditLineCu}"
+									label="#{msgs.lbl_fondsCurrency}" id="creditLineCu"
+									required="true" requiredMessage="#{msgs.msg_select_currency}"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+									<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" />
+									<f:selectItems value="#{bankCreditBlocBean.currencySelect}" />
+								</h:selectOneMenu>
+								<h:outputText style="color:red;" value="  *" />
+							</h:panelGroup>
+						</h:panelGrid>
+						<h:panelGrid columns="2" columnClasses="column41,column2">
+							<h:outputLabel value="#{msgs.lbl_companyNameCn}：" />
+							<h:panelGroup>
+								<h:selectOneMenu id="companyNameCn" required="true"
+									label="#{msgs.lbl_companyNameCn}" requiredMessage="请选择申请单位"
+									value="#{bankCreditBlocBean.companyId}"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									style="width:307px;">
+									<f:selectItems value="#{bankCreditBlocBean.companyNameSelect}" />
+								</h:selectOneMenu>
+								<h:outputText style="color:red;" value="  *" />
+							</h:panelGroup>
+							<h:outputLabel value="#{msgs.lbl_creditBank}：" />
+							<h:panelGroup>
+								<h:selectOneMenu id="topBankId" required="true"
+									label="#{msgs.lbl_creditBank}"
+									requiredMessage="#{msgs.msg_required_topBank}"
+									value="#{bankCreditBlocBean.topBankId}"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									style="width:307px;">
+									<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" />
+									<f:selectItems value="#{bankCreditBlocBean.topLevelSelect}" />
+								</h:selectOneMenu>
+								<h:outputText style="color:red;" value="  *" />
+							</h:panelGroup>
+						</h:panelGrid>
+					</div>
+
+					<div class="style1">
+						<h:panelGrid columns="4"
+							columnClasses="column41,column42,column41,column2">
+							<h:outputLabel value="#{msgs.lbl_lastCreditLine}：" />
+							<h:panelGroup>
+								<p:inputText id="lastCreditLineId" required="true"
+									requiredMessage="#{msgs.msg_required_lastCreditLine}"
+									label="#{msgs.lbl_lastCreditLine}"
+									value="#{bankCreditBlocBean.instance.lastCreditLine}">
+									<f:validateDoubleRange maximum="99999999" minimum="0" />
+									<f:convertNumber pattern="#,##0" />
+								</p:inputText>
+								<h:outputText value="#{msgs.lbl_tenThousand}" />
+								<h:outputText style="color:red;" value="  *" />
+							</h:panelGroup>
+
+							<h:outputLabel value="#{msgs.lbl_lastCreditTotal}：" />
+							<h:panelGroup>
+								<p:inputText id="lastCreditTotal" required="true"
+									requiredMessage="#{msgs.msg_required_lastCreditTotal}"
+									label="#{msgs.lbl_lastTotalCred}"
+									value="#{bankCreditBlocBean.instance.lastCreditTotal}">
+									<f:validateDoubleRange maximum="99999999" minimum="0" />
+									<f:convertNumber pattern="#,##0" />
+								</p:inputText>
+								<h:outputText value="#{msgs.lbl_tenThousand}" />
+								<h:outputText style="color:red;" value="  *" />
+							</h:panelGroup>
+						</h:panelGrid>
+						<div>
+							<p:commandButton id="pass" onclick="buttonDisable('pass');" icon="ui-icon ui-icon-disk"
+								value="#{msgs.btn_submit}"
+								action="#{bankCreditBlocBean.blocCreditApply}" ajax="false" />
+						</div>
+					</div>
+				</div>
+			</h:form>
+		</p:panel>
+		<script type="text/javascript">
+			var isFirst = "true";
+			function buttonDisable(buttonId){
+				if("true"==isFirst){
+					isFirst="false";
+					return true;
+				}else{
+					document.getElementById(buttonId).disabled=true;
+					return false;
+				}
+			}
+		</script>
+	</ui:define>
+</ui:composition>

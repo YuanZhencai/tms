@@ -1,0 +1,170 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/template/template.xhtml">
+
+	<ui:define name="styleAndScript">
+		<style type="text/css">
+.changeColor {
+	background: #DEEDF7;
+}
+
+td div span {
+	overflow: hidden; /**超过长度文本隐藏*/
+	white-space: nowrap; /**强制不换行*/
+	text-overflow: ellipsis; /**ie专属,后跟省略号*/
+}
+
+input[type='radio'] {
+	width: 20px;
+}
+
+input[type='checkbox'] {
+	width: 20px;
+}
+
+.op_button {
+	width: 20px;
+	height: 20px;
+}
+</style>
+		<!-- 
+		<script type="text/javascript">
+			jQuery(document).ready(function(){
+				ensureTable();
+			});
+			
+			function ensureTable() {
+				$("div#resultTable th").each(function(index){
+					switch(index) {
+						// first table
+						case 0: $(this).css("width","20%"); break;
+						case 1: $(this).css("width","20%"); break;
+						case 3: $(this).css("width","10%"); break;
+						case 4: $(this).css("width","10%"); break;
+						default: break;
+					}
+				});
+			}
+		</script>
+		 -->
+	</ui:define>
+
+	<ui:define name="content">
+		
+		<input type="hidden" id="menuOne" value="23" />
+		<input type="hidden" id="menuTwo" value="25" />
+	
+		<h:form id="roleQueryForm" prependId="false">
+			<p:panel id="roleMain" styleClass="panel1">
+
+				<f:facet name="header">
+					<img class="header_title_img"
+						src="#{facesContext.externalContext.requestContextPath}/images/icons/tabTitle.gif"
+						alt="" />
+					<h:outputLabel value="角色管理  " />
+
+				</f:facet>
+				<div class="style1">
+					<h:panelGrid columns="6" id="userSearchGrid"
+						columnClasses="column1,column2,column1,column2">
+						<h:outputText value="角色名称：" />
+						<p:inputText value="#{roleBean.query['name']}" />
+						<h:outputText value="状态：" />
+						<h:selectOneMenu value="#{roleBean.query['del']}">
+							<f:selectItem itemLabel="请选择" itemValue="" />
+							<f:selectItem itemLabel="生效" itemValue="N" />
+							<f:selectItem itemLabel="失效" itemValue="Y" />
+						</h:selectOneMenu>
+					</h:panelGrid>
+					<div>
+						<p:commandButton id="roleSearch" value="查询"
+							action="#{roleBean.search}" image="ui-icon ui-icon-search"
+							style="margin-right: 5px;" ajax="false" />
+						<p:commandButton value="重置"
+							image="ui-icon ui-icon-arrowrefresh-1-e"
+							action="#{roleBean.reset}" update="userSearchGrid" />
+						<p:commandButton value="添加" image="ui-icon ui-icon-disk"
+							oncomplete="insert_dialog_dialog.show();document.forms['new_form'].reset();"
+							actionListener="#{roleBean.initAddRole}" update="newErrMsg" />
+					</div>
+				</div>
+
+				<p:dataTable emptyMessage="#{msgs.dataTable_empty}" id="resultTable"
+					var="role" value="#{roleBean.roles}" lazy="true" paginator="true"
+					rows="10" paginatorPosition="bottom" rowIndexVar="index"
+					rowStyleClass="#{index mod 2 == 1 ? 'changeColor' : null}"
+					style="margin-top: 5px;"
+					paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
+					currentPageReportTemplate="{currentPage}/{totalPage}"
+					rowKey="#{role.id}" >
+
+					<f:facet name="header">
+					角色列表
+				</f:facet>
+					<p:column headerText="角色名称">
+						<h:outputText value="#{role.name}" title="#{role.name}" />
+					</p:column>
+					<p:column headerText="角色编码">
+						<h:outputText value="#{role.code}" title="#{role.code}" />
+					</p:column>
+					<p:column headerText="角色描述">
+						<h:outputText value="#{role.desc}" title="#{role.desc}" />
+					</p:column>
+					<p:column headerText="状态">
+						<h:outputText value="#{role.defunctInd == 'Y' ? '失效' : '生效'}"
+							title="#{role.defunctInd == 'Y' ? '生效' : '失效'}" />
+					</p:column>
+					<p:column headerText="操作" styleClass="operating_90">
+						<p:commandButton title="编辑" image="ui-icon ui-icon-wrench"
+							update="update_dialog_id" oncomplete="update_dialog_dialog.show();"
+							action="#{roleBean.editRole}">
+							<f:setPropertyActionListener target="#{roleBean.role}"
+								value="#{role}" />
+						</p:commandButton>
+						<p:commandButton title="分配" icon="ui-icon ui-icon-person"
+							update="role_resource_form" action="#{roleBean.searchResources}"
+							oncomplete="role_resource_dialog.show();">
+							<f:setPropertyActionListener target="#{roleBean.role}"
+								value="#{role}" />
+						</p:commandButton>
+						<p:commandButton title="流程工作队列分配" icon="ui-icon ui-icon-assign"
+							action="#{roleQueueBean.init}" oncomplete="rolequeue_list_dialog.show();" update="msg,rolequeue_list_dialog_id">
+							<f:setPropertyActionListener target="#{roleQueueBean.role}"
+								value="#{role}" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+			</p:panel>
+		</h:form>
+
+		<ui:include src="insert_dialog.xhtml" />
+		<ui:include src="update_dialog.xhtml" />
+		<ui:include src="role_resource_dialog.xhtml" />
+		<ui:include src="rolequeue-list.xhtml" />
+
+		<script type="text/javascript">
+			function handleSaveRequest(xhr, status, args) {
+				if(args.issucc == "yes") {
+					insert_dialog_dialog.hide();
+				}
+			}
+			
+			function handleUpdateRequest(xhr, status, args) {
+				if(args.issucc == "yes") {
+					update_dialog_dialog.hide();
+				}
+			}
+			
+			function handleTreeRequest(xhr, status, args) {
+				if(args.issucc == "yes") {
+					role_resource_dialog.hide();
+				}
+			}
+		</script>
+
+	</ui:define>
+</ui:composition>

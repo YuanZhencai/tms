@@ -1,0 +1,24 @@
+CE.JAAS_ConfigFile=/filenetenv/jaas.conf.WSI
+CE.WASP_Location=/filenetenv
+CE.CEURL=http\://10.229.12.206\:9080/wsi/FNCEWS40MTOM/
+CE.domain=P8Domain
+CE.filenetCeAdminUserName=tmsbpm$fnadmin
+CE.filenetCeAdminUserPasswd=1qazxsw2
+CE.filenetCeUserPasswd=filenetqas
+CE.ObjectStore=tmsqos
+PE.ConnectionPointName=tmsq_cp
+PE.FilenetPeAdminUserName=tmsbpm$fnadmin
+PE.FilenetPeAdminUserPasswd=1qazxsw2
+PE.FilenetPeUserPasswd=filenetqas
+PE.RostName=DefaultRoster
+
+#FTP config
+ftp.server=10.229.12.113
+#ftp port default is 21
+ftp.port=21
+ftp.username=bpm
+ftp.password=123456
+ftp.home.path=/CashPool/inbound
+ftp.generate.file.timeout=10
+ftp.error.notify.mails=panlinlin@wcs-global.com
+disk.home.path=/TMS/BPM

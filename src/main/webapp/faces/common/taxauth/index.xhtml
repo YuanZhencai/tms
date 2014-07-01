@@ -1,0 +1,147 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/template/template.xhtml">
+
+	<ui:define name="styleAndScript">
+		<style type="text/css">
+.lazy_datatable_row {
+	background: #DEEDF7;
+}
+</style>
+	</ui:define>
+	<ui:define name="content">
+		<p:panel styleClass="panel1">
+			<h:form prependId="false" id="taxFormId">
+
+				<div>
+					<p:breadCrumb>
+						<p:menuitem value="" url="#" />
+						<p:menuitem value="系统管理" url="#" />
+						<p:menuitem value="组织用户管理" url="#" />
+						<p:menuitem value="税务机关管理" url="/faces/system/taxauth/index.xhtml" />
+					</p:breadCrumb>
+				</div>
+				<div class="style1" style="margin-top: 5px;margin-bottom: 5px;">
+					<h:panelGrid columns="8" 
+						columnClasses="column1,column2,column1,column2,column1,column2,column1,column2">
+					    
+						<h:outputText value="机关名称 : " />
+						<p:inputText value="#{taxAuthorityBean.queryName }" />
+						
+						<h:outputText value="地址 : " />
+						<p:inputText value="#{taxAuthorityBean.queryAddress }" />
+						
+						<h:outputText value="状态 : " />
+						<h:selectOneMenu value="#{taxAuthorityBean.queryState }">
+							<f:selectItem itemLabel="全部" itemValue=""></f:selectItem>
+							<f:selectItem itemLabel="生效" itemValue="N"></f:selectItem>
+							<f:selectItem itemLabel="失效" itemValue="Y"></f:selectItem>
+						</h:selectOneMenu>
+						
+					</h:panelGrid>
+					
+					<DIV>
+						<p:commandButton value="查询" image="ui-icon ui-icon-search"
+							actionListener="#{taxAuthorityBean.queryPlan}" update="taxFormId" 
+							 style="margin-right:5px" 
+							/>
+						<p:commandButton type="reset" value="重置"
+							image="ui-icon ui-icon-cancel" />
+					</DIV>
+				</div>
+				
+				<p:dataTable var="ss" value="#{taxAuthorityBean.lazyModelIndex}"
+					paginatorPosition="bottom" rowIndexVar="index" paginator="true"
+					rows="7" lazy="true"
+					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}{CurrentPageReport}"
+					rowStyleClass="#{index mod 2 == 1 ? 'lazy_datatable_row' : null}"
+					style="margin-top: 5px;" emptyMessage="没有记录" selectionMode="single">
+					
+					<f:facet name="header">
+					税务机关列表
+					<div
+							style="position: relative; text-align: right; margin: -13px -5px 0px 0px; vertical-align: middle">
+							<p:commandButton value="添加" image="ui-icon ui-icon-plus"
+								oncomplete="thxAddDlgVar.show();document.forms['thxAddDlgFormId'].reset();"
+								update="insertMessagesId" />
+						</div>
+					</f:facet>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="机关名称" />
+						</f:facet>
+						<h:outputText value="#{ss.taxName}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="机构地址" />
+						</f:facet>
+						<h:outputText value="#{ss.taxAddress}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="邮编" />
+						</f:facet>
+						<h:outputText value="#{ss.taxZipCode!=''?ss.taxZipCode:'暂无'}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="联系电话" />
+						</f:facet>
+						<h:outputText value="#{ss.taxPhone!=''?ss.taxPhone:'暂无'}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="状态" />
+						</f:facet>
+						<h:outputText value="#{(ss.taxState)=='N'?'生效':'无效'}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="操作" />
+						</f:facet>
+						<p:commandButton update="thxUpDlgFormId"
+							image="ui-icon ui-icon-pencil" title="修改"
+							oncomplete="thxUpDlgVar.show()">
+							<f:setPropertyActionListener
+								target="#{taxAuthorityBean.selectData}" value="#{ss}" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+			</h:form>
+		</p:panel>
+
+		<ui:include src="update_dialog.xhtml" />
+		<ui:include src="insert_dialog.xhtml" />
+		<script type="text/javascript">
+			function handleSaveRequest(xhr, status, args) {
+				if (args.addInfo == "yes") {
+					thxAddDlgVar.hide();
+				} else {
+
+				}
+			}
+
+			function handleUpdateRequest(xhr, status, args) {
+				if (args.modifyInfo == "yes") {
+					thxUpDlgVar.hide();
+				} else {
+
+				}
+			}
+
+			function closeOverDiv() {
+				$("div.ui-widget-overlay").each(function() {
+					$(this).hide();
+				});
+			}
+		</script>
+	</ui:define>
+</ui:composition>
+

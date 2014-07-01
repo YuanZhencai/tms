@@ -1,0 +1,39 @@
+<ui:composition xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<p:dialog id="update_dialog_id" widgetVar="update_company_dialog"
+		resizable="false" header="组织机构—更新" modal="true" width="700">
+		<p:messages id="updateCompanyErrMsg" showDetail="true" showSummary="true" />
+		<h:form prependId="false" id="update_form">
+			<h2 align="center">更新部门信息 </h2>
+			<div align="center" style="margin-top: 10px; height: 120px;">
+				<h:panelGrid columns="4">
+					<h:outputText value="部门名称：" style="color: blue;" />
+					<p:inputText style="width: 230px;" title="请填写真确的部门名称"
+						value="#{orgManagerBean.org.stext}" required="true"
+						label="部门名称">
+						<f:validateLength maximum="20" />
+					</p:inputText>
+					<h:outputText value="SAP代码：" style="margin-left:10px;" />
+					<p:inputText style="width: 150px;" disabled="true"
+						value="#{orgManagerBean.org.bukrs}">
+						<f:validateLength maximum="20" />
+					</p:inputText>
+					<h:outputText value="上级公司：" />
+					<p:inputText style="width: 230px;" disabled="true"
+						value="#{orgManagerBean.parentOrgNode.stext}" />
+				</h:panelGrid>
+			</div>
+			<div align="center" style="margin-top: 10px;">
+				<p:commandButton value="保存" icon="ui-icon ui-icon-disk"
+					action="#{orgManagerBean.updateCompany}"
+					update=":mainForm:treeSingle,:updateCompanyErrMsg,:mainForm:msg,:update_form"
+					oncomplete="handleUpdateRequest(xhr, status, args);"/>
+				<p:commandButton value="关闭" onclick="update_company_dialog.hide();"
+					icon="ui-icon ui-icon-cancel" style="margin-left:15px;"
+					update=":update_form" type="button" />
+			</div>
+		</h:form>
+	</p:dialog>
+</ui:composition>

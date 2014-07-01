@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite">
+	<composite:interface>
+		<composite:attribute name="dataList" />
+	</composite:interface>
+	<composite:implementation>
+
+		<p:dataTable value="#{cc.attrs.dataList}" var="processDetail"
+			rowKey="#{processDetail.id}" paginatorPosition="bottom" rows="100"
+			emptyMessage="#{msgs.empty_data_msg}">
+			<f:facet name="header">#{msgs.head_processDetail}</f:facet>
+			<p:column headerText="#{msgs.headerText_processApprove}">
+				<h:outputText value="#{processDetail.prossNodeName}" />
+			</p:column>
+			<p:column headerText="#{msgs.headerText_processName}">
+				<h:outputText value="#{currentUser.exchange2CN(processDetail.operatorsName)}" />
+			</p:column>
+			<p:column headerText="#{msgs.headerText_processTime}">
+				<h:outputText value="#{processDetail.operatorTime}">
+					<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" timeZone="GMT+8" />
+				</h:outputText>
+			</p:column>
+			<p:column headerText="#{msgs.headerText_remark}">
+				<h:outputText value="#{processDetail.nodeMemo}" />
+			</p:column>
+		</p:dataTable>
+	</composite:implementation>
+</ui:composition>

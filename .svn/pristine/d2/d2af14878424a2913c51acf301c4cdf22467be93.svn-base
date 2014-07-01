@@ -1,0 +1,274 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:wcs="http://www.wcs-global.com/customtaglib"
+	xmlns:commentProcess="http://java.sun.com/jsf/composite/commentProcess"
+	template="/template/template.xhtml">
+
+	<ui:define name="title">生产或贸易总头寸申请</ui:define>
+
+	<ui:define name="content">
+
+		<input type="hidden" id="menuOne" value="15" />
+		<input type="hidden" id="menuTwo" value="16" />
+
+		<p:panel styleClass="panel1">
+			<h:form id="prodOrTradeCashForm" prependId="false" onsubmit="statusComplete();">
+				<p:breadCrumb preview="true" expandEffectDuration="200"
+					previewWidth="24" style="width: 99.1%">
+					<p:menuitem value="流程" url="#" />
+					<p:menuitem value="流程" url="#" />
+					<p:menuitem value="生产或贸易总头寸申请表" url="#" />
+				</p:breadCrumb>
+
+				<p:messages id="msg" />
+
+				<div class="style1">
+					<h:panelGrid  columns="8" columnClasses="column40,column2,column40,column2,column0,column2,column0,column2">
+						
+						<h:outputLabel value="申请公司名称：" />
+						<h:panelGroup>
+								<h:selectOneMenu id="appCompanyName" disabled="#{prodOrTradeCashBean.conDisable}"
+									value="#{prodOrTradeCashBean.procProdOrTradeCash.company.id}" 
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									style="width:330px" required="false" requiredMessage="请选择申请公司名称">
+									<f:selectItem itemLabel="请选择" itemValue=""/>
+									 <f:selectItems value="#{prodOrTradeCashBean.companySelect}" />
+									 <p:ajax  listener="#{prodOrTradeCashBean.getLastValues}"
+								 update="msg,lastCash,lastCashAmount"/>
+								</h:selectOneMenu>
+								<h:outputText style="color:red;" value=" *" />
+						</h:panelGroup>	
+						<h:outputLabel value="类型：" />
+						<h:panelGroup>
+								<p:selectOneRadio id="appType" required="false" 
+									requiredMessage="类型不能为空" disabled="#{prodOrTradeCashBean.conDisable}"
+									value="#{prodOrTradeCashBean.procProdOrTradeCash.appType}">
+									<f:selectItem itemLabel="贸易" itemValue="T" />
+									<f:selectItem itemLabel="生产" itemValue="P" />
+									<p:ajax  listener="#{prodOrTradeCashBean.getLastValues}"
+								 update="msg,lastCash,lastCashAmount"/>
+								</p:selectOneRadio>
+						</h:panelGroup>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+
+						<h:outputLabel value="申请日期：" />
+						<p:inputText id="applyDate" style="width:200px"
+							value="#{prodOrTradeCashBean.applyDate}" disabled="true"/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						
+						<h:outputLabel value="品种类型：" />
+						<h:panelGroup>
+								<h:selectOneMenu id="varietyType" disabled="#{prodOrTradeCashBean.conDisable}"
+									value="#{prodOrTradeCashBean.varietyType}"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									style="width:200px" required="false" requiredMessage="请选择品种类型">
+									<f:selectItem itemLabel="请选择" itemValue=""/>
+									<f:selectItems value="#{prodOrTradeCashBean.varietyTypeSelect}" />
+								<p:ajax  listener="#{prodOrTradeCashBean.initVarietySelect}"
+								 update="msg,variety"/>
+								</h:selectOneMenu>
+								<h:outputText style="color:red;" value=" *" />
+						</h:panelGroup>
+						<h:outputLabel value="品种：" />
+						<h:panelGroup>
+								<h:selectOneMenu id="variety" disabled="#{prodOrTradeCashBean.conDisable}"
+									value="#{prodOrTradeCashBean.procProdOrTradeCash.variety}"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									style="width:200px" required="false" requiredMessage="请选择品种">
+									<f:selectItem itemLabel="请选择" itemValue=""/>
+									<f:selectItems value="#{prodOrTradeCashBean.varietySelect}" />
+								<p:ajax  listener="#{prodOrTradeCashBean.getLastValues}"
+								 update="msg,lastCash,lastCashAmount"/>
+								</h:selectOneMenu>
+								<h:outputText style="color:red;" value=" *" />
+						</h:panelGroup>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						
+					</h:panelGrid>
+					
+					<div align="left">
+						<h:panelGrid columns="4" columnClasses="column41,column2,column41,column2">
+							<h:outputLabel value=""/>
+							<p:commandButton id="addNewCash"  action="#{prodOrTradeCashBean.getDisableInformation}" style="width:150px"
+							disabled="#{prodOrTradeCashBean.addNewCashConDisable}" ajax="false" value="新增头寸" update="addNewCash,addCash,msg,lastCash,thisCash,lastCashAmount,thisCashAmount,variety,startDate,endDate"/>
+							<p:commandButton id="addCash"  action="#{prodOrTradeCashBean.getCashInformation}" style="width:150px"
+							disabled="#{prodOrTradeCashBean.addCashConDisable}" ajax="false" value="补增头寸" update="addNewCash,addCash,msg,variety,startDate,endDate"/>
+							<h:outputLabel value="（注：请选择点击按钮进行接下来表单填写操作，如需要在原有头寸基础上申请增加头寸数量，请点击“补增头寸”按钮。）"/>
+						</h:panelGrid>
+					</div>
+					
+					<h:panelGrid   columns="8" columnClasses="column40,column2,column40,column2,column0,column2,column0,column2">	
+						<h:outputLabel value="上次申请剩余头寸:"/>
+						<h:panelGroup>
+							<p:inputText id="lastCash" style="width:200px" label="上次申请剩余头寸"
+								value="#{prodOrTradeCashBean.procProdOrTradeCash.lastCash}"  disabled="#{prodOrTradeCashBean.addNewCashDisable}" >
+								<p:ajax event="blur"  listener="#{prodOrTradeCashBean.calculateByLastCash}" update="cash,msg,lastCash,averPrice"/>	
+								<f:validateDoubleRange maximum="99999999.99" minimum="0" />
+								<f:convertNumber pattern="#,##0.00" />
+							</p:inputText>
+							<h:outputLabel value="吨"/>
+							<h:outputText style="color:red;" value=" *" />
+						</h:panelGroup>
+						<h:outputLabel value="本次申请头寸:"/>
+						<h:panelGroup>
+							<p:inputText id="thisCash" style="width:200px" label="本次申请头寸"
+								value="#{prodOrTradeCashBean.procProdOrTradeCash.thisCash}" disabled="#{prodOrTradeCashBean.addNewCashDisable}">
+								<p:ajax event="blur"  listener="#{prodOrTradeCashBean.calculateByThisCash}" update="cash,msg,thisCash,averPrice"/>	
+								<f:validateDoubleRange maximum="99999999.99" minimum="0" />
+								<f:convertNumber pattern="#,##0.00" />
+							</p:inputText>
+							<h:outputLabel value="吨"/>
+							<h:outputText style="color:red;" value=" *" />
+						</h:panelGroup>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						
+						<h:outputLabel value="头寸:"/>
+						<h:panelGroup>
+							<p:inputText id="cash" style="width:200px"
+								value="#{prodOrTradeCashBean.cash}" disabled="true">
+								<f:validateDoubleRange maximum="99999999.99" minimum="0" />
+								<f:convertNumber pattern="#,##0.00" />
+							</p:inputText>
+							<h:outputLabel value="吨"/>
+						</h:panelGroup>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						
+						<h:outputLabel value="上次申请剩余头寸金额:"/>
+						<h:panelGroup>
+							<p:inputText id="lastCashAmount" style="width:200px" label="上次申请剩余头寸金额"
+								value="#{prodOrTradeCashBean.procProdOrTradeCash.lastCashAmount}" disabled="#{prodOrTradeCashBean.addNewCashDisable}">
+								<p:ajax event="blur"  listener="#{prodOrTradeCashBean.calculateByLastCashAmount}" update="amount,msg,lastCashAmount,averPrice"/>
+								<f:validateDoubleRange maximum="99999999.99" minimum="0" />
+								<f:convertNumber pattern="#,##0.00" />
+							</p:inputText>
+							<h:outputLabel value="万"/>
+							<h:outputText style="color:red;" value=" *" />
+						</h:panelGroup>
+						<h:outputLabel value="本次申请头寸金额:"/>
+						<h:panelGroup>
+							<p:inputText id="thisCashAmount" style="width:200px" label="本次申请头寸金额"
+								value="#{prodOrTradeCashBean.procProdOrTradeCash.thisCashAmount}" 
+								disabled="#{prodOrTradeCashBean.addNewCashDisable}">
+								<p:ajax event="blur"  listener="#{prodOrTradeCashBean.calculateByThisCashAmount}" update="amount,msg,thisCashAmount,averPrice"/>
+								<f:validateDoubleRange maximum="99999999.99" minimum="0" />
+								<f:convertNumber pattern="#,##0.00" />
+							</p:inputText>
+							<h:outputLabel value="万"/>
+							<h:outputText style="color:red;" value=" *" />
+						</h:panelGroup>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						
+						<h:outputLabel value="金额:"/>
+						<h:panelGroup>
+							<p:inputText id="amount" style="width:200px"
+								value="#{prodOrTradeCashBean.amount}" disabled="true" >
+								<f:validateDoubleRange maximum="99999999.99" minimum="0" />
+								<f:convertNumber pattern="#,##0.00" />
+							</p:inputText>
+							<h:outputLabel value="万"/>
+						</h:panelGroup>
+						<h:outputLabel value="均价:"/>
+						<h:panelGroup>
+							<p:inputText id="averPrice" style="width:200px"
+									value="#{prodOrTradeCashBean.averPrice}" disabled="true">
+								<f:validateDoubleRange maximum="99999999.99" minimum="0" />
+								<f:convertNumber pattern="#,##0.00" />
+							</p:inputText>
+							<h:outputLabel value="万/吨"/>
+						</h:panelGroup>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						
+						
+						<h:outputLabel value="期限：" />
+						<h:panelGroup>
+							<p:inputText id="startDate" disabled="#{prodOrTradeCashBean.dateControlDisable}"
+								value="#{prodOrTradeCashBean.procProdOrTradeCash.startDate}" styleClass="ui-date"
+								style="font-size: 9px;width:100px;" title="#{msgs.txt_startTime}" 
+								onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'endDate\')}'});">
+								<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+							</p:inputText>
+						<h:outputText value="到" />
+							<p:inputText id="endDate" disabled="#{prodOrTradeCashBean.dateControlDisable}"
+								value="#{prodOrTradeCashBean.procProdOrTradeCash.endDate}" styleClass="ui-date"
+								style="font-size: 9px;width:100px;" title="#{msgs.txt_endTime}"
+								onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'startDate\')}'});">
+								<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+							</p:inputText>
+							<h:outputText style="color:red;" value=" *" />
+						</h:panelGroup>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+					</h:panelGrid>
+						
+					<h:panelGrid columns="2" columnClasses="column40,column2">
+						<h:outputLabel value="小品种(如果选择杂粮品种,需要在这里注明详细的小品种总头寸吨数和头寸金额)" />
+						<h:panelGroup>
+							<p:inputTextarea id="smallVariety" cols="100" rows="5" autoResize="false" required="false" requiredMessage="请填写下拨资金描述"
+							 validatorMessage="小品种内容超过最大长度2000" value="#{prodOrTradeCashBean.procProdOrTradeCash.smallVariety}">
+							<f:validateLength maximum="2000" for="smallVariety" />
+							</p:inputTextarea>
+						</h:panelGroup>
+					</h:panelGrid>
+					
+					<div>
+						<p:commandButton id="create" onclick="buttonDisable('create');" action="#{prodOrTradeCashBean.createProcInstance}" ajax="false" value="提交" image="ui-icon ui-icon-disk" />
+					</div>
+					
+				</div>
+				
+				<br />
+				
+			</h:form>
+			
+		</p:panel>
+		<script type="text/javascript">
+			var isFirst = "true";
+			function buttonDisable(buttonId){
+				if("true"==isFirst){
+					isFirst="false";
+					return true;
+				}else{
+					document.getElementById(buttonId).disabled=true;
+					return false;
+				}
+			}
+		</script>
+	</ui:define>
+
+</ui:composition>
+
+

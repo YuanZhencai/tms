@@ -1,0 +1,13 @@
+CE.JAAS_ConfigFile=/filenetenv/jaas.conf.WSI
+CE.WASP_Location=/filenetenv
+CE.CEURL=http\://10.229.12.206\:9080/wsi/FNCEWS40MTOM/
+CE.domain=P8Domain
+CE.filenetCeAdminUserName=tmsbpm$fnadmin
+CE.filenetCeAdminUserPasswd=1qazxsw2
+CE.filenetCeUserPasswd=filenetqas
+CE.ObjectStore=tmsos
+PE.ConnectionPointName=tms_cp
+PE.FilenetPeAdminUserName=tmsbpm$fnadmin
+PE.FilenetPeAdminUserPasswd=1qazxsw2
+PE.FilenetPeUserPasswd=filenetqas
+PE.RostName=DefaultRoster

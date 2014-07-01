@@ -1,0 +1,141 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/template/template.xhtml">
+
+	<ui:define name="title">股东信息管理 </ui:define>
+	<ui:define name="styleAndScript">
+	</ui:define>
+	<ui:define name="content">
+
+		<input type="hidden" id="menuOne" value="27" />
+		<input type="hidden" id="menuTwo" value="29" />
+
+		<p:panel styleClass="panel1">
+			<h:form prependId="false" id="addSharedForm"
+				onsubmit="statusComplete();">
+				<p:breadCrumb preview="true" expandEffectDuration="200"
+					previewWidth="24">
+					<p:menuitem value="系统管理" url="#" />
+					<p:menuitem value="主数据管理" url="#" />
+					<p:menuitem value="公司信息管理" url="#" />
+				</p:breadCrumb>
+				<p:message id="shareholderMsgId" for="shareholderMsgId" />
+				<p:message id="shareholderValidateMsg" for="shareholderValidateMsg" />
+				<p:message id="fondsCurrencyMsg" for="fondsCurrency" />
+				<p:message id="fondsTotalMsg" for="fondsTotal" />
+				<p:message id="fondsInPlaceMsg" for="fondsInPlace" />
+				<div style="position: relative; margin-top: 5px;">
+					<div class="style1">
+						<h:panelGrid columns="8"
+							columnClasses="column1,column2,column1,column2,column1,column2,column1,column2">
+							<h:outputLabel value="股东名称：" />
+							<h:panelGroup>
+								<p:inputText id="shareHolderName" required="true"
+									requiredMessage="请输入股东名称"
+									value="#{shareHolderBean.instance.shareHolderName}">
+								</p:inputText>
+								<h:outputText style="color:red;" value=" *" />
+							</h:panelGroup>
+
+							<h:outputLabel value="币别：" />
+							<h:panelGroup>
+								<h:selectOneMenu id="fondsCurrency" required="true"
+									requiredMessage="请输入币别"
+									disabled="false"
+									value="#{shareHolderBean.instance.fondsCurrency}"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									style="width:145px">
+									<f:selectItem itemLabel="请选择" />
+									<f:selectItems value="#{shareHolderBean.currencySelect}" />
+								</h:selectOneMenu>
+								<h:outputText style="color:red;" value=" *" />
+							</h:panelGroup>
+							<h:outputLabel value="注册金额：" />
+							<h:panelGroup>
+								<p:inputText id="fondsTotal" required="true"
+									requiredMessage="请输入注册金额" label="注册金额"
+									converterMessage="注册金额必须是数字"
+					validatorMessage="注册金额必须在0~100000000之间"
+									value="#{shareHolderBean.instance.fondsTotal}" >
+									<f:validateDoubleRange maximum="99999999.9999"
+										minimum="0.00" />
+									<p:ajax listener="#{shareHolderBean.equityCalculation(1)}"
+										update="equityPerc,fondsNotInPlace" />
+									<f:convertNumber pattern="#,##0.####" />
+								</p:inputText>
+								<h:outputText style="color:red;" value=" *" />
+								<h:outputLabel value="(万)" />
+							</h:panelGroup>
+							<h:outputLabel value="股权比例：" />
+							<h:panelGroup>
+								<p:inputText id="equityPerc"
+									value="#{shareHolderBean.instance.equityPerc}" disabled="true">
+									<f:convertNumber type="number" pattern="###.##" />
+								</p:inputText>
+								<h:outputLabel value="%" />
+							</h:panelGroup>
+							<h:outputLabel value="已到位金额：" />
+							<h:panelGroup>
+								<p:inputText id="fondsInPlace" label="已到位金额"
+								converterMessage="已到位金额必须是数字"
+					validatorMessage="已到位金额必须在0~100000000之间"
+									value="#{shareHolderBean.instance.fondsInPlace}">
+									<f:validateDoubleRange maximum="99999999.9999"
+										minimum="0.00" />
+									<f:convertNumber pattern="#,##0.####" />
+									<p:ajax listener="#{shareHolderBean.calculationPlace(1)}"
+										update="fondsNotInPlace,shareholderMsgId" />
+								</p:inputText>
+								<h:outputLabel value="万" />
+							</h:panelGroup>
+							<h:outputLabel value="未到位金额：" />
+							<h:panelGroup>
+								<p:inputText id="fondsNotInPlace" disabled="true"
+									value="#{shareHolderBean.instance.fondsNotTotal}">
+									<f:convertNumber pattern="#,##0.####" />
+								</p:inputText>
+								<h:outputLabel value="万" />
+							</h:panelGroup>
+						</h:panelGrid>
+						<div>
+							<p:commandButton value="添加" icon="ui-icon ui-icon-plus"
+								action="#{shareHolderBean.addShareHolderLogic}"
+								update="stockholderOutTable,shareholderMsgId,shareholderValidateMsg,addSharedForm,fondsInPlaceMsg" />
+						</div>
+					</div>
+				</div>
+			</h:form>
+			<h:form prependId="false">
+				<div style="position: relative; margin-top: 5px;">
+					<ui:include src="inc-list.xhtml" />
+				</div>
+				<p:confirmDialog message="是否删除此股东？" header="删除警告" severity="alert"
+					widgetVar="confirmation">
+					<div align="center">
+						<p:commandButton update="shareholderMsgId,stockholderOutTable"
+							value="确定" icon="ui-icon ui-icon-check"
+							oncomplete="confirmation.hide();"
+							action="#{shareHolderBean.deleteShareHolder}" />
+						&#160;&#160;
+						<p:commandButton value="取消" onclick="confirmation.hide()"
+							type="button" icon="ui-icon ui-icon-cancel" />
+					</div>
+				</p:confirmDialog>
+			</h:form>
+			<h:form prependId="false" id="sharedEditForm">
+				<p:dialog header="股东信息编辑" widgetVar="sharedEditDialog"
+					resizable="false" width="600" modal="true">
+					<p:message id="shareholderMsgIdDiglog" for="fondsNotInPlaceEdit" />
+					<p:message id="shareHolderNameMsgEdit" for="shareHolderNameEdit" />
+					<p:message id="fondsTotalMsgEdit" for="fondsTotalEdit" />
+					<p:message id="fondsInPlaceMsgEdit" for="fondsInPlaceEdit" />
+					<ui:include src="inc-input.xhtml" />
+				</p:dialog>
+			</h:form>
+		</p:panel>
+	</ui:define>
+</ui:composition>

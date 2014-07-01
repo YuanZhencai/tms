@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/template/template.xhtml">
+
+	<ui:define name="title">404错误</ui:define>
+	<ui:define name="content">
+		<p:panel styleClass="panel1">
+		<h:form prependId="false">
+			<f:facet name="header">
+				<img class="header_title_img"
+					src="#{facesContext.externalContext.requestContextPath}/images/icons/tabTitle.gif"
+					alt="" />
+				<h:outputText value="404错误页面" />
+			</f:facet>
+			<table cellspacing="0" cellpadding="0" width="482" align="center"
+				border="0">
+				<tr>
+					<td><img
+						src="#{facesContext.externalContext.requestContextPath}/images/404.png"
+						alt="" />
+					</td>
+				</tr>
+			</table>
+			</h:form>
+		</p:panel>
+	</ui:define>
+</ui:composition>

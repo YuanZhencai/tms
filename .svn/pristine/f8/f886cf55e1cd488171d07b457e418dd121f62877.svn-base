@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<p:dialog header="岗位查询" widgetVar="positionorgDialog"
+		id="positionorgDlg" resizable="false" width="550" height="342"
+		modal="true">
+		<h:form id="positionorgDialogForm" prependId="false">
+			<div class="style1">
+				<h:panelGrid id="positionorgFormItems" columns="2"
+					columnClasses="column1,column2">
+					<h:outputText value="岗位名称：" />
+					<p:inputText value="#{userBean.positionName}" maxlength="18"
+						styleClass="input_disabled" />
+				</h:panelGrid>
+				<div>
+					<p:commandButton actionListener="#{userBean.searchPositionorg}"
+						value="#{msgs.btn_query}" update="positionorgDataTable,showBtn2"
+						image="ui-icon ui-icon-search" style="margin-right: 5px;" />
+					<p:commandButton actionListener="#{userBean.resetPositionorg}"
+						update="positionorgFormItems" value="#{msgs.btn_reset}"
+						image="ui-icon ui-icon-cancel" />
+				</div>
+			</div>
+			<p:dataTable emptyMessage="#{msgs.dataTable_empty}" id="positionorgDataTable"
+				var="positionorgVo" value="#{userBean.lazyPositionorgVoModel}"
+				lazy="true" paginator="true" rows="5" paginatorPosition="bottom"
+				paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
+				rowIndexVar="index" style="margin-top: 5px;"
+				rowStyleClass="#{index mod 2 == 1 ? 'changeColor' : null}"
+				selection="#{userBean.selectedPositionorgVos}">
+				<f:facet name="header">
+					<h:outputText value="岗位列表" />
+				</f:facet>
+				<p:column selectionMode="multiple" />
+				<p:column headerText="岗位名称">
+					<h:outputText value="#{positionorgVo.positionorg.position.name}" />
+				</p:column>
+				<p:column headerText="所属公司">
+					<h:outputText value="#{positionorgVo.o.stext}" />
+				</p:column>
+			</p:dataTable>
+			<div style="text-align: center; position: relative; margin-top: 5px;">
+				<p:commandButton id="showBtn2"
+					actionListener="#{userBean.saveAddPositionorg}"
+					update="userPositionorgDataTable"
+					oncomplete="positionorgDialog.hide()" value="#{msgs.btn_ok}"
+					image="ui-icon ui-icon-check" style="margin-right: 5px;" />
+				<p:commandButton oncomplete="positionorgDialog.hide()"
+					value="#{msgs.btn_cancel}" image="ui-icon ui-icon-cancel" />
+			</div>
+		</h:form>
+	</p:dialog>
+
+</ui:composition>

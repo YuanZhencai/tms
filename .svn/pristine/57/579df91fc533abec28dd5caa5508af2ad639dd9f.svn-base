@@ -1,0 +1,278 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/template/template.xhtml">
+	<ui:define name="title">公司授信</ui:define>
+
+	<ui:define name="content">
+
+		<input type="hidden" id="menuOne" value="27" />
+		<input type="hidden" id="menuTwo" value="29" />
+
+		<p:panel styleClass="panel1">
+			<p:breadCrumb preview="true" expandEffectDuration="200"
+				previewWidth="24">
+				<p:menuitem value="系统管理" url="#" />
+				<p:menuitem value="主数据管理" url="#" />
+				<p:menuitem value="公司信息管理" url="#" />
+			</p:breadCrumb>
+			<h:form prependId="false" id="companyBanknFormId"
+				onsubmit="statusComplete();">
+				<p:message id="msg" for="msg" />
+				<p:message id="topBankIdAddMsg" for="topBankId" />
+				<p:message id="branchSelectIdAddMsg" for="branchSelectId" />
+				<p:message id="creditLineIdAddMsg" for="creditLineId" />
+				<p:message id="creditLineCuIdAddMsg" for="creditLineCuId" />
+				<p:message id="creditStartAddMsg" for="creditStart" />
+				<p:message id="endDateAddMsg" for="endDate" />
+				<div style="position: relative; margin-top: 5px;">
+					<div class="style1">
+						<h:panelGrid columns="8"
+							columnClasses="column40,column2,column1,column2,column1,column2,column1,column2">
+							<h:outputLabel value="银行总行：" />
+							<h:panelGroup>
+								<h:selectOneMenu id="topBankId" required="true"
+									requiredMessage="请选择总行"
+									value="#{companyCreidtBean.creditVo.topBankId}"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									style="width:145px">
+									<f:selectItem itemLabel="请选择" />
+									<f:selectItems value="#{companyCreidtBean.topLevelSelect}" />
+									<p:ajax update="branchSelectId"
+										listener="#{companyCreidtBean.bankChange}" />
+								</h:selectOneMenu>
+								<h:outputText style="color:red;" value="  *" />
+							</h:panelGroup>
+							<h:outputLabel value="银行支行：" />
+							<h:panelGroup>
+								<h:selectOneMenu id="branchSelectId" required="true"
+									requiredMessage="请选择支行"
+									value="#{companyCreidtBean.creditVo.bankId}"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									style="width:145px">
+									<f:selectItem itemLabel="请选择" />
+									<f:selectItems value="#{companyCreidtBean.branchSelect}" />
+								</h:selectOneMenu>
+								<h:outputText style="color:red;" value="  *" />
+							</h:panelGroup>
+
+							<h:outputLabel value="授信额度：" />
+							<h:panelGroup>
+								<p:inputText value="#{companyCreidtBean.creditVo.creditLine}"
+									label="授信额度" required="true" requiredMessage="请输入授信额度"
+									id="creditLineId" converterMessage="授信额度必须是数字" validatorMessage="授信额度必须在0~100000000之间">
+									<f:validateDoubleRange maximum="99999999.9999"
+										minimum="0.00"  />
+									<f:convertNumber pattern="#,##0.####" />
+								</p:inputText>
+								<h:outputText style="color:red;" value="  *" />
+								<h:outputText value="万" />
+							</h:panelGroup>
+
+							<h:outputLabel value="币别：" />
+							<h:panelGroup>
+								<h:selectOneMenu id="creditLineCuId" required="true"
+									requiredMessage="请选择授信币别"
+									value="#{companyCreidtBean.creditVo.creditLineCu}"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									style="width:145px">
+									<f:selectItem itemLabel="请选择" />
+									<f:selectItems value="#{companyCreidtBean.currencySelect}" />
+								</h:selectOneMenu>
+								<h:outputText style="color:red;" value="  *" />
+							</h:panelGroup>
+
+							<h:outputText value="授信有效期：" />
+							<h:panelGroup>
+								<p:inputText id="creditStart"
+									value="#{companyCreidtBean.creditVo.creditStart}"
+									required="true" requiredMessage="选择起始日期" styleClass="ui-date"
+									style="font-size: 9px;width:90px;" title="起始时间"
+									onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'endDate\')}'});">
+									<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+								</p:inputText>
+								<h:outputText value="~" />
+								<p:inputText id="endDate" required="true"
+									requiredMessage="选择结束日期"
+									value="#{companyCreidtBean.creditVo.creditEnd}"
+									styleClass="ui-date" style="font-size: 9px;width:90px;" title="结束时间"
+									onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'creditStart\')}'});">
+									<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+								</p:inputText>
+								<h:outputText style="color:red;" value="  *" />
+							</h:panelGroup>
+						</h:panelGrid>
+						<div>
+							<p:commandButton value="添加" icon="ui-icon ui-icon-plus"
+								update="creidPanlId,msg,topBankId,branchSelectId,lastYearCreidtId,lastCreditLineCuId,creditLineId,
+								creditLineCuId,creditStart,endDate,topBankIdAddMsg,branchSelectIdAddMsg,
+								creditLineIdAddMsg,creditLineCuIdAddMsg,creditStartAddMsg,endDateAddMsg"
+								action="#{companyCreidtBean.logicAddCreidt}" />
+						</div>
+					</div>
+				</div>
+			</h:form>
+			<h:form prependId="false" id="credotDataForm">
+				<div style="position: relative; margin-top: 5px;">
+					<p:outputPanel id="creidPanlId">
+						<p:dataTable var="creadit" id="creaidtId"
+							value="#{companyCreidtBean.creditLazyModel}"
+							rowKey="#{creadit.bankName}" paginator="true" rows="10"
+							paginatorPosition="bottom"
+							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
+							currentPageReportTemplate="{currentPage}/{totalPage}"
+							emptyMessage="无满足条件数据！" >
+							<f:facet name="header">公司授信列表</f:facet>
+							<p:column headerText="总行名称">
+								<h:outputText value="#{creadit.topBankName}" />
+							</p:column>
+							<p:column headerText="支行名称">
+								<h:outputText value="#{creadit.bankName}" />
+							</p:column>
+
+							<p:column headerText="授信额度(万)">
+								<h:outputText value="#{creadit.creditLine}">
+									<f:convertNumber pattern="#,##0.####" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="币别">
+								<h:outputText
+									value="#{commonBean.getValueByDictCatAndKey('TMS_TAX_PROJECT_CURRENCY_TYPE',creadit.creditLineCu)}" />
+							</p:column>
+							<p:column headerText="授信起始日期">
+								<h:outputText value="#{creadit.creditStart}">
+									<f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="授信结束日期">
+								<h:outputText value="#{creadit.creditEnd}">
+									<f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="操作" styleClass="operating_60">
+								<p:commandButton title="编辑" oncomplete="creditEditDialog.show()"
+									icon="ui-icon ui-icon-pencil" update="creditEditPanel"
+									action="#{companyCreidtBean.beffAdd}">
+									<f:setPropertyActionListener
+										target="#{companyCreidtBean.editDelCreaditVo}"
+										value="#{creadit}" />
+								</p:commandButton>
+								<p:commandButton tile="删除" icon="ui-icon ui-icon-close"
+									oncomplete="creditConfirm.show()" update="creidPanlId">
+									<f:setPropertyActionListener
+										target="#{companyCreidtBean.editDelCreaditVo}"
+										value="#{creadit}" />
+								</p:commandButton>
+
+							</p:column>
+						</p:dataTable>
+					</p:outputPanel>
+				</div>
+				<p:confirmDialog message="是否删除此授信？" header="删除警告" severity="alert"
+					widgetVar="creditConfirm">
+					<div align="center">
+						<p:commandButton update="msg,creidPanlId" value="确定"
+							icon="ui-icon ui-icon-check" oncomplete="creditConfirm.hide();"
+							action="#{companyCreidtBean.deleteCreditVo}" />
+						&#160;&#160;
+						<p:commandButton value="取消" onclick="creditConfirm.hide()"
+							icon="ui-icon ui-icon-cancel" type="button" />
+					</div>
+				</p:confirmDialog>
+			</h:form>
+			<h:form prependId="false" id="editForm">
+				<p:dialog header="授信信息编辑" widgetVar="creditEditDialog"
+					resizable="false" width="600" modal="true">
+					<p:message id="topBankIdEditMsg" for="topBankIdEdit" />
+					<p:message id="branchSelectIdEditMsg" for="branchSelectIdEdit" />
+					<p:message id="creditLineIdEditMsg" for="creditLineIdEdit" />
+					<h:panelGrid id="creditEditPanel" columns="4"
+						columnClasses="column41,column42,column41,column42"
+						footerClass="footer1">
+						<h:outputLabel value="银行总行：" />
+						<h:panelGroup>
+							<h:selectOneMenu id="topBankIdEdit" disabled="true"
+								value="#{companyCreidtBean.editDelCreaditVo.topBankId}"
+								styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+								<f:selectItems value="#{companyCreidtBean.topLevelSelect}" />
+							</h:selectOneMenu>
+							<h:outputText style="color:red;" value="  *" />
+						</h:panelGroup>
+						<h:outputLabel value="银行支行：" />
+						<h:panelGroup>
+							<h:selectOneMenu id="branchSelectIdEdit" disabled="true"
+								value="#{companyCreidtBean.editDelCreaditVo.bankId}"
+								styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+								<f:selectItems value="#{companyCreidtBean.branchSelect}" />
+							</h:selectOneMenu>
+							<h:outputText style="color:red;" value="  *" />
+						</h:panelGroup>
+
+						<h:outputLabel value="当年授信额度：" />
+						<h:panelGroup>
+							<p:inputText label="当年授信额度"
+								value="#{companyCreidtBean.editDelCreaditVo.creditLine}"
+								id="creditLineIdEdit" required="true"
+								requiredMessage="请输入当年授信额度"
+								converterMessage="当年授信额度必须是数字" validatorMessage="当年授信额度必须在0~100000000之间">
+								<f:validateDoubleRange maximum="99999999.9999"
+									minimum="0.00"  />
+								<f:convertNumber pattern="#,##0.####" />
+							</p:inputText>
+							<h:outputText style="color:red;" value="  *" />
+							<h:outputText value="万" />
+						</h:panelGroup>
+						<h:outputLabel value="币别：" />
+						<h:panelGroup>
+							<h:selectOneMenu id="creditLineCuIdEdit"
+								value="#{companyCreidtBean.editDelCreaditVo.creditLineCu}"
+								styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+								<f:selectItem itemLabel="请选择" />
+								<f:selectItems value="#{companyCreidtBean.currencySelect}" />
+							</h:selectOneMenu>
+							<h:outputText style="color:red;" value="  *" />
+						</h:panelGroup>
+
+						<h:outputLabel value="授信起始时间：" />
+						<h:panelGroup>
+							<p:inputText id="startDateEdit" disabled="true"
+								value="#{companyCreidtBean.editDelCreaditVo.creditStart}"
+								required="true" requiredMessage="选择起始日期" styleClass="ui-date"
+								style="font-size: 9px;" title="起始时间"
+								onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'endDateEdit\')}'});">
+								<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+							</p:inputText>
+							<h:outputText value="~" />
+							<p:inputText id="endDateEdit" disabled="true"
+								value="#{companyCreidtBean.editDelCreaditVo.creditEnd}"
+								styleClass="ui-date" style="font-size: 9px;" title="结束时间"
+								onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'startDateEdit\')}'});">
+								<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+							</p:inputText>
+							<h:outputText style="color:red;" value="  *" />
+						</h:panelGroup>
+						<f:facet name="footer">
+							<p:commandButton id="creditUpdateBtn" value="保存"
+								update="topBankIdEditMsg,branchSelectIdEditMsg,creidPanlId,creditLineIdEditMsg,msg"
+								oncomplete="handleComplete(creditEditDialog,args)"
+								action="#{companyCreidtBean.editCredit}"
+								icon="ui-icon ui-icon-disk" />
+			            &#160;&#160;
+			            <p:commandButton value="取消" type="button"
+								onclick="creditEditDialog.hide()" id="creditUpdateCanelBtn"
+								icon="ui-icon ui-icon-cancel" />
+						</f:facet>
+					</h:panelGrid>
+
+
+				</p:dialog>
+			</h:form>
+		</p:panel>
+	</ui:define>
+</ui:composition>
+
+

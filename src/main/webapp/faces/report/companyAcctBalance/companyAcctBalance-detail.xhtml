@@ -1,0 +1,139 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/template/template.xhtml">
+
+	<ui:define name="title">公司账户余额表</ui:define>
+
+	<ui:define name="content">
+
+		<input type="hidden" id="menuOne" value="21" />
+		<input type="hidden" id="menuTwo" value="22" />
+
+		<p:panel styleClass="panel1">
+			<h:form id="balanceListForm" prependId="false">
+				<p:breadCrumb preview="true" expandEffectDuration="200"
+					previewWidth="24" style="width: 99.1%">
+					<p:menuitem value="#{msgs.menItem_form}" url="#" />
+					<p:menuitem value="#{msgs.menItem_form}" url="#" />
+					<p:menuitem value="公司账户余额表" url="#" />
+				</p:breadCrumb>
+
+				<p:messages id="doneMsg" />
+
+
+				<div class="style1">
+					<h:panelGrid columns="6"
+						columnClasses="column0,column2,column0,column2,column0,column2,column0,column2">
+					<h:outputLabel value="公司名称：" />
+						<h:panelGroup>
+							<h:selectManyListbox id="companyName"
+								styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+								style="width: 210px;height:40px;">
+								<f:selectItems value="#{companyAcctBalanceReportBean.companies}"
+									var="company" itemLabel="#{company.companyName}"
+									itemValue="#{company.id}" />
+							</h:selectManyListbox>
+							<p:commandButton immediate="true" value="#{msgs.btn_select}"
+								style="width: 70px;" image="ui-icon ui-icon-zoomin"
+								action="#{companyAcctBalanceReportBean.companyMultipleSelectBean.clear}"
+								oncomplete="companyMultipleSelectDialogVar.show();"
+								update="companyMultipleSelectForm">
+								<f:setPropertyActionListener
+									target="#{companyAcctBalanceReportBean.companyMultipleSelectBean.method}"
+									value="companyAcctBalanceReportBean.setValueBySelectedCompanies" />
+							</p:commandButton>
+						</h:panelGroup>
+						
+						<h:outputLabel value="银行名称：" />
+						<p:inputText id="bankName" style="width:200px"
+								value="#{companyAcctBalanceReportBean.conditionMap['bankName']}"
+								validatorMessage="银行名称长度不能超过100">
+								<f:validateLength maximum="100" for="account" />
+							<p:ajax event="blur" update="doneMsg,bankName" />
+						</p:inputText>
+						
+						
+						<h:outputLabel value="银行账号：" />
+						<p:inputText id="account" style="width:200px"
+								value="#{companyAcctBalanceReportBean.conditionMap['account']}"
+								validatorMessage="银行账号长度不能超过100">
+								<f:validateLength maximum="100" for="account" />
+							<p:ajax event="blur" update="doneMsg,account" />
+						</p:inputText>
+						
+						<h:outputLabel value="余额日期：" />
+						<h:panelGroup>
+							<p:inputText id="updateByTmsStartDate"
+								value="#{companyAcctBalanceReportBean.conditionMap['updateByTmsStartDate']}"
+								styleClass="ui-date" style="font-size: 9px;width:90px;"
+								title="#{msgs.txt_startTime}"
+								onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',maxDate:'#F{$dp.$D(\'updateByTmsEndDate\')}'});">
+								<f:convertDateTime pattern="yyyy-MM-dd HH:mm" timeZone="GMT+8" />
+							</p:inputText>
+							<h:outputText value="~" />
+							<p:inputText id="updateByTmsEndDate"
+								value="#{companyAcctBalanceReportBean.conditionMap['updateByTmsEndDate']}"
+								styleClass="ui-date" style="font-size: 9px;width:90px;"
+								title="#{msgs.txt_endTime}"
+								onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',minDate:'#F{$dp.$D(\'updateByTmsStartDate\')}'});">
+								<f:convertDateTime pattern="yyyy-MM-dd HH:mm" timeZone="GMT+8" />
+							</p:inputText>
+						</h:panelGroup>
+					</h:panelGrid>
+					<div>
+						<p:commandButton id="query"
+							action="#{companyAcctBalanceReportBean.searchCompanyAcctBalance}" 
+							update="doneMsg,companyAcctBalanceReportPl" value="#{msgs.btn_query}"
+							image="ui-icon ui-icon-search" />
+						<p:commandButton value="#{msgs.btn_reset}"
+							action="#{companyAcctBalanceReportBean.reset}"
+							icon="ui-icon ui-icon-arrowrefresh-1-e" style="margin: 5px;"
+							update="companyName,account,updateByTmsStartDate,updateByTmsEndDate"
+							/>
+					</div>
+				</div>
+				<br />
+
+				<p:outputPanel id="companyAcctBalanceReportPl">
+					<p:dataTable id="companyAcctBalanceReports" var="balanceVo"
+						value="#{companyAcctBalanceReportBean.companyAcctBalanceVos}" paginator="true"
+						rows="50" paginatorPosition="bottom" 
+						currentPageReportTemplate="{currentPage}/{totalPage}"
+						paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
+						rowKey="#{balanceVo.id}" emptyMessage="#{msgs.dataTable_empty}">
+
+						<f:facet name="header">公司账户余额表</f:facet>
+						<p:column headerText="公司名称">
+							<h:outputText value="#{balanceVo.companyName}" />
+						</p:column>
+						<p:column headerText="银行名称">
+							<h:outputText value="#{balanceVo.bankName}" />
+						</p:column>
+						<p:column headerText="银行账号">
+							<h:outputText value="#{balanceVo.account}"/>
+						</p:column>
+						<p:column headerText="账号余额(元)">
+							<h:outputText value="#{balanceVo.availableAmount}"/>
+						</p:column>
+						<p:column headerText="余额日期">
+							<h:outputText value="#{balanceVo.updateDate}">
+								<f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd HH:mm" />
+							</h:outputText>
+						</p:column>
+					</p:dataTable>
+				</p:outputPanel>
+
+			</h:form>
+		</p:panel>
+		<ui:include
+			src="/faces/process/common/companyMultipleSelect-dialog.xhtml" />
+	</ui:define>
+
+</ui:composition>
+
+

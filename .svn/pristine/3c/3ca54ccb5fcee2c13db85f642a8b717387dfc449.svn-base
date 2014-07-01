@@ -1,0 +1,666 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<h:form id="EditBlocCompanyCreditConfirmFrom">
+		<p:messages id="bankCreditMsgConfirm" />
+		<div style="position: relative; margin-top: 5px;">
+			<div class="style11">
+				<h:panelGrid columns="8"
+					columnClasses="column41,column2,column41,column2,column41,column2,column41,column2">
+					<h:outputLabel value="#{msgs.lbl_creditLineCurrent}：" />
+					<h:panelGroup>
+						<p:inputText id="creditLineConfirm" disabled="true"
+							value="#{bankCreidtBlocCompanyConfirmBean.blocCompanyConfirmEdit.creditLine}">
+							<f:convertNumber pattern="#,##0.####" />
+						</p:inputText>
+						<h:outputText value="#{msgs.lbl_tenThousand}" />
+					</h:panelGroup>
+					<h:outputLabel value="#{msgs.lbl_notarizeCreditLine}：" />
+					<h:panelGroup>
+						<p:inputText id="notarizeCreditLineConfirm" required="true"
+							requiredMessage="#{msgs.msg_required_notarizeCreditLine}"
+							label="#{msgs.lbl_notarizeCreditLine}"
+							value="#{bankCreidtBlocCompanyConfirmBean.blocCompanyConfirmEdit.notarizeCreditLine}">
+							<f:validateDoubleRange maximum="99999999.9999" minimum="0" />
+							<f:convertNumber pattern="#,##0.####" />
+						</p:inputText>
+						<h:outputText value="#{msgs.lbl_tenThousand}" />
+						<h:outputText style="color:red;" value="  *" />
+					</h:panelGroup>
+				</h:panelGrid>
+				<h:panelGrid columns="2" columnClasses="column41,column2">
+					<h:outputLabel value="#{msgs.lbl_branchName}：" />
+					<h:panelGroup>
+						<h:selectOneMenu id="topBankIdConfirm" disabled="true"
+							value="#{bankCreidtBlocCompanyConfirmBean.blocCompanyConfirmEdit.bank.id}"
+							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+							style="width:284px;">
+							<f:selectItems
+								value="#{bankCreidtBlocCompanyConfirmBean.banchBankSelect}" />
+						</h:selectOneMenu>
+					</h:panelGroup>
+				</h:panelGrid>
+				<h:panelGrid columns="8"
+					columnClasses="column41,column2,column41,column2,column41,column2,column41,column2">
+					<h:outputLabel value="#{msgs.lbl_assureWay}：" styleClass="title_1" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+
+					<h:outputLabel value="#{msgs.lbl_credit}：" />
+					<h:panelGroup>
+						<p:inputText id="guaranteeCdConfirm"
+							label="#{msgs.txt_assureCredit}"
+							value="#{bankCreidtBlocCompanyConfirmBean.blocCompanyConfirmEdit.guaranteeCd}">
+							<f:validateDoubleRange maximum="99999999" minimum="0" />
+							<f:convertNumber pattern="#,##0" />
+						</p:inputText>
+						<h:outputText value="#{msgs.lbl_tenThousand}" />
+					</h:panelGroup>
+					<h:outputLabel value="#{msgs.lbl_guarantee}" />
+					<h:panelGroup>
+						<p:inputText id="guaranteeMgConfirm"
+							label="#{msgs.txt_assurePledge}"
+							value="#{bankCreidtBlocCompanyConfirmBean.blocCompanyConfirmEdit.guaranteeMg}">
+							<f:validateDoubleRange maximum="99999999" minimum="0" />
+							<f:convertNumber pattern="#,##0" />
+						</p:inputText>
+						<h:outputText value="#{msgs.lbl_tenThousand}" />
+					</h:panelGroup>
+					<h:outputLabel value="#{msgs.lbl_assure}：" />
+					<h:panelGroup>
+						<p:inputText id="guaranteeGrConfirm"
+							label="#{msgs.lbl_guaranteeGr}#{msgs.lbl_assure}"
+							value="#{bankCreidtBlocCompanyConfirmBean.blocCompanyConfirmEdit.guaranteeGr}">
+							<f:validateDoubleRange maximum="99999999" minimum="0" />
+							<f:convertNumber pattern="#,##0" />
+						</p:inputText>
+						<h:outputText value="#{msgs.lbl_tenThousand}" />
+					</h:panelGroup>
+					<h:outputLabel value="#{msgs.lbl_pledge}：" />
+					<h:panelGroup>
+						<p:inputText id="guaranteeQmConfirm"
+							label="#{msgs.lbl_guaranteeGr}#{msgs.lbl_pledge}"
+							value="#{bankCreidtBlocCompanyConfirmBean.blocCompanyConfirmEdit.guaranteeQm}">
+							<f:validateDoubleRange maximum="99999999" minimum="0" />
+							<f:convertNumber pattern="#,##0" />
+						</p:inputText>
+						<h:outputText value="#{msgs.lbl_tenThousand}" />
+					</h:panelGroup>
+					<h:outputLabel value="#{msgs.lbl_other}：" />
+					<h:panelGroup>
+						<p:inputText id="guaranteeOtConfirm"
+							label="#{msgs.lbl_guaranteeGr}#{msgs.lbl_other}"
+							value="#{bankCreidtBlocCompanyConfirmBean.blocCompanyConfirmEdit.guaranteeOt}">
+							<f:validateDoubleRange maximum="99999999" minimum="0" />
+							<f:convertNumber pattern="#,##0" />
+						</p:inputText>
+						<h:outputText value="#{msgs.lbl_tenThousand}" />
+					</h:panelGroup>
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+				</h:panelGrid>
+			</div>
+
+			<div class="style11">
+				<h:panelGrid columns="8"
+					columnClasses="column41,column2,column41,column2,column41,column2,column41,column2">
+					<h:outputLabel value="#{msgs.lbl_dollarFlow}：" styleClass="title_2" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+
+					<h:outputLabel value="#{msgs.lbl_amount}：" />
+					<h:panelGroup>
+						<p:inputText id="dollarFlowFinanceConfirm"
+							label="#{msgs.lbl_dollarFlow}#{msgs.lbl_amount}"
+							value="#{bankCreidtBlocCompanyConfirmBean.blocCompanyConfirmEdit.dollarFlowFinance}">
+							<f:validateDoubleRange maximum="99999999.9999" minimum="0" />
+							<f:convertNumber pattern="#,##0.####" />
+							<p:ajax event="blur"
+								listener="#{bankCreidtBlocCompanyConfirmBean.ifDollarFlowFinance(bankCreidtBlocCompanyConfirmBean.instance.dollarFlowFinance)}"
+								update="bankCreditMsg,dollarFlowFinanceConfirm" />
+						</p:inputText>
+						<h:outputText value="#{msgs.lbl_tenThousand}" />
+					</h:panelGroup>
+					<h:outputLabel value="#{msgs.lbl_importFinanceLink}：" />
+					<h:panelGroup>
+						<h:selectOneMenu id="dollarFlowLinkConfirm"
+							label="#{msgs.lbl_dollarFlow}#{msgs.lbl_importFinanceLink}"
+							value="#{bankCreidtBlocCompanyConfirmBean.blocCompanyConfirmEdit.dollarFlowLink}"
+							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+							<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" />
+							<f:selectItems
+								value="#{bankCreidtBlocCompanyConfirmBean.rateHookSelect}" />
+							<p:ajax listener="#{bankCreidtBlocCompanyConfirmBean.dollarFlowLinkChange}"
+								update="dollarFlowPointConfirm" />
+						</h:selectOneMenu>
+					</h:panelGroup>
+					<h:outputLabel value="利率（或 加点数）：" />
+					<h:panelGroup>
+						<p:inputText id="dollarFlowPointConfirm"
+							disabled="#{bankCreidtBlocCompanyConfirmBean.dollarFlowPointDisable}"
+							label="#{msgs.lbl_dollarFlow}#{msgs.lbl_importFinancePonit}"
+							value="#{bankCreidtBlocCompanyConfirmBean.blocCompanyConfirmEdit.dollarFlowPoint}">
+							<f:validateDoubleRange minimum="0" maximum="100" />
+							<f:convertNumber pattern="#0.00" />
+						</p:inputText>
+					</h:panelGroup>
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+
+
+
+					<h:outputLabel value="#{msgs.lbl_liquidityPayment}："
+						styleClass="title_2" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+
+					<h:outputLabel value="#{msgs.lbl_amount}：" />
+					<h:panelGroup>
+						<p:inputText id="liquCredConfirm"
+							label="#{msgs.lbl_liquAmountCred}"
+							value="#{bankCreidtBlocCompanyConfirmBean.blocCompanyConfirmEdit.liquCred}">
+							<f:validateDoubleRange maximum="99999999.9999" minimum="0" />
+							<f:convertNumber pattern="#,##0.####" />
+							<p:ajax event="blur"
+								listener="#{bankCreidtBlocCompanyConfirmBean.ifLiquAmountCred(bankCreidtBlocCompanyConfirmBean.instance.liquCred)}"
+								update="bankCreditMsg,liquCredConfirm" />
+						</p:inputText>
+						<h:outputText value="#{msgs.lbl_tenThousand}" />
+					</h:panelGroup>
+					<h:outputLabel value="#{msgs.lbl_financeRa}：" />
+					<h:panelGroup>
+						<p:inputText id="liquCredAp" label="#{msgs.lbl_liquCredAp}"
+							value="#{bankCreidtBlocCompanyConfirmBean.blocCompanyConfirmEdit.liquCredAp}">
+							<f:validateDoubleRange maximum="100" minimum="0" />
+							<f:convertNumber pattern="#0.00" />
+						</p:inputText>
+					</h:panelGroup>
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+
+					<h:outputLabel value="#{msgs.lbl_importFinanceLink}：" />
+					<h:panelGroup>
+						<h:selectOneMenu id="liquCredRa" label="#{msgs.lblel_liquCredRa}"
+							value="#{bankCreidtBlocCompanyConfirmBean.blocCompanyConfirmEdit.liquCredRa}"
+							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+							<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" />
+							<f:selectItems
+								value="#{bankCreidtBlocCompanyConfirmBean.rmbFlowSelect}" />
+							<p:ajax
+								listener="#{bankCreidtBlocCompanyConfirmBean.liquCredRaChange}"
+								update="float1,float2,floatFlag" />
+						</h:selectOneMenu>
+					</h:panelGroup>
+					<h:outputLabel value="上浮/下浮" />
+					<h:selectOneMenu id="floatFlag" label="上浮/下浮"
+						disabled="#{bankCreidtBlocCompanyConfirmBean.floatFlagDisable}"
+						value="#{bankCreidtBlocCompanyConfirmBean.blocCompanyConfirmEdit.floatFlag}"
+						styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+						<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" />
+						<f:selectItem itemLabel="上浮" itemValue="U" />
+						<f:selectItem itemLabel="下浮" itemValue="D" />
+					</h:selectOneMenu>
+					<h:outputLabel value="" />
+					<p:inputText id="float1" label="#{msgs.lbl_liquCred}"
+						disabled="#{bankCreidtBlocCompanyConfirmBean.float1Disable}"
+						value="#{bankCreidtBlocCompanyConfirmBean.blocCompanyConfirmEdit.float1}">
+						<f:validateDoubleRange maximum="99999999.9999" minimum="0" />
+						<f:convertNumber pattern="#,##0.####" />
+					</p:inputText>
+					<h:outputLabel value="=" />
+					<p:inputText id="float2" label="#{msgs.lbl_liquCred}"
+						disabled="#{bankCreidtBlocCompanyConfirmBean.float2Disable}"
+						value="#{bankCreidtBlocCompanyConfirmBean.blocCompanyConfirmEdit.float2}">
+						<f:validateDoubleRange maximum="99999999.9999" minimum="0" />
+						<f:convertNumber pattern="#,##0.####" />
+					</p:inputText>
+
+
+
+					<h:outputLabel value="#{msgs.lbl_importCredLetter}："
+						styleClass="title_2" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+
+					<h:outputLabel value="#{msgs.lbl_amount}：" />
+					<h:panelGroup>
+						<p:inputText id="importCreditConfirm"
+							label="#{msgs.lbl_importCredLetter}#{msgs.lbl_amount}"
+							value="#{bankCreidtBlocCompanyConfirmBean.blocCompanyConfirmEdit.importCredit}">
+							<f:validateDoubleRange maximum="99999999.9999" minimum="0" />
+							<f:convertNumber pattern="#,##0.####" />
+							<p:ajax event="blur"
+								listener="#{bankCreidtBlocCompanyConfirmBean.ifImportCredit(bankCreidtBlocCompanyConfirmBean.instance.importCredit)}"
+								update="bankCreditMsg,importCreditConfirm" />
+						</p:inputText>
+						<h:outputText value="#{msgs.lbl_tenThousand}" />
+					</h:panelGroup>
+					<h:outputLabel value="#{msgs.lbl_bankAcptGp}：" />
+					<h:panelGroup>
+						<p:inputText id="importCreditGpConfirm"
+							label="#{msgs.lbl_importCredLetter}#{msgs.lbl_bankAcptGp}"
+							value="#{bankCreidtBlocCompanyConfirmBean.blocCompanyConfirmEdit.importCreditGp}">
+							<f:validateDoubleRange minimum="0" maximum="100" />
+							<f:convertNumber pattern="#0.00" />
+						</p:inputText>
+						<h:outputText value="%" />
+					</h:panelGroup>
+					<h:outputLabel value="#{msgs.lbl_importCreditFe}：" />
+					<h:panelGroup>
+						<p:inputText id="importCreditFeConfirm"
+							label="#{msgs.lbl_importCredLetter}#{msgs.lbl_importCreditFe}"
+							value="#{bankCreidtBlocCompanyConfirmBean.blocCompanyConfirmEdit.importCreditFe}">
+							<f:validateDoubleRange minimum="0" maximum="100" />
+							<f:convertNumber pattern="#0.00" />
+						</p:inputText>
+						<h:outputText value="%" />
+					</h:panelGroup>
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+
+
+					<h:outputLabel value="#{msgs.lbl_nationCredLetter}："
+						styleClass="title_2" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+
+					<h:outputLabel value="#{msgs.lbl_amount}：" />
+					<h:panelGroup>
+						<p:inputText id="domesticCredConfirm"
+							label="#{msgs.lbl_nationCredLetter}#{msgs.lbl_amount}"
+							value="#{bankCreidtBlocCompanyConfirmBean.blocCompanyConfirmEdit.domesticCred}">
+							<f:validateDoubleRange maximum="99999999.9999" minimum="0" />
+							<f:convertNumber pattern="#,##0.####" />
+							<p:ajax event="blur"
+								listener="#{bankCreidtBlocCompanyConfirmBean.ifomesticCred(bankCreidtBlocCompanyConfirmBean.instance.domesticCred)}"
+								update="bankCreditMsg,domesticCredConfirm" />
+						</p:inputText>
+						<h:outputText value="#{msgs.lbl_tenThousand}" />
+					</h:panelGroup>
+					<h:outputLabel value="#{msgs.lbl_bankAcptGp}：" />
+					<h:panelGroup>
+						<p:inputText id="domesticCredGpConfirm"
+							label="#{msgs.lbl_nationCredLetter}#{msgs.lbl_bankAcptGp}"
+							value="#{bankCreidtBlocCompanyConfirmBean.blocCompanyConfirmEdit.domesticCredGp}">
+							<f:validateDoubleRange minimum="0" maximum="100" />
+							<f:convertNumber pattern="#0.00" />
+						</p:inputText>
+						<h:outputText value="%" />
+					</h:panelGroup>
+					<h:outputLabel value="#{msgs.lbl_poundage}：" />
+					<h:panelGroup>
+						<p:inputText id="domesticCredFeConfirm"
+							label="#{msgs.lbl_nationCredLetter}#{msgs.lbl_poundage}"
+							value="#{bankCreidtBlocCompanyConfirmBean.blocCompanyConfirmEdit.domesticCredFe}">
+							<f:validateDoubleRange minimum="0" maximum="100" />
+							<f:convertNumber pattern="#0.00" />
+						</p:inputText>
+						<h:outputText value="%" />
+					</h:panelGroup>
+					<h:outputLabel value="#{msgs.lbl_domesticCredDf}：" />
+					<h:panelGroup>
+						<p:inputText id="domesticCredDfConfirm"
+							label="#{msgs.lbl_nationCredLetter}#{msgs.lbl_domesticCredDf}"
+							value="#{bankCreidtBlocCompanyConfirmBean.blocCompanyConfirmEdit.domesticCredDf}">
+							<f:validateDoubleRange minimum="0" maximum="100" />
+							<f:convertNumber pattern="#0.00" />
+						</p:inputText>
+						<h:outputText value="%" />
+					</h:panelGroup>
+
+
+
+					<h:outputLabel value="#{msgs.lbl_importFinance}："
+						styleClass="title_2" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+
+					<h:outputLabel value="#{msgs.lbl_amount}：" />
+					<h:panelGroup>
+						<p:inputText id="importFinanceConfirm"
+							label="#{msgs.lbl_importFinance}#{msgs.lbl_amount}"
+							value="#{bankCreidtBlocCompanyConfirmBean.blocCompanyConfirmEdit.importFinance}">
+							<f:validateDoubleRange maximum="99999999.9999" minimum="0" />
+							<f:convertNumber pattern="#,##0.####" />
+							<p:ajax event="blur"
+								listener="#{bankCreidtBlocCompanyConfirmBean.ifImportFinance(bankCreidtBlocCompanyConfirmBean.instance.importFinance)}"
+								update="bankCreditMsg,importFinanceConfirm" />
+						</p:inputText>
+						<h:outputText value="#{msgs.lbl_tenThousand}" />
+					</h:panelGroup>
+					<h:outputLabel value="#{msgs.lbl_importFinanceLink}：" />
+					<h:panelGroup>
+						<h:selectOneMenu id="importFinanceLinkConfirm"
+							label="#{msgs.lbl_importFinance}#{msgs.lbl_importFinanceLink}"
+							value="#{bankCreidtBlocCompanyConfirmBean.blocCompanyConfirmEdit.importFinanceLink}"
+							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+							<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" />
+							<f:selectItems
+								value="#{bankCreidtBlocCompanyConfirmBean.importFinanceLinkSelect}" />
+							<p:ajax listener="#{bankCreidtBlocCompanyConfirmBean.importFinanceLinkChange}"
+										update="importFinancePonitConfirm" />
+						</h:selectOneMenu>
+					</h:panelGroup>
+					<h:outputLabel value="#{msgs.lbl_importFinancePonit}：" />
+					<h:panelGroup>
+						<p:inputText id="importFinancePonitConfirm"
+							disabled="#{bankCreidtBlocCompanyConfirmBean.importFinancePonitDisable}"
+							label="#{msgs.lbl_importFinance}#{msgs.lbl_importFinancePonit}："
+							value="#{bankCreidtBlocCompanyConfirmBean.blocCompanyConfirmEdit.importFinancePonit}">
+							<f:validateDoubleRange minimum="0" maximum="100" />
+							<f:convertNumber pattern="#0.00" />
+						</p:inputText>
+					</h:panelGroup>
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+
+
+
+					<h:outputLabel value="#{msgs.lbl_exportFinance}："
+						styleClass="title_2" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+
+					<h:outputLabel value="#{msgs.lbl_amount}：" />
+					<h:panelGroup>
+						<p:inputText id="exportFinanceConfirm"
+							label="#{msgs.lbl_exportFinance}#{msgs.lbl_amount}"
+							value="#{bankCreidtBlocCompanyConfirmBean.blocCompanyConfirmEdit.exportFinance}">
+							<f:validateDoubleRange maximum="99999999.9999" minimum="0" />
+							<f:convertNumber pattern="#,##0.####" />
+							<p:ajax event="blur"
+								listener="#{bankCreidtBlocCompanyConfirmBean.ifExportFinance(bankCreidtBlocCompanyConfirmBean.instance.exportFinance)}"
+								update="bankCreditMsg,exportFinanceConfirm" />
+						</p:inputText>
+						<h:outputText value="#{msgs.lbl_tenThousand}" />
+					</h:panelGroup>
+					<h:outputLabel value="#{msgs.lbl_importFinanceLink}：" />
+					<h:panelGroup>
+						<h:selectOneMenu id="exportFinanceLinkConfirm"
+							value="#{bankCreidtBlocCompanyConfirmBean.blocCompanyConfirmEdit.exportFinanceLink}"
+							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+							<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" />
+							<f:selectItems
+								value="#{bankCreidtBlocCompanyConfirmBean.importFinanceLinkSelect}" />
+							<p:ajax listener="#{bankCreidtBlocCompanyConfirmBean.exportFinanceLinkChange}"
+										update="exportFinancePonitConfirm" />
+						</h:selectOneMenu>
+					</h:panelGroup>
+					<h:outputLabel value="#{msgs.lbl_importFinancePonit}：" />
+					<h:panelGroup>
+						<p:inputText id="exportFinancePonitConfirm"
+							disabled="#{bankCreidtBlocCompanyConfirmBean.exportFinancePonitDisable}"
+							label="#{msgs.lbl_exportFinance}#{msgs.lbl_importFinancePonit}"
+							value="#{bankCreidtBlocCompanyConfirmBean.blocCompanyConfirmEdit.exportFinancePonit}">
+							<f:validateDoubleRange minimum="0" maximum="100" />
+							<f:convertNumber pattern="#0.00" />
+						</p:inputText>
+					</h:panelGroup>
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+
+
+
+					<h:outputLabel value="#{msgs.lbl_bussTicket}：" styleClass="title_2" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+
+					<h:outputLabel value="#{msgs.lbl_amount}：" />
+					<h:panelGroup>
+						<p:inputText id="bussTicketConfirm"
+							label="#{msgs.lbl_bussTicket}#{msgs.lbl_amount}"
+							value="#{bankCreidtBlocCompanyConfirmBean.blocCompanyConfirmEdit.bussTicket}">
+							<f:validateDoubleRange maximum="99999999.9999" minimum="0" />
+							<f:convertNumber pattern="#,##0.####" />
+							<p:ajax event="blur"
+								listener="#{bankCreidtBlocCompanyConfirmBean.ifBussTicket(bankCreidtBlocCompanyConfirmBean.instance.bussTicket)}"
+								update="bankCreditMsg,bussTicketConfirm" />
+						</p:inputText>
+						<h:outputText value="#{msgs.lbl_tenThousand}" />
+					</h:panelGroup>
+					<h:outputLabel value="#{msgs.lbl_bankAcptGp}：" />
+					<h:panelGroup>
+						<p:inputText id="bussTicketGpConfirm"
+							label="#{msgs.lbl_bussTicket}#{msgs.lbl_bankAcptGp}"
+							value="#{bankCreidtBlocCompanyConfirmBean.blocCompanyConfirmEdit.bussTicketGp}">
+							<f:validateDoubleRange minimum="0" maximum="100" />
+							<f:convertNumber pattern="#0.00" />
+						</p:inputText>
+						<h:outputText value="%" />
+					</h:panelGroup>
+					<h:outputLabel value="#{msgs.lbl_poundage}：" />
+					<h:panelGroup>
+						<p:inputText id="bussTicketFeConfirm"
+							label="#{msgs.lbl_bussTicket}#{msgs.lbl_poundage}"
+							value="#{bankCreidtBlocCompanyConfirmBean.blocCompanyConfirmEdit.bussTicketFe}">
+							<f:validateDoubleRange minimum="0" maximum="100" />
+							<f:convertNumber pattern="#0.00" />
+						</p:inputText>
+						<h:outputText value="%" />
+					</h:panelGroup>
+					<h:outputLabel value="#{msgs.lbl_discount}：" />
+					<h:panelGroup>
+						<p:inputText id="bussTicketDcConfirm"
+							label="#{msgs.lbl_bussTicket}#{msgs.lbl_discount}"
+							value="#{bankCreidtBlocCompanyConfirmBean.blocCompanyConfirmEdit.bussTicketDc}">
+							<f:validateDoubleRange minimum="0" maximum="100" />
+							<f:convertNumber pattern="#0.00" />
+						</p:inputText>
+						<h:outputText value="%" />
+					</h:panelGroup>
+
+
+
+					<h:outputLabel value="#{msgs.lbl_bankAcpt}：" styleClass="title_2" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+
+					<h:outputLabel value="#{msgs.lbl_amount}：" />
+					<h:panelGroup>
+						<p:inputText id="bankAcptConfirm"
+							label="#{msgs.lbl_bankAcpt}#{msgs.lbl_amount}"
+							value="#{bankCreidtBlocCompanyConfirmBean.blocCompanyConfirmEdit.bankAcpt}">
+							<f:validateDoubleRange maximum="99999999.9999" minimum="0" />
+							<f:convertNumber pattern="#,##0.####" />
+							<p:ajax event="blur"
+								listener="#{bankCreidtBlocCompanyConfirmBean.ifBankAcpt(bankCreidtBlocCompanyConfirmBean.instance.bankAcpt)}"
+								update="bankCreditMsg,bankAcptConfirm" />
+						</p:inputText>
+						<h:outputText value="#{msgs.lbl_tenThousand}" />
+					</h:panelGroup>
+					<h:outputLabel value="#{msgs.lbl_bankAcptGp}：" />
+					<h:panelGroup>
+						<p:inputText id="bankAcptGpConfirm"
+							label="#{msgs.lbl_bankAcpt}#{msgs.lbl_bankAcptGp}"
+							value="#{bankCreidtBlocCompanyConfirmBean.blocCompanyConfirmEdit.bankAcptGp}">
+							<f:validateDoubleRange minimum="0" maximum="100" />
+							<f:convertNumber pattern="#0.00" />
+						</p:inputText>
+						<h:outputText value="%" />
+					</h:panelGroup>
+					<h:outputLabel value="#{msgs.lbl_poundage}：" />
+					<h:panelGroup>
+						<p:inputText id="bankAcptFeConfirm"
+							label="#{msgs.lbl_bankAcpt}#{msgs.lbl_poundage}"
+							value="#{bankCreidtBlocCompanyConfirmBean.blocCompanyConfirmEdit.bankAcptFe}">
+							<f:validateDoubleRange minimum="0" maximum="100" />
+							<f:convertNumber pattern="#0.00" />
+						</p:inputText>
+						<h:outputText value="%" />
+					</h:panelGroup>
+					<h:outputLabel value="#{msgs.lbl_openFee}：" />
+					<h:panelGroup>
+						<p:inputText id="bankAcptEfConfirm"
+							label="#{msgs.lbl_bankAcpt}#{msgs.lbl_openFee}"
+							value="#{bankCreidtBlocCompanyConfirmBean.blocCompanyConfirmEdit.bankAcptEf}">
+							<f:validateDoubleRange minimum="0" maximum="100" />
+							<f:convertNumber pattern="#0.00" />
+						</p:inputText>
+						<h:outputText value="%" />
+					</h:panelGroup>
+
+
+					<h:outputLabel value="远期交易：" styleClass="title_2" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+
+					<h:outputLabel value="#{msgs.lbl_amount}：" />
+					<h:panelGroup>
+						<p:inputText id="forwTradeConfirm" label="远期交易额度"
+							value="#{bankCreidtBlocCompanyConfirmBean.blocCompanyConfirmEdit.forwTrade}">
+							<f:validateDoubleRange maximum="99999999.9999" minimum="0" />
+							<f:convertNumber pattern="#,##0.####" />
+							<p:ajax event="blur"
+								listener="#{bankCreidtBlocCompanyConfirmBean.ifForwTrade(bankCreidtBlocCompanyConfirmBean.instance.forwTrade)}"
+								update="bankCreditMsg,forwTradeConfirm" />
+						</p:inputText>
+						<h:outputText value="#{msgs.lbl_tenThousand}" />
+					</h:panelGroup>
+					<h:outputLabel value="费率：" />
+					<h:panelGroup>
+						<p:inputText id="forwTradeCrConfirm"
+							label="#{msgs.lblel_forwTradeCr}"
+							value="#{bankCreidtBlocCompanyConfirmBean.blocCompanyConfirmEdit.forwTradeCr}">
+							<f:validateDoubleRange maximum="100" minimum="0" />
+							<f:convertNumber pattern="#0.00" />
+						</p:inputText>
+					</h:panelGroup>
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+
+				</h:panelGrid>
+
+				<h:panelGrid columns="2" columnClasses="column41,column2">
+					<h:outputLabel value="#{msgs.lbl_otherPro}：" styleClass="title_2" />
+					<p:outputPanel id="procRptBlocCreditOutTableConfirm">
+						<p:dataTable var="procBlocRptCredit" id="procBlocRptCreditTableId"
+							value="#{bankCreidtBlocCompanyConfirmBean.processBlocRptConfirmLayModel}"
+							style="width:995px;" rowKey="#{procBlocRptCredit.id}" rows="100"
+							paginatorPosition="bottom" emptyMessage="#{msgs.empty_data_msg}">
+							<p:column headerText="#{msgs.headerText_cdProName}">
+								<h:outputText value="#{procBlocRptCredit.cdProName}" />
+							</p:column>
+							<p:column headerText="#{msgs.headerText_cdProLimit_0}">
+								<h:outputText value="#{procBlocRptCredit.cdProLimit}">
+									<f:convertNumber pattern="#,##0.####" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="#{msgs.col_operate}"
+								styleClass="operating_60">
+								<p:commandButton title="#{msgs.btn_edit}"
+									icon="ui-icon ui-icon-pencil"
+									update="editBlocbankcreditPanel,editcdProNameMsg"
+									action="#{bankCreidtBlocCompanyConfirmBean.beforeEdit}"
+									oncomplete="editOtherBlocProdDialog.show()" immediate="true">
+									<f:setPropertyActionListener
+										target="#{bankCreidtBlocCompanyConfirmBean.blocCreditRptConfirmEdit}"
+										value="#{procBlocRptCredit}" />
+								</p:commandButton>
+								<p:commandButton title="#{msgs.btn_delete}"
+									icon="ui-icon ui-icon-close" immediate="true"
+									oncomplete="confirmation.show();"
+									update="procRptBlocCreditOutTableConfirm,bankCreditMsgConfirm">
+									<f:setPropertyActionListener
+										target="#{bankCreidtBlocCompanyConfirmBean.blocCreditRptConfirmEdit}"
+										value="#{procBlocRptCredit}" />
+								</p:commandButton>
+							</p:column>
+						</p:dataTable>
+					</p:outputPanel>
+				</h:panelGrid>
+			</div>
+
+			<div class="style11">
+				<h:panelGrid columns="2" columnClasses="column41,column2">
+					<h:outputLabel value="#{msgs.lbl_cooperatio}：" />
+					<h:panelGroup>
+						<p:inputTextarea id="cooperationReason" rows="3"
+							style="width:995px;" label="#{msgs.lbl_cooperatio}"
+							required="true" validatorMessage="#{msgs.msg_beyond_cooperatio}"
+							requiredMessage="#{msgs.msg_input_cooperatio}"
+							value="#{bankCreidtBlocCompanyConfirmBean.blocCompanyConfirmEdit.cooperationReason}"
+							autoResize="false">
+							<f:validateLength maximum="200" for="cooperationReason" />
+						</p:inputTextarea>
+						<h:outputText style="color:red;" value="  *" />
+					</h:panelGroup>
+				</h:panelGrid>
+
+				<div style="position: relative; margin-top: 5px;">
+					<div align="center">
+						<p:commandButton value="#{msgs.btn_addProduct}"
+							icon="ui-icon ui-icon-plus" immediate="true"
+							update="procRptBlocCreditOutTableConfirm,cdProName,cdProLimit,fondsCurrencyMsgEdit"
+							oncomplete="blocCreditRptDialog.show()" />
+						<p:commandButton id="blocConfirm" value="#{msgs.btn_ok}"
+							update="viewBlocCompanyCreditConfirmFrom,bankCreditMsgConfirm,procBlocComanyPanel,bankCreditMsg,
+								guaranteeCd,guaranteeMg,guaranteeGr,guaranteeQm,guaranteeOt"
+							icon="ui-icon ui-icon-check"
+							oncomplete="handleComplete(editblocCompanyConfirmDialog,args)"
+							action="#{bankCreidtBlocCompanyConfirmBean.confirmQuest}" />
+					</div>
+				</div>
+			</div>
+		</div>
+	</h:form>
+</ui:composition>

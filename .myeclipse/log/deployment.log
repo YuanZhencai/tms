@@ -1,0 +1,2059 @@
+--------------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 11:25:56 CST 2012
+--------------------------------------------------------------------------------------------------------------------------
+WASX7357I: 根据请求，此脚本编制客户机未连接到任何服务器进程。以本地方式下，某些配置和应用程序操作可用。
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[D:\\Program Files\\IBM\\WebSphere\\AppServer\\profiles\\AppSrv01\\installableApps\\btcbase.war, PC-20120111BNSDNode01Cell, PC-20120111BNSDNode01, server1, /btcbase, btcbase, {{"btcbase.war" "btcbase.war,WEB-INF/web.xml" default_host}}, {{.* .* AppDeploymentOption.Yes 1}}, btcbase.war, false]”。
+-contextroot "/btcbase" -server "server1" -nopreCompileJSPs -distributeApp -useMetaDataFromBinary -nodeployejb -appname "btcbase" -createMBeansForResources -reloadEnabled -reloadInterval 1 -deployws -validateinstall off -noprocessEmbeddedConfig  -filepermission .*.dll=755#.*.so=755#.*.a=755#.*.sl=755  -buildVersion Unknown  -noallowDispatchRemoteInclude  -noallowServiceRemoteInclude  -MapWebModToVH {{"btcbase.war" "btcbase.war,WEB-INF/web.xml" default_host}} -JSPReloadForWebMod {{.* .* AppDeploymentOption.Yes 1}}
+D:\Program Files\IBM\WebSphere\AppServer\profiles\AppSrv01\installableApps\btcbase.war
+PC-20120111BNSDNode01Cell
+PC-20120111BNSDNode01
+server1
+/btcbase
+btcbase
+{"btcbase.war" "btcbase.war,WEB-INF/web.xml" default_host}
+{.* .* AppDeploymentOption.Yes 1}
+btcbase.war
+false
+JVMDUMP006I 正在处理转储事件“systhrow”，详细信息“java/lang/OutOfMemoryError”- 请稍候。
+JVMDUMP032I JVM 使用“D:\ProgramFiles\MyEclipse10\MyEclipse Blue Edition 10\heapdump.20120312.112759.2640.0001.phd”来请求 Heap 转储以响应事件
+JVMDUMP010I Heap 转储已写入 D:\ProgramFiles\MyEclipse10\MyEclipse Blue Edition 10\heapdump.20120312.112759.2640.0001.phd
+JVMDUMP032I JVM 使用“D:\ProgramFiles\MyEclipse10\MyEclipse Blue Edition 10\javacore.20120312.112759.2640.0002.txt”来请求 Java 转储以响应事件
+JVMDUMP010I Java 转储已写入 D:\ProgramFiles\MyEclipse10\MyEclipse Blue Edition 10\javacore.20120312.112759.2640.0002.txt
+JVMDUMP032I JVM 使用“D:\ProgramFiles\MyEclipse10\MyEclipse Blue Edition 10\Snap.20120312.112759.2640.0003.trc”来请求 Snap 转储以响应事件
+JVMDUMP010I Snap 转储已写入 D:\ProgramFiles\MyEclipse10\MyEclipse Blue Edition 10\Snap.20120312.112759.2640.0003.trc
+JVMDUMP013I 已处理转储事件“systhrow”，详细信息：“java/lang/OutOfMemoryError”。
+JVMDUMP006I 正在处理转储事件“systhrow”，详细信息“java/lang/OutOfMemoryError”- 请稍候。
+JVMDUMP032I JVM 使用“D:\ProgramFiles\MyEclipse10\MyEclipse Blue Edition 10\heapdump.20120312.112830.2640.0004.phd”来请求 Heap 转储以响应事件
+JVMDUMP010I Heap 转储已写入 D:\ProgramFiles\MyEclipse10\MyEclipse Blue Edition 10\heapdump.20120312.112830.2640.0004.phd
+JVMDUMP032I JVM 使用“D:\ProgramFiles\MyEclipse10\MyEclipse Blue Edition 10\javacore.20120312.112830.2640.0005.txt”来请求 Java 转储以响应事件
+JVMDUMP010I Java 转储已写入 D:\ProgramFiles\MyEclipse10\MyEclipse Blue Edition 10\javacore.20120312.112830.2640.0005.txt
+JVMDUMP032I JVM 使用“D:\ProgramFiles\MyEclipse10\MyEclipse Blue Edition 10\Snap.20120312.112830.2640.0006.trc”来请求 Snap 转储以响应事件
+JVMDUMP010I Snap 转储已写入 D:\ProgramFiles\MyEclipse10\MyEclipse Blue Edition 10\Snap.20120312.112830.2640.0006.trc
+JVMDUMP013I 已处理转储事件“systhrow”，详细信息：“java/lang/OutOfMemoryError”。
+JVMDUMP006I 正在处理转储事件“systhrow”，详细信息“java/lang/OutOfMemoryError”- 请稍候。
+JVMDUMP032I JVM 使用“D:\ProgramFiles\MyEclipse10\MyEclipse Blue Edition 10\heapdump.20120312.112848.2640.0007.phd”来请求 Heap 转储以响应事件
+JVMDUMP010I Heap 转储已写入 D:\ProgramFiles\MyEclipse10\MyEclipse Blue Edition 10\heapdump.20120312.112848.2640.0007.phd
+JVMDUMP032I JVM 使用“D:\ProgramFiles\MyEclipse10\MyEclipse Blue Edition 10\javacore.20120312.112848.2640.0008.txt”来请求 Java 转储以响应事件
+JVMDUMP010I Java 转储已写入 D:\ProgramFiles\MyEclipse10\MyEclipse Blue Edition 10\javacore.20120312.112848.2640.0008.txt
+JVMDUMP032I JVM 使用“D:\ProgramFiles\MyEclipse10\MyEclipse Blue Edition 10\Snap.20120312.112848.2640.0009.trc”来请求 Snap 转储以响应事件
+JVMDUMP010I Snap 转储已写入 D:\ProgramFiles\MyEclipse10\MyEclipse Blue Edition 10\Snap.20120312.112848.2640.0009.trc
+JVMDUMP013I 已处理转储事件“systhrow”，详细信息：“java/lang/OutOfMemoryError”。
+WASX7017E: 运行文件“D:\ProgramFiles\MyEclipse10\Common\plugins\com.genuitec.eclipse.blue.websphere8_9.0.0.me201110171954\installWebModule.jacl”时接收到异常；异常信息：com.ibm.bsf.BSFException: error while eval'ing Jacl expression:
+java.lang.OutOfMemoryError
+    while executing
+"$AdminApp install $location $optionsString"
+---------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 11:28:57 CST 2012
+---------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 11:29:21 CST 2012
+--------------------------------------------------------------------------------------------------------------------------
+WASX7357I: 根据请求，此脚本编制客户机未连接到任何服务器进程。以本地方式下，某些配置和应用程序操作可用。
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[btcbase]”。
+btcbase
+WASX7017E: 运行文件“D:\ProgramFiles\MyEclipse10\Common\plugins\com.genuitec.eclipse.blue.websphere8_9.0.0.me201110171954\uninstallApplication.jacl”时接收到异常；异常信息：com.ibm.ws.scripting.ScriptingException: WASX7280E: 不存在名为“btcbase”的应用程序。
+
+---------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 11:29:38 CST 2012
+---------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 11:32:05 CST 2012
+--------------------------------------------------------------------------------------------------------------------------
+WASX7357I: 根据请求，此脚本编制客户机未连接到任何服务器进程。以本地方式下，某些配置和应用程序操作可用。
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[D:\\Program Files\\IBM\\WebSphere\\AppServer\\profiles\\AppSrv01\\installableApps\\btcbase.war, PC-20120111BNSDNode01Cell, PC-20120111BNSDNode01, server1, /btcbase, btcbase, {{"btcbase.war" "btcbase.war,WEB-INF/web.xml" default_host}}, {{.* .* AppDeploymentOption.Yes 1}}, btcbase.war, false]”。
+-contextroot "/btcbase" -server "server1" -nopreCompileJSPs -distributeApp -useMetaDataFromBinary -nodeployejb -appname "btcbase" -createMBeansForResources -reloadEnabled -reloadInterval 1 -deployws -validateinstall off -noprocessEmbeddedConfig  -filepermission .*.dll=755#.*.so=755#.*.a=755#.*.sl=755  -buildVersion Unknown  -noallowDispatchRemoteInclude  -noallowServiceRemoteInclude  -MapWebModToVH {{"btcbase.war" "btcbase.war,WEB-INF/web.xml" default_host}} -JSPReloadForWebMod {{.* .* AppDeploymentOption.Yes 1}}
+D:\Program Files\IBM\WebSphere\AppServer\profiles\AppSrv01\installableApps\btcbase.war
+PC-20120111BNSDNode01Cell
+PC-20120111BNSDNode01
+server1
+/btcbase
+btcbase
+{"btcbase.war" "btcbase.war,WEB-INF/web.xml" default_host}
+{.* .* AppDeploymentOption.Yes 1}
+btcbase.war
+false
+---------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 11:58:13 CST 2012
+---------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 11:58:21 CST 2012
+--------------------------------------------------------------------------------------------------------------------------
+WASX7357I: 根据请求，此脚本编制客户机未连接到任何服务器进程。以本地方式下，某些配置和应用程序操作可用。
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[btcbase]”。
+btcbase
+WASX7017E: 运行文件“D:\ProgramFiles\MyEclipse10\Common\plugins\com.genuitec.eclipse.blue.websphere8_9.0.0.me201110171954\uninstallApplication.jacl”时接收到异常；异常信息：com.ibm.ws.scripting.ScriptingException: WASX7280E: 不存在名为“btcbase”的应用程序。
+
+---------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 11:58:37 CST 2012
+---------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 12:54:43 CST 2012
+--------------------------------------------------------------------------------------------------------------------------
+WASX7357I: 根据请求，此脚本编制客户机未连接到任何服务器进程。以本地方式下，某些配置和应用程序操作可用。
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[D:\\Program Files\\IBM\\WebSphere\\AppServer\\profiles\\AppSrv01\\installableApps\\btcbase.war, PC-20120111BNSDNode01Cell, PC-20120111BNSDNode01, server1, /btcbase, btcbase, {{"btcbase.war" "btcbase.war,WEB-INF/web.xml" default_host}}, {{.* .* AppDeploymentOption.Yes 1}}, btcbase.war, false]”。
+-contextroot "/btcbase" -server "server1" -nopreCompileJSPs -distributeApp -useMetaDataFromBinary -nodeployejb -appname "btcbase" -createMBeansForResources -reloadEnabled -reloadInterval 1 -deployws -validateinstall off -noprocessEmbeddedConfig  -filepermission .*.dll=755#.*.so=755#.*.a=755#.*.sl=755  -buildVersion Unknown  -noallowDispatchRemoteInclude  -noallowServiceRemoteInclude  -MapWebModToVH {{"btcbase.war" "btcbase.war,WEB-INF/web.xml" default_host}} -JSPReloadForWebMod {{.* .* AppDeploymentOption.Yes 1}}
+D:\Program Files\IBM\WebSphere\AppServer\profiles\AppSrv01\installableApps\btcbase.war
+PC-20120111BNSDNode01Cell
+PC-20120111BNSDNode01
+server1
+/btcbase
+btcbase
+{"btcbase.war" "btcbase.war,WEB-INF/web.xml" default_host}
+{.* .* AppDeploymentOption.Yes 1}
+btcbase.war
+false
+JVMDUMP006I 正在处理转储事件“systhrow”，详细信息“java/lang/OutOfMemoryError”- 请稍候。
+JVMDUMP032I JVM 使用“D:\ProgramFiles\MyEclipse10\MyEclipse Blue Edition 10\heapdump.20120312.125634.7564.0001.phd”来请求 Heap 转储以响应事件
+JVMDUMP010I Heap 转储已写入 D:\ProgramFiles\MyEclipse10\MyEclipse Blue Edition 10\heapdump.20120312.125634.7564.0001.phd
+JVMDUMP032I JVM 使用“D:\ProgramFiles\MyEclipse10\MyEclipse Blue Edition 10\javacore.20120312.125634.7564.0002.txt”来请求 Java 转储以响应事件
+JVMDUMP010I Java 转储已写入 D:\ProgramFiles\MyEclipse10\MyEclipse Blue Edition 10\javacore.20120312.125634.7564.0002.txt
+JVMDUMP032I JVM 使用“D:\ProgramFiles\MyEclipse10\MyEclipse Blue Edition 10\Snap.20120312.125634.7564.0003.trc”来请求 Snap 转储以响应事件
+JVMDUMP010I Snap 转储已写入 D:\ProgramFiles\MyEclipse10\MyEclipse Blue Edition 10\Snap.20120312.125634.7564.0003.trc
+JVMDUMP013I 已处理转储事件“systhrow”，详细信息：“java/lang/OutOfMemoryError”。
+WASX7017E: 运行文件“D:\ProgramFiles\MyEclipse10\Common\plugins\com.genuitec.eclipse.blue.websphere8_9.0.0.me201110171954\installWebModule.jacl”时接收到异常；异常信息：com.ibm.websphere.management.application.client.AppDeploymentException: com.ibm.websphere.management.application.client.AppDeploymentException: java.lang.OutOfMemoryError [Root exception is java.lang.OutOfMemoryError]
+java.lang.OutOfMemoryError: java.lang.OutOfMemoryError
+
+--------------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 13:09:17 CST 2012
+--------------------------------------------------------------------------------------------------------------------------
+WASX7357I: 根据请求，此脚本编制客户机未连接到任何服务器进程。以本地方式下，某些配置和应用程序操作可用。
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[btcbase]”。
+btcbase
+WASX7017E: 运行文件“D:\ProgramFiles\MyEclipse10\Common\plugins\com.genuitec.eclipse.blue.websphere8_9.0.0.me201110171954\uninstallApplication.jacl”时接收到异常；异常信息：com.ibm.ws.scripting.ScriptingException: WASX7280E: 不存在名为“btcbase”的应用程序。
+
+---------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 13:09:31 CST 2012
+---------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 13:13:23 CST 2012
+--------------------------------------------------------------------------------------------------------------------------
+WASX7357I: 根据请求，此脚本编制客户机未连接到任何服务器进程。以本地方式下，某些配置和应用程序操作可用。
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[D:\\Program Files\\IBM\\WebSphere\\AppServer\\profiles\\AppSrv01\\installableApps\\btcbase.war, PC-20120111BNSDNode01Cell, PC-20120111BNSDNode01, server1, /btcbase, btcbase, {{"btcbase.war" "btcbase.war,WEB-INF/web.xml" default_host}}, {{.* .* AppDeploymentOption.Yes 1}}, btcbase.war, false]”。
+-contextroot "/btcbase" -server "server1" -nopreCompileJSPs -distributeApp -useMetaDataFromBinary -nodeployejb -appname "btcbase" -createMBeansForResources -reloadEnabled -reloadInterval 1 -deployws -validateinstall off -noprocessEmbeddedConfig  -filepermission .*.dll=755#.*.so=755#.*.a=755#.*.sl=755  -buildVersion Unknown  -noallowDispatchRemoteInclude  -noallowServiceRemoteInclude  -MapWebModToVH {{"btcbase.war" "btcbase.war,WEB-INF/web.xml" default_host}} -JSPReloadForWebMod {{.* .* AppDeploymentOption.Yes 1}}
+D:\Program Files\IBM\WebSphere\AppServer\profiles\AppSrv01\installableApps\btcbase.war
+PC-20120111BNSDNode01Cell
+PC-20120111BNSDNode01
+server1
+/btcbase
+btcbase
+{"btcbase.war" "btcbase.war,WEB-INF/web.xml" default_host}
+{.* .* AppDeploymentOption.Yes 1}
+btcbase.war
+false
+JVMDUMP006I 正在处理转储事件“systhrow”，详细信息“java/lang/OutOfMemoryError”- 请稍候。
+JVMDUMP032I JVM 使用“D:\ProgramFiles\MyEclipse10\MyEclipse Blue Edition 10\heapdump.20120312.131441.6024.0001.phd”来请求 Heap 转储以响应事件
+JVMDUMP010I Heap 转储已写入 D:\ProgramFiles\MyEclipse10\MyEclipse Blue Edition 10\heapdump.20120312.131441.6024.0001.phd
+JVMDUMP032I JVM 使用“D:\ProgramFiles\MyEclipse10\MyEclipse Blue Edition 10\javacore.20120312.131441.6024.0002.txt”来请求 Java 转储以响应事件
+JVMDUMP010I Java 转储已写入 D:\ProgramFiles\MyEclipse10\MyEclipse Blue Edition 10\javacore.20120312.131441.6024.0002.txt
+JVMDUMP032I JVM 使用“D:\ProgramFiles\MyEclipse10\MyEclipse Blue Edition 10\Snap.20120312.131441.6024.0003.trc”来请求 Snap 转储以响应事件
+JVMDUMP010I Snap 转储已写入 D:\ProgramFiles\MyEclipse10\MyEclipse Blue Edition 10\Snap.20120312.131441.6024.0003.trc
+JVMDUMP013I 已处理转储事件“systhrow”，详细信息：“java/lang/OutOfMemoryError”。
+WASX7017E: 运行文件“D:\ProgramFiles\MyEclipse10\Common\plugins\com.genuitec.eclipse.blue.websphere8_9.0.0.me201110171954\installWebModule.jacl”时接收到异常；异常信息：com.ibm.websphere.management.application.client.AppDeploymentException: com.ibm.websphere.management.application.client.AppDeploymentException: java.lang.OutOfMemoryError [Root exception is java.lang.OutOfMemoryError]
+java.lang.OutOfMemoryError: java.lang.OutOfMemoryError
+
+---------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 13:15:05 CST 2012
+---------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 13:18:47 CST 2012
+--------------------------------------------------------------------------------------------------------------------------
+WASX7357I: 根据请求，此脚本编制客户机未连接到任何服务器进程。以本地方式下，某些配置和应用程序操作可用。
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[btcbase]”。
+btcbase
+WASX7017E: 运行文件“D:\ProgramFiles\MyEclipse10\Common\plugins\com.genuitec.eclipse.blue.websphere8_9.0.0.me201110171954\uninstallApplication.jacl”时接收到异常；异常信息：com.ibm.ws.scripting.ScriptingException: WASX7280E: 不存在名为“btcbase”的应用程序。
+
+---------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 13:18:59 CST 2012
+---------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 13:24:37 CST 2012
+--------------------------------------------------------------------------------------------------------------------------
+WASX7357I: 根据请求，此脚本编制客户机未连接到任何服务器进程。以本地方式下，某些配置和应用程序操作可用。
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[D:\\Program Files\\IBM\\WebSphere\\AppServer\\profiles\\AppSrv01\\installableApps\\btcbase.war, PC-20120111BNSDNode01Cell, PC-20120111BNSDNode01, server1, /btcbase, btcbase, {{"btcbase.war" "btcbase.war,WEB-INF/web.xml" default_host}}, {{.* .* AppDeploymentOption.Yes 1}}, btcbase.war, false]”。
+-contextroot "/btcbase" -server "server1" -nopreCompileJSPs -distributeApp -useMetaDataFromBinary -nodeployejb -appname "btcbase" -createMBeansForResources -reloadEnabled -reloadInterval 1 -deployws -validateinstall off -noprocessEmbeddedConfig  -filepermission .*.dll=755#.*.so=755#.*.a=755#.*.sl=755  -buildVersion Unknown  -noallowDispatchRemoteInclude  -noallowServiceRemoteInclude  -MapWebModToVH {{"btcbase.war" "btcbase.war,WEB-INF/web.xml" default_host}} -JSPReloadForWebMod {{.* .* AppDeploymentOption.Yes 1}}
+D:\Program Files\IBM\WebSphere\AppServer\profiles\AppSrv01\installableApps\btcbase.war
+PC-20120111BNSDNode01Cell
+PC-20120111BNSDNode01
+server1
+/btcbase
+btcbase
+{"btcbase.war" "btcbase.war,WEB-INF/web.xml" default_host}
+{.* .* AppDeploymentOption.Yes 1}
+btcbase.war
+false
+WASX7017E: 运行文件“D:\ProgramFiles\MyEclipse10\Common\plugins\com.genuitec.eclipse.blue.websphere8_9.0.0.me201110171954\installWebModule.jacl”时接收到异常；异常信息：org.eclipse.jst.j2ee.commonarchivecore.internal.exception.DeploymentDescriptorLoadException: org.eclipse.jst.j2ee.commonarchivecore.internal.exception.DeploymentDescriptorLoadException: WEB-INF/web.xml
+
+---------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 13:24:48 CST 2012
+---------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 13:26:30 CST 2012
+--------------------------------------------------------------------------------------------------------------------------
+WASX7357I: 根据请求，此脚本编制客户机未连接到任何服务器进程。以本地方式下，某些配置和应用程序操作可用。
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[btcbase]”。
+btcbase
+WASX7017E: 运行文件“D:\ProgramFiles\MyEclipse10\Common\plugins\com.genuitec.eclipse.blue.websphere8_9.0.0.me201110171954\uninstallApplication.jacl”时接收到异常；异常信息：com.ibm.ws.scripting.ScriptingException: WASX7280E: 不存在名为“btcbase”的应用程序。
+
+---------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 13:26:41 CST 2012
+---------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 13:33:49 CST 2012
+--------------------------------------------------------------------------------------------------------------------------
+WASX7357I: 根据请求，此脚本编制客户机未连接到任何服务器进程。以本地方式下，某些配置和应用程序操作可用。
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[D:\\Program Files\\IBM\\WebSphere\\AppServer\\profiles\\AppSrv01\\installableApps\\btcbase.war, PC-20120111BNSDNode01Cell, PC-20120111BNSDNode01, server1, /btcbase, btcbase, {{"btcbase.war" "btcbase.war,WEB-INF/web.xml" default_host}}, {{.* .* AppDeploymentOption.Yes 1}}, btcbase.war, false]”。
+-contextroot "/btcbase" -server "server1" -nopreCompileJSPs -distributeApp -useMetaDataFromBinary -nodeployejb -appname "btcbase" -createMBeansForResources -reloadEnabled -reloadInterval 1 -deployws -validateinstall off -noprocessEmbeddedConfig  -filepermission .*.dll=755#.*.so=755#.*.a=755#.*.sl=755  -buildVersion Unknown  -noallowDispatchRemoteInclude  -noallowServiceRemoteInclude  -MapWebModToVH {{"btcbase.war" "btcbase.war,WEB-INF/web.xml" default_host}} -JSPReloadForWebMod {{.* .* AppDeploymentOption.Yes 1}}
+D:\Program Files\IBM\WebSphere\AppServer\profiles\AppSrv01\installableApps\btcbase.war
+PC-20120111BNSDNode01Cell
+PC-20120111BNSDNode01
+server1
+/btcbase
+btcbase
+{"btcbase.war" "btcbase.war,WEB-INF/web.xml" default_host}
+{.* .* AppDeploymentOption.Yes 1}
+btcbase.war
+false
+JVMDUMP006I 正在处理转储事件“systhrow”，详细信息“java/lang/OutOfMemoryError”- 请稍候。
+JVMDUMP032I JVM 使用“D:\ProgramFiles\MyEclipse10\MyEclipse Blue Edition 10\heapdump.20120312.133511.7328.0001.phd”来请求 Heap 转储以响应事件
+JVMDUMP010I Heap 转储已写入 D:\ProgramFiles\MyEclipse10\MyEclipse Blue Edition 10\heapdump.20120312.133511.7328.0001.phd
+JVMDUMP032I JVM 使用“D:\ProgramFiles\MyEclipse10\MyEclipse Blue Edition 10\javacore.20120312.133511.7328.0002.txt”来请求 Java 转储以响应事件
+JVMDUMP010I Java 转储已写入 D:\ProgramFiles\MyEclipse10\MyEclipse Blue Edition 10\javacore.20120312.133511.7328.0002.txt
+JVMDUMP032I JVM 使用“D:\ProgramFiles\MyEclipse10\MyEclipse Blue Edition 10\Snap.20120312.133511.7328.0003.trc”来请求 Snap 转储以响应事件
+JVMDUMP010I Snap 转储已写入 D:\ProgramFiles\MyEclipse10\MyEclipse Blue Edition 10\Snap.20120312.133511.7328.0003.trc
+JVMDUMP013I 已处理转储事件“systhrow”，详细信息：“java/lang/OutOfMemoryError”。
+---------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 13:40:04 CST 2012
+---------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 13:40:08 CST 2012
+--------------------------------------------------------------------------------------------------------------------------
+WASX7357I: 根据请求，此脚本编制客户机未连接到任何服务器进程。以本地方式下，某些配置和应用程序操作可用。
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[btcbase]”。
+btcbase
+WASX7017E: 运行文件“D:\ProgramFiles\MyEclipse10\Common\plugins\com.genuitec.eclipse.blue.websphere8_9.0.0.me201110171954\uninstallApplication.jacl”时接收到异常；异常信息：com.ibm.ws.scripting.ScriptingException: WASX7280E: 不存在名为“btcbase”的应用程序。
+
+---------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 13:40:21 CST 2012
+---------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 13:43:15 CST 2012
+--------------------------------------------------------------------------------------------------------------------------
+WASX7357I: 根据请求，此脚本编制客户机未连接到任何服务器进程。以本地方式下，某些配置和应用程序操作可用。
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[D:\\Program Files\\IBM\\WebSphere\\AppServer\\profiles\\AppSrv01\\installableApps\\btcbase.war, PC-20120111BNSDNode01Cell, PC-20120111BNSDNode01, server1, /btcbase, btcbase, {{"btcbase.war" "btcbase.war,WEB-INF/web.xml" default_host}}, {{.* .* AppDeploymentOption.Yes 1}}, btcbase.war, false]”。
+-contextroot "/btcbase" -server "server1" -nopreCompileJSPs -distributeApp -useMetaDataFromBinary -nodeployejb -appname "btcbase" -createMBeansForResources -reloadEnabled -reloadInterval 1 -deployws -validateinstall off -noprocessEmbeddedConfig  -filepermission .*.dll=755#.*.so=755#.*.a=755#.*.sl=755  -buildVersion Unknown  -noallowDispatchRemoteInclude  -noallowServiceRemoteInclude  -MapWebModToVH {{"btcbase.war" "btcbase.war,WEB-INF/web.xml" default_host}} -JSPReloadForWebMod {{.* .* AppDeploymentOption.Yes 1}}
+D:\Program Files\IBM\WebSphere\AppServer\profiles\AppSrv01\installableApps\btcbase.war
+PC-20120111BNSDNode01Cell
+PC-20120111BNSDNode01
+server1
+/btcbase
+btcbase
+{"btcbase.war" "btcbase.war,WEB-INF/web.xml" default_host}
+{.* .* AppDeploymentOption.Yes 1}
+btcbase.war
+false
+JVMDUMP006I 正在处理转储事件“systhrow”，详细信息“java/lang/OutOfMemoryError”- 请稍候。
+JVMDUMP032I JVM 使用“D:\ProgramFiles\MyEclipse10\MyEclipse Blue Edition 10\heapdump.20120312.134441.6468.0001.phd”来请求 Heap 转储以响应事件
+JVMDUMP010I Heap 转储已写入 D:\ProgramFiles\MyEclipse10\MyEclipse Blue Edition 10\heapdump.20120312.134441.6468.0001.phd
+JVMDUMP032I JVM 使用“D:\ProgramFiles\MyEclipse10\MyEclipse Blue Edition 10\javacore.20120312.134441.6468.0002.txt”来请求 Java 转储以响应事件
+JVMDUMP010I Java 转储已写入 D:\ProgramFiles\MyEclipse10\MyEclipse Blue Edition 10\javacore.20120312.134441.6468.0002.txt
+JVMDUMP032I JVM 使用“D:\ProgramFiles\MyEclipse10\MyEclipse Blue Edition 10\Snap.20120312.134441.6468.0003.trc”来请求 Snap 转储以响应事件
+JVMDUMP010I Snap 转储已写入 D:\ProgramFiles\MyEclipse10\MyEclipse Blue Edition 10\Snap.20120312.134441.6468.0003.trc
+JVMDUMP013I 已处理转储事件“systhrow”，详细信息：“java/lang/OutOfMemoryError”。
+WASX7017E: 运行文件“D:\ProgramFiles\MyEclipse10\Common\plugins\com.genuitec.eclipse.blue.websphere8_9.0.0.me201110171954\installWebModule.jacl”时接收到异常；异常信息：com.ibm.websphere.management.application.client.AppDeploymentException: com.ibm.websphere.management.application.client.AppDeploymentException: java.lang.OutOfMemoryError [Root exception is java.lang.OutOfMemoryError]
+java.lang.OutOfMemoryError: java.lang.OutOfMemoryError
+
+---------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 13:45:34 CST 2012
+---------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 13:45:58 CST 2012
+--------------------------------------------------------------------------------------------------------------------------
+WASX7357I: 根据请求，此脚本编制客户机未连接到任何服务器进程。以本地方式下，某些配置和应用程序操作可用。
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[btcbase]”。
+btcbase
+WASX7017E: 运行文件“D:\ProgramFiles\MyEclipse10\Common\plugins\com.genuitec.eclipse.blue.websphere8_9.0.0.me201110171954\uninstallApplication.jacl”时接收到异常；异常信息：com.ibm.ws.scripting.ScriptingException: WASX7280E: 不存在名为“btcbase”的应用程序。
+
+---------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 13:46:11 CST 2012
+---------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 13:50:31 CST 2012
+--------------------------------------------------------------------------------------------------------------------------
+WASX7357I: 根据请求，此脚本编制客户机未连接到任何服务器进程。以本地方式下，某些配置和应用程序操作可用。
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[D:\\Program Files\\IBM\\WebSphere\\AppServer\\profiles\\AppSrv01\\installableApps\\btcbase.war, PC-20120111BNSDNode01Cell, PC-20120111BNSDNode01, server1, /btcbase, btcbase, {{"btcbase.war" "btcbase.war,WEB-INF/web.xml" default_host}}, {{.* .* AppDeploymentOption.Yes 1}}, btcbase.war, false]”。
+-contextroot "/btcbase" -server "server1" -nopreCompileJSPs -distributeApp -useMetaDataFromBinary -nodeployejb -appname "btcbase" -createMBeansForResources -reloadEnabled -reloadInterval 1 -deployws -validateinstall off -noprocessEmbeddedConfig  -filepermission .*.dll=755#.*.so=755#.*.a=755#.*.sl=755  -buildVersion Unknown  -noallowDispatchRemoteInclude  -noallowServiceRemoteInclude  -MapWebModToVH {{"btcbase.war" "btcbase.war,WEB-INF/web.xml" default_host}} -JSPReloadForWebMod {{.* .* AppDeploymentOption.Yes 1}}
+D:\Program Files\IBM\WebSphere\AppServer\profiles\AppSrv01\installableApps\btcbase.war
+PC-20120111BNSDNode01Cell
+PC-20120111BNSDNode01
+server1
+/btcbase
+btcbase
+{"btcbase.war" "btcbase.war,WEB-INF/web.xml" default_host}
+{.* .* AppDeploymentOption.Yes 1}
+btcbase.war
+false
+WASX7327I: was.policy 文件的内容：
+ //
+// Template policy file for enterprise application.
+// Extra permissions can be added if required by the enterprise application.
+//
+// NOTE: Syntax errors in the policy files will cause the enterprise application FAIL to start.
+//       Extreme care should be taken when editing these policy files. It is advised to use
+//       the policytool provided by the JDK for editing the policy files
+//       (WAS_HOME/java/jre/bin/policytool). 
+//
+
+grant codeBase "file:${application}" {
+};
+
+grant codeBase "file:${jars}" {
+};
+
+grant codeBase "file:${connectorComponent}" {
+};
+
+grant codeBase "file:${webComponent}" {
+};
+
+grant codeBase "file:${ejbComponent}" {
+};
+
+
+ADMA5016I: 安装 btcbase 已启动。
+ADMA5058I: 已使用部署目标的版本验证应用程序和模块版本。
+WSWS0041I: Web Service 部署任务成功完成。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 btcbase。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 btcbase。
+ADMA5081I: 在 WebSphere Application Server 存储库中配置了客户机模块的引导程序地址。
+ADMA5053I: 创建了已安装的任选软件包的库引用。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 btcbase。
+ADMA5001I: 应用程序二进制文件保存在 D:\Program Files\IBM\WebSphere\AppServer\profiles\AppSrv01\wstemp\Script13605754cd0\workspace\cells\PC-20120111BNSDNode01Cell\applications\btcbase.ear\btcbase.ear 中
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 btcbase。
+SECJ0400I: 已成功地用 appContextIDForSecurity 信息更新应用程序 btcbase。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 btcbase。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 btcbase。
+ADMA5113I: 已成功地创建激活规划。
+ADMA5011I: 清除应用程序 btcbase 的 temp 目录已完成。
+ADMA5013I: 应用程序 btcbase 安装成功。
+---------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 13:54:13 CST 2012
+---------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 14:48:03 CST 2012
+--------------------------------------------------------------------------------------------------------------------------
+WASX7357I: 根据请求，此脚本编制客户机未连接到任何服务器进程。以本地方式下，某些配置和应用程序操作可用。
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[btcbase]”。
+btcbase
+ADMA5017I: 卸载 btcbase 已启动。
+ADMA5104I: 已成功更新 WebSphere:cell=PC-20120111BNSDNode01Cell,node=PC-20120111BNSDNode01 的服务器索引条目。
+ADMA5102I: 已成功从配置库删除 btcbase 的配置数据。
+ADMA5011I: 清除应用程序 btcbase 的 temp 目录已完成。
+ADMA5106I: 已成功卸载应用程序 btcbase。
+---------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 14:48:27 CST 2012
+---------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 14:49:29 CST 2012
+--------------------------------------------------------------------------------------------------------------------------
+WASX7357I: 根据请求，此脚本编制客户机未连接到任何服务器进程。以本地方式下，某些配置和应用程序操作可用。
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[D:\\Program Files\\IBM\\WebSphere\\AppServer\\profiles\\AppSrv01\\installableApps\\btcbase.war, PC-20120111BNSDNode01Cell, PC-20120111BNSDNode01, server1, /btcbase, btcbase, {{"btcbase.war" "btcbase.war,WEB-INF/web.xml" default_host}}, {{.* .* AppDeploymentOption.Yes 1}}, btcbase.war, false]”。
+-contextroot "/btcbase" -server "server1" -nopreCompileJSPs -distributeApp -useMetaDataFromBinary -nodeployejb -appname "btcbase" -createMBeansForResources -reloadEnabled -reloadInterval 1 -deployws -validateinstall off -noprocessEmbeddedConfig  -filepermission .*.dll=755#.*.so=755#.*.a=755#.*.sl=755  -buildVersion Unknown  -noallowDispatchRemoteInclude  -noallowServiceRemoteInclude  -MapWebModToVH {{"btcbase.war" "btcbase.war,WEB-INF/web.xml" default_host}} -JSPReloadForWebMod {{.* .* AppDeploymentOption.Yes 1}}
+D:\Program Files\IBM\WebSphere\AppServer\profiles\AppSrv01\installableApps\btcbase.war
+PC-20120111BNSDNode01Cell
+PC-20120111BNSDNode01
+server1
+/btcbase
+btcbase
+{"btcbase.war" "btcbase.war,WEB-INF/web.xml" default_host}
+{.* .* AppDeploymentOption.Yes 1}
+btcbase.war
+false
+WASX7327I: was.policy 文件的内容：
+ //
+// Template policy file for enterprise application.
+// Extra permissions can be added if required by the enterprise application.
+//
+// NOTE: Syntax errors in the policy files will cause the enterprise application FAIL to start.
+//       Extreme care should be taken when editing these policy files. It is advised to use
+//       the policytool provided by the JDK for editing the policy files
+//       (WAS_HOME/java/jre/bin/policytool). 
+//
+
+grant codeBase "file:${application}" {
+};
+
+grant codeBase "file:${jars}" {
+};
+
+grant codeBase "file:${connectorComponent}" {
+};
+
+grant codeBase "file:${webComponent}" {
+};
+
+grant codeBase "file:${ejbComponent}" {
+};
+
+
+ADMA5016I: 安装 btcbase 已启动。
+ADMA5058I: 已使用部署目标的版本验证应用程序和模块版本。
+WSWS0041I: Web Service 部署任务成功完成。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 btcbase。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 btcbase。
+ADMA5081I: 在 WebSphere Application Server 存储库中配置了客户机模块的引导程序地址。
+ADMA5053I: 创建了已安装的任选软件包的库引用。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 btcbase。
+ADMA5001I: 应用程序二进制文件保存在 D:\Program Files\IBM\WebSphere\AppServer\profiles\AppSrv01\wstemp\Script13605ab4e61\workspace\cells\PC-20120111BNSDNode01Cell\applications\btcbase.ear\btcbase.ear 中
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 btcbase。
+SECJ0400I: 已成功地用 appContextIDForSecurity 信息更新应用程序 btcbase。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 btcbase。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 btcbase。
+ADMA5113I: 已成功地创建激活规划。
+ADMA5011I: 清除应用程序 btcbase 的 temp 目录已完成。
+ADMA5013I: 应用程序 btcbase 安装成功。
+---------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 14:53:16 CST 2012
+---------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 14:57:51 CST 2012
+--------------------------------------------------------------------------------------------------------------------------
+WASX7357I: 根据请求，此脚本编制客户机未连接到任何服务器进程。以本地方式下，某些配置和应用程序操作可用。
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[btcbase]”。
+btcbase
+ADMA5017I: 卸载 btcbase 已启动。
+ADMA5104I: 已成功更新 WebSphere:cell=PC-20120111BNSDNode01Cell,node=PC-20120111BNSDNode01 的服务器索引条目。
+ADMA5102I: 已成功从配置库删除 btcbase 的配置数据。
+ADMA5011I: 清除应用程序 btcbase 的 temp 目录已完成。
+ADMA5106I: 已成功卸载应用程序 btcbase。
+---------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 14:58:13 CST 2012
+---------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 14:59:00 CST 2012
+--------------------------------------------------------------------------------------------------------------------------
+WASX7357I: 根据请求，此脚本编制客户机未连接到任何服务器进程。以本地方式下，某些配置和应用程序操作可用。
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[D:\\Program Files\\IBM\\WebSphere\\AppServer\\profiles\\AppSrv01\\installableApps\\btcbase.war, PC-20120111BNSDNode01Cell, PC-20120111BNSDNode01, server1, /btcbase, btcbase, {{"btcbase.war" "btcbase.war,WEB-INF/web.xml" default_host}}, {{.* .* AppDeploymentOption.Yes 1}}, btcbase.war, false]”。
+-contextroot "/btcbase" -server "server1" -nopreCompileJSPs -distributeApp -useMetaDataFromBinary -nodeployejb -appname "btcbase" -createMBeansForResources -reloadEnabled -reloadInterval 1 -deployws -validateinstall off -noprocessEmbeddedConfig  -filepermission .*.dll=755#.*.so=755#.*.a=755#.*.sl=755  -buildVersion Unknown  -noallowDispatchRemoteInclude  -noallowServiceRemoteInclude  -MapWebModToVH {{"btcbase.war" "btcbase.war,WEB-INF/web.xml" default_host}} -JSPReloadForWebMod {{.* .* AppDeploymentOption.Yes 1}}
+D:\Program Files\IBM\WebSphere\AppServer\profiles\AppSrv01\installableApps\btcbase.war
+PC-20120111BNSDNode01Cell
+PC-20120111BNSDNode01
+server1
+/btcbase
+btcbase
+{"btcbase.war" "btcbase.war,WEB-INF/web.xml" default_host}
+{.* .* AppDeploymentOption.Yes 1}
+btcbase.war
+false
+WASX7327I: was.policy 文件的内容：
+ //
+// Template policy file for enterprise application.
+// Extra permissions can be added if required by the enterprise application.
+//
+// NOTE: Syntax errors in the policy files will cause the enterprise application FAIL to start.
+//       Extreme care should be taken when editing these policy files. It is advised to use
+//       the policytool provided by the JDK for editing the policy files
+//       (WAS_HOME/java/jre/bin/policytool). 
+//
+
+grant codeBase "file:${application}" {
+};
+
+grant codeBase "file:${jars}" {
+};
+
+grant codeBase "file:${connectorComponent}" {
+};
+
+grant codeBase "file:${webComponent}" {
+};
+
+grant codeBase "file:${ejbComponent}" {
+};
+
+
+ADMA5016I: 安装 btcbase 已启动。
+ADMA5058I: 已使用部署目标的版本验证应用程序和模块版本。
+WSWS0041I: Web Service 部署任务成功完成。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 btcbase。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 btcbase。
+ADMA5081I: 在 WebSphere Application Server 存储库中配置了客户机模块的引导程序地址。
+ADMA5053I: 创建了已安装的任选软件包的库引用。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 btcbase。
+ADMA5001I: 应用程序二进制文件保存在 D:\Program Files\IBM\WebSphere\AppServer\profiles\AppSrv01\wstemp\Script13605b40090\workspace\cells\PC-20120111BNSDNode01Cell\applications\btcbase.ear\btcbase.ear 中
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 btcbase。
+SECJ0400I: 已成功地用 appContextIDForSecurity 信息更新应用程序 btcbase。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 btcbase。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 btcbase。
+ADMA5113I: 已成功地创建激活规划。
+ADMA5011I: 清除应用程序 btcbase 的 temp 目录已完成。
+ADMA5013I: 应用程序 btcbase 安装成功。
+---------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 15:02:04 CST 2012
+---------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 15:10:33 CST 2012
+--------------------------------------------------------------------------------------------------------------------------
+WASX7357I: 根据请求，此脚本编制客户机未连接到任何服务器进程。以本地方式下，某些配置和应用程序操作可用。
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[btcbase]”。
+btcbase
+ADMA5017I: 卸载 btcbase 已启动。
+ADMA5104I: 已成功更新 WebSphere:cell=PC-20120111BNSDNode01Cell,node=PC-20120111BNSDNode01 的服务器索引条目。
+ADMA5102I: 已成功从配置库删除 btcbase 的配置数据。
+ADMA5011I: 清除应用程序 btcbase 的 temp 目录已完成。
+ADMA5106I: 已成功卸载应用程序 btcbase。
+---------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 15:10:57 CST 2012
+---------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 15:12:53 CST 2012
+--------------------------------------------------------------------------------------------------------------------------
+WASX7357I: 根据请求，此脚本编制客户机未连接到任何服务器进程。以本地方式下，某些配置和应用程序操作可用。
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[D:\\Program Files\\IBM\\WebSphere\\AppServer\\profiles\\AppSrv01\\installableApps\\btcbase.war, PC-20120111BNSDNode01Cell, PC-20120111BNSDNode01, server1, /btcbase, btcbase, {{"btcbase.war" "btcbase.war,WEB-INF/web.xml" default_host}}, {{.* .* AppDeploymentOption.Yes 1}}, btcbase.war, false]”。
+-contextroot "/btcbase" -server "server1" -nopreCompileJSPs -distributeApp -useMetaDataFromBinary -nodeployejb -appname "btcbase" -createMBeansForResources -reloadEnabled -reloadInterval 1 -deployws -validateinstall off -noprocessEmbeddedConfig  -filepermission .*.dll=755#.*.so=755#.*.a=755#.*.sl=755  -buildVersion Unknown  -noallowDispatchRemoteInclude  -noallowServiceRemoteInclude  -MapWebModToVH {{"btcbase.war" "btcbase.war,WEB-INF/web.xml" default_host}} -JSPReloadForWebMod {{.* .* AppDeploymentOption.Yes 1}}
+D:\Program Files\IBM\WebSphere\AppServer\profiles\AppSrv01\installableApps\btcbase.war
+PC-20120111BNSDNode01Cell
+PC-20120111BNSDNode01
+server1
+/btcbase
+btcbase
+{"btcbase.war" "btcbase.war,WEB-INF/web.xml" default_host}
+{.* .* AppDeploymentOption.Yes 1}
+btcbase.war
+false
+WASX7327I: was.policy 文件的内容：
+ //
+// Template policy file for enterprise application.
+// Extra permissions can be added if required by the enterprise application.
+//
+// NOTE: Syntax errors in the policy files will cause the enterprise application FAIL to start.
+//       Extreme care should be taken when editing these policy files. It is advised to use
+//       the policytool provided by the JDK for editing the policy files
+//       (WAS_HOME/java/jre/bin/policytool). 
+//
+
+grant codeBase "file:${application}" {
+};
+
+grant codeBase "file:${jars}" {
+};
+
+grant codeBase "file:${connectorComponent}" {
+};
+
+grant codeBase "file:${webComponent}" {
+};
+
+grant codeBase "file:${ejbComponent}" {
+};
+
+
+ADMA5016I: 安装 btcbase 已启动。
+ADMA5058I: 已使用部署目标的版本验证应用程序和模块版本。
+WSWS0041I: Web Service 部署任务成功完成。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 btcbase。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 btcbase。
+ADMA5081I: 在 WebSphere Application Server 存储库中配置了客户机模块的引导程序地址。
+ADMA5053I: 创建了已安装的任选软件包的库引用。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 btcbase。
+ADMA5001I: 应用程序二进制文件保存在 D:\Program Files\IBM\WebSphere\AppServer\profiles\AppSrv01\wstemp\Script13605c0bcff\workspace\cells\PC-20120111BNSDNode01Cell\applications\btcbase.ear\btcbase.ear 中
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 btcbase。
+SECJ0400I: 已成功地用 appContextIDForSecurity 信息更新应用程序 btcbase。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 btcbase。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 btcbase。
+ADMA5113I: 已成功地创建激活规划。
+ADMA5011I: 清除应用程序 btcbase 的 temp 目录已完成。
+ADMA5013I: 应用程序 btcbase 安装成功。
+---------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 15:16:06 CST 2012
+---------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 15:19:13 CST 2012
+--------------------------------------------------------------------------------------------------------------------------
+WASX7357I: 根据请求，此脚本编制客户机未连接到任何服务器进程。以本地方式下，某些配置和应用程序操作可用。
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[btcbase]”。
+btcbase
+ADMA5017I: 卸载 btcbase 已启动。
+ADMA5104I: 已成功更新 WebSphere:cell=PC-20120111BNSDNode01Cell,node=PC-20120111BNSDNode01 的服务器索引条目。
+ADMA5102I: 已成功从配置库删除 btcbase 的配置数据。
+ADMA5011I: 清除应用程序 btcbase 的 temp 目录已完成。
+ADMA5106I: 已成功卸载应用程序 btcbase。
+---------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 15:19:37 CST 2012
+---------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 15:21:32 CST 2012
+--------------------------------------------------------------------------------------------------------------------------
+WASX7357I: 根据请求，此脚本编制客户机未连接到任何服务器进程。以本地方式下，某些配置和应用程序操作可用。
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[D:\\Program Files\\IBM\\WebSphere\\AppServer\\profiles\\AppSrv01\\installableApps\\btcbase.war, PC-20120111BNSDNode01Cell, PC-20120111BNSDNode01, server1, /btcbase, btcbase, {{"btcbase.war" "btcbase.war,WEB-INF/web.xml" default_host}}, {{.* .* AppDeploymentOption.Yes 1}}, btcbase.war, false]”。
+-contextroot "/btcbase" -server "server1" -nopreCompileJSPs -distributeApp -useMetaDataFromBinary -nodeployejb -appname "btcbase" -createMBeansForResources -reloadEnabled -reloadInterval 1 -deployws -validateinstall off -noprocessEmbeddedConfig  -filepermission .*.dll=755#.*.so=755#.*.a=755#.*.sl=755  -buildVersion Unknown  -noallowDispatchRemoteInclude  -noallowServiceRemoteInclude  -MapWebModToVH {{"btcbase.war" "btcbase.war,WEB-INF/web.xml" default_host}} -JSPReloadForWebMod {{.* .* AppDeploymentOption.Yes 1}}
+D:\Program Files\IBM\WebSphere\AppServer\profiles\AppSrv01\installableApps\btcbase.war
+PC-20120111BNSDNode01Cell
+PC-20120111BNSDNode01
+server1
+/btcbase
+btcbase
+{"btcbase.war" "btcbase.war,WEB-INF/web.xml" default_host}
+{.* .* AppDeploymentOption.Yes 1}
+btcbase.war
+false
+WASX7327I: was.policy 文件的内容：
+ //
+// Template policy file for enterprise application.
+// Extra permissions can be added if required by the enterprise application.
+//
+// NOTE: Syntax errors in the policy files will cause the enterprise application FAIL to start.
+//       Extreme care should be taken when editing these policy files. It is advised to use
+//       the policytool provided by the JDK for editing the policy files
+//       (WAS_HOME/java/jre/bin/policytool). 
+//
+
+grant codeBase "file:${application}" {
+};
+
+grant codeBase "file:${jars}" {
+};
+
+grant codeBase "file:${connectorComponent}" {
+};
+
+grant codeBase "file:${webComponent}" {
+};
+
+grant codeBase "file:${ejbComponent}" {
+};
+
+
+ADMA5016I: 安装 btcbase 已启动。
+ADMA5058I: 已使用部署目标的版本验证应用程序和模块版本。
+WSWS0041I: Web Service 部署任务成功完成。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 btcbase。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 btcbase。
+ADMA5081I: 在 WebSphere Application Server 存储库中配置了客户机模块的引导程序地址。
+ADMA5053I: 创建了已安装的任选软件包的库引用。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 btcbase。
+ADMA5001I: 应用程序二进制文件保存在 D:\Program Files\IBM\WebSphere\AppServer\profiles\AppSrv01\wstemp\Script13605c8a5d0\workspace\cells\PC-20120111BNSDNode01Cell\applications\btcbase.ear\btcbase.ear 中
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 btcbase。
+SECJ0400I: 已成功地用 appContextIDForSecurity 信息更新应用程序 btcbase。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 btcbase。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 btcbase。
+ADMA5113I: 已成功地创建激活规划。
+ADMA5011I: 清除应用程序 btcbase 的 temp 目录已完成。
+ADMA5013I: 应用程序 btcbase 安装成功。
+---------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 15:25:08 CST 2012
+---------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 16:16:28 CST 2012
+--------------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 PC-20120111BNSDNode01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[server1, btcbase]”。
+server1
+btcbase
+---------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 16:18:45 CST 2012
+---------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 16:43:25 CST 2012
+--------------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 PC-20120111BNSDNode01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[server1, btcbase]”。
+server1
+btcbase
+---------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 16:45:36 CST 2012
+---------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 17:08:38 CST 2012
+--------------------------------------------------------------------------------------------------------------------------
+WASX7357I: 根据请求，此脚本编制客户机未连接到任何服务器进程。以本地方式下，某些配置和应用程序操作可用。
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[btcbase]”。
+btcbase
+ADMA5017I: 卸载 btcbase 已启动。
+ADMA5104I: 已成功更新 WebSphere:cell=PC-20120111BNSDNode01Cell,node=PC-20120111BNSDNode01 的服务器索引条目。
+ADMA5102I: 已成功从配置库删除 btcbase 的配置数据。
+ADMA5011I: 清除应用程序 btcbase 的 temp 目录已完成。
+ADMA5106I: 已成功卸载应用程序 btcbase。
+---------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: btcbase server: websphere8Server#AppSrv01 time: Mon Mar 12 17:09:04 CST 2012
+---------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 10:10:38 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7357I: 根据请求，此脚本编制客户机未连接到任何服务器进程。以本地方式下，某些配置和应用程序操作可用。
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[D:\\Program Files\\IBM\\WebSphere\\profiles\\AppSrv01\\installableApps\\btcbase.war, wcs-9b392ce18c6Node01Cell, wcs-9b392ce18c6Node01, server1, /btcbase, tms, {{"btcbase.war" "btcbase.war,WEB-INF/web.xml" default_host}}, {{.* .* AppDeploymentOption.Yes 1}}, btcbase.war, false]”。
+-contextroot "/btcbase" -server "server1" -nopreCompileJSPs -distributeApp -useMetaDataFromBinary -nodeployejb -appname "tms" -createMBeansForResources -reloadEnabled -reloadInterval 1 -deployws -validateinstall off -noprocessEmbeddedConfig  -filepermission .*.dll=755#.*.so=755#.*.a=755#.*.sl=755  -buildVersion Unknown  -noallowDispatchRemoteInclude  -noallowServiceRemoteInclude  -MapWebModToVH {{"btcbase.war" "btcbase.war,WEB-INF/web.xml" default_host}} -JSPReloadForWebMod {{.* .* AppDeploymentOption.Yes 1}}
+D:\Program Files\IBM\WebSphere\profiles\AppSrv01\installableApps\btcbase.war
+wcs-9b392ce18c6Node01Cell
+wcs-9b392ce18c6Node01
+server1
+/btcbase
+tms
+{"btcbase.war" "btcbase.war,WEB-INF/web.xml" default_host}
+{.* .* AppDeploymentOption.Yes 1}
+btcbase.war
+false
+WASX7327I: was.policy 文件的内容：
+ //
+// Template policy file for enterprise application.
+// Extra permissions can be added if required by the enterprise application.
+//
+// NOTE: Syntax errors in the policy files will cause the enterprise application FAIL to start.
+//       Extreme care should be taken when editing these policy files. It is advised to use
+//       the policytool provided by the JDK for editing the policy files
+//       (WAS_HOME/java/jre/bin/policytool). 
+//
+
+grant codeBase "file:${application}" {
+};
+
+grant codeBase "file:${jars}" {
+};
+
+grant codeBase "file:${connectorComponent}" {
+};
+
+grant codeBase "file:${webComponent}" {
+};
+
+grant codeBase "file:${ejbComponent}" {
+};
+
+
+ADMA5016I: 安装 tms 已启动。
+ADMA5058I: 已使用部署目标的版本验证应用程序和模块版本。
+WSWS0041I: Web Service 部署任务成功完成。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 tms。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 tms。
+ADMA5081I: 在 WebSphere Application Server 存储库中配置了客户机模块的引导程序地址。
+ADMA5053I: 创建了已安装的任选软件包的库引用。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 tms。
+ADMA5001I: 应用程序二进制文件保存在 D:\Program Files\IBM\WebSphere\profiles\AppSrv01\wstemp\Script13609d2a00a\workspace\cells\wcs-9b392ce18c6Node01Cell\applications\tms.ear\tms.ear 中
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 tms。
+SECJ0400I: 已成功地用 appContextIDForSecurity 信息更新应用程序 tms。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 tms。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 tms。
+ADMA5113I: 已成功地创建激活规划。
+ADMA5011I: 清除应用程序 tms 的 temp 目录已完成。
+ADMA5013I: 应用程序 tms 安装成功。
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 10:13:40 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 10:13:58 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7357I: 根据请求，此脚本编制客户机未连接到任何服务器进程。以本地方式下，某些配置和应用程序操作可用。
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[tms]”。
+tms
+ADMA5017I: 卸载 tms 已启动。
+ADMA5104I: 已成功更新 WebSphere:cell=wcs-9b392ce18c6Node01Cell,node=wcs-9b392ce18c6Node01 的服务器索引条目。
+ADMA5102I: 已成功从配置库删除 tms 的配置数据。
+ADMA5011I: 清除应用程序 tms 的 temp 目录已完成。
+ADMA5106I: 已成功卸载应用程序 tms。
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 10:14:15 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 10:14:54 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7357I: 根据请求，此脚本编制客户机未连接到任何服务器进程。以本地方式下，某些配置和应用程序操作可用。
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[D:\\Program Files\\IBM\\WebSphere\\profiles\\AppSrv01\\installableApps\\btcbase.war, wcs-9b392ce18c6Node01Cell, wcs-9b392ce18c6Node01, server1, /btcbase, tms, {{"btcbase.war" "btcbase.war,WEB-INF/web.xml" default_host}}, {{.* .* AppDeploymentOption.Yes 1}}, btcbase.war, false]”。
+-contextroot "/btcbase" -server "server1" -nopreCompileJSPs -distributeApp -useMetaDataFromBinary -nodeployejb -appname "tms" -createMBeansForResources -reloadEnabled -reloadInterval 1 -deployws -validateinstall off -noprocessEmbeddedConfig  -filepermission .*.dll=755#.*.so=755#.*.a=755#.*.sl=755  -buildVersion Unknown  -noallowDispatchRemoteInclude  -noallowServiceRemoteInclude  -MapWebModToVH {{"btcbase.war" "btcbase.war,WEB-INF/web.xml" default_host}} -JSPReloadForWebMod {{.* .* AppDeploymentOption.Yes 1}}
+D:\Program Files\IBM\WebSphere\profiles\AppSrv01\installableApps\btcbase.war
+wcs-9b392ce18c6Node01Cell
+wcs-9b392ce18c6Node01
+server1
+/btcbase
+tms
+{"btcbase.war" "btcbase.war,WEB-INF/web.xml" default_host}
+{.* .* AppDeploymentOption.Yes 1}
+btcbase.war
+false
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 10:15:31 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 10:17:23 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7357I: 根据请求，此脚本编制客户机未连接到任何服务器进程。以本地方式下，某些配置和应用程序操作可用。
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[tms]”。
+tms
+WASX7017E: 运行文件“D:\Program Files\MyEclipse Blue Edition\Common\plugins\com.genuitec.eclipse.blue.websphere8_9.0.0.me201110171954\uninstallApplication.jacl”时接收到异常；异常信息：com.ibm.ws.scripting.ScriptingException: WASX7280E: 不存在名为“tms”的应用程序。
+
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 10:17:35 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 10:17:48 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7357I: 根据请求，此脚本编制客户机未连接到任何服务器进程。以本地方式下，某些配置和应用程序操作可用。
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[D:\\Program Files\\IBM\\WebSphere\\profiles\\AppSrv01\\installableApps\\btcbase.war, wcs-9b392ce18c6Node01Cell, wcs-9b392ce18c6Node01, server1, /btcbase, tms, {{"btcbase.war" "btcbase.war,WEB-INF/web.xml" default_host}}, {{.* .* AppDeploymentOption.Yes 1}}, btcbase.war, false]”。
+-contextroot "/btcbase" -server "server1" -nopreCompileJSPs -distributeApp -useMetaDataFromBinary -nodeployejb -appname "tms" -createMBeansForResources -reloadEnabled -reloadInterval 1 -deployws -validateinstall off -noprocessEmbeddedConfig  -filepermission .*.dll=755#.*.so=755#.*.a=755#.*.sl=755  -buildVersion Unknown  -noallowDispatchRemoteInclude  -noallowServiceRemoteInclude  -MapWebModToVH {{"btcbase.war" "btcbase.war,WEB-INF/web.xml" default_host}} -JSPReloadForWebMod {{.* .* AppDeploymentOption.Yes 1}}
+D:\Program Files\IBM\WebSphere\profiles\AppSrv01\installableApps\btcbase.war
+wcs-9b392ce18c6Node01Cell
+wcs-9b392ce18c6Node01
+server1
+/btcbase
+tms
+{"btcbase.war" "btcbase.war,WEB-INF/web.xml" default_host}
+{.* .* AppDeploymentOption.Yes 1}
+btcbase.war
+false
+WASX7327I: was.policy 文件的内容：
+ //
+// Template policy file for enterprise application.
+// Extra permissions can be added if required by the enterprise application.
+//
+// NOTE: Syntax errors in the policy files will cause the enterprise application FAIL to start.
+//       Extreme care should be taken when editing these policy files. It is advised to use
+//       the policytool provided by the JDK for editing the policy files
+//       (WAS_HOME/java/jre/bin/policytool). 
+//
+
+grant codeBase "file:${application}" {
+};
+
+grant codeBase "file:${jars}" {
+};
+
+grant codeBase "file:${connectorComponent}" {
+};
+
+grant codeBase "file:${webComponent}" {
+};
+
+grant codeBase "file:${ejbComponent}" {
+};
+
+
+ADMA5016I: 安装 tms 已启动。
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 10:18:43 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 10:18:49 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7357I: 根据请求，此脚本编制客户机未连接到任何服务器进程。以本地方式下，某些配置和应用程序操作可用。
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[tms]”。
+tms
+WASX7017E: 运行文件“D:\Program Files\MyEclipse Blue Edition\Common\plugins\com.genuitec.eclipse.blue.websphere8_9.0.0.me201110171954\uninstallApplication.jacl”时接收到异常；异常信息：com.ibm.ws.scripting.ScriptingException: WASX7280E: 不存在名为“tms”的应用程序。
+
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 10:18:56 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 11:16:25 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7357I: 根据请求，此脚本编制客户机未连接到任何服务器进程。以本地方式下，某些配置和应用程序操作可用。
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[D:\\Program Files\\IBM\\WebSphere\\profiles\\AppSrv01\\installableApps\\tms.war, wcs-9b392ce18c6Node01Cell, wcs-9b392ce18c6Node01, server1, /tms, tms, {{"tms.war" "tms.war,WEB-INF/web.xml" default_host}}, {{.* .* AppDeploymentOption.Yes 1}}, tms.war, false]”。
+-contextroot "/tms" -server "server1" -nopreCompileJSPs -distributeApp -useMetaDataFromBinary -nodeployejb -appname "tms" -createMBeansForResources -reloadEnabled -reloadInterval 1 -deployws -validateinstall off -noprocessEmbeddedConfig  -filepermission .*.dll=755#.*.so=755#.*.a=755#.*.sl=755  -buildVersion Unknown  -noallowDispatchRemoteInclude  -noallowServiceRemoteInclude  -MapWebModToVH {{"tms.war" "tms.war,WEB-INF/web.xml" default_host}} -JSPReloadForWebMod {{.* .* AppDeploymentOption.Yes 1}}
+D:\Program Files\IBM\WebSphere\profiles\AppSrv01\installableApps\tms.war
+wcs-9b392ce18c6Node01Cell
+wcs-9b392ce18c6Node01
+server1
+/tms
+tms
+{"tms.war" "tms.war,WEB-INF/web.xml" default_host}
+{.* .* AppDeploymentOption.Yes 1}
+tms.war
+false
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 11:20:36 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 11:20:40 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7357I: 根据请求，此脚本编制客户机未连接到任何服务器进程。以本地方式下，某些配置和应用程序操作可用。
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[tms]”。
+tms
+WASX7017E: 运行文件“D:\Program Files\MyEclipse Blue Edition\Common\plugins\com.genuitec.eclipse.blue.websphere8_9.0.0.me201110171954\uninstallApplication.jacl”时接收到异常；异常信息：com.ibm.ws.scripting.ScriptingException: WASX7280E: 不存在名为“tms”的应用程序。
+
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 11:20:47 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 11:29:41 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7357I: 根据请求，此脚本编制客户机未连接到任何服务器进程。以本地方式下，某些配置和应用程序操作可用。
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[D:\\Program Files\\IBM\\WebSphere\\profiles\\AppSrv01\\installableApps\\tms.war, wcs-9b392ce18c6Node01Cell, wcs-9b392ce18c6Node01, server1, /tms, tms, {{"tms.war" "tms.war,WEB-INF/web.xml" default_host}}, {{.* .* AppDeploymentOption.Yes 1}}, tms.war, false]”。
+-contextroot "/tms" -server "server1" -nopreCompileJSPs -distributeApp -useMetaDataFromBinary -nodeployejb -appname "tms" -createMBeansForResources -reloadEnabled -reloadInterval 1 -deployws -validateinstall off -noprocessEmbeddedConfig  -filepermission .*.dll=755#.*.so=755#.*.a=755#.*.sl=755  -buildVersion Unknown  -noallowDispatchRemoteInclude  -noallowServiceRemoteInclude  -MapWebModToVH {{"tms.war" "tms.war,WEB-INF/web.xml" default_host}} -JSPReloadForWebMod {{.* .* AppDeploymentOption.Yes 1}}
+D:\Program Files\IBM\WebSphere\profiles\AppSrv01\installableApps\tms.war
+wcs-9b392ce18c6Node01Cell
+wcs-9b392ce18c6Node01
+server1
+/tms
+tms
+{"tms.war" "tms.war,WEB-INF/web.xml" default_host}
+{.* .* AppDeploymentOption.Yes 1}
+tms.war
+false
+JVMDUMP006I 正在处理转储事件“systhrow”，详细信息“java/lang/OutOfMemoryError”- 请稍候。
+JVMDUMP032I JVM 使用“D:\Program Files\MyEclipse Blue Edition\MyEclipse Blue Edition 10\heapdump.20120313.113038.2504.0001.phd”来请求 Heap 转储以响应事件
+JVMDUMP010I Heap 转储已写入 D:\Program Files\MyEclipse Blue Edition\MyEclipse Blue Edition 10\heapdump.20120313.113038.2504.0001.phd
+JVMDUMP032I JVM 使用“D:\Program Files\MyEclipse Blue Edition\MyEclipse Blue Edition 10\javacore.20120313.113038.2504.0002.txt”来请求 Java 转储以响应事件
+JVMDUMP010I Java 转储已写入 D:\Program Files\MyEclipse Blue Edition\MyEclipse Blue Edition 10\javacore.20120313.113038.2504.0002.txt
+JVMDUMP032I JVM 使用“D:\Program Files\MyEclipse Blue Edition\MyEclipse Blue Edition 10\Snap.20120313.113038.2504.0003.trc”来请求 Snap 转储以响应事件
+JVMDUMP010I Snap 转储已写入 D:\Program Files\MyEclipse Blue Edition\MyEclipse Blue Edition 10\Snap.20120313.113038.2504.0003.trc
+JVMDUMP013I 已处理转储事件“systhrow”，详细信息：“java/lang/OutOfMemoryError”。
+WASX7017E: 运行文件“D:\Program Files\MyEclipse Blue Edition\Common\plugins\com.genuitec.eclipse.blue.websphere8_9.0.0.me201110171954\installWebModule.jacl”时接收到异常；异常信息：com.ibm.websphere.management.application.client.AppDeploymentException: com.ibm.websphere.management.application.client.AppDeploymentException: java.lang.OutOfMemoryError [Root exception is java.lang.OutOfMemoryError]
+java.lang.OutOfMemoryError: java.lang.OutOfMemoryError
+
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 11:30:47 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 11:31:11 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7357I: 根据请求，此脚本编制客户机未连接到任何服务器进程。以本地方式下，某些配置和应用程序操作可用。
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[tms]”。
+tms
+WASX7017E: 运行文件“D:\Program Files\MyEclipse Blue Edition\Common\plugins\com.genuitec.eclipse.blue.websphere8_9.0.0.me201110171954\uninstallApplication.jacl”时接收到异常；异常信息：com.ibm.ws.scripting.ScriptingException: WASX7280E: 不存在名为“tms”的应用程序。
+
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 11:31:18 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 11:57:33 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7357I: 根据请求，此脚本编制客户机未连接到任何服务器进程。以本地方式下，某些配置和应用程序操作可用。
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 11:57:41 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 11:57:45 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7357I: 根据请求，此脚本编制客户机未连接到任何服务器进程。以本地方式下，某些配置和应用程序操作可用。
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[tms]”。
+tms
+WASX7017E: 运行文件“D:\Program Files\MyEclipse Blue Edition\Common\plugins\com.genuitec.eclipse.blue.websphere8_9.0.0.me201110171954\uninstallApplication.jacl”时接收到异常；异常信息：com.ibm.ws.scripting.ScriptingException: WASX7280E: 不存在名为“tms”的应用程序。
+
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 11:57:52 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 12:13:12 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7357I: 根据请求，此脚本编制客户机未连接到任何服务器进程。以本地方式下，某些配置和应用程序操作可用。
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[D:\\Program Files\\IBM\\WebSphere\\profiles\\AppSrv01\\installableApps\\tms.war, wcs-9b392ce18c6Node01Cell, wcs-9b392ce18c6Node01, server1, /tms, tms, {{"tms.war" "tms.war,WEB-INF/web.xml" default_host}}, {{.* .* AppDeploymentOption.Yes 1}}, tms.war, false]”。
+-contextroot "/tms" -server "server1" -nopreCompileJSPs -distributeApp -useMetaDataFromBinary -nodeployejb -appname "tms" -createMBeansForResources -reloadEnabled -reloadInterval 1 -deployws -validateinstall off -noprocessEmbeddedConfig  -filepermission .*.dll=755#.*.so=755#.*.a=755#.*.sl=755  -buildVersion Unknown  -noallowDispatchRemoteInclude  -noallowServiceRemoteInclude  -MapWebModToVH {{"tms.war" "tms.war,WEB-INF/web.xml" default_host}} -JSPReloadForWebMod {{.* .* AppDeploymentOption.Yes 1}}
+D:\Program Files\IBM\WebSphere\profiles\AppSrv01\installableApps\tms.war
+wcs-9b392ce18c6Node01Cell
+wcs-9b392ce18c6Node01
+server1
+/tms
+tms
+{"tms.war" "tms.war,WEB-INF/web.xml" default_host}
+{.* .* AppDeploymentOption.Yes 1}
+tms.war
+false
+WASX7327I: was.policy 文件的内容：
+ //
+// Template policy file for enterprise application.
+// Extra permissions can be added if required by the enterprise application.
+//
+// NOTE: Syntax errors in the policy files will cause the enterprise application FAIL to start.
+//       Extreme care should be taken when editing these policy files. It is advised to use
+//       the policytool provided by the JDK for editing the policy files
+//       (WAS_HOME/java/jre/bin/policytool). 
+//
+
+grant codeBase "file:${application}" {
+};
+
+grant codeBase "file:${jars}" {
+};
+
+grant codeBase "file:${connectorComponent}" {
+};
+
+grant codeBase "file:${webComponent}" {
+};
+
+grant codeBase "file:${ejbComponent}" {
+};
+
+
+ADMA5016I: 安装 tms 已启动。
+ADMA5058I: 已使用部署目标的版本验证应用程序和模块版本。
+WSWS0041I: Web Service 部署任务成功完成。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 tms。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 tms。
+ADMA5081I: 在 WebSphere Application Server 存储库中配置了客户机模块的引导程序地址。
+ADMA5053I: 创建了已安装的任选软件包的库引用。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 tms。
+ADMA5001I: 应用程序二进制文件保存在 D:\Program Files\IBM\WebSphere\profiles\AppSrv01\wstemp\Script1360a428e56\workspace\cells\wcs-9b392ce18c6Node01Cell\applications\tms.ear\tms.ear 中
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 tms。
+SECJ0400I: 已成功地用 appContextIDForSecurity 信息更新应用程序 tms。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 tms。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 tms。
+ADMA5113I: 已成功地创建激活规划。
+ADMA5011I: 清除应用程序 tms 的 temp 目录已完成。
+ADMA5013I: 应用程序 tms 安装成功。
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 12:15:48 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 12:40:41 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 wcs-9b392ce18c6Node01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[server1, tms]”。
+server1
+tms
+WASX7017E: 运行文件“D:\Program Files\MyEclipse Blue Edition\Common\plugins\com.genuitec.eclipse.blue.websphere8_9.0.0.me201110171954\restartApplication.jacl”时接收到异常；异常信息：javax.management.MBeanException
+com.ibm.ws.exception.RuntimeWarning
+com.ibm.ws.webcontainer.exception.WebAppNotLoadedException: com.ibm.ws.webcontainer.exception.WebAppNotLoadedException: Failed to load webapp: Failed to load webapp: Passivation scoped defined bean must be passivation capable, but bean : 1918017989,Name:fileNetTestBean,WebBeans Type:MANAGED,API Types:[com.wcs.fntest.view.FileNetTestBean,java.lang.Object],Qualifiers:[javax.enterprise.inject.Any,javax.enterprise.inject.Default,javax.inject.Named] is not passivation capable
+
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 12:41:19 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 12:46:13 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 wcs-9b392ce18c6Node01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[server1, tms]”。
+server1
+tms
+WASX7017E: 运行文件“D:\Program Files\MyEclipse Blue Edition\Common\plugins\com.genuitec.eclipse.blue.websphere8_9.0.0.me201110171954\restartApplication.jacl”时接收到异常；异常信息：javax.management.MBeanException
+com.ibm.ws.exception.RuntimeWarning: Application tms not started
+
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 12:46:25 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 13:11:18 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 wcs-9b392ce18c6Node01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[server1, tms]”。
+server1
+tms
+WASX7017E: 运行文件“D:\Program Files\MyEclipse Blue Edition\Common\plugins\com.genuitec.eclipse.blue.websphere8_9.0.0.me201110171954\restartApplication.jacl”时接收到异常；异常信息：javax.management.MBeanException
+com.ibm.ws.exception.RuntimeWarning: Application tms not started
+
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 13:11:31 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 13:45:44 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 wcs-9b392ce18c6Node01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[server1, tms]”。
+server1
+tms
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 13:46:42 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 14:00:33 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 wcs-9b392ce18c6Node01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[tms]”。
+tms
+ADMA5017I: 卸载 tms 已启动。
+ADMA5104I: 已成功更新 WebSphere:cell=wcs-9b392ce18c6Node01Cell,node=wcs-9b392ce18c6Node01 的服务器索引条目。
+ADMA5102I: 已成功从配置库删除 tms 的配置数据。
+ADMA5011I: 清除应用程序 tms 的 temp 目录已完成。
+ADMA5106I: 已成功卸载应用程序 tms。
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 14:01:02 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 14:50:17 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 wcs-9b392ce18c6Node01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[D:\\Program Files\\IBM\\WebSphere\\profiles\\AppSrv01\\installableApps\\tms.war, wcs-9b392ce18c6Node01Cell, wcs-9b392ce18c6Node01, server1, /tms, tms, {{"tms.war" "tms.war,WEB-INF/web.xml" default_host}}, {{.* .* AppDeploymentOption.Yes 1}}, tms.war, true]”。
+-contextroot "/tms" -server "server1" -nopreCompileJSPs -distributeApp -useMetaDataFromBinary -nodeployejb -appname "tms" -createMBeansForResources -reloadEnabled -reloadInterval 1 -deployws -validateinstall off -noprocessEmbeddedConfig  -filepermission .*.dll=755#.*.so=755#.*.a=755#.*.sl=755  -buildVersion Unknown  -noallowDispatchRemoteInclude  -noallowServiceRemoteInclude  -MapWebModToVH {{"tms.war" "tms.war,WEB-INF/web.xml" default_host}} -JSPReloadForWebMod {{.* .* AppDeploymentOption.Yes 1}}
+D:\Program Files\IBM\WebSphere\profiles\AppSrv01\installableApps\tms.war
+wcs-9b392ce18c6Node01Cell
+wcs-9b392ce18c6Node01
+server1
+/tms
+tms
+{"tms.war" "tms.war,WEB-INF/web.xml" default_host}
+{.* .* AppDeploymentOption.Yes 1}
+tms.war
+true
+WASX7017E: 运行文件“D:\Program Files\MyEclipse Blue Edition\Common\plugins\com.genuitec.eclipse.blue.websphere8_9.0.0.me201110171954\installWebModule.jacl”时接收到异常；异常信息：com.ibm.ws.scripting.ScriptingException: WASX7279E: 已存在名为“tms”的应用程序。请选择另一个名称。
+
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 14:50:54 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 14:52:11 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 wcs-9b392ce18c6Node01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[server1, tms]”。
+server1
+tms
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 14:53:10 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 16:33:34 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 wcs-9b392ce18c6Node01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[server1, tms]”。
+server1
+tms
+WASX7017E: 运行文件“D:\Program Files\MyEclipse Blue Edition\Common\plugins\com.genuitec.eclipse.blue.websphere8_9.0.0.me201110171954\restartApplication.jacl”时接收到异常；异常信息：javax.management.MBeanException
+com.ibm.ws.exception.RuntimeWarning
+javax.ejb.NoSuchEJBException: javax.ejb.NoSuchEJBException: An error occurred during initialization of singleton session bean tms#tms.war#CommonService, resulting in the discarding of the singleton instance.; nested exception is: javax.ejb.EJBTransactionRolledbackException: ; nested exception is: javax.transaction.HeuristicMixedException
+
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 16:35:30 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 16:46:39 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 wcs-9b392ce18c6Node01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[tms]”。
+tms
+ADMA5017I: 卸载 tms 已启动。
+ADMA5104I: 已成功更新 WebSphere:cell=wcs-9b392ce18c6Node01Cell,node=wcs-9b392ce18c6Node01 的服务器索引条目。
+ADMA5102I: 已成功从配置库删除 tms 的配置数据。
+ADMA5011I: 清除应用程序 tms 的 temp 目录已完成。
+ADMA5106I: 已成功卸载应用程序 tms。
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 16:47:09 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 17:04:48 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7357I: 根据请求，此脚本编制客户机未连接到任何服务器进程。以本地方式下，某些配置和应用程序操作可用。
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[D:\\Program Files\\IBM\\WebSphere\\profiles\\AppSrv01\\installableApps\\tms.war, wcs-9b392ce18c6Node01Cell, wcs-9b392ce18c6Node01, server1, /tms, tms, {{"tms.war" "tms.war,WEB-INF/web.xml" default_host}}, {{.* .* AppDeploymentOption.Yes 1}}, tms.war, false]”。
+-contextroot "/tms" -server "server1" -nopreCompileJSPs -distributeApp -useMetaDataFromBinary -nodeployejb -appname "tms" -createMBeansForResources -reloadEnabled -reloadInterval 1 -deployws -validateinstall off -noprocessEmbeddedConfig  -filepermission .*.dll=755#.*.so=755#.*.a=755#.*.sl=755  -buildVersion Unknown  -noallowDispatchRemoteInclude  -noallowServiceRemoteInclude  -MapWebModToVH {{"tms.war" "tms.war,WEB-INF/web.xml" default_host}} -JSPReloadForWebMod {{.* .* AppDeploymentOption.Yes 1}}
+D:\Program Files\IBM\WebSphere\profiles\AppSrv01\installableApps\tms.war
+wcs-9b392ce18c6Node01Cell
+wcs-9b392ce18c6Node01
+server1
+/tms
+tms
+{"tms.war" "tms.war,WEB-INF/web.xml" default_host}
+{.* .* AppDeploymentOption.Yes 1}
+tms.war
+false
+JVMDUMP006I 正在处理转储事件“systhrow”，详细信息“java/lang/OutOfMemoryError”- 请稍候。
+JVMDUMP032I JVM 使用“D:\Program Files\MyEclipse Blue Edition\MyEclipse Blue Edition 10\heapdump.20120313.170551.6080.0001.phd”来请求 Heap 转储以响应事件
+JVMDUMP010I Heap 转储已写入 D:\Program Files\MyEclipse Blue Edition\MyEclipse Blue Edition 10\heapdump.20120313.170551.6080.0001.phd
+JVMDUMP032I JVM 使用“D:\Program Files\MyEclipse Blue Edition\MyEclipse Blue Edition 10\javacore.20120313.170551.6080.0002.txt”来请求 Java 转储以响应事件
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 17:05:55 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 17:06:17 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7357I: 根据请求，此脚本编制客户机未连接到任何服务器进程。以本地方式下，某些配置和应用程序操作可用。
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[tms]”。
+tms
+WASX7017E: 运行文件“D:\Program Files\MyEclipse Blue Edition\Common\plugins\com.genuitec.eclipse.blue.websphere8_9.0.0.me201110171954\uninstallApplication.jacl”时接收到异常；异常信息：com.ibm.ws.scripting.ScriptingException: WASX7280E: 不存在名为“tms”的应用程序。
+
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 17:06:24 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 17:06:49 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7357I: 根据请求，此脚本编制客户机未连接到任何服务器进程。以本地方式下，某些配置和应用程序操作可用。
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[D:\\Program Files\\IBM\\WebSphere\\profiles\\AppSrv01\\installableApps\\tms.war, wcs-9b392ce18c6Node01Cell, wcs-9b392ce18c6Node01, server1, /tms, tms, {{"tms.war" "tms.war,WEB-INF/web.xml" default_host}}, {{.* .* AppDeploymentOption.Yes 1}}, tms.war, false]”。
+-contextroot "/tms" -server "server1" -nopreCompileJSPs -distributeApp -useMetaDataFromBinary -nodeployejb -appname "tms" -createMBeansForResources -reloadEnabled -reloadInterval 1 -deployws -validateinstall off -noprocessEmbeddedConfig  -filepermission .*.dll=755#.*.so=755#.*.a=755#.*.sl=755  -buildVersion Unknown  -noallowDispatchRemoteInclude  -noallowServiceRemoteInclude  -MapWebModToVH {{"tms.war" "tms.war,WEB-INF/web.xml" default_host}} -JSPReloadForWebMod {{.* .* AppDeploymentOption.Yes 1}}
+D:\Program Files\IBM\WebSphere\profiles\AppSrv01\installableApps\tms.war
+wcs-9b392ce18c6Node01Cell
+wcs-9b392ce18c6Node01
+server1
+/tms
+tms
+{"tms.war" "tms.war,WEB-INF/web.xml" default_host}
+{.* .* AppDeploymentOption.Yes 1}
+tms.war
+false
+JVMDUMP006I 正在处理转储事件“systhrow”，详细信息“java/lang/OutOfMemoryError”- 请稍候。
+JVMDUMP032I JVM 使用“D:\Program Files\MyEclipse Blue Edition\MyEclipse Blue Edition 10\heapdump.20120313.170747.5856.0001.phd”来请求 Heap 转储以响应事件
+JVMDUMP010I Heap 转储已写入 D:\Program Files\MyEclipse Blue Edition\MyEclipse Blue Edition 10\heapdump.20120313.170747.5856.0001.phd
+JVMDUMP032I JVM 使用“D:\Program Files\MyEclipse Blue Edition\MyEclipse Blue Edition 10\javacore.20120313.170747.5856.0002.txt”来请求 Java 转储以响应事件
+JVMDUMP010I Java 转储已写入 D:\Program Files\MyEclipse Blue Edition\MyEclipse Blue Edition 10\javacore.20120313.170747.5856.0002.txt
+JVMDUMP032I JVM 使用“D:\Program Files\MyEclipse Blue Edition\MyEclipse Blue Edition 10\Snap.20120313.170747.5856.0003.trc”来请求 Snap 转储以响应事件
+JVMDUMP010I Snap 转储已写入 D:\Program Files\MyEclipse Blue Edition\MyEclipse Blue Edition 10\Snap.20120313.170747.5856.0003.trc
+JVMDUMP013I 已处理转储事件“systhrow”，详细信息：“java/lang/OutOfMemoryError”。
+WASX7017E: 运行文件“D:\Program Files\MyEclipse Blue Edition\Common\plugins\com.genuitec.eclipse.blue.websphere8_9.0.0.me201110171954\installWebModule.jacl”时接收到异常；异常信息：com.ibm.websphere.management.application.client.AppDeploymentException: com.ibm.websphere.management.application.client.AppDeploymentException: java.lang.OutOfMemoryError [Root exception is java.lang.OutOfMemoryError]
+java.lang.OutOfMemoryError: java.lang.OutOfMemoryError
+
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 17:08:03 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 17:08:30 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7357I: 根据请求，此脚本编制客户机未连接到任何服务器进程。以本地方式下，某些配置和应用程序操作可用。
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[tms]”。
+tms
+WASX7017E: 运行文件“D:\Program Files\MyEclipse Blue Edition\Common\plugins\com.genuitec.eclipse.blue.websphere8_9.0.0.me201110171954\uninstallApplication.jacl”时接收到异常；异常信息：com.ibm.ws.scripting.ScriptingException: WASX7280E: 不存在名为“tms”的应用程序。
+
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 17:08:37 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 17:19:42 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7023E: 创建与主机“localhost”的“SOAP”连接时发生错误；异常信息：com.ibm.websphere.management.exception.ConnectorNotAvailableException: [SOAPException: faultCode=SOAP-ENV:Client; msg=Connection reset; targetException=java.net.SocketException: Connection reset]
+WASX7213I: 此脚本编制客户机未连接到服务器进程；请参阅日志文件 D:\Program Files\IBM\WebSphere\profiles\AppSrv01\logs\wsadmin.traceout 以了解其他信息。
+WASX8011W: AdminTask 对象不可用。
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[D:\\Program Files\\IBM\\WebSphere\\profiles\\AppSrv01\\installableApps\\tms.war, wcs-9b392ce18c6Node01Cell, wcs-9b392ce18c6Node01, server1, /tms, tms, {{"tms.war" "tms.war,WEB-INF/web.xml" default_host}}, {{.* .* AppDeploymentOption.Yes 1}}, tms.war, true]”。
+-contextroot "/tms" -server "server1" -nopreCompileJSPs -distributeApp -useMetaDataFromBinary -nodeployejb -appname "tms" -createMBeansForResources -reloadEnabled -reloadInterval 1 -deployws -validateinstall off -noprocessEmbeddedConfig  -filepermission .*.dll=755#.*.so=755#.*.a=755#.*.sl=755  -buildVersion Unknown  -noallowDispatchRemoteInclude  -noallowServiceRemoteInclude  -MapWebModToVH {{"tms.war" "tms.war,WEB-INF/web.xml" default_host}} -JSPReloadForWebMod {{.* .* AppDeploymentOption.Yes 1}}
+D:\Program Files\IBM\WebSphere\profiles\AppSrv01\installableApps\tms.war
+wcs-9b392ce18c6Node01Cell
+wcs-9b392ce18c6Node01
+server1
+/tms
+tms
+{"tms.war" "tms.war,WEB-INF/web.xml" default_host}
+{.* .* AppDeploymentOption.Yes 1}
+tms.war
+true
+WASX7017E: 运行文件“D:\Program Files\MyEclipse Blue Edition\Common\plugins\com.genuitec.eclipse.blue.websphere8_9.0.0.me201110171954\installWebModule.jacl”时接收到异常；异常信息：com.ibm.ws.scripting.ScriptingException: WASX7206W: 应用程序管理服务未处于运行状态。应用程序管理命令将不会运行。
+
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 17:20:47 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 17:21:03 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7023E: 创建与主机“localhost”的“SOAP”连接时发生错误；异常信息：com.ibm.websphere.management.exception.ConnectorNotAvailableException: [SOAPException: faultCode=SOAP-ENV:Protocol; msg=; targetException=java.net.MalformedURLException]
+WASX7213I: 此脚本编制客户机未连接到服务器进程；请参阅日志文件 D:\Program Files\IBM\WebSphere\profiles\AppSrv01\logs\wsadmin.traceout 以了解其他信息。
+WASX8011W: AdminTask 对象不可用。
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[server1, tms]”。
+server1
+tms
+WASX7017E: 运行文件“D:\Program Files\MyEclipse Blue Edition\Common\plugins\com.genuitec.eclipse.blue.websphere8_9.0.0.me201110171954\restartApplication.jacl”时接收到异常；异常信息：com.ibm.ws.scripting.ScriptingException: AdminControl service not available
+
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 17:21:14 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 17:47:37 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 wcs-9b392ce18c6Node01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[server1, tms]”。
+server1
+tms
+WASX7017E: 运行文件“D:\Program Files\MyEclipse Blue Edition\Common\plugins\com.genuitec.eclipse.blue.websphere8_9.0.0.me201110171954\restartApplication.jacl”时接收到异常；异常信息：javax.management.MBeanException
+com.ibm.ws.exception.RuntimeWarning
+javax.ejb.NoSuchEJBException: javax.ejb.NoSuchEJBException: An error occurred during initialization of singleton session bean tms#tms.war#CommonService, resulting in the discarding of the singleton instance.; nested exception is: javax.ejb.EJBTransactionRolledbackException: ; nested exception is: javax.transaction.HeuristicMixedException
+
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Tue Mar 13 17:48:38 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Wed Mar 14 14:35:57 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7357I: 根据请求，此脚本编制客户机未连接到任何服务器进程。以本地方式下，某些配置和应用程序操作可用。
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[tms]”。
+tms
+ADMA5017I: 卸载 tms 已启动。
+ADMA5104I: 已成功更新 WebSphere:cell=wcs-9b392ce18c6Node01Cell,node=wcs-9b392ce18c6Node01 的服务器索引条目。
+ADMA5102I: 已成功从配置库删除 tms 的配置数据。
+ADMA5011I: 清除应用程序 tms 的 temp 目录已完成。
+ADMA5106I: 已成功卸载应用程序 tms。
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Wed Mar 14 14:36:26 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Tue Mar 20 15:02:33 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7357I: 根据请求，此脚本编制客户机未连接到任何服务器进程。以本地方式下，某些配置和应用程序操作可用。
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[D:\\Program Files\\IBM\\WebSphere\\profiles\\AppSrv01\\installableApps\\tms.war, wcs-9b392ce18c6Node01Cell, wcs-9b392ce18c6Node01, server1, /tms, tms, {{"tms.war" "tms.war,WEB-INF/web.xml" default_host}}, {{.* .* AppDeploymentOption.Yes 1}}, tms.war, false]”。
+-contextroot "/tms" -server "server1" -nopreCompileJSPs -distributeApp -useMetaDataFromBinary -nodeployejb -appname "tms" -createMBeansForResources -reloadEnabled -reloadInterval 1 -deployws -validateinstall off -noprocessEmbeddedConfig  -filepermission .*.dll=755#.*.so=755#.*.a=755#.*.sl=755  -buildVersion Unknown  -noallowDispatchRemoteInclude  -noallowServiceRemoteInclude  -MapWebModToVH {{"tms.war" "tms.war,WEB-INF/web.xml" default_host}} -JSPReloadForWebMod {{.* .* AppDeploymentOption.Yes 1}}
+D:\Program Files\IBM\WebSphere\profiles\AppSrv01\installableApps\tms.war
+wcs-9b392ce18c6Node01Cell
+wcs-9b392ce18c6Node01
+server1
+/tms
+tms
+{"tms.war" "tms.war,WEB-INF/web.xml" default_host}
+{.* .* AppDeploymentOption.Yes 1}
+tms.war
+false
+WASX7327I: was.policy 文件的内容：
+ //
+// Template policy file for enterprise application.
+// Extra permissions can be added if required by the enterprise application.
+//
+// NOTE: Syntax errors in the policy files will cause the enterprise application FAIL to start.
+//       Extreme care should be taken when editing these policy files. It is advised to use
+//       the policytool provided by the JDK for editing the policy files
+//       (WAS_HOME/java/jre/bin/policytool). 
+//
+
+grant codeBase "file:${application}" {
+};
+
+grant codeBase "file:${jars}" {
+};
+
+grant codeBase "file:${connectorComponent}" {
+};
+
+grant codeBase "file:${webComponent}" {
+};
+
+grant codeBase "file:${ejbComponent}" {
+};
+
+
+ADMA5016I: 安装 tms 已启动。
+ADMA5058I: 已使用部署目标的版本验证应用程序和模块版本。
+WSWS0041I: Web Service 部署任务成功完成。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 tms。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 tms。
+ADMA5081I: 在 WebSphere Application Server 存储库中配置了客户机模块的引导程序地址。
+ADMA5053I: 创建了已安装的任选软件包的库引用。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 tms。
+ADMA5001I: 应用程序二进制文件保存在 D:\Program Files\IBM\WebSphere\profiles\AppSrv01\wstemp\Script1362eea5875\workspace\cells\wcs-9b392ce18c6Node01Cell\applications\tms.ear\tms.ear 中
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 tms。
+SECJ0400I: 已成功地用 appContextIDForSecurity 信息更新应用程序 tms。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 tms。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 tms。
+ADMA5113I: 已成功地创建激活规划。
+ADMA5011I: 清除应用程序 tms 的 temp 目录已完成。
+ADMA5013I: 应用程序 tms 安装成功。
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Tue Mar 20 15:06:18 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Tue Mar 20 15:18:40 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 wcs-9b392ce18c6Node01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[server1, tms]”。
+server1
+tms
+WASX7017E: 运行文件“D:\Program Files\MyEclipse Blue Edition\Common\plugins\com.genuitec.eclipse.blue.websphere8_9.0.0.me201110171954\restartApplication.jacl”时接收到异常；异常信息：javax.management.MBeanException
+com.ibm.ws.exception.RuntimeWarning: Application tms not started
+
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Tue Mar 20 15:19:03 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Tue Mar 20 15:21:03 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 wcs-9b392ce18c6Node01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[tms]”。
+tms
+ADMA5017I: 卸载 tms 已启动。
+ADMA5104I: 已成功更新 WebSphere:cell=wcs-9b392ce18c6Node01Cell,node=wcs-9b392ce18c6Node01 的服务器索引条目。
+ADMA5102I: 已成功从配置库删除 tms 的配置数据。
+ADMA5011I: 清除应用程序 tms 的 temp 目录已完成。
+ADMA5106I: 已成功卸载应用程序 tms。
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Tue Mar 20 15:21:39 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Tue Mar 20 15:22:08 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 wcs-9b392ce18c6Node01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[D:\\Program Files\\IBM\\WebSphere\\profiles\\AppSrv01\\installableApps\\tms.war, wcs-9b392ce18c6Node01Cell, wcs-9b392ce18c6Node01, server1, /tms, tms, {{"tms.war" "tms.war,WEB-INF/web.xml" default_host}}, {{.* .* AppDeploymentOption.Yes 1}}, tms.war, true]”。
+-contextroot "/tms" -server "server1" -nopreCompileJSPs -distributeApp -useMetaDataFromBinary -nodeployejb -appname "tms" -createMBeansForResources -reloadEnabled -reloadInterval 1 -deployws -validateinstall off -noprocessEmbeddedConfig  -filepermission .*.dll=755#.*.so=755#.*.a=755#.*.sl=755  -buildVersion Unknown  -noallowDispatchRemoteInclude  -noallowServiceRemoteInclude  -MapWebModToVH {{"tms.war" "tms.war,WEB-INF/web.xml" default_host}} -JSPReloadForWebMod {{.* .* AppDeploymentOption.Yes 1}}
+D:\Program Files\IBM\WebSphere\profiles\AppSrv01\installableApps\tms.war
+wcs-9b392ce18c6Node01Cell
+wcs-9b392ce18c6Node01
+server1
+/tms
+tms
+{"tms.war" "tms.war,WEB-INF/web.xml" default_host}
+{.* .* AppDeploymentOption.Yes 1}
+tms.war
+true
+WASX7327I: was.policy 文件的内容：
+ //
+// Template policy file for enterprise application.
+// Extra permissions can be added if required by the enterprise application.
+//
+// NOTE: Syntax errors in the policy files will cause the enterprise application FAIL to start.
+//       Extreme care should be taken when editing these policy files. It is advised to use
+//       the policytool provided by the JDK for editing the policy files
+//       (WAS_HOME/java/jre/bin/policytool). 
+//
+
+grant codeBase "file:${application}" {
+};
+
+grant codeBase "file:${jars}" {
+};
+
+grant codeBase "file:${connectorComponent}" {
+};
+
+grant codeBase "file:${webComponent}" {
+};
+
+grant codeBase "file:${ejbComponent}" {
+};
+
+
+ADMA5016I: 安装 tms 已启动。
+ADMA5058I: 已使用部署目标的版本验证应用程序和模块版本。
+WSWS0041I: Web Service 部署任务成功完成。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 tms。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 tms。
+ADMA5081I: 在 WebSphere Application Server 存储库中配置了客户机模块的引导程序地址。
+ADMA5053I: 创建了已安装的任选软件包的库引用。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 tms。
+ADMA5001I: 应用程序二进制文件保存在 D:\Program Files\IBM\WebSphere\profiles\AppSrv01\wstemp\Script1362efc173e\workspace\cells\wcs-9b392ce18c6Node01Cell\applications\tms.ear\tms.ear 中
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 tms。
+SECJ0400I: 已成功地用 appContextIDForSecurity 信息更新应用程序 tms。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 tms。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 tms。
+ADMA5113I: 已成功地创建激活规划。
+ADMA5011I: 清除应用程序 tms 的 temp 目录已完成。
+ADMA5013I: 应用程序 tms 安装成功。
+WASX7017E: 运行文件“D:\Program Files\MyEclipse Blue Edition\Common\plugins\com.genuitec.eclipse.blue.websphere8_9.0.0.me201110171954\installWebModule.jacl”时接收到异常；异常信息：javax.management.MBeanException
+com.ibm.ws.exception.RuntimeWarning
+com.ibm.ws.metadata.annotations.AnnotationException: com.ibm.ws.metadata.annotations.AnnotationException: Annotation processing failed:  
+
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Tue Mar 20 15:25:30 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Tue Mar 20 15:43:52 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 wcs-9b392ce18c6Node01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[server1, tms]”。
+server1
+tms
+WASX7017E: 运行文件“D:\Program Files\MyEclipse Blue Edition\Common\plugins\com.genuitec.eclipse.blue.websphere8_9.0.0.me201110171954\restartApplication.jacl”时接收到异常；异常信息：javax.management.MBeanException
+com.ibm.ws.exception.RuntimeWarning: Application tms not started
+
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Tue Mar 20 15:44:17 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Tue Mar 20 16:24:28 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 wcs-9b392ce18c6Node01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[server1, tms]”。
+server1
+tms
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Tue Mar 20 16:25:04 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Tue Mar 20 16:47:24 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 wcs-9b392ce18c6Node01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[server1, tms]”。
+server1
+tms
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Tue Mar 20 16:48:10 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Tue Mar 20 16:49:47 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 wcs-9b392ce18c6Node01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[server1, tms]”。
+server1
+tms
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Tue Mar 20 16:50:24 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Tue Mar 20 17:04:48 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 wcs-9b392ce18c6Node01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[server1, tms]”。
+server1
+tms
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Tue Mar 20 17:05:32 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Tue Mar 20 17:31:37 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 wcs-9b392ce18c6Node01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[server1, tms]”。
+server1
+tms
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Tue Mar 20 17:32:15 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Tue Mar 20 17:33:37 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 wcs-9b392ce18c6Node01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[server1, tms]”。
+server1
+tms
+WASX7017E: 运行文件“D:\Program Files\MyEclipse Blue Edition\Common\plugins\com.genuitec.eclipse.blue.websphere8_9.0.0.me201110171954\restartApplication.jacl”时接收到异常；异常信息：javax.management.MBeanException
+com.ibm.ws.exception.RuntimeWarning
+com.ibm.ws.webcontainer.exception.WebAppNotLoadedException: com.ibm.ws.webcontainer.exception.WebAppNotLoadedException: Failed to load webapp: Failed to load webapp: 本机内存耗尽
+
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Tue Mar 20 17:34:14 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Tue Mar 20 17:44:54 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 wcs-9b392ce18c6Node01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[server1, tms]”。
+server1
+tms
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Tue Mar 20 17:45:35 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Tue Mar 20 18:04:22 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 wcs-9b392ce18c6Node01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[server1, tms]”。
+server1
+tms
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Tue Mar 20 18:05:00 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Tue Mar 20 20:48:53 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 wcs-9b392ce18c6Node01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[server1, tms]”。
+server1
+tms
+WASX7017E: 运行文件“D:\Program Files\MyEclipse Blue Edition\Common\plugins\com.genuitec.eclipse.blue.websphere8_9.0.0.me201110171954\restartApplication.jacl”时接收到异常；异常信息：javax.management.MBeanException
+com.ibm.ws.exception.RuntimeWarning: Application tms not started
+
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Tue Mar 20 20:49:13 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Tue Mar 20 20:49:34 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 wcs-9b392ce18c6Node01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[tms]”。
+tms
+ADMA5017I: 卸载 tms 已启动。
+ADMA5104I: 已成功更新 WebSphere:cell=wcs-9b392ce18c6Node01Cell,node=wcs-9b392ce18c6Node01 的服务器索引条目。
+ADMA5102I: 已成功从配置库删除 tms 的配置数据。
+ADMA5011I: 清除应用程序 tms 的 temp 目录已完成。
+ADMA5106I: 已成功卸载应用程序 tms。
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Tue Mar 20 20:50:09 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Tue Mar 20 20:50:36 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 wcs-9b392ce18c6Node01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[D:\\Program Files\\IBM\\WebSphere\\profiles\\AppSrv01\\installableApps\\tms.war, wcs-9b392ce18c6Node01Cell, wcs-9b392ce18c6Node01, server1, /tms, tms, {{"tms.war" "tms.war,WEB-INF/web.xml" default_host}}, {{.* .* AppDeploymentOption.Yes 1}}, tms.war, true]”。
+-contextroot "/tms" -server "server1" -nopreCompileJSPs -distributeApp -useMetaDataFromBinary -nodeployejb -appname "tms" -createMBeansForResources -reloadEnabled -reloadInterval 1 -deployws -validateinstall off -noprocessEmbeddedConfig  -filepermission .*.dll=755#.*.so=755#.*.a=755#.*.sl=755  -buildVersion Unknown  -noallowDispatchRemoteInclude  -noallowServiceRemoteInclude  -MapWebModToVH {{"tms.war" "tms.war,WEB-INF/web.xml" default_host}} -JSPReloadForWebMod {{.* .* AppDeploymentOption.Yes 1}}
+D:\Program Files\IBM\WebSphere\profiles\AppSrv01\installableApps\tms.war
+wcs-9b392ce18c6Node01Cell
+wcs-9b392ce18c6Node01
+server1
+/tms
+tms
+{"tms.war" "tms.war,WEB-INF/web.xml" default_host}
+{.* .* AppDeploymentOption.Yes 1}
+tms.war
+true
+WASX7327I: was.policy 文件的内容：
+ //
+// Template policy file for enterprise application.
+// Extra permissions can be added if required by the enterprise application.
+//
+// NOTE: Syntax errors in the policy files will cause the enterprise application FAIL to start.
+//       Extreme care should be taken when editing these policy files. It is advised to use
+//       the policytool provided by the JDK for editing the policy files
+//       (WAS_HOME/java/jre/bin/policytool). 
+//
+
+grant codeBase "file:${application}" {
+};
+
+grant codeBase "file:${jars}" {
+};
+
+grant codeBase "file:${connectorComponent}" {
+};
+
+grant codeBase "file:${webComponent}" {
+};
+
+grant codeBase "file:${ejbComponent}" {
+};
+
+
+ADMA5016I: 安装 tms 已启动。
+ADMA5058I: 已使用部署目标的版本验证应用程序和模块版本。
+WSWS0041I: Web Service 部署任务成功完成。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 tms。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 tms。
+ADMA5081I: 在 WebSphere Application Server 存储库中配置了客户机模块的引导程序地址。
+ADMA5053I: 创建了已安装的任选软件包的库引用。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 tms。
+ADMA5001I: 应用程序二进制文件保存在 D:\Program Files\IBM\WebSphere\profiles\AppSrv01\wstemp\Script1363028cbe5\workspace\cells\wcs-9b392ce18c6Node01Cell\applications\tms.ear\tms.ear 中
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 tms。
+SECJ0400I: 已成功地用 appContextIDForSecurity 信息更新应用程序 tms。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 tms。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 tms。
+ADMA5113I: 已成功地创建激活规划。
+ADMA5011I: 清除应用程序 tms 的 temp 目录已完成。
+ADMA5013I: 应用程序 tms 安装成功。
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Tue Mar 20 20:54:26 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Tue Mar 20 21:15:41 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 wcs-9b392ce18c6Node01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[tms]”。
+tms
+ADMA5017I: 卸载 tms 已启动。
+ADMA5104I: 已成功更新 WebSphere:cell=wcs-9b392ce18c6Node01Cell,node=wcs-9b392ce18c6Node01 的服务器索引条目。
+ADMA5102I: 已成功从配置库删除 tms 的配置数据。
+ADMA5011I: 清除应用程序 tms 的 temp 目录已完成。
+ADMA5106I: 已成功卸载应用程序 tms。
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Tue Mar 20 21:16:09 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Tue Mar 20 21:16:47 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 wcs-9b392ce18c6Node01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[D:\\Program Files\\IBM\\WebSphere\\profiles\\AppSrv01\\installableApps\\tms.war, wcs-9b392ce18c6Node01Cell, wcs-9b392ce18c6Node01, server1, /tms, tms, {{"tms.war" "tms.war,WEB-INF/web.xml" default_host}}, {{.* .* AppDeploymentOption.Yes 1}}, tms.war, true]”。
+-contextroot "/tms" -server "server1" -nopreCompileJSPs -distributeApp -useMetaDataFromBinary -nodeployejb -appname "tms" -createMBeansForResources -reloadEnabled -reloadInterval 1 -deployws -validateinstall off -noprocessEmbeddedConfig  -filepermission .*.dll=755#.*.so=755#.*.a=755#.*.sl=755  -buildVersion Unknown  -noallowDispatchRemoteInclude  -noallowServiceRemoteInclude  -MapWebModToVH {{"tms.war" "tms.war,WEB-INF/web.xml" default_host}} -JSPReloadForWebMod {{.* .* AppDeploymentOption.Yes 1}}
+D:\Program Files\IBM\WebSphere\profiles\AppSrv01\installableApps\tms.war
+wcs-9b392ce18c6Node01Cell
+wcs-9b392ce18c6Node01
+server1
+/tms
+tms
+{"tms.war" "tms.war,WEB-INF/web.xml" default_host}
+{.* .* AppDeploymentOption.Yes 1}
+tms.war
+true
+WASX7327I: was.policy 文件的内容：
+ //
+// Template policy file for enterprise application.
+// Extra permissions can be added if required by the enterprise application.
+//
+// NOTE: Syntax errors in the policy files will cause the enterprise application FAIL to start.
+//       Extreme care should be taken when editing these policy files. It is advised to use
+//       the policytool provided by the JDK for editing the policy files
+//       (WAS_HOME/java/jre/bin/policytool). 
+//
+
+grant codeBase "file:${application}" {
+};
+
+grant codeBase "file:${jars}" {
+};
+
+grant codeBase "file:${connectorComponent}" {
+};
+
+grant codeBase "file:${webComponent}" {
+};
+
+grant codeBase "file:${ejbComponent}" {
+};
+
+
+ADMA5016I: 安装 tms 已启动。
+ADMA5058I: 已使用部署目标的版本验证应用程序和模块版本。
+WSWS0041I: Web Service 部署任务成功完成。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 tms。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 tms。
+ADMA5081I: 在 WebSphere Application Server 存储库中配置了客户机模块的引导程序地址。
+ADMA5053I: 创建了已安装的任选软件包的库引用。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 tms。
+ADMA5001I: 应用程序二进制文件保存在 D:\Program Files\IBM\WebSphere\profiles\AppSrv01\wstemp\Script1363040bd1b\workspace\cells\wcs-9b392ce18c6Node01Cell\applications\tms.ear\tms.ear 中
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 tms。
+SECJ0400I: 已成功地用 appContextIDForSecurity 信息更新应用程序 tms。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 tms。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 tms。
+ADMA5113I: 已成功地创建激活规划。
+ADMA5011I: 清除应用程序 tms 的 temp 目录已完成。
+ADMA5013I: 应用程序 tms 安装成功。
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Tue Mar 20 21:20:21 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Tue Mar 20 22:12:38 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 wcs-9b392ce18c6Node01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[server1, tms]”。
+server1
+tms
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Tue Mar 20 22:13:17 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Wed Mar 21 10:38:31 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7357I: 根据请求，此脚本编制客户机未连接到任何服务器进程。以本地方式下，某些配置和应用程序操作可用。
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[tms]”。
+tms
+ADMA5017I: 卸载 tms 已启动。
+ADMA5104I: 已成功更新 WebSphere:cell=wcs-9b392ce18c6Node01Cell,node=wcs-9b392ce18c6Node01 的服务器索引条目。
+ADMA5102I: 已成功从配置库删除 tms 的配置数据。
+ADMA5011I: 清除应用程序 tms 的 temp 目录已完成。
+ADMA5106I: 已成功卸载应用程序 tms。
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Wed Mar 21 10:39:10 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Wed Mar 21 15:06:55 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7357I: 根据请求，此脚本编制客户机未连接到任何服务器进程。以本地方式下，某些配置和应用程序操作可用。
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[D:\\Program Files\\IBM\\WebSphere\\profiles\\AppSrv01\\installableApps\\tms.war, wcs-9b392ce18c6Node01Cell, wcs-9b392ce18c6Node01, server1, /tms, tms, {{"tms.war" "tms.war,WEB-INF/web.xml" default_host}}, {{.* .* AppDeploymentOption.Yes 1}}, tms.war, false]”。
+-contextroot "/tms" -server "server1" -nopreCompileJSPs -distributeApp -useMetaDataFromBinary -nodeployejb -appname "tms" -createMBeansForResources -reloadEnabled -reloadInterval 1 -deployws -validateinstall off -noprocessEmbeddedConfig  -filepermission .*.dll=755#.*.so=755#.*.a=755#.*.sl=755  -buildVersion Unknown  -noallowDispatchRemoteInclude  -noallowServiceRemoteInclude  -MapWebModToVH {{"tms.war" "tms.war,WEB-INF/web.xml" default_host}} -JSPReloadForWebMod {{.* .* AppDeploymentOption.Yes 1}}
+D:\Program Files\IBM\WebSphere\profiles\AppSrv01\installableApps\tms.war
+wcs-9b392ce18c6Node01Cell
+wcs-9b392ce18c6Node01
+server1
+/tms
+tms
+{"tms.war" "tms.war,WEB-INF/web.xml" default_host}
+{.* .* AppDeploymentOption.Yes 1}
+tms.war
+false
+WASX7327I: was.policy 文件的内容：
+ //
+// Template policy file for enterprise application.
+// Extra permissions can be added if required by the enterprise application.
+//
+// NOTE: Syntax errors in the policy files will cause the enterprise application FAIL to start.
+//       Extreme care should be taken when editing these policy files. It is advised to use
+//       the policytool provided by the JDK for editing the policy files
+//       (WAS_HOME/java/jre/bin/policytool). 
+//
+
+grant codeBase "file:${application}" {
+};
+
+grant codeBase "file:${jars}" {
+};
+
+grant codeBase "file:${connectorComponent}" {
+};
+
+grant codeBase "file:${webComponent}" {
+};
+
+grant codeBase "file:${ejbComponent}" {
+};
+
+
+ADMA5016I: 安装 tms 已启动。
+ADMA5058I: 已使用部署目标的版本验证应用程序和模块版本。
+WSWS0041I: Web Service 部署任务成功完成。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 tms。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 tms。
+ADMA5081I: 在 WebSphere Application Server 存储库中配置了客户机模块的引导程序地址。
+ADMA5053I: 创建了已安装的任选软件包的库引用。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 tms。
+ADMA5001I: 应用程序二进制文件保存在 D:\Program Files\IBM\WebSphere\profiles\AppSrv01\wstemp\Script1363414b4c0\workspace\cells\wcs-9b392ce18c6Node01Cell\applications\tms.ear\tms.ear 中
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 tms。
+SECJ0400I: 已成功地用 appContextIDForSecurity 信息更新应用程序 tms。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 tms。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 tms。
+ADMA5113I: 已成功地创建激活规划。
+ADMA5011I: 清除应用程序 tms 的 temp 目录已完成。
+ADMA5013I: 应用程序 tms 安装成功。
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Wed Mar 21 15:10:12 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Wed Mar 21 15:47:40 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 wcs-9b392ce18c6Node01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[server1, tms]”。
+server1
+tms
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Wed Mar 21 15:48:15 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Wed Mar 21 15:59:47 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 wcs-9b392ce18c6Node01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[server1, tms]”。
+server1
+tms
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Wed Mar 21 16:00:21 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Wed Mar 21 16:02:20 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 wcs-9b392ce18c6Node01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[server1, tms]”。
+server1
+tms
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Wed Mar 21 16:02:52 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Wed Mar 21 16:06:07 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 wcs-9b392ce18c6Node01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[server1, tms]”。
+server1
+tms
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Wed Mar 21 16:06:40 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Wed Mar 21 16:26:46 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 wcs-9b392ce18c6Node01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[server1, tms]”。
+server1
+tms
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Wed Mar 21 16:27:16 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Wed Mar 21 16:30:23 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 wcs-9b392ce18c6Node01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[server1, tms]”。
+server1
+tms
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Wed Mar 21 16:31:00 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Wed Mar 21 16:42:06 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 wcs-9b392ce18c6Node01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[server1, tms]”。
+server1
+tms
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Wed Mar 21 16:42:47 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Thu Mar 22 09:32:25 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7357I: 根据请求，此脚本编制客户机未连接到任何服务器进程。以本地方式下，某些配置和应用程序操作可用。
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[tms]”。
+tms
+ADMA5017I: 卸载 tms 已启动。
+ADMA5104I: 已成功更新 WebSphere:cell=wcs-9b392ce18c6Node01Cell,node=wcs-9b392ce18c6Node01 的服务器索引条目。
+ADMA5102I: 已成功从配置库删除 tms 的配置数据。
+ADMA5011I: 清除应用程序 tms 的 temp 目录已完成。
+ADMA5106I: 已成功卸载应用程序 tms。
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Thu Mar 22 09:33:02 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Thu Mar 22 20:07:09 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7357I: 根据请求，此脚本编制客户机未连接到任何服务器进程。以本地方式下，某些配置和应用程序操作可用。
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[D:\\Program Files\\IBM\\WebSphere\\profiles\\AppSrv01\\installableApps\\tms.war, wcs-9b392ce18c6Node01Cell, wcs-9b392ce18c6Node01, server1, /tms, tms, {{"tms.war" "tms.war,WEB-INF/web.xml" default_host}}, {{.* .* AppDeploymentOption.Yes 1}}, tms.war, false]”。
+-contextroot "/tms" -server "server1" -nopreCompileJSPs -distributeApp -useMetaDataFromBinary -nodeployejb -appname "tms" -createMBeansForResources -reloadEnabled -reloadInterval 1 -deployws -validateinstall off -noprocessEmbeddedConfig  -filepermission .*.dll=755#.*.so=755#.*.a=755#.*.sl=755  -buildVersion Unknown  -noallowDispatchRemoteInclude  -noallowServiceRemoteInclude  -MapWebModToVH {{"tms.war" "tms.war,WEB-INF/web.xml" default_host}} -JSPReloadForWebMod {{.* .* AppDeploymentOption.Yes 1}}
+D:\Program Files\IBM\WebSphere\profiles\AppSrv01\installableApps\tms.war
+wcs-9b392ce18c6Node01Cell
+wcs-9b392ce18c6Node01
+server1
+/tms
+tms
+{"tms.war" "tms.war,WEB-INF/web.xml" default_host}
+{.* .* AppDeploymentOption.Yes 1}
+tms.war
+false
+WASX7327I: was.policy 文件的内容：
+ //
+// Template policy file for enterprise application.
+// Extra permissions can be added if required by the enterprise application.
+//
+// NOTE: Syntax errors in the policy files will cause the enterprise application FAIL to start.
+//       Extreme care should be taken when editing these policy files. It is advised to use
+//       the policytool provided by the JDK for editing the policy files
+//       (WAS_HOME/java/jre/bin/policytool). 
+//
+
+grant codeBase "file:${application}" {
+};
+
+grant codeBase "file:${jars}" {
+};
+
+grant codeBase "file:${connectorComponent}" {
+};
+
+grant codeBase "file:${webComponent}" {
+};
+
+grant codeBase "file:${ejbComponent}" {
+};
+
+
+ADMA5016I: 安装 tms 已启动。
+ADMA5058I: 已使用部署目标的版本验证应用程序和模块版本。
+WSWS0041I: Web Service 部署任务成功完成。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 tms。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 tms。
+ADMA5081I: 在 WebSphere Application Server 存储库中配置了客户机模块的引导程序地址。
+ADMA5053I: 创建了已安装的任选软件包的库引用。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 tms。
+ADMA5001I: 应用程序二进制文件保存在 D:\Program Files\IBM\WebSphere\profiles\AppSrv01\wstemp\Script1363a4dfe77\workspace\cells\wcs-9b392ce18c6Node01Cell\applications\tms.ear\tms.ear 中
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 tms。
+SECJ0400I: 已成功地用 appContextIDForSecurity 信息更新应用程序 tms。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 tms。
+ADMA5005I: 在 WebSphere Application Server 存储库中配置了应用程序 tms。
+ADMA5113I: 已成功地创建激活规划。
+ADMA5011I: 清除应用程序 tms 的 temp 目录已完成。
+ADMA5013I: 应用程序 tms 安装成功。
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Thu Mar 22 20:09:55 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Thu Mar 22 20:27:39 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 wcs-9b392ce18c6Node01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[server1, tms]”。
+server1
+tms
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Thu Mar 22 20:28:12 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Thu Mar 22 20:35:13 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 wcs-9b392ce18c6Node01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[server1, tms]”。
+server1
+tms
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Thu Mar 22 20:35:47 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Thu Mar 22 20:37:13 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 wcs-9b392ce18c6Node01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[server1, tms]”。
+server1
+tms
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Thu Mar 22 20:37:42 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Thu Mar 22 20:39:58 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 wcs-9b392ce18c6Node01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[server1, tms]”。
+server1
+tms
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Thu Mar 22 20:40:26 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Thu Mar 22 20:48:48 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 wcs-9b392ce18c6Node01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[server1, tms]”。
+server1
+tms
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Thu Mar 22 20:49:20 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Thu Mar 22 21:00:03 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 wcs-9b392ce18c6Node01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[server1, tms]”。
+server1
+tms
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Thu Mar 22 21:00:34 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Mon Mar 26 11:05:50 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 wcs-9b392ce18c6Node01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[server1, tms]”。
+server1
+tms
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Mon Mar 26 11:06:27 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Mon Mar 26 11:08:42 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 wcs-9b392ce18c6Node01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[server1, tms]”。
+server1
+tms
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Mon Mar 26 11:09:09 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Mon Mar 26 11:10:37 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 wcs-9b392ce18c6Node01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[server1, tms]”。
+server1
+tms
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Mon Mar 26 11:11:04 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Mon Mar 26 11:14:22 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 wcs-9b392ce18c6Node01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[server1, tms]”。
+server1
+tms
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Mon Mar 26 11:14:54 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Mon Mar 26 11:18:29 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 wcs-9b392ce18c6Node01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[server1, tms]”。
+server1
+tms
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Mon Mar 26 11:18:55 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Mon Mar 26 11:20:48 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 wcs-9b392ce18c6Node01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[server1, tms]”。
+server1
+tms
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Mon Mar 26 11:21:21 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Mon Mar 26 11:28:40 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 wcs-9b392ce18c6Node01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[server1, tms]”。
+server1
+tms
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Mon Mar 26 11:29:08 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Mon Mar 26 11:39:16 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7209I: 已使用 SOAP 连接器连接到节点 wcs-9b392ce18c6Node01 上的进程“server1”；进程的类型为：UnManagedProcess
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[server1, tms]”。
+server1
+tms
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Mon Mar 26 11:39:55 CST 2012
+-----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MyEclipse: deployment START exploded project: tms server: websphere8Server#AppSrv01 time: Mon Mar 26 14:32:09 CST 2012
+----------------------------------------------------------------------------------------------------------------------
+WASX7357I: 根据请求，此脚本编制客户机未连接到任何服务器进程。以本地方式下，某些配置和应用程序操作可用。
+WASX7303I: 已将下列选项传递至脚本编制环境，它们将作为参数存储在 argv 变量中：“[tms]”。
+tms
+ADMA5017I: 卸载 tms 已启动。
+ADMA5104I: 已成功更新 WebSphere:cell=wcs-9b392ce18c6Node01Cell,node=wcs-9b392ce18c6Node01 的服务器索引条目。
+ADMA5102I: 已成功从配置库删除 tms 的配置数据。
+ADMA5011I: 清除应用程序 tms 的 temp 目录已完成。
+ADMA5106I: 已成功卸载应用程序 tms。
+-----------------------------------------------------------------------------------------------------------
+MyEclipse: deployment END project: tms server: websphere8Server#AppSrv01 time: Mon Mar 26 14:32:45 CST 2012
+-----------------------------------------------------------------------------------------------------------

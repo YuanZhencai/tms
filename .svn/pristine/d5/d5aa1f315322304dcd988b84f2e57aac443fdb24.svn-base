@@ -1,0 +1,65 @@
+<ui:composition xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:w="http://www.wcs-global.com/customtaglib"
+	>
+
+	<p:dialog id="insert_dialog_id" widgetVar="insert_dialog_dialog"
+		resizable="false" width="500" height="250" header="角色信息添加"
+		modal="true">
+		<h:form prependId="false" id="new_form">
+			<p:messages id="newErrMsg" showDetail="true" showSummary="true" autoUpdate="true"/>
+			
+			<h:panelGrid columns="2">
+				<h:outputText value="角色名称： " />
+				<h:column>
+				<p:inputText id="newName" value="#{roleBean.role.name}">
+					<f:validator validatorId="customValidator"/>
+					<w:validateRequired required="true" requiredMark="角色名称" />
+					<w:validateMaxLength maxLength="20" maxLengthMark="角色名称,20" />
+				</p:inputText>
+				<span style="color: red">*</span>
+				</h:column>
+					
+				<h:outputText value="角色编码： " />
+				<h:column>
+				<p:inputText id="newCode" value="#{roleBean.role.code}">
+					<f:validator validatorId="customValidator"/>
+					<w:validateRequired required="true" requiredMark="角色编码" />
+					<w:validateRegex regex="^[a-zA-Z]+$" regexMark="角色编码只允许填写英文字符" />
+					<w:validateMaxLength maxLength="50" maxLengthMark="角色编码,50" />
+				</p:inputText>
+				<span style="color: red">*</span>
+				</h:column>
+
+				<h:outputText value="角色描述： " />
+				<p:inputText id="newDesc" value="#{roleBean.role.desc}"
+					style="width: 350px;">
+					<f:validator validatorId="customValidator"/>
+					<w:validateMaxLength maxLength="50" maxLengthMark="角色描述,50" />
+				</p:inputText>
+
+				<h:outputText value="是否有效： " />
+				<h:panelGrid columns="2">
+				<h:selectOneRadio id="newDefunctInd"
+					value="#{roleBean.role.defunctInd}">
+					<f:selectItem itemLabel="生效" itemValue="N" />
+					<f:selectItem itemLabel="失效" itemValue="Y" />
+				</h:selectOneRadio>
+				<span style="color: red; float: left;">*</span>
+				</h:panelGrid>
+			</h:panelGrid>
+			
+			<div style="text-align: center; margin-top: 5px;">
+				<p:commandButton value="保存" image="ui-icon ui-icon-disk"
+						style="margin-right: 5px;"
+						oncomplete="handleSaveRequest(xhr, status, args);"
+						actionListener="#{roleBean.addRole}"
+						update="roleQueryForm, newErrMsg" />
+				<p:commandButton type="button" value="关闭" image="ui-icon ui-icon-cancel"
+						onclick="insert_dialog_dialog.hide();" />
+			</div>
+		</h:form>
+	</p:dialog>
+</ui:composition>

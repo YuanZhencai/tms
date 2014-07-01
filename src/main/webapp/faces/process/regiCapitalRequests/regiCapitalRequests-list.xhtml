@@ -1,0 +1,249 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:commentProcess="http://java.sun.com/jsf/composite/commentProcess"
+	xmlns:wcs="http://www.wcs-global.com/customtaglib"
+	template="/template/template.xhtml">
+
+	<ui:define name="title">注册资本金变更流程</ui:define>
+	<ui:define name="styleAndScript">
+		
+	</ui:define>
+	<ui:define name="content">
+		
+		<input type="hidden" id="menuOne" value="15" />
+		<input type="hidden" id="menuTwo" value="20" />
+		<p:panel styleClass="panel1">
+			<h:form id="debtBorrowForm" prependId="false" onsubmit="statusComplete();">
+				<p:breadCrumb preview="true" expandEffectDuration="200"
+					previewWidth="24" style="width: 99.1%">
+					<p:menuitem value="#{msgs.menItem_process} " url="#" />
+					<p:menuitem value="#{msgs.menItem_process}" url="#" />
+					<p:menuitem value="注册资本金变更流程" url="#" />
+				</p:breadCrumb>
+				
+				<p:messages id="msg" /> 
+				
+				<div class="style11">
+					<h:panelGrid columns="5" columnClasses="column41,column2,column45,column43,column2">
+						<h:outputLabel value="#{msgs.lbl_date_filling}：" />
+						<p:inputText id="createdDatetime" label="#{msgs.lbl_date_filling}" 
+							value="#{regicapitalChargeBean.procRegiCapitalChange.createdDatetime}" disabled="true">
+							<f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd"/>
+						</p:inputText>
+						<h:outputLabel value=" " />
+						
+						<h:outputLabel value="#{msgs.lbl_user_filling}：" />
+						<p:inputText id="createdBy" disabled="true" label="#{msgs.lbl_user_filling}" value="#{currentUser.getCurrentCN()}"></p:inputText>
+					</h:panelGrid>
+						
+					<h:panelGrid columns="6" columnClasses="column41,column2,column2,column2,column45,column2">
+						<h:outputLabel value="#{msgs.lbl_zh_applyCompanyName}：" />
+						<h:panelGroup>
+							<h:selectOneMenu id="companyName" name="companyName"
+								value="#{regicapitalChargeBean.procRegiCapitalChange.company.id}" label="#{msgs.lbl_zh_applyCompanyName}" style="width:307px;"
+								styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+								<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" itemValue=""/>
+								<f:selectItems value="#{regicapitalChargeBean.companySelect}" />
+								<p:ajax update="shareHolder,companyEn,investTotalOri,investCurrencyOri,isInvestRegRemaAvaiOri,investRegRemaFundsOri,investRegRemaFundsCuOri" listener="#{regicapitalChargeBean.changeComp}"  >
+								</p:ajax> 
+							</h:selectOneMenu>
+						</h:panelGroup>
+						<h:outputText  value=" " />
+						<h:outputLabel value="#{msgs.lbl_en_applyCompanyName}：" />
+						<p:inputText id="companyEn" value="#{regicapitalChargeBean.procRegiCapitalChange.company.companyEn}" 
+						             label="#{msgs.lbl_en_applyCompanyName}" style="width:297px;" disabled="true"/>
+					</h:panelGrid>
+					
+					<!-- 新的========================================= -->
+					<h:panelGrid columns="6" columnClasses="column41,column2,column2,column41,column2,column2,">
+						<h:outputLabel value="投资总额：" />
+						<p:inputText id="investTotal" label="#{msgs.lbl_afcePaid}"
+							value="#{regicapitalChargeBean.procRegiCapitalChange.investTotal}">
+							<f:convertNumber pattern="#,##0.####"/>
+							<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"></f:validateDoubleRange>
+						</p:inputText>
+						<h:outputLabel value="(万)"></h:outputLabel>
+						<h:selectOneMenu id="investCurrency" name="afcePaidCu" value="#{regicapitalChargeBean.procRegiCapitalChange.investCurrency}"
+							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+							<f:selectItems value="#{regicapitalChargeBean.currencySelect}" />
+						</h:selectOneMenu>
+					</h:panelGrid>
+					
+					<!-- 原来的========================================= -->
+					<h:panelGrid columns="6" columnClasses="column41,column2,column2,column41,column2,column2,">
+						<h:outputLabel value="原投资总额：" />
+						<p:inputText id="investTotalOri" label="#{msgs.lbl_afcePaid}"
+							value="#{regicapitalChargeBean.procRegiCapitalChange.company.investTotal}" disabled="true">
+							<f:convertNumber pattern="#,##0.####"/>
+							<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"></f:validateDoubleRange>
+						</p:inputText>
+						<h:outputLabel value="(万)"></h:outputLabel>
+						<h:selectOneMenu id="investCurrencyOri" name="investCurrency" disabled="true"
+							value="#{regicapitalChargeBean.procRegiCapitalChange.company.investCurrency}"
+							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+							<f:selectItems value="#{regicapitalChargeBean.currencySelect}" />
+						</h:selectOneMenu>
+					</h:panelGrid>
+					
+					<!-- 新的========================================= -->
+					<h:panelGrid columns="6" columnClasses="column41,column2,column2,column41,column2,column2,">
+						<h:outputLabel value="投注差可用：" />
+						<p:selectOneRadio id="isInvestRegRemaAvai" required="true"
+							requiredMessage="#{msgs.msg_select_applyType}"
+							value="#{regicapitalChargeBean.procRegiCapitalChange.isInvestRegRemaAvai}">
+							<f:selectItem itemLabel="是" itemValue="1" />
+							<f:selectItem itemLabel="否" itemValue="0" />
+						</p:selectOneRadio>
+						<p:inputText id="investRegRemaFunds" label="#{msgs.lbl_afcePaid}"
+							value="#{regicapitalChargeBean.procRegiCapitalChange.investRegRemaFunds}">
+							<f:convertNumber pattern="#,##0.####"/>
+							<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"></f:validateDoubleRange>
+						</p:inputText>
+						<h:selectOneMenu id="investRegRemaFundsCu" name="investRegRemaFundsCu" 
+							value="#{regicapitalChargeBean.procRegiCapitalChange.investRegRemaFundsCu}"
+							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+							<f:selectItems value="#{regicapitalChargeBean.currencySelect}" />
+						</h:selectOneMenu>
+					</h:panelGrid>
+					
+					<!-- 原来的========================================= -->
+					<h:panelGrid columns="6" columnClasses="column41,column2,column2,column41,column2,column2,">
+						<h:outputLabel value="原投注差可用：" />
+						<p:selectOneRadio id="isInvestRegRemaAvaiOri" disabled="true"
+							requiredMessage="#{msgs.msg_select_applyType}"
+							value="#{regicapitalChargeBean.procRegiCapitalChange.company.isInvestRegRemaAvai}">
+							<f:selectItem itemLabel="是" itemValue="1" />
+							<f:selectItem itemLabel="否" itemValue="0" />
+						</p:selectOneRadio>
+						<p:inputText id="investRegRemaFundsOri" label="#{msgs.lbl_afcePaid}"
+							value="#{regicapitalChargeBean.procRegiCapitalChange.company.investRegRemaFunds}" disabled="true">
+							<f:convertNumber pattern="#,##0.####"/>
+							<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"></f:validateDoubleRange>
+							<p:ajax event="blur" update="msg,afcePaid"></p:ajax>
+						</p:inputText>
+						<h:selectOneMenu id="investRegRemaFundsCuOri" name="afcePaidCu" disabled="true"
+							value="#{regicapitalChargeBean.procRegiCapitalChange.company.investRegRemaFundsCu}"
+							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+							<f:selectItems value="#{debtBorrowBean.currencySelect}" />
+						</h:selectOneMenu>
+					</h:panelGrid>
+				</div>
+				
+				<div class="style11">
+					<p:commandButton id="shareHolderAdd" value="新增"
+					oncomplete="shareHolderDialog.show()">
+					</p:commandButton>
+					<p:dataTable value="#{regicapitalChargeBean.shareHolderList}" rowKey="#{shareHolder}"
+						var="shareHolder"
+						id="shareHolder" 
+						styleClass="checkbox" 
+						emptyMessage="没有记录" 
+						rendered="#{regicapitalChargeBean.shareHolderList ne null}">
+						
+						<f:facet name="header">
+							股东信息列表
+						</f:facet>
+						<p:column headerText="股东Id" style="width:100px">
+							<h:outputText value="#{shareHolder.id}"/>		
+						</p:column>
+						<p:column headerText="股东名称" style="width:100px">
+							<h:outputText value="#{shareHolder.shareHolderName}"/>		
+						</p:column>
+						<p:column headerText="币种" style="width:100px">
+							<h:outputText value="#{shareHolder.fondsCurrency}"/>		
+						</p:column>
+						<p:column headerText="注册资金" style="width:100px">
+							<h:outputText value="#{shareHolder.fondsTotal}" />		
+						</p:column>
+						<p:column headerText="到位资金" style="width:100px">
+							<h:outputText value="#{shareHolder.fondsInPlace}" />		
+						</p:column>
+						<p:column headerText="未到位资金" style="width:100px">
+							<h:outputText value="#{shareHolder.fondsTotal-shareHolder.fondsInPlace}" />		
+						</p:column>
+						<p:column headerText="股权比例" style="width:100px">
+							<h:outputText value="#{shareHolder.equityPerc}" />		
+						</p:column>
+						<p:column headerText="股权关联" style="width:100px">
+							<h:outputText value="#{shareHolder.isEquityRelated}" />		
+						</p:column>
+						<p:column headerText="实际股权比例" style="width:100px">
+							<h:outputText value="#{shareHolder.equityPerc*shareHolder.relatedPerc}" />		
+						</p:column>
+						<p:column>
+						
+						</p:column>
+					</p:dataTable>
+					
+					<p:dialog header="新增股东" widgetVar="shareHolderDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+						<p:outputPanel id="shareHolderDetail" style="text-align:center">
+							<p:panel>
+								<h:outputText value="股东名称" />
+								<p:inputText id="shareHolderName" value="#{regicapitalChargeBean.shareHolder.shareHolderName}"></p:inputText>
+								<br/>
+								<h:outputText value="币种" />
+								<h:selectOneMenu id="fondsCurrency" name="fondsCurrency"
+									value="#{regicapitalChargeBean.shareHolder.fondsCurrency}"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+									<f:selectItems value="#{regicapitalChargeBean.currencySelect}" />
+								</h:selectOneMenu>
+								<br/>
+								<h:outputText value="注册资金" />
+								<p:inputText id="fondsTotal" value="#{regicapitalChargeBean.shareHolder.fondsTotal}"></p:inputText>
+								<br/>
+								<h:outputText value="到位资金" />
+								<p:inputText id="fondsInPlace" value="#{regicapitalChargeBean.shareHolder.fondsInPlace}"></p:inputText>
+								<br/>
+								<h:outputText value="股权比例" />
+								<p:inputText id="equityPerc" value="#{regicapitalChargeBean.shareHolder.equityPerc}"></p:inputText>
+								<br/>
+								<h:outputText value="是否股权关联" />
+								<p:selectOneRadio id="isEquityRelated"
+									value="#{regicapitalChargeBean.shareHolder.isEquityRelated}">
+									<f:selectItem itemLabel="是" itemValue="1" />
+									<f:selectItem itemLabel="否" itemValue="0" />
+								</p:selectOneRadio>
+								<p:commandButton id="shareHolderSubmit" value="提交" actionListener="#{regicapitalChargeBean.abcde}" update="shareHolder">
+								</p:commandButton>
+							</p:panel>
+						</p:outputPanel>
+					</p:dialog>
+				</div>
+				
+				<div align="right">
+					<p:commandButton icon="ui-icon ui-icon-arrowthick-1-n"
+							value="#{msgs.btn_upload}" title="#{msgs.btn_upload}" immediate="true"
+							oncomplete="fileUploadDialog.show()" update="fileuploadForm">
+					</p:commandButton>
+					&#160;&#160;
+					<p:commandButton id="create" onclick="buttonDisable('create');" action="#{regicapitalChargeBean.createProcInstance}" value="#{msgs.btn_submit}" image="ui-icon ui-icon-disk" />
+ 				</div>
+			</h:form>
+			<div class="style11">	
+				<h:outputLabel  value="附件详情列表" styleClass="title_2"/>
+				<h:form enctype="multipart/form-data" id="fileuploadForm">
+					<wcs:fileUpload updateComponet="msg,attachmentPanel,fileForm"
+						docTableId="fileForm" upListener="#{regicapitalChargeBean}">
+					</wcs:fileUpload>
+				</h:form>
+		
+				<h:form prependId="false" id="fileForm">
+					<div style="position: relative; margin-top: 5px;">
+						<ui:fragment id="fileDIV" rendered="#{regicapitalChargeBean.showDetailDoc}">
+							<p:outputPanel id="attachmentPanel">
+								<commentProcess:newfiledownload
+									updateComenId="attachmentPanel,msg"
+									dataList="#{regicapitalChargeBean.processFileList}"
+									downloadBean="#{regicapitalChargeBean}" />
+							</p:outputPanel>
+						</ui:fragment>
+					</div>
+				</h:form>
+			</div>
+		</p:panel>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:w="http://www.wcs-global.com/customtaglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<p:dialog header="选择公司" widgetVar="cashPoolSumCompanyDialogVar"
+		id="cashPoolSumCompanyDialogId" resizable="false" modal="true">
+		<h:form id="cashPoolSumCompanyForm">
+			<h:panelGrid columns="3">
+				<h:outputText value="公司名称：" />
+				<p:inputText value="#{cashPoolReportSelectBean.cpName}" />
+				<p:commandButton action="#{cashPoolReportSelectBean.initCompany()}"
+					style="margin-left:20px;" value="查询"
+					update=":cashPoolSumCompanyForm" />
+			</h:panelGrid>
+			<div align="center" style="">
+				<h:panelGrid columns="1">
+					<p:pickList id="cashPoolSumCompanyPickList"
+						value="#{cashPoolReportSelectBean.companyDualList}" dynamic="true"
+						cache="true" converter="pickListConverter" var="cp"
+						iconOnly="false" itemValue="#{cp}">
+						<f:facet name="sourceCaption">
+							<h:outputText value="待选" />
+						</f:facet>
+						<f:facet name="targetCaption">
+							<h:outputText value="已选" />
+						</f:facet>
+						<p:column style="width:5%">
+						</p:column>
+						<p:column style="width:95%">
+						 #{cp.cpName}
+					</p:column>
+					</p:pickList>
+				</h:panelGrid>
+				<h:panelGrid columns="2">
+					<p:commandButton value="确定" update=":cashPoolListForm"
+						oncomplete="cashPoolSumCompanyDialogVar.hide()"
+						action="#{cashPoolReportSelectBean.sureSelectCompany()}" />
+					<p:commandButton value="取消" update=":cashPoolListForm"
+						style="margin-left:10px;" process="@none"
+						oncomplete="cashPoolSumCompanyDialogVar.hide()" />
+				</h:panelGrid>
+			</div>
+		</h:form>
+	</p:dialog>
+</ui:composition>

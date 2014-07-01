@@ -1,0 +1,150 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/template/template.xhtml">
+	<ui:define name="styleAndScript">
+
+	</ui:define>
+	<ui:define name="content">
+		<p:panel styleClass="panel1">
+			<ui:include src="/template/oa_ui.xhtml" />
+
+			<p:growl id="logMessagesId" for="logMessagesfor" autoUpdate="false"
+				showDetail="true" showSummary="true" />
+			<h:form id="logFormId">
+				<h:panelGrid columns="8" cellspacing="8">
+					<h:outputText value="任务名称：" styleClass="oa-output-normal" />
+					<p:inputText value="#{sysJobLogBean.queryMap['name']}" />
+					<h:outputText value="成功与否：" styleClass="oa-output-normal" />
+					<h:selectOneMenu value="#{sysJobLogBean.queryMap['isSuccess']}"
+						styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+						<f:selectItem itemValue="" itemLabel="全部" />
+						<f:selectItem itemValue="Y" itemLabel="是" />
+						<f:selectItem itemValue="N" itemLabel="否" />
+					</h:selectOneMenu>
+					<h:outputText value="任务开始时间：" styleClass="oa-output-normal" />
+					<p:calendar pattern="yyyy-MM-dd" readonlyInput="true"
+						locale="#{oaCommonBean.language}" value="#{sysJobLogBean.queryMap['start']}">
+						<p:ajax event="dateSelect" update="calendarId" />
+					</p:calendar>
+					<h:outputText value="任务结束时间：" styleClass="oa-output-normal" />
+					<p:calendar pattern="yyyy-MM-dd" readonlyInput="true" id="calendarId"
+						locale="#{oaCommonBean.language}" value="#{sysJobLogBean.queryMap['end']}"
+						mindate="#{sysJobLogBean.queryMap['start']}"/>
+				</h:panelGrid>
+				<div align="right">
+					<p:commandButton value="查询" style="margin-right: 15px;"
+						icon="ui-icon ui-icon-search" update=":tableFormId"
+						actionListener="#{sysJobLogBean.setFirstPage(':tableFormId:sysLogTableId',0,false)}" />
+					<p:commandButton value="重置" icon="ui-icon ui-icon-cancel"
+						actionListener="#{sysJobLogBean.reset()}" update=":logFormId"
+						process="@this" />
+				</div>
+			</h:form>
+			<h:form id="tableFormId">
+				<p:dataTable emptyMessage="#{msgs.dataTable_empty}"
+					id="sysLogTableId" lazy="true" paginator="true" rows="10"
+					paginatorPosition="bottom" rowIndexVar="index"
+					rowStyleClass="#{index mod 2 == 1 ? 'changeColor' : null}"
+					style="margin-top: 5px;"
+					paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
+					currentPageReportTemplate="{currentPage}/{totalPage}"
+					value="#{sysJobLogBean.sysJobLogVos}" var="d"
+					rowKey="#{d.sysJobLog.id}">
+					<f:facet name="header">
+						任务日志
+					</f:facet>
+
+					<p:column headerText="任务名称">
+						<h:outputText value="#{d.sysJobInfo.jobSubject}" />
+					</p:column>
+					<p:column headerText="任务描述">
+						<h:outputText value="#{d.sysJobInfo.jobDesc}" />
+					</p:column>
+					<p:column headerText="开始时间">
+						<h:outputText value="#{d.sysJobLog.startTime}">
+							<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" timeZone="GMT+8" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="结束时间">
+						<h:outputText value="#{d.sysJobLog.endTime}">
+							<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" timeZone="GMT+8" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="成功与否">
+						<h:outputText value="#{d.sysJobLog.isSuccess eq true ?'是':'否'}" />
+					</p:column>
+					<p:column headerText="操作">
+						<p:commandButton image="ui-icon  ui-icon-zoomin" title="查看详细日志"
+							oncomplete="detailLog.show();"
+							action="#{sysJobLogBean.findLogDetail()}" process="@this"
+							update=":showLogForm">
+							<f:setPropertyActionListener
+								target="#{sysJobLogBean.selectSysJobLogVo}" value="#{d}" />
+						</p:commandButton>
+						<p:commandButton image="ui-icon ui-icon-search" title="查看业务日志"
+							oncomplete="detailDataTableLog.show();"
+							action="#{sysJobLogBean.findBlog()}" process="@this"
+							update=":showDataTableForm">
+							<f:setPropertyActionListener
+								target="#{sysJobLogBean.selectSysJobLogVo}" value="#{d}" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+			</h:form>
+		</p:panel>
+
+		<p:dialog header="任务详细日志" modal="false" widgetVar="detailLog" resizable="false">
+			<h:form id="showLogForm">
+				<h:panelGrid columns="1">
+					<!-- <h:outputText value="任务执行详细日志：" styleClass="oa-output-normal" /> -->
+					<p:inputTextarea autoResize="false" disabled="true"
+						style="width:450px;height:300px"
+						value="#{sysJobLogBean.selectSysJobLogVo.detail}" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+		<p:dialog header="业务日志详情" modal="true" widgetVar="detailDataTableLog"
+			width="700">
+			<h:form id="showDataTableForm">
+
+				<p:dataTable emptyMessage="#{msgs.dataTable_empty}"
+					id="detailDataTableId" lazy="true" paginator="true" rows="10"
+					paginatorPosition="bottom" rowIndexVar="index"
+					rowStyleClass="#{index mod 2 == 1 ? 'changeColor' : null}"
+					style="margin-top: 5px;"
+					paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
+					currentPageReportTemplate="{currentPage}/{totalPages}"
+					value="#{sysJobLogBean.sysBusinessLogs}" var="d" rowKey="#{d.id}">
+					<f:facet name="header">
+						业务日志
+					</f:facet>
+
+					<p:column headerText="业务日志详情" filterBy="#{d.BUSI_LOG_INFO}">
+						<h:outputText value="#{d.busiLogInfo}" />
+					</p:column>
+
+					<p:column headerText="业务日志描述" filterBy="#{d.BUSI_LOG_DESC}">
+						<h:outputText value="#{d.busiLogDesc}" />
+					</p:column>
+
+
+					<p:column headerText="业务日志级别" filterBy="#{d.BUSI_LOG_LEVEL}">
+						<h:outputText value="#{d.busiLogLevel}" />
+					</p:column>
+
+					<p:column headerText="创建时间" filterBy="#{d.CREATED_DATETIME}">
+						<h:outputText value="#{d.createdDatetime}">
+							<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" timeZone="GMT+8" />
+						</h:outputText>
+					</p:column>
+
+
+				</p:dataTable>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

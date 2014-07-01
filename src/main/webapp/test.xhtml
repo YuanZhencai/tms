@@ -1,0 +1,73 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:jr="http://jasperreportjsf.sf.net/tld/jasperreports-jsf-1_2.tld"
+	  xmlns:p="http://primefaces.org/ui">
+    
+    <h:head>
+        <title>Hello  World</title>
+        <meta  http-equiv="keywords"  content="enter,your,keywords,here"  />
+        <meta  http-equiv="description"  content="A  short  description  of  this  page."  />
+        <meta  http-equiv="content-type"  content="text/html;  charset=UTF-8"  />
+        		<script type="text/javascript"
+			src="#{request.contextPath}/template/js/jquery.timer.js" />
+		<script type="text/javascript"
+			src="#{request.contextPath}/template/js/jquery.easing.1.3.js" />
+
+		<script type="text/javascript"
+			src="#{request.contextPath}/template/js/jquery.tooltip.js" />
+		<script type="text/javascript"
+			src="#{facesContext.externalContext.requestContextPath}/styles/skin.js"></script>
+		<script type="text/javascript"
+			src="#{request.contextPath}/template/js/main.js" />
+		<script type="text/javascript"
+			src="#{facesContext.externalContext.requestContextPath}/script/My97DatePicker/My97DatePicker/WdatePicker.js"></script>
+		<link href="#{request.contextPath}/template/css/primefaces/theme.css"
+			rel="stylesheet" type="text/css" />
+		<link href="#{request.contextPath}/template/css/default.css"
+			rel="stylesheet" type="text/css" />
+    </h:head>
+    <h:body>
+    
+        <h:form  id="form">
+            <!-- <jr:source id="bookSource" type="jndi" value="db2test" />
+    		
+	    	<jr:reportLink id="reportLink" format="pdf" target="blank" source="bookSource" 
+	    		value="/jasperreports/report2.jrxml">
+	    		<h:outputText value="View Report" />
+	    	</jr:reportLink> -->
+            <div>
+
+			   	<p:panel id="panel">   
+			   		<p:commandButton value="testReportExport"  actionListener="#{testReport.testReportExport}"  ajax="false"/>/
+			        <p:inputText value="#{testReport.exportType}" />
+			        
+			  		<br/>  
+			        <p:commandButton value="pre"  actionListener="#{testReport.testReportPagePre}"  update="panel"/>
+			        <p:inputText value="#{testReport.pageValue}" />
+			        <p:commandButton value="go"  actionListener="#{testReport.testReportPage}"  update="panel"/>/
+			        <h:outputText value="#{testReport.pageAll}" id="pageAll"  escape="false"/>
+			        <p:commandButton value="next"  actionListener="#{testReport.testReportPageNext}"  update="panel"/>  
+			        <br/>
+			        
+			        <h:panelGroup style="width:100%;text-align:center;" id="reportContent">
+					    <h:outputText value="#{testReport.reportContent}" escape="false"  />   
+					</h:panelGroup>
+					 <br/> <br/>
+					<p:commandButton value="SUNGRAD付款" styleClass="btn2" 
+					title="SUNGRAD付款" /><br/><br/>
+					<p:commandButton value="网银付款" styleClass="btn1" 
+					title="网银付款" /><br/><br/>
+					<p:commandButton value="停止付款" styleClass="btn3" 
+					title="停止付款" />
+			    </p:panel>  
+                    
+            </div>
+	       <!--  <jr:reportFrame id="reportFrame" source="bookSource"
+	        	value="/jasperreports/report2.jrxml"
+	        	format="pdf" height="400px" width="80%" 
+	        />-->
+        </h:form>
+    </h:body>
+</html> 

@@ -1,0 +1,277 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:wcs="http://www.wcs-global.com/customtaglib"
+	xmlns:commentProcess="http://java.sun.com/jsf/composite/commentProcess"
+	template="/template/template.xhtml">
+
+	<ui:define name="title">银行账号申请</ui:define>
+
+	<ui:define name="content">
+
+		<input type="hidden" id="menuOne" value="15" />
+		<input type="hidden" id="menuTwo" value="16" />
+
+		<p:panel styleClass="panel1">
+			<h:form id="bankAccountForm" prependId="false" onsubmit="statusComplete();">
+				<p:breadCrumb preview="true" expandEffectDuration="200"
+					previewWidth="24" style="width: 99.1%">
+					<p:menuitem value="流程" url="#" />
+					<p:menuitem value="流程" url="#" />
+					<p:menuitem value="银行账号申请表" url="#" />
+				</p:breadCrumb>
+
+				<p:messages id="msg" />
+
+				<div class="style1">
+					<h:panelGrid  columns="8" columnClasses="column40,column2,column40,column2,column0,column2,column0,column2">
+
+						<h:outputLabel value="账户类型：" />
+						<h:panelGroup>
+								<p:selectOneRadio id="accountType"
+									value="#{bankAccountBean.procBankAccount.accountType}">
+									<f:selectItem itemLabel="个人卡" itemValue="Y" />
+									<f:selectItem itemLabel="非个人卡" itemValue="N" />
+									<p:ajax listener="#{bankAccountBean.accountTypeChange}" update="personalCardPanel,notPersonalCardPanel,notPersonalCardPanel2,procInstIdClosed,cardHolderName,cardHolderPosition,
+									useDesc,ownedCardNumber,useDeadline,useTime,currency,accountNature,belongBankName"/> 
+								</p:selectOneRadio>
+						</h:panelGroup>
+						<h:outputLabel value="填制时间:" />
+						<p:inputText id="applyDate" style="width:200px"
+							value="#{bankAccountBean.applyDate}" disabled="true"/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+
+						<h:outputLabel value="操作类型：" />
+						<h:panelGroup>
+								<p:selectOneRadio id="operateType" value="#{bankAccountBean.procBankAccount.operateType}">
+									<f:selectItem itemLabel="开户" itemValue="O" />
+									<f:selectItem itemLabel="销户" itemValue="C" />
+									<p:ajax listener="#{bankAccountBean.operateTypeChange}" update="msg,closeAccountPanel,
+									cardHolderName,cardHolderPosition,useDesc,ownedCardNumber,useDeadline,useTime,currency,accountNature,belongBankName"/>
+								</p:selectOneRadio>
+						</h:panelGroup>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						
+						<h:outputLabel value="申请公司名称：" />
+						<h:panelGroup>
+								<h:selectOneMenu id="appCompanyName"
+									value="#{bankAccountBean.procBankAccount.company.id}"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									style="width:330px">
+									<f:selectItem itemLabel="请选择" itemValue=""/>
+									 <f:selectItems value="#{bankAccountBean.companySelect}" />
+									<p:ajax listener="#{bankAccountBean.companyChange}" update="msg,appCompanyNameEn,appCompanySapCode,noPersAccountDesc,
+									closeAccountPanel,operateType,closeAccountPanel"/>  
+								</h:selectOneMenu>
+								<h:outputText style="color:red;" value=" *" />
+						</h:panelGroup>
+						<h:outputLabel value="公司代码："/>
+						<p:inputText id="appCompanySapCode" style="width:200px"
+							value="#{bankAccountBean.procBankAccount.company.sapCode}" disabled="true"/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						
+					</h:panelGrid>
+					
+					<h:panelGrid id="closeAccountPanel" columns="3" style="display:#{bankAccountBean.closeAccountDis}"
+					columnClasses="column40,column2,column2">
+						<h:outputLabel value="流程实例：" />
+						<h:panelGroup>
+								<h:selectOneMenu id="procInstIdClosed"
+									value="#{bankAccountBean.procBankAccount.procInstIdClosed}"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									style="width:330px">
+									<f:selectItem itemLabel="请选择" itemValue=""/>
+									 <f:selectItems value="#{bankAccountBean.bankAccountSelect}" />
+									<p:ajax listener="#{bankAccountBean.bankAccountChange}" update="msg,cardHolderName,cardHolderPosition,
+									useDesc,ownedCardNumber,useDeadline,useTime,currency,accountNature,belongBankName"/>  
+								</h:selectOneMenu>
+						</h:panelGroup>
+						<h:outputLabel value="（注：本系统申请过的开户（卡），请选择并补充帐号等信息；没有申请过，请忽略，并填写下面的表单）"/>
+						
+						<h:outputLabel value="账号：" />
+						<h:panelGroup>
+							<p:inputText id="bankAccount" style="width:320px" label="账号" 
+							value="#{bankAccountBean.procBankAccount.bankAccount}" >
+								
+							</p:inputText>
+							<h:outputText style="color:red;" value=" *"/>
+						</h:panelGroup>
+						<h:outputLabel value=""/>
+						
+						
+					</h:panelGrid>
+					
+					<h:panelGrid  columns="8" columnClasses="column40,column2,column40,column2,column0,column2,column0,column2">
+						<h:outputLabel value="开户银行：" />
+						<h:panelGroup>
+							<p:inputText id="belongBankName" style="width: 320px;" validatorMessage="所属银行：字符长度不能大于99"
+									value="#{bankAccountBean.procBankAccount.belongBankName}" >
+								<f:validateLength maximum="99" for="belongBankName" />
+								<p:ajax event="blur" update="msg"/>
+							</p:inputText>
+							<h:outputText style="color:red;" value=" *" />
+						</h:panelGroup>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+					</h:panelGrid>
+					
+					<h:panelGrid  id="personalCardPanel" columns="8" style="display:#{bankAccountBean.personalDis}"
+					columnClasses="column40,column2,column40,column2,column0,column2,column0,column2">
+					<h:outputLabel value="持卡人姓名：" />
+					<h:panelGroup>
+						<p:inputText id="cardHolderName" style="width:200px" validatorMessage="持卡人姓名：长度超过30个字符"
+						value="#{bankAccountBean.procBankAccount.cardHolderName}" >
+							<p:ajax update="msg"/>
+							<f:validateLength maximum="30" for="cardHolderName" />
+						</p:inputText>
+						<h:outputText style="color:red;" value=" *" />
+					</h:panelGroup>	
+					<h:outputLabel value="持卡人职位：" />
+					<h:panelGroup>
+						<p:inputText id="cardHolderPosition" style="width:200px" validatorMessage="持卡人职位：长度超过80个字符"
+						value="#{bankAccountBean.procBankAccount.cardHolderPosition}" >
+							<p:ajax update="msg"/>
+							<f:validateLength maximum="80" for="cardHolderPosition" />
+						</p:inputText>
+						<h:outputText style="color:red;" value=" *" />
+					</h:panelGroup>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						
+						<h:outputLabel value="用途：" />
+						<h:panelGroup>
+								<p:selectOneRadio id="useDesc" 
+									value="#{bankAccountBean.procBankAccount.useDesc}" >
+									<f:selectItem itemLabel="销售收款" itemValue="sell" />
+									<f:selectItem itemLabel="采购付款" itemValue="purchase" />
+								</p:selectOneRadio>
+						</h:panelGroup>
+						<h:outputLabel value="已有卡数量：" />
+					<h:panelGroup>
+						<p:inputText id="ownedCardNumber" label="已有卡数量" style="width:200px" 
+						value="#{bankAccountBean.procBankAccount.ownedCardNumber}" >
+							<f:validateLongRange maximum="100000000" minimum="0"></f:validateLongRange>
+						</p:inputText>
+						<h:outputText style="color:red;" value=" *" />
+					</h:panelGroup>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						
+						<h:outputLabel value="使用期限（到期日）：" />
+						<h:panelGroup>
+							<p:inputText id="useDeadline" 
+								value="#{bankAccountBean.procBankAccount.useDeadline}" styleClass="ui-date"
+								style="font-size: 9px;width:200px" title="使用期限" 
+								onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'appDate\')}'});">
+								<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+							</p:inputText>
+							<h:outputText style="color:red;" value=" *" />
+						</h:panelGroup>
+						<h:outputLabel value="使用时间：" />
+						<h:panelGroup>
+								<h:selectOneMenu id="useTime" 
+									value="#{bankAccountBean.procBankAccount.useTime}"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									style="width:200px" >
+									<f:selectItem itemLabel="请选择" itemValue=""/>
+									 <f:selectItem itemLabel="周末" itemValue="W" />
+									 <f:selectItem itemLabel="节假日" itemValue="H" />
+									 <f:selectItem itemLabel="每天" itemValue="E" />
+									 <f:selectItem itemLabel="工作日" itemValue="K" />
+								</h:selectOneMenu>
+								<h:outputText style="color:red;" value=" *" />
+						</h:panelGroup>
+						<p:inputText id="appDate" style="display:none" value="#{bankAccountBean.applyDate}"/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+					</h:panelGrid>
+					
+					<h:panelGrid  id="notPersonalCardPanel" columns="8" style="display:#{bankAccountBean.notPersonalDis}"
+					columnClasses="column40,column2,column40,column2,column0,column2,column0,column2">
+					
+						<h:outputLabel value="币别：" />
+						<h:panelGroup>
+								<p:inputText id="currency" value="#{bankAccountBean.procBankAccount.currency}"
+								style="width:200px" validatorMessage="币别：字符长度不能大于99" >
+									<f:validateLength maximum="99" for="currency" />
+									<p:ajax listener="#{bankAccountBean.currencyChange}" update="msg,accountPoolCurr,noPersAccountDesc"/>
+								</p:inputText>
+								<h:outputText style="color:red;" value=" *" />
+						</h:panelGroup>
+						<h:outputLabel value="账户性质：" />
+						<h:panelGroup>
+								<p:inputText id="accountNature" value="#{bankAccountBean.procBankAccount.accountNature}"
+								style="width:200px" validatorMessage="账户性质：字符长度不能大于99" >
+									<p:ajax listener="#{bankAccountBean.accountNatureChange}" update="msg,bankCode,noPersAccountDesc"/>
+									<f:validateLength maximum="99" for="accountNature" />
+								</p:inputText>
+								<h:outputText style="color:red;" value=" *" />
+						</h:panelGroup>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+					
+					</h:panelGrid>
+					
+					<h:panelGrid columns="2" columnClasses="column40,column2">
+						<h:outputLabel value="开户（或销户）原因：" />
+						<h:panelGroup>
+							<p:inputTextarea id="openAccountReason" cols="100" rows="5" autoResize="false" 
+							 validatorMessage="#{msgs.txt_reasonLonger}200" value="#{bankAccountBean.procBankAccount.openAccountReason}">
+							<f:validateLength maximum="200" for="openAccountReason" />
+							</p:inputTextarea>
+							<h:outputText style="color:red;" value=" *" />
+						</h:panelGroup>
+					</h:panelGrid>
+					
+					<div>
+						<p:commandButton id="create" action="#{bankAccountBean.createProcInstance}" onclick="buttonDisable('create');" ajax="false" value="提交" image="ui-icon ui-icon-disk" />
+					</div>
+				</div>
+				<br />
+			</h:form> 
+			
+		</p:panel>
+		<script type="text/javascript">
+			var isFirst = "true";
+			function buttonDisable(buttonId){
+				if("true"==isFirst){
+					isFirst="false";
+					return true;
+				}else{
+					document.getElementById(buttonId).disabled=true;
+					return false;
+				}
+			}
+		</script>
+		<ui:include src="/faces/process/common/accountBankSelect-dialog.xhtml" />
+	</ui:define>
+
+</ui:composition>
+
+

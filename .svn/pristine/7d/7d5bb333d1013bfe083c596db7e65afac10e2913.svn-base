@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<p:dialog modal="true" resizable="false" header="新增公司" widgetVar="companyInsertDiaLog" id="insertDiaLog">
+		<h:form id="insertDataForminsertDataForm">
+			<h:panelGrid id="formItems" columns="4">
+				<h:outputText value="公司名称:" />
+				<p:inputText value="#{companyBean.companyInsertModel.stext}"  />
+				<h:outputText value="组织机构代码:" />
+				<p:inputText value="#{companyBean.companyInsertModel.zipcode}"  />
+			</h:panelGrid>
+			<div align="right">
+				<p:commandButton  value="查询"
+					image="ui-icon ui-icon-search" actionListener="#{companyBean.searchInsert}" update="positionDataTable" style="margin-right: 5px;"/>
+				<p:commandButton  value="重置" actionListener="#{companyBean.resetInsertForm}" update="insertDataForminsertDataForm" style="margin-right: 5px;" image="ui-icon ui-icon-cancel" />
+			</div>
+				<p:dataTable id="positionDataTable" var="companyInsert"
+				value="#{companyBean.insertLazyModel}" lazy="true" paginator="true"
+				rows="5" paginatorPosition="bottom"
+				paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {CurrentPageReport} "
+
+				rowKey="#{companyInsert.id}" emptyMessage="没有记录"  style="margin-top: 5px;">
+				<p:ajax listener="#{companyBean.oRowSelect}" event="rowSelect" update="insertDataForminsertDataForm" />
+				<f:facet name="header">
+				<h:outputText value="集团公司列表" />
+				<div
+					style="text-align: right; position: relative; margin: -13px -5px 0px 0px; vertical-align: middle">
+					<p:commandButton action="#{dataSynchronousBean.oDataSynchronous}" value="数据同步"  />
+				</div>
+			</f:facet>
+			
+			 <p:column selectionMode="single" />  
+			  <p:column headerText="公司名称">  
+			  	<h:outputText value="#{companyInsert.stext}" />
+       		 </p:column>  
+
+			</p:dataTable>
+			
+		    <div style="margin-top: 5px;" align="center">
+				<p:commandButton  value="确认"
+					disabled="#{companyBean.firstBtnFlag}" id="firstBtn" oncomplete="companyInsertConfirmDiaLog.show();" actionListener="#{companyBean.setNameAndCode}" update="insertConfirmDiaLog" style="margin-right: 5px;" image="ui-icon ui-icon-disk"/>
+				<p:commandButton  value="关闭"  oncomplete="companyInsertDiaLog.hide();" style="margin-right: 5px;" image="ui-icon ui-icon-cancel" />
+			</div>
+</h:form>
+		
+
+	</p:dialog>
+	
+	</ui:composition>

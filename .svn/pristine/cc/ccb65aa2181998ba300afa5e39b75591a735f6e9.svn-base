@@ -1,0 +1,300 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/template/template.xhtml">
+
+	<ui:define name="title">现金池申请实际对比表</ui:define>
+
+	<ui:define name="content">
+		<script type="text/javascript"
+			src="#{request.contextPath}/faces/report/cashPool/pfClander.js" />
+		<style type="">
+</style>
+		<p:panel styleClass="panel1">
+			<p:breadCrumb preview="true" expandEffectDuration="200"
+				previewWidth="24" style="width: 99.1%">
+				<p:menuitem value="#{msgs.menItem_form}" url="#" />
+				<p:menuitem value="#{msgs.menItem_form}" url="#" />
+				<p:menuitem value="现金池申请实际对比表" url="#" />
+			</p:breadCrumb>
+			<h:form id="cashPoolListForm" prependId="false">
+
+				<p:outputPanel id="cashPoolReportPl">
+					<div class="style1">
+						<h:panelGrid columns="6"
+							style="margin-top:10px;margin-left:30px;margin-bottom:10px;">
+							<h:outputText value="申请付款日期：" />
+							<p:calendar value="#{cashPoolSummaryReportBean.beginDate}"
+								locale="zh" readonlyInput="true" navigator="true"
+								pattern="yyyy-MM-dd" showButtonPanel="true">
+								<p:ajax event="dateSelect" update="cashPoolReportPl"></p:ajax>
+							</p:calendar>
+							<h:outputText value="~" />
+							<p:calendar value="#{cashPoolSummaryReportBean.endDate}"
+								locale="zh" readonlyInput="true" navigator="true"
+								pattern="yyyy-MM-dd" showButtonPanel="true">
+								<p:ajax event="dateSelect" update="cashPoolReportPl"></p:ajax>
+							</p:calendar>
+							<h:outputText value="汇总类型：" style="margin-left:20px;" />
+							<h:selectOneMenu id="statType" style="width:150px;"
+								value="#{cashPoolSummaryReportBean.statType}"
+								styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+								<f:selectItem itemLabel="公司" itemValue="company" />
+								<f:selectItem itemLabel="品项" itemValue="item" />
+								<f:selectItem itemLabel="公司+品项" itemValue="comitem" />
+								<p:ajax event="change" update="cashPoolListForm"
+									listener="#{cashPoolSummaryReportBean.initTable()}"></p:ajax>
+							</h:selectOneMenu>
+						</h:panelGrid>
+						<h:panelGrid columns="3"
+							rendered="#{cashPoolSummaryReportBean.statType eq 'company' ?'true':'false'}"
+							style="margin-top:10px;margin-left:30px;margin-bottom:10px;">
+							<h:outputText value="已选公司：" />
+							<p:inputTextarea
+								value="#{cashPoolReportSelectBean.selectedCpNames}" cols="74"
+								rows="3" disabled="true" />
+							<p:commandButton value="选择公司" process="@this"
+								style="margin-left:20px;"
+								action="#{cashPoolReportSelectBean.initCompany()}"
+								oncomplete="cashPoolSumCompanyDialogVar.show()"
+								update=":cashPoolSumCompanyForm" />
+						</h:panelGrid>
+						<h:panelGrid columns="3"
+							rendered="#{cashPoolSummaryReportBean.statType eq 'item' ?'true':'false'}"
+							style="margin-top:10px;margin-left:30px;margin-bottom:10px;">
+							<h:outputText value="已选品项：" />
+							<p:inputTextarea
+								value="#{cashPoolReportSelectBean.selectedItemName}" cols="74"
+								rows="3" disabled="true" />
+							<p:commandButton value="选择品项" process="@this"
+								style="margin-left:20px;"
+								action="#{cashPoolReportSelectBean.initItem()}"
+								oncomplete="cashPoolSumItemDialogVar.show()"
+								update=":cashPoolSumItemForm" />
+						</h:panelGrid>
+						<h:panelGrid columns="5"
+							rendered="#{cashPoolSummaryReportBean.statType eq 'comitem' ?'true':'false'}"
+							style="margin-top:10px;margin-left:30px;margin-bottom:10px;">
+							<h:outputText value="已选公司：" />
+							<p:inputTextarea
+								value="#{cashPoolReportSelectBean.selectedCpNames}" cols="74"
+								rows="3" disabled="true" />
+							<p:commandButton value="选择公司" process="@this"
+								style="margin-left:20px;"
+								action="#{cashPoolReportSelectBean.initCompany()}"
+								oncomplete="cashPoolSumCompanyDialogVar.show()"
+								update=":cashPoolSumCompanyForm" />
+							<h:outputText value="统计类型：" />
+							<h:selectOneMenu id="reportType" style="width:150px;"
+								value="#{cashPoolSummaryReportBean.reportType}"
+								styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+								<f:selectItem itemLabel="实际下拨" itemValue="pay" />
+								<f:selectItem itemLabel="申请" itemValue="apply" />
+								<p:ajax event="change" update="cashPoolListForm"
+									listener="#{cashPoolSummaryReportBean.initTable()}"></p:ajax>
+							</h:selectOneMenu>
+						</h:panelGrid>
+						<h:panelGrid columns="1" style="float:right;margin-right:50px;">
+							<p:commandButton title="公司+品项及其详情" value="导出XLS"
+								rendered="#{cashPoolSummaryReportBean.statType eq 'comitem' ?'true':false}"
+								actionListener="#{cashPoolSummaryReportBean.handleExcelDownload}"
+								ajax="false" icon="ui-icon ui-icon-disk">
+								<p:fileDownload
+									value="#{cashPoolSummaryReportBean.downloadedExcelFile}" />
+							</p:commandButton>
+						</h:panelGrid>
+						<div style="clear: both;"></div>
+					</div>
+					<p:dataTable id="cashPoolSumCompanyTable"
+						rendered="#{cashPoolSummaryReportBean.statType eq 'company' ?'true':false}"
+						value="#{cashPoolSummaryReportBean.cashPoolCompanyVo}"
+						paginator="true" var="companyVo" rows="10"
+						paginatorPosition="bottom" style="margin-top:3px;"
+						currentPageReportTemplate="{currentPage}/{totalPage}"
+						paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
+						rowKey="#{companyVo.cpId}" emptyMessage="#{msgs.dataTable_empty}">
+						<f:facet name="header">
+							<h:outputText value="#{cashPoolSummaryReportBean.tableTitle}" />
+						</f:facet>
+						<p:column headerText="公司名称">
+							<h:outputText value="#{companyVo.cpName}" />
+						</p:column>
+						<p:column headerText="申请金额">
+							<h:outputText value="#{companyVo.sumAmount}" >
+								<f:convertNumber pattern="#,##0.####"/>
+							</h:outputText>
+						</p:column>
+						<p:column headerText="实际下拨">
+							<h:outputText value="#{companyVo.sumSjxb}" >
+								<f:convertNumber pattern="#,##0.####"/>
+							</h:outputText>
+						</p:column>
+						<p:column headerText="实际支付">
+							<h:outputText value="#{companyVo.sumSjzf}" >
+								<f:convertNumber pattern="#,##0.####"/>
+							</h:outputText>
+						</p:column>
+						<p:column headerText="差异">
+							<h:outputText value="#{companyVo.sumAvAmount/10000}" >
+								<f:convertNumber pattern="#,##0.####"/>
+							</h:outputText>
+						</p:column>
+					</p:dataTable>
+					<p:dataTable id="cashPoolSumItemTable"
+						rendered="#{cashPoolSummaryReportBean.statType eq 'item' ?'true':false}"
+						value="#{cashPoolSummaryReportBean.cashPoolItemVo}"
+						paginator="true" var="itemVo" rows="10" paginatorPosition="bottom"
+						style="margin-top:3px;"
+						currentPageReportTemplate="{currentPage}/{totalPage}"
+						paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
+						rowKey="#{itemVo.pxKey}" emptyMessage="#{msgs.dataTable_empty}">
+						<f:facet name="header">
+							<h:outputText value="#{cashPoolSummaryReportBean.tableTitle}" />
+						</f:facet>
+						<p:column headerText="品种名称">
+							<h:outputText value="#{itemVo.pxName}" />
+						</p:column>
+						<p:column headerText="申请金额">
+							<h:outputText value="#{itemVo.sumAmount}" />
+						</p:column>
+						<p:column headerText="实际下拨">
+							<h:outputText value="#{itemVo.sumSjxb}" />
+						</p:column>
+					</p:dataTable>
+					<p:dataTable id="cashPoolSumCompanyItemTable"
+						rendered="#{cashPoolSummaryReportBean.statType eq 'comitem' ?'true':false}"
+						value="#{cashPoolSummaryReportBean.cashPoolCompanyItemVo}"
+						paginator="true" var="comitemVo" rows="10"
+						paginatorPosition="bottom" style="margin-top:3px;"
+						currentPageReportTemplate="{currentPage}/{totalPage}"
+						paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
+						rowKey="#{comitemVo.cpId}" emptyMessage="#{msgs.dataTable_empty}">
+						<f:facet name="header">
+							<h:outputText value="#{cashPoolSummaryReportBean.tableTitle}" />
+						</f:facet>
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="公司名称" />
+							</f:facet>
+							<h:outputText value="#{comitemVo.cpName}" />
+						</p:column>
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="小计" />
+							</f:facet>
+							<h:outputText value="#{comitemVo.xiaoji}" />
+						</p:column>
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="投资理财&lt;br/&gt;(纯理财)" escape="false" />
+							</f:facet>
+							<h:outputText value="#{comitemVo.tzlc}" />
+						</p:column>
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="利息/银行费用" />
+							</f:facet>
+							<h:outputText value="#{comitemVo.lxyh}" />
+						</p:column>
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="时点存款" />
+							</f:facet>
+							<h:outputText value="#{comitemVo.sdck}" />
+						</p:column>
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="融资保证金&lt;br/&gt;(转口)" escape="false" />
+							</f:facet>
+							<h:outputText value="#{comitemVo.rzzk}" />
+						</p:column>
+						<p:column headerText="融资保证金&lt;br/&gt;(非转口)" escape="false">
+							<f:facet name="header">
+								<h:outputText value="融资保证金&lt;br/&gt;(非转口)" escape="false" />
+							</f:facet>
+							<h:outputText value="#{comitemVo.rzfzk}" />
+						</p:column>
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="还贷&lt;br/&gt;(转口)" escape="false" />
+							</f:facet>
+							<h:outputText value="#{comitemVo.hdzk}" />
+						</p:column>
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="还贷&lt;br/&gt;(非转口)" escape="false" />
+							</f:facet>
+							<h:outputText value="#{comitemVo.hdfzk}" />
+						</p:column>
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="工程款" />
+							</f:facet>
+							<h:outputText value="#{comitemVo.gck}" />
+						</p:column>
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="股利" />
+							</f:facet>
+							<h:outputText value="#{comitemVo.gl}" />
+						</p:column>
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="归还股东借款" />
+							</f:facet>
+							<h:outputText value="#{comitemVo.ghgd}" />
+						</p:column>
+						<p:column>
+							<f:facet name="header">
+								<p:commandLink
+									action="#{cashPoolSummaryReportBean.searchZjmysc('N')}"
+									style="color:#3B842C" update=":cashPoolSumGlFglfDialogId"
+									oncomplete="cashPoolSumGlFglfDialogVar.show()">
+									<h:outputText value="生产/贸易采购&lt;br/&gt;(非关联)" escape="false" />
+								</p:commandLink>
+							</f:facet>
+							<h:outputText value="#{comitemVo.zjfgl}" />
+						</p:column>
+
+						<p:column>
+							<f:facet name="header">
+								<p:commandLink
+									action="#{cashPoolSummaryReportBean.searchZjmysc('Y')}"
+									style="color:#3B842C"
+									oncomplete="cashPoolSumGlFglfDialogVar.show()"
+									update=":cashPoolSumGlFglfDialogId">
+									<h:outputText value="生产/贸易采购&lt;br/&gt;(关联)" escape="false" />
+								</p:commandLink>
+							</f:facet>
+							<h:outputText value="#{comitemVo.zjgl}" />
+						</p:column>
+						<p:column>
+							<f:facet name="header">
+								<p:commandLink
+									action="#{cashPoolSummaryReportBean.searchRcfk()}" value="日常付款"
+									style="color:#D23D29;"
+									oncomplete="cashPoolSumRcfkDialogVar.show()"
+									update=":cashPoolSumRcfkForm" />
+							</f:facet>
+							<h:outputText value="#{comitemVo.rcfk}" />
+						</p:column>
+					</p:dataTable>
+				</p:outputPanel>
+			</h:form>
+		</p:panel>
+		<ui:include
+			src="/faces/report/cashPool/cashPool-summary-scmycg-dialog.xhtml" />
+		<ui:include
+			src="/faces/report/cashPool/cashPool-summary-rcfk-dialog.xhtml" />
+		<ui:include
+			src="/faces/report/cashPool/cashPool-summary-company-dialog.xhtml" />
+		<ui:include
+			src="/faces/report/cashPool/cashPool-summary-item-dialog.xhtml" />
+	</ui:define>
+</ui:composition>
+
+

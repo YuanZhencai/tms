@@ -1,0 +1,218 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/template/template.xhtml">
+
+	<ui:define name="title">历史担保信息管理</ui:define>
+
+	<ui:define name="content">
+
+		<input type="hidden" id="menuOne" value="27" />
+		<input type="hidden" id="menuTwo" value="29" />
+
+		<h:form id="guaranteeListForm" prependId="false" onsubmit="statusComplete();">
+			<p:panel styleClass="panel1">
+				<p:breadCrumb preview="true" expandEffectDuration="200"
+					previewWidth="24" style="width: 99.1%">
+					<p:menuitem value="系统管理" url="#" />
+					<p:menuitem value="主数据管理" url="#" />
+					<p:menuitem value="公司信息管理" url="#" />
+				</p:breadCrumb>
+
+				<p:message id="msg" for="msg" />
+
+				<div class="style1">
+					<h:panelGrid columns="8"
+						columnClasses="column41,column2,column0,column2,column0,column2,column0,column2">
+						<h:outputLabel value="担保方名称：" />
+						<p:inputText id="companyName"
+							value="#{guaranteeBean.securedCom.companyName}" style="width:297px;" disabled="true"/>
+
+					</h:panelGrid>
+
+					<div>
+						<p:commandButton id="toAdd" action="#{guaranteeBean.clear}"
+							update="guaranteeAddForm,msg,errorMsg" oncomplete="guaranteeDialog.show()"
+							value="添加" image="ui-icon ui-icon-plus" />
+					</div>
+				</div>
+				<br />
+				<p:outputPanel id="guaranteeListPl">
+					<p:dataTable var="guarantee" id="guaranteeList"
+						value="#{guaranteeBean.guaranteesList}" rowKey="#{guarantee.id}"
+						paginator="true" rows="10" paginatorPosition="bottom"
+						paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
+						currentPageReportTemplate="{currentPage}/{totalPage}"
+						emptyMessage="无满足条件数据！">
+
+						<f:facet name="header">担保信息列表</f:facet>
+
+
+						<p:column headerText="受保方">
+							<h:outputText value="#{guarantee.insuredCom.companyName}" />
+						</p:column>
+
+						<p:column headerText="实际担保额度">
+							<h:panelGroup>
+								<h:outputText value="#{guarantee.guarAmount}" ><f:convertNumber pattern="#,##0.####"/></h:outputText>
+								<h:outputLabel>万</h:outputLabel>
+							</h:panelGroup>
+						</p:column>
+						
+						<p:column headerText="币种">
+							<h:outputText value="#{commonBean.getValueByDictCatAndKey('TMS_TAX_PROJECT_CURRENCY_TYPE',guarantee.guarAmountCu)}" />
+						</p:column>
+
+						<p:column headerText="受益人">
+							<h:outputText value="#{guarantee.bank.bankName}" />
+						</p:column>
+
+						<p:column headerText="担保起始时间">
+							<h:outputText value="#{guarantee.guarStart}" ><f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd"/> </h:outputText>
+						</p:column>
+						
+						<p:column headerText="担保结束时间">
+							<h:outputText value="#{guarantee.guarEnd}" ><f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd"/> </h:outputText>
+						</p:column>
+
+						<p:column styleClass="operating_120" headerText="操作">
+							<p:commandButton action="#{guaranteeBean.toEdit}"
+								image="ui-icon ui-icon-pencil" title="修改" oncomplete="guaranteeDialog.show()"
+								update="guaranteeAddForm,msg,errorMsg">
+								<f:setPropertyActionListener value="#{guarantee}"
+									target="#{guaranteeBean.guarantee}" />
+							</p:commandButton>
+							<p:commandButton icon="ui-icon ui-icon-close" title="删除"
+								update="guaranteeListPl" oncomplete="confirmation.show()">
+								<f:setPropertyActionListener value="#{guarantee}"
+									target="#{guaranteeBean.guarantee}" />
+							</p:commandButton>
+						</p:column>
+
+					</p:dataTable>
+				</p:outputPanel>
+			</p:panel>
+		</h:form>
+		<h:form prependId="false" id="guaranteeAddForm">
+			<p:dialog header="担保信息" widgetVar="guaranteeDialog" resizable="false"
+				modal="true" id="guaranteeDlg" width="800">
+				<p:messages id="errorMsg" />
+				<h:panelGrid columns="6"
+					columnClasses="column40,column2,column0,column2,column0,column2">
+					<h:outputLabel value="受保方：" />
+					<h:panelGroup>
+						<h:selectOneMenu id="dia_companyName" name="dia_companyName"
+							value="#{guaranteeBean.guarantee.insuredCom.id}" label="受保方" style="width:307px;"
+							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all" required="true" requiredMessage="受保方：不可为空！">
+							<f:selectItems value="#{guaranteeBean.companySelect}" />
+						</h:selectOneMenu>
+						<h:outputText style="color:red;" value="*" />
+					</h:panelGroup>
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+				</h:panelGrid>
+				<h:panelGrid columns="6"
+					columnClasses="column40,column2,column0,column2,column0,column2">	
+					<h:outputLabel value="实际担保额度：" />
+					<h:panelGroup>
+						<p:inputText id="dia_guarAmount" value="#{guaranteeBean.guarantee.guarAmount}" label="实际担保额度" maxlength="16" required="true" requiredMessage="实际担保额度：不可为空！">
+							<f:convertNumber pattern="#,##0.####"/>
+							<f:validateDoubleRange maximum="99999999.9999" minimum="0"></f:validateDoubleRange>
+						</p:inputText>
+						<h:outputLabel>万</h:outputLabel>
+						<h:outputText style="color:red;" value="*" />
+					</h:panelGroup>
+					
+					<h:outputLabel value="币种：" />
+					<h:selectOneMenu id="dia_guarAmountCu" name="dia_guarAmountCu" label="币种" value="#{guaranteeBean.guarantee.guarAmountCu}"
+						styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+						<f:selectItems value="#{guaranteeBean.currencySelect}" />
+					</h:selectOneMenu>
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+				</h:panelGrid>
+				<h:panelGrid columns="6"
+					columnClasses="column40,column2,column0,column2,column0,column2">	
+					<h:outputLabel value="受益人：" />
+					<h:selectOneMenu id="dia_topbank" name="dia_topbank"
+						value="#{guaranteeBean.topBankId}" label="总行" style="width:307px;"
+						styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all" required="true" requiredMessage="请选择受益人总行！">
+						<f:selectItems value="#{guaranteeBean.topBankSelect}" />
+						<p:ajax listener="#{guaranteeBean.initBank}" update="dia_childbank"></p:ajax>
+					</h:selectOneMenu>
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					
+					<h:outputLabel value="" />
+					<h:panelGroup>
+						<h:selectOneMenu id="dia_childbank" name="dia_childbank"
+							value="#{guaranteeBean.guarantee.bank.id}" label="分行" style="width:307px;"
+							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all" required="true" requiredMessage="请选择受益人分行！">
+							<f:selectItems value="#{guaranteeBean.childBankSelect}" />
+						</h:selectOneMenu>
+						<h:outputText style="color:red;" value="*" />
+					</h:panelGroup>
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					
+					<h:outputLabel value="生效担保期限："/>
+					<h:panelGroup>
+						<p:inputText id="dia_guarStart"
+							value="#{guaranteeBean.guarantee.guarStart}" styleClass="ui-date"
+							style="font-size: 9px;" title="生效担保开始日期" required="true" requiredMessage="生效担保开始日期：不可为空！"
+							onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'dia_guarEnd\')}',autoUpdateOnChanged:false});">
+							<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+						</p:inputText>
+						<h:outputText value="~" />
+						<p:inputText id="dia_guarEnd"
+							value="#{guaranteeBean.guarantee.guarEnd}" styleClass="ui-date"
+							style="font-size: 9px;" title="生效担保结束日期" required="true" requiredMessage="生效担保结束日期：不可为空！"
+							onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'dia_guarStart\')}',autoUpdateOnChanged:false});">
+							<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+						</p:inputText>
+						<h:outputText style="color:red;" value="*" />
+					</h:panelGroup>
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+				</h:panelGrid>
+				<f:facet name="footer">
+					<p:commandButton action="#{guaranteeBean.saveGua}" value="保存"
+						id="add" icon="ui-icon ui-icon-disk" update="guaranteeListPl,msg,errorMsg"
+						oncomplete="handleComplete(guaranteeDialog,args);" />
+						&#160;&#160;
+					<p:commandButton value="取消" onclick="guaranteeDialog.hide()"
+						type="button" id="roleBACKID" icon="ui-icon ui-icon-cancel" />
+				</f:facet>
+			</p:dialog>
+		</h:form>
+		<h:form prependId="false">
+			<p:confirmDialog message="是否删除此担保信息？" header="删除警告" severity="alert"
+				widgetVar="confirmation">
+				<div align="center">
+					<p:commandButton update="guaranteeListPl,msg"
+						value="确定" icon="ui-icon ui-icon-check"
+						oncomplete="confirmation.hide();"
+						action="#{guaranteeBean.deleteGua}" />
+					&#160;&#160;
+					<p:commandButton value="取消" onclick="confirmation.hide()"
+						type="button" icon="ui-icon ui-icon-cancel" />
+				</div>
+			</p:confirmDialog>
+		</h:form>
+	</ui:define>
+
+</ui:composition>
+
+

@@ -1,0 +1,215 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/template/template.xhtml">
+
+	<ui:define name="title">授信额度明细表</ui:define>
+
+	<ui:define name="content">
+
+		<input type="hidden" id="menuOne" value="21" />
+		<input type="hidden" id="menuTwo" value="22" />
+
+		<h:form id="dbListForm" prependId="false" onsubmit="statusComplete();">
+			<p:panel styleClass="panel1">
+				<p:breadCrumb preview="true" expandEffectDuration="200"
+					previewWidth="24" style="width: 99.1%">
+					<p:menuitem value="#{msgs.menItem_form}" url="#" />
+					<p:menuitem value="#{msgs.menItem_form}" url="#" />
+					<p:menuitem value="#{msgs.head_creditLineList}" url="#" />
+				</p:breadCrumb>
+
+				<p:messages id="doneMsg" />
+
+				<div class="style1">
+					<h:panelGrid columns="8"
+						columnClasses="column41,column2,column0,column2,column0,column2,column0,column2">
+						<h:outputLabel value="#{msgs.lbl_creditStartTime}" />
+						<h:panelGroup>
+							<p:inputText id="creditStartS"
+								value="#{bankCreditReportBean.conditionMap['creditStartS']}"
+								styleClass="ui-date" style="font-size: 12px;width:90px;"
+								title="#{msgs.txt_startTime}"
+								onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'creditStartE\')}'});">
+								<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+							</p:inputText>
+							<h:outputText value="~" />
+							<p:inputText id="creditStartE"
+								value="#{bankCreditReportBean.conditionMap['creditStartE']}"
+								styleClass="ui-date" style="font-size: 12px;width:90px;"
+								title="#{msgs.txt_endTime}"
+								onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'creditStartS\')}'});">
+								<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+							</p:inputText>
+						</h:panelGroup>
+
+						<h:outputLabel value="#{msgs.lbl_creditEndTime}" />
+						<h:panelGroup>
+							<p:inputText id="creditEndS"
+								value="#{bankCreditReportBean.conditionMap['creditEndS']}"
+								styleClass="ui-date" style="font-size: 9px;width:90px;"
+								title="#{msgs.txt_startTime}"
+								onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'creditEndE\')}'});">
+								<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+							</p:inputText>
+							<h:outputText value="~" />
+							<p:inputText id="creditEndE"
+								value="#{bankCreditReportBean.conditionMap['creditEndE']}"
+								styleClass="ui-date" style="font-size: 9px;width:90px;"
+								title="#{msgs.txt_endTime}"
+								onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'creditEndS\')}'});">
+								<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+							</p:inputText>
+						</h:panelGroup>
+
+						<h:outputLabel value="#{msgs.col_companyName}："
+							rendered="#{!bankCreditReportBean.isCopUser}" />
+						<h:panelGroup rendered="#{!bankCreditReportBean.isCopUser}">
+							<h:selectOneMenu id="companyName" name="companyName"
+								style="width:330px;"
+								value="#{bankCreditReportBean.conditionMap['companyId']}"
+								styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+								<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" itemValue="" />
+								<f:selectItems value="#{bankCreditReportBean.companySelect}" />
+							</h:selectOneMenu>
+						</h:panelGroup>
+						<h:outputLabel value=""
+							rendered="#{!bankCreditReportBean.isCopUser}" />
+						<h:outputLabel value="#{msgs.col_companyName}："
+							rendered="#{bankCreditReportBean.isCopUser}" />
+						<h:panelGroup rendered="#{bankCreditReportBean.isCopUser}">
+							<p:inputText id="companyNameTwo" disabled="true"
+								style="width: 320px;"
+								value="#{bankCreditReportBean.company.companyName}" />
+						</h:panelGroup>
+						<p:commandButton immediate="true" value="#{msgs.btn_select}"
+							style="width: 70px;" image="ui-icon ui-icon-zoomin"
+							rendered="#{bankCreditReportBean.isCopUser}"
+							actionListener="#{bankCreditReportBean.clear}"
+							oncomplete="companyDialogVar.show()"
+							update="companyForm,childBankName">
+							<f:setPropertyActionListener
+								target="#{bankCreditReportBean.companySelectBean.method}"
+								value="bankCreditReportBean.getSelectedCompany" />
+						</p:commandButton>
+						<h:outputLabel value="" />
+
+						<h:outputLabel value="#{msgs.lbl_BankName}：" />
+						<h:panelGroup>
+							<h:selectOneMenu id="childBankName" name="childBankName"
+								style="width:210px"
+								value="#{bankCreditReportBean.conditionMap['bankId']}"
+								styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+								<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" itemValue="" />
+								<f:selectItems value="#{bankCreditReportBean.childBankSelect}" />
+							</h:selectOneMenu>
+						</h:panelGroup>
+						<h:outputLabel value="显示最新数据" />
+						<p:selectBooleanCheckbox id="doDisplay" value="#{bankCreditReportBean.doDisplay}"/>
+					</h:panelGrid>
+					<div>
+						<p:commandButton id="query"
+							action="#{bankCreditReportBean.searchBankCreditDetail}"
+							update="doneMsg,creditPl" value="#{msgs.btn_query}"
+							image="ui-icon ui-icon-search" />
+						<p:commandButton value="#{msgs.btn_reset}" style="margin: 5px;"
+							icon="ui-icon ui-icon-arrowrefresh-1-e"
+							action="#{bankCreditReportBean.reset}"
+							update="creditStartS,creditStartE,creditEndE,creditEndS,companyName,companyNameTwo,childBankName,doDisplay" />
+					</div>
+				</div>
+				<br />
+
+				<p:outputPanel id="creditPl">
+					<p:dataTable var="credit" id="creditReports"
+						value="#{bankCreditReportBean.credits}" rowKey="#{credit.id}"
+						emptyMessage="#{msgs.empty_noSatisfactData}">
+
+						<f:facet name="header">#{msgs.head_creditLineList}</f:facet>
+
+						<p:column headerText="#{msgs.lbl_confirmDate}">
+							<h:outputText value="#{credit.updatedDatetime}">
+								<f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd" />
+							</h:outputText>
+						</p:column>
+
+						<p:column headerText="#{msgs.lbl_processFormNum}">
+							<h:outputText value="#{credit.procInstId}" />
+						</p:column>
+
+						<p:column headerText="#{msgs.col_companyName}">
+							<h:outputText value="#{credit.company.companyName}" />
+						</p:column>
+						
+						<p:column headerText="#{msgs.lbl_BankName_Top}">
+							<h:outputText value="#{bankCreditReportBean.getParentBankName(credit.bank)}" />
+						</p:column>
+
+						<p:column headerText="#{msgs.lbl_BankName_Subbranch}">
+							<h:outputText value="#{credit.bank.bankName}" />
+						</p:column>
+						
+						<p:column headerText="#{msgs.lbl_creditLine_myriad}">
+							<h:outputText value="#{credit.creditLine}">
+								<f:convertNumber pattern="#,##0.####" />
+							</h:outputText>
+							<f:facet name="footer">
+								<h:outputText value="#{bankCreditReportBean.creditSum}"
+									style="text-align:right">
+									<f:convertNumber pattern="#,##0.####" />
+								</h:outputText>
+							</f:facet>
+						</p:column>
+
+						<p:column headerText="#{msgs.lbl_creditCurrency}">
+							<h:outputText
+								value="#{commonBean.getValueByDictCatAndKey('TMS_TAX_PROJECT_CURRENCY_TYPE',credit.creditLineCu)}" />
+						</p:column>
+
+						<p:column headerText="#{msgs.lbl_creditStartTime}">
+							<h:outputText value="#{credit.creditStart}">
+								<f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd" />
+							</h:outputText>
+						</p:column>
+
+						<p:column headerText="#{msgs.lbl_creditEndTime}">
+							<h:outputText value="#{credit.creditEnd}">
+								<f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd" />
+							</h:outputText>
+						</p:column>
+
+					</p:dataTable>
+				</p:outputPanel>
+
+			</p:panel>
+		</h:form>
+		<ui:include src="/faces/process/common/companySelect-dialog.xhtml" />
+
+		<script type="text/javascript">
+			function handleSaveRequest(xhr, status, args) {
+				if (args.issucc == "yes") {
+					companyDialogVar.hide();
+				}
+			}
+
+			function handleUpdateRequest(xhr, status, args) {
+				if (args.issucc == "yes") {
+					companyDialogVar.hide();
+				}
+			}
+
+			function handleTreeRequest(xhr, status, args) {
+				if (args.issucc == "yes") {
+					companyDialogVar.hide();
+				}
+			}
+		</script>
+
+	</ui:define>
+</ui:composition>
+
+

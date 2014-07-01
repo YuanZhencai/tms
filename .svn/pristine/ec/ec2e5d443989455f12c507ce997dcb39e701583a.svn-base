@@ -1,0 +1,173 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/template/template.xhtml">
+
+	<ui:define name="title">流程节点表单绑定</ui:define>
+	<ui:define name="styleAndScript">
+	</ui:define>
+	<ui:define name="content">
+		
+		<input type="hidden" id="menuOne" value="27" />
+		<input type="hidden" id="menuTwo" value="30" />
+	
+		<p:panel styleClass="panel1">
+			<h:form prependId="false" id="addprocessNodeForm" onsubmit="statusComplete();">
+				<p:breadCrumb preview="true" expandEffectDuration="200"
+					previewWidth="24" style="width: 99.1%">
+					<p:menuitem value="系统管理" url="#" />
+					<p:menuitem value="主数据管理" url="#" />
+					<p:menuitem value="系统流程管理" url="#" />
+				</p:breadCrumb>
+				<p:message id="processNodeMsg" for="processNodeMsg" />
+				<p:message id="nodeName2Msg" for="nodeName2" />
+				<p:message id="nodeIdentityMsg" for="nodeIdentity" />
+
+				<div class="style1">
+					<h:panelGrid columns="4"
+						columnClasses="column1,column2,column1,column2">
+						<h:outputLabel value="节点名称：" />
+						<h:panelGroup>
+							<p:inputText id="nodeName2" required="true"
+								requiredMessage="请输入节点名称"
+								value="#{processNodeBean.instance.nodeName}" />
+							<h:outputText style="color:red;" value=" *" />
+						</h:panelGroup>
+
+						<h:outputLabel value="表单标识：" />
+						<h:panelGroup>
+							<p:inputText id="nodeIdentity" required="true"
+								requiredMessage="请输入表单URL地址"
+								value="#{processNodeBean.instance.nodeIdentity}" />
+							<h:outputText style="color:red;" value=" *" />
+						</h:panelGroup>
+
+					</h:panelGrid>
+					<h:panelGrid columns="2" columnClasses="column1,column2">
+						<h:outputLabel value="备注：" />
+						<p:inputTextarea rows="1" cols="53" autoResize="false"
+							value="#{processNodeBean.instance.memo}"
+							validatorMessage="备注输入内容超过最大长度200" id="memo">
+							<f:validateLength maximum="200" for="memo" />
+						</p:inputTextarea>
+					</h:panelGrid>
+					<div>
+						<p:commandButton value="添加" icon="ui-icon ui-icon-plus"
+							action="#{processNodeBean.addProcessNodeLogic}"
+							update="processNodeTableId,processNodeMsg,nodeName2,nodeIdentity,memo,nodeName2Msg,nodeIdentityMsg,processNodeMsg" />
+						&#160;&#160;
+						<p:commandButton value="保存" icon="ui-icon ui-icon-disk"
+							immediate="true"
+							action="#{processNodeBean.addProcessNodePhysical}" ajax="false" />
+					</div>
+				</div>
+				<br />
+			</h:form>
+			<h:form prependId="false">
+				<p:outputPanel id="processNodeTableId">
+					<p:dataTable var="process" id="processNodeId"
+						value="#{processNodeBean.lazyModel}" paginator="true" rows="10"
+						paginatorPosition="bottom" rowKey="#{process.id}"
+						paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport}"
+						currentPageReportTemplate="{currentPage}/{totalPage}"
+						emptyMessage="无满足条件数据！" editable="true">
+						<f:facet name="header">流程节点表单绑定列表</f:facet>
+
+						<p:column headerText="节点名称">
+							<h:outputText value="#{process.nodeName}" />
+						</p:column>
+
+						<p:column headerText="表单标识">
+							<h:outputText value="#{process.nodeIdentity}" />
+						</p:column>
+
+						<p:column headerText="备注">
+							<h:outputText value="#{process.memo}" />
+						</p:column>
+
+						<p:column headerText="操作" styleClass="operating_60">
+							<p:commandButton oncomplete="processNodeEditDialog.show()"
+								title="修改" icon="ui-icon ui-icon-pencil"
+								update="processNodeEditPanel">
+								<f:setPropertyActionListener
+									target="#{processNodeBean.editProcessNode}" value="#{process}" />
+							</p:commandButton>
+							<p:commandButton icon="ui-icon ui-icon-close" title="删除"
+								update="processNodeTableId"
+								oncomplete="processNodeConfirm.show()">
+								<f:setPropertyActionListener
+									target="#{processNodeBean.processNode}" value="#{process}" />
+							</p:commandButton>
+						</p:column>
+
+					</p:dataTable>
+				</p:outputPanel>
+
+
+				<p:confirmDialog message="是否删除此流程节点？" header="删除警告" severity="alert"
+					widgetVar="processNodeConfirm">
+					<div align="center">
+						<p:commandButton update="processNodeMsg,processNodeTableId"
+							value="确定" icon="ui-icon ui-icon-check"
+							oncomplete="processNodeConfirm.hide();"
+							action="#{processNodeBean.deleteProcessNode}" />
+						&#160;&#160;
+						<p:commandButton value="取消" onclick="processNodeConfirm.hide()"
+							icon="ui-icon ui-icon-cancel" type="button" />
+					</div>
+				</p:confirmDialog>
+			</h:form>
+
+
+			<h:form prependId="false" id="processNodeEditForm">
+				<p:dialog header="流程表单节点信息编辑" widgetVar="processNodeEditDialog"
+					resizable="false" width="600" modal="true">
+					<p:message id="nodeNameEditmsg" for="nodeNameEdit" />
+					<p:message id="nodeIdentityEditmsg" for="nodeIdentityEdit" />
+					<h:panelGrid id="processNodeEditPanel" columns="4"
+						columnClasses="column41,column42,column41,column42"
+						footerClass="footer1">
+						<h:outputLabel value="节点名称：" />
+						<h:panelGroup>
+							<p:inputText id="nodeNameEdit" required="true"
+								requiredMessage="请输入节点名称"
+								value="#{processNodeBean.editProcessNode.nodeName}" />
+							<h:outputText style="color:red;" value=" *" />
+						</h:panelGroup>
+
+						<h:outputLabel value="表单标识：" />
+						<h:panelGroup>
+							<p:inputText id="nodeIdentityEdit" required="true"
+								requiredMessage="请输入表单URL地址"
+								value="#{processNodeBean.editProcessNode.nodeIdentity}" />
+							<h:outputText style="color:red;" value=" *" />
+						</h:panelGroup>
+
+						<h:outputLabel value="备注：" />
+						<p:inputTextarea rows="4" style="width:135px;height:50px;"
+							autoResize="false"
+							value="#{processNodeBean.editProcessNode.memo}"
+							validatorMessage="备注输入内容超过最大长度200" id="memEdit">
+							<f:validateLength maximum="200" for="memEdit" />
+						</p:inputTextarea>
+						<f:facet name="footer">
+							<p:commandButton id="processNodeUpdateBtn" value="保存"
+								update="nodeNameEditmsg,nodeIdentityEditmsg,processNodeTableId,processNodeMsg"
+								oncomplete="handleComplete(processNodeEditDialog,args)"
+								action="#{processNodeBean.updateProcessNode}"
+								icon="ui-icon ui-icon-disk" />
+			            &#160;&#160;
+			            <p:commandButton value="取消" type="button"
+								onclick="processNodeEditDialog.hide()"
+								id="processUpdateCanelBtn" icon="ui-icon ui-icon-cancel" />
+						</f:facet>
+					</h:panelGrid>
+
+				</p:dialog>
+			</h:form>
+		</p:panel>
+	</ui:define>
+</ui:composition>

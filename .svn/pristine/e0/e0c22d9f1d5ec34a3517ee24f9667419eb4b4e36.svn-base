@@ -1,0 +1,330 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:commentProcess="http://java.sun.com/jsf/composite/commentProcess"
+	xmlns:wcs="http://www.wcs-global.com/customtaglib"
+	template="/template/template.xhtml">
+
+	<ui:define name="title">外债请款审批</ui:define>
+	<ui:define name="styleAndScript">
+		
+	</ui:define>				
+	<ui:define name="content">
+
+		<input type="hidden" id="menuOne" value="15" />	
+		<input type="hidden" id="menuTwo" value="20" />
+		<p:panel styleClass="panel1">
+			<h:form id="debtPaymentForm" prependId="false" onsubmit="statusComplete();">
+				<p:breadCrumb preview="true" expandEffectDuration="200"
+					previewWidth="24" style="width: 99.1%">
+					<p:menuitem value="#{msgs.menItem_process} " url="#" />
+					<p:menuitem value="#{msgs.menItem_process}" url="#" />
+					<p:menuitem value="#{msgs.foreign_debt_request}" url="#" />
+				</p:breadCrumb>
+				<p:messages id="msg" />
+			<div class="style11">
+				<h:panelGrid columns="5" columnClasses="column41,column2,column45,column43,column2">
+						<h:outputLabel value="#{msgs.lbl_date_filling}：" />
+						<p:inputText id="createdDatetime" label="#{msgs.lbl_date_filling}" 
+							value="#{debtPaymentBean.procDebtPayment.createdDatetime}" disabled="true"><f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd"/></p:inputText>
+						<h:outputLabel value=" " />
+						<!-- 
+						<h:outputLabel value="#{msgs.lbl_user_filling}：" />
+						<p:inputText id="createdBy" value="#{currentUser.exchange2CN(debtPaymentBean.procDebtPayment.createdBy)}" disabled="true" label="#{msgs.lbl_user_filling}" ></p:inputText>
+				 -->
+				</h:panelGrid>
+				
+				<h:panelGrid columns="6"
+							columnClasses="column41,column2,column2,column2,column45,column2">
+						<h:outputLabel value="#{msgs.lbl_zh_applyCompanyName}：" />
+						<h:panelGroup >
+						
+						<p:inputText id="companyName" label="#{msgs.lbl_zh_applyCompanyName}" style="width:297px;"
+							value="#{debtPaymentBean.procDebtPayment.company.companyName}" disabled="true"/>
+						<h:outputText style="color:red;" value="*" />
+						</h:panelGroup>
+						<h:outputText  value=" " />
+						<h:outputLabel value="#{msgs.lbl_en_applyCompanyName}：" />
+						<p:inputText id="companyEn" label="#{msgs.lbl_en_applyCompanyName}" style="width:297px;" 
+							value="#{debtPaymentBean.procDebtPayment.company.companyEn}" disabled="true"/>
+						</h:panelGrid>
+				</div>
+				
+				<div class="style11">
+				<h:panelGrid columns="5"
+							columnClasses="column41,column2,column45,column43,column2">
+							
+														<h:outputLabel value="#{msgs.lbl_debtRequstNo}：" />
+							<h:panelGroup>
+								<p:selectOneRadio id="applyType" required="true" disabled="true"
+									requiredMessage="#{msgs.msg_select_applyType}"
+									value="#{debtPaymentBean.procDebtPayment.isHasDebtContract}">
+									<f:selectItem itemLabel="#{msgs.lbl_haveDeptCon}" itemValue="Y" />
+								</p:selectOneRadio>
+							</h:panelGroup>
+					</h:panelGrid>
+					
+					<h:panelGrid columns="5" columnClasses="column41,column2,column41l,column21,column21">
+						<h:outputLabel value="#{msgs.lbl_debtConId}：" />
+						<p:inputText id="debtConId" label="#{msgs.debtConId}" 
+							value="#{debtPaymentBean.procDebtPayment.debtContract.debtContractNo}" disabled="true" style="width:297px;"></p:inputText>
+						
+						<h:outputLabel value="#{msgs.lbl_debtFromEndDate}：" />
+						<p:inputText id="debtFromDate" label="#{msgs.lbl_debtFromEndDate}" 
+							value="#{debtPaymentBean.procDebtPayment.debtContract.contractStartDate}" disabled="true">
+						<f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd" />
+         </p:inputText>
+						<p:inputText id="debtEndDate2" 
+							value="#{debtPaymentBean.procDebtPayment.debtContract.contractEndDate}" disabled="true">
+						<f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd" />							
+							</p:inputText>
+					</h:panelGrid>
+							
+					<h:panelGrid columns="6" columnClasses="column41,column2,column21,column41l,column41l,column2">
+						<h:outputLabel value="#{msgs.lbl_debtConMoneyCount}：" />
+						<p:inputText id="debtConMoneyCount" label="#{msgs.lbl_debtConMoneyCount}" 
+							value="#{debtPaymentBean.procDebtPayment.debtContract.debtContractFunds}" disabled="true"></p:inputText>
+						<h:outputLabel value="#{msgs.lbl_wan}" />
+						
+						<h:selectOneMenu value="#{debtPaymentBean.procDebtPayment.debtContract.debtContractFundsCu}"
+									id="moneyType"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									style="width:135px" disabled="true">
+									<f:selectItems value="#{debtPaymentBean.currencySelect}" />
+								</h:selectOneMenu>
+							
+							<h:outputLabel value="#{msgs.lbl_fundProvider}：" style="width:190px"/>
+						<p:inputText id="fundProvider" 
+							value="#{debtPaymentBean.procDebtPayment.debtContract.shareHolder.shareHolderName}" disabled="true" style="width:283px"></p:inputText>
+						
+					</h:panelGrid>		
+					
+					<h:panelGrid columns="8" columnClasses="column41,column2,column21,column41l,column41l,column2,column2,column21">
+						<h:outputLabel for="yqkje" value="#{msgs.lbl_yqkje}：" />
+						<p:inputText id="yqkje" 
+							value="#{debtPaymentBean.procDebtPayment.debtContract.appliedFunds}" disabled="true"></p:inputText>
+						
+						<h:outputLabel for="moneyType2" value="#{msgs.lbl_wan}" />
+						<h:selectOneMenu value="#{debtPaymentBean.procDebtPayment.debtContract.appliedFundsCu}"
+									id="moneyType2"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									style="width:135px" disabled="true">
+									<f:selectItems value="#{debtPaymentBean.currencySelect}" />
+								</h:selectOneMenu>
+							
+							<h:outputLabel for="wqkje" value="#{msgs.lbl_wqkje}：" />
+						<p:inputText id="wqkje" 
+							value="#{debtPaymentBean.procDebtPayment.debtContract.unAppliedFunds}" disabled="true"></p:inputText>
+						<h:outputLabel for="moneyType3" value="#{msgs.lbl_wan}" />
+						
+						<h:selectOneMenu value="#{debtPaymentBean.procDebtPayment.debtContract.appliedFundsCu}"
+									id="moneyType3"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									style="width:125px" disabled="true">
+									<f:selectItems value="#{debtPaymentBean.currencySelect}" />
+								</h:selectOneMenu>
+					</h:panelGrid>		
+					
+					<h:panelGrid columns="4" columnClasses="column41,column2,column21,column41l">
+						<h:outputLabel for="qkje" value="#{msgs.lbl_qkje}：" />
+						<p:inputText id="qkje" disabled="true" value="#{debtPaymentBean.procDebtPayment.applyFunds}" ></p:inputText>
+						
+						<h:outputLabel for="moneyType4" value="#{msgs.lbl_wan}" />
+						<h:selectOneMenu value="#{debtPaymentBean.procDebtPayment.applyFundsCu}"
+									id="moneyType4"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									style="width:135px" disabled="true">
+									<f:selectItems value="#{debtPaymentBean.currencySelect}" />
+								</h:selectOneMenu>
+						
+					</h:panelGrid>	
+					
+					
+					<h:panelGrid columns="2" columnClasses="column41,column2" >
+					<h:outputLabel for="use" value="#{msgs.lbl_qkyt}：" />
+					<p:inputTextarea id="use" rows="5" required="true"
+									validatorMessage="#{msgs.msg_validator_use}"
+									style="width:725px;" disabled="true" 
+									requiredMessage="#{msgs.msg_required_use}"
+									value="#{debtPaymentBean.procDebtPayment.use}"
+									autoResize="false">
+									<f:validateLength maximum="200" />
+								</p:inputTextarea>
+					</h:panelGrid>		
+				</div>
+				
+				
+			<div class="style11">
+				<h:outputLabel  value="#{msgs.lbl_remitRoute}：" styleClass="title_2"/>
+				<h:panelGrid columns="2"
+							columnClasses="column170,column2">
+							<h:outputLabel  value="#{msgs.lbl_wzzjtgf}：" for="wzzjtgf"/>
+							<p:inputText id="wzzjtgf" disabled="true" value="#{debtPaymentBean.procDebtPayment.debtProvider}" style="width:400px"></p:inputText>
+							
+							<h:outputLabel  value="#{msgs.lbl_wzzjsqf}：" for="wzzjsqf"/>
+							<p:inputText id="wzzjsqf" disabled="true" value="#{debtPaymentBean.procDebtPayment.debtRequester}" style="width:400px"></p:inputText>
+							
+							<h:outputLabel  value="#{msgs.lbl_wzsqfdz}：" for="wzsqfdz"/>
+							<p:inputText id="wzsqfdz" disabled="true" value="#{debtPaymentBean.procDebtPayment.debtRequesterAddr}" style="width:400px"></p:inputText>
+				</h:panelGrid>
+				
+				
+				<h:panelGrid columns="2"
+							columnClasses="column170,column2">
+							<h:outputLabel  value="#{msgs.lbl_hklx1}：" for="corrBeneBankName"/>
+							<p:inputText id="corrBeneBankName"  disabled="true" value="#{debtPaymentBean.procDebtPayment.remittanceLineAccount.corrBeneBankName}" style="width:400px"></p:inputText>
+							
+							<h:outputLabel  value="#{msgs.lbl_hklx2}：" for="swiftCode1"/>
+							<p:inputText id="swiftCode1" disabled="true" value="#{debtPaymentBean.procDebtPayment.remittanceLineAccount.swiftCode1}" style="width:400px"></p:inputText>
+							
+							<h:outputLabel  value="#{msgs.lbl_hklx3}：" for="acNo"/>
+							<p:inputText id="acNo" disabled="true" value="#{debtPaymentBean.procDebtPayment.remittanceLineAccount.acNo}" style="width:400px"></p:inputText>
+							
+							<h:outputLabel  value="#{msgs.lbl_hklx4}：" for="beneBankName"/>
+							<p:inputText id="beneBankName" disabled="true" value="#{debtPaymentBean.procDebtPayment.remittanceLineAccount.beneBankName}" style="width:400px"></p:inputText>
+							
+							<h:outputLabel  value="#{msgs.lbl_hklx2}：" for="swiftCode2"/>
+							<p:inputText id="swiftCode2" disabled="true" value="#{debtPaymentBean.procDebtPayment.remittanceLineAccount.swiftCode2}" style="width:400px"></p:inputText>
+				</h:panelGrid>
+				</div>	
+				
+				<div class="style11">	
+					<h:panelGrid columns="8"
+							columnClasses="column41l,column2,column0,column40,column42,column2,column0,column2">
+						<h:outputLabel value="" />
+						<p:selectOneRadio id="afceFlag" value="#{debtPaymentBean.procDebtPayment.afceFlag}" disabled="true">  
+				            <f:selectItem itemLabel="#{msgs.itemLbl_afceFlag_N}" itemValue="N" />  
+				            <f:selectItem itemLabel="#{msgs.itemLbl_afceFlag_Y}" itemValue="Y" />
+       					</p:selectOneRadio>
+       					<h:outputLabel value="" />
+       					<h:outputLabel value="" />
+       					<h:outputLabel value="" />
+       					<h:outputLabel value="" />
+       					<h:outputLabel value="" />
+       					<h:outputLabel value="" />  
+						
+						<h:outputLabel value="#{msgs.lbl_afceSign}：" />
+						<h:panelGroup>
+							<p:inputText id="afceSign" label="#{msgs.lbl_afceSign}"
+								value="#{debtPaymentBean.procDebtPayment.afceSign}" disabled="true">
+								<f:convertNumber pattern="#,##0.####"/>
+								<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"></f:validateDoubleRange>
+							</p:inputText>
+							<h:outputLabel value="#{msgs.lbl_tenThousand}"></h:outputLabel>
+							<h:outputText style="color:red;" value="*" />
+						</h:panelGroup>
+						<p:inputText id="afceSignCu" 
+								value="#{debtPaymentBean.procDebtPayment.afceSignCu}" disabled="true" />
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						
+						<h:outputLabel value="#{msgs.lbl_afcePaid}：" />
+						<h:panelGroup>
+							<p:inputText id="afcePaid" label="#{msgs.lbl_afcePaid}"
+								value="#{debtPaymentBean.procDebtPayment.afcePaid}" disabled="true" >
+								<f:convertNumber pattern="#,##0.####"/>
+								<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"></f:validateDoubleRange>
+							</p:inputText>
+							<h:outputLabel value="#{msgs.lbl_tenThousand}"></h:outputLabel>
+							<h:outputText style="color:red;" value="*" />
+						</h:panelGroup>
+						
+						<p:inputText id="afcePaidCu" 
+								value="#{debtPaymentBean.procDebtPayment.afcePaidCu}" disabled="true" />
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						
+						<h:outputLabel value="#{msgs.lbl_exchangeRate}：" />
+						<h:panelGroup>
+							<p:inputText id="afceExcRate" label="#{msgs.lbl_afceExcRate}"
+								value="#{debtPaymentBean.procDebtPayment.afceExcRate}" disabled="true">
+								<f:convertNumber pattern="0.##"/>
+								<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"></f:validateDoubleRange>
+							</p:inputText>
+							<h:outputText style="color:red;" value="*" />
+						</h:panelGroup>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						
+						<h:outputLabel value="#{msgs.lbl_afceSignExc}：" />
+						<h:panelGroup>
+							<p:inputText id="afceSignExc" label="#{msgs.lbl_afceSignExc}"
+								value="#{debtPaymentBean.procDebtPayment.afceSignExc}" disabled="true">
+								<f:convertNumber pattern="#,##0.####"/>
+								<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"></f:validateDoubleRange>
+							</p:inputText>
+							<h:outputLabel value="#{msgs.lbl_tenThousand}"></h:outputLabel>
+						</h:panelGroup>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+					</h:panelGrid>		
+				</div>
+				
+					<div align="right">
+								<h:panelGrid columns="2" columnClasses="column40,column2">
+									<h:outputLabel value="#{msgs.lbl_doNext}" />
+									<p:selectBooleanCheckbox id="doNext"
+										value="#{debtPaymentBean.doNext}" />
+								</h:panelGrid>
+								&#160;&#160;
+								<h:outputLabel value="#{msgs.msg_debt_noticeXjp}"/>
+								<p:commandButton id="pass" onclick="buttonDisable('pass');" icon="ui-icon ui-icon-circle-check"
+									value="#{msgs.btn_doneMail}"  ajax="true"
+									action="#{debtPaymentBean.doApprove('Y')}">
+								</p:commandButton>
+					</div>
+								<p:outputPanel id="detailVoListPl">
+					<p:dataTable var="detailVo" id="detailVoList" value="#{debtPaymentBean.detailVos}" rowKey="#{detailVo.id}" rows="100" emptyMessage="#{msgs.empty_data_msg}">
+
+						<f:facet name="header">#{msgs.head_detailVoList}</f:facet>
+
+						<p:column headerText="#{msgs.headerText_prossNodeName}">
+							<h:outputText value="#{detailVo.prossNodeName}" />
+						</p:column>
+
+						<p:column headerText="#{msgs.headerText_operatorsName}">
+							<h:outputText value="#{currentUser.exchange2CN(detailVo.operatorsName)}" />
+						</p:column>
+
+						<p:column headerText="#{msgs.headerText_operatorTime}">
+							<h:outputText value="#{detailVo.operatorTime}" >
+								<f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd HH:mm:ss"/>
+							</h:outputText>
+						</p:column>
+						
+						<p:column headerText="#{msgs.headerText_remark}">
+							<h:outputText value="#{detailVo.nodeMemo}" />
+						</p:column>
+					</p:dataTable>
+				</p:outputPanel>
+			</h:form>	
+			
+			<h:form prependId="false" id="fileForm">
+				<div style="position: relative; margin-top: 5px;">
+					<p:outputPanel id="attachmentPanel">
+						<commentProcess:filedownload updateComenId="attachmentPanel"
+							isDisable="true" dataList="#{debtPaymentBean.processFileList}" />
+					</p:outputPanel>
+				</div>
+			</h:form>
+		</p:panel>
+		
+	</ui:define>
+</ui:composition>

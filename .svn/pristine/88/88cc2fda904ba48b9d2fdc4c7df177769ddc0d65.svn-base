@@ -1,0 +1,182 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/template/template.xhtml">
+	<ui:define name="title">公司账户</ui:define>
+
+	<ui:define name="content">
+
+		<input type="hidden" id="menuOne" value="27" />
+		<input type="hidden" id="menuTwo" value="29" />
+
+		<p:panel styleClass="panel1">
+			<p:breadCrumb preview="true" expandEffectDuration="200"
+				previewWidth="24">
+				<p:menuitem value="系统管理" url="#" />
+				<p:menuitem value="主数据管理" url="#" />
+				<p:menuitem value="公司信息管理" url="#" />
+			</p:breadCrumb>
+			<h:form prependId="false" id="companyBanknFormId"
+				onsubmit="statusComplete();">
+				<p:message id="msg" for="msg" />
+				<div style="position: relative; margin-top: 5px;">
+					<div class="style1">
+						<h:panelGrid id="accountQueryPanel" columns="2"
+							columnClasses="column1,column2" footerClass="footer1">
+							<h:outputLabel value="公司名称：" />
+							<p:inputText id="company_name"
+								value="#{companyAccountBean.companyName}" readonly="true"
+								style="width:300px;" />
+						</h:panelGrid>
+						<div>
+							<p:commandButton value="添加" icon="ui-icon ui-icon-plus"
+								update="msg,accountForm,accountMsg"
+								oncomplete="accountDialog.show()"
+								actionListener="#{companyAccountBean.clear}" />
+						</div>
+					</div>
+				</div>
+				<p:outputPanel id="accountTablePanel">
+					<p:dataTable var="account" id="accountTable"
+						value="#{companyAccountBean.companyAccountList}"
+						rowKey="#{account.id}" paginator="true" rows="10"
+						paginatorPosition="bottom"
+						paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
+						currentPageReportTemplate="{currentPage}/{totalPage}"
+						emptyMessage="无满足条件数据！">
+						<f:facet name="header">公司银行账户列表</f:facet>
+						<p:column headerText="银行名称">
+							<h:outputText
+								value="#{companyAccountBean.getBankNameByCode(account.bank)}" />
+						</p:column>
+
+						<p:column headerText="银行账户标识">
+							<h:outputText value="#{account.counterpartyCode}" />
+						</p:column>
+
+						<p:column headerText="银行账户描述">
+							<h:outputText value="#{account.accountDesc}" />
+						</p:column>
+
+						<p:column headerText="账号">
+							<h:outputText value="#{account.account}" />
+						</p:column>
+
+						<p:column headerText="BSB代码">
+							<h:outputText value="#{account.bsbCode}" />
+						</p:column>
+
+						<p:column headerText="联行号">
+							<h:outputText value="#{account.unionBankNo}" />
+						</p:column>
+						<p:column headerText="操作" styleClass="operating_90">
+							<p:commandButton title="编辑" oncomplete="accountDialog.show()"
+								icon="ui-icon ui-icon-pencil" update="msg,accountForm,bank"
+								action="#{companyAccountBean.toEdit}">
+								<f:setPropertyActionListener
+									target="#{companyAccountBean.companyAccount}"
+									value="#{account}" />
+							</p:commandButton>
+							<p:commandButton title="删除" icon="ui-icon ui-icon-close"
+								oncomplete="accountConfirm.show()" update="creidPanlId">
+								<f:setPropertyActionListener
+									target="#{companyAccountBean.companyAccount}"
+									value="#{account}" />
+							</p:commandButton>
+
+						</p:column>
+					</p:dataTable>
+				</p:outputPanel>
+
+				<p:confirmDialog message="是否删除此公司银行账户信息？" header="删除警告"
+					severity="alert" widgetVar="accountConfirm">
+					<div align="center">
+						<p:commandButton update="msg,accountTable" value="确定"
+							icon="ui-icon ui-icon-check" oncomplete="accountConfirm.hide();"
+							action="#{companyAccountBean.del}" />
+						&#160;&#160;
+						<p:commandButton value="取消" onclick="accountConfirm.hide()"
+							icon="ui-icon ui-icon-cancel" type="button" />
+					</div>
+				</p:confirmDialog>
+			</h:form>
+
+			<h:form prependId="false" id="accountForm">
+				<p:dialog header="#{companyAccountBean.op}公司银行账户信息"
+					widgetVar="accountDialog" resizable="false" width="600"
+					modal="true">
+					<p:messages id="accountMsg" />
+					<h:panelGrid columns="2" columnClasses="column41,column2">
+						<h:outputLabel value="选择银行：" />
+						<h:panelGroup>
+							<p:inputText id="bank" disabled="true" style="width: 320px;"
+								value="#{companyAccountBean.accountBankName}" />
+
+							<p:commandButton immediate="true" value="#{msgs.btn_select}"
+								style="width: 70px;" image="ui-icon ui-icon-zoomin"
+								action="#{companyAccountBean.accountBankSelectBean.clear}"
+								oncomplete="accountBankDialogVar.show();"
+								update="accountBankForm">
+								<f:setPropertyActionListener
+									target="#{companyAccountBean.accountBankSelectBean.method}"
+									value="companyAccountBean.setBankCodeOfProcInst" />
+							</p:commandButton>
+						</h:panelGroup>
+					</h:panelGrid>
+					<h:panelGrid columns="4"
+						columnClasses="column41,column2,column41,column2"
+						footerClass="footer1">
+						<h:outputLabel value="帐号标识：" />
+						<h:panelGroup>
+							<p:inputText id="counterpartyCode" maxlength="30"
+								value="#{companyAccountBean.companyAccount.counterpartyCode}" />
+							<h:outputText style="color:red;" value="*" />
+						</h:panelGroup>
+
+						<h:outputLabel value="银行帐号描述：" />
+						<h:panelGroup>
+							<p:inputText id="accountDesc" maxlength="30"
+								value="#{companyAccountBean.companyAccount.accountDesc}" />
+							<h:outputText style="color:red;" value="*" />
+						</h:panelGroup>
+
+						<h:outputLabel value="账号：" />
+						<h:panelGroup>
+							<p:inputText id="account" maxlength="30"
+								value="#{companyAccountBean.companyAccount.account}" />
+							<h:outputText style="color:red;" value="*" />
+						</h:panelGroup>
+
+						<h:outputLabel value="BSB代码：" />
+						<p:inputText id="bsbCode" maxlength="30"
+							value="#{companyAccountBean.companyAccount.bsbCode}" />
+
+						<h:outputLabel value="联行号：" />
+						<p:inputText id="unionBankNo" maxlength="30"
+							value="#{companyAccountBean.companyAccount.unionBankNo}" />
+
+						<f:facet name="footer">
+							<p:commandButton id="accountUpdateBtn" value="保存"
+								update="msg,accountMsg,accountTablePanel"
+								oncomplete="handleComplete(accountDialog,args)"
+								action="#{companyAccountBean.addOrEdit}"
+								icon="ui-icon ui-icon-disk" />
+			            		&#160;&#160;
+			            	<p:commandButton value="取消" type="button"
+								onclick="accountDialog.hide()" id="accountUpdateCanelBtn"
+								icon="ui-icon ui-icon-cancel" />
+						</f:facet>
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>
+
+		</p:panel>
+		<ui:include src="/faces/process/common/accountBankSelect-dialog.xhtml" />
+	</ui:define>
+</ui:composition>
+
+

@@ -1,0 +1,34 @@
+<ui:composition xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<p:dialog id="update_position_dialog_id" widgetVar="update_position_dialog"
+		resizable="false" header="组织机构—更新" modal="true" width="700">
+		<p:messages id="updatePositionErrMsg" showDetail="true" showSummary="true" />
+		<h:form prependId="false" id="update_position_form">
+			<h2 align="center">更新岗位信息</h2>
+			<div align="center" style="margin-top: 10px; height: 70px;">
+				<h:panelGrid columns="4">
+					<h:outputText value="岗位名称：" style="color: blue;" />
+					<p:inputText style="width: 230px;" title="请填写真确的岗位名称"
+						value="#{orgManagerBean.position.stext}" required="true"
+						label="岗位名称">
+						<f:validateLength maximum="20" />
+					</p:inputText>
+					<h:outputText value="上级部门：" />
+					<p:inputText style="width: 230px;" disabled="true"
+						value="#{orgManagerBean.parentOrgNode.stext}" />
+				</h:panelGrid>
+			</div>
+			<div align="center" style="margin-top: 10px;">
+				<p:commandButton value="保存" icon="ui-icon ui-icon-disk"
+					action="#{orgManagerBean.updatePosition}"
+					update=":mainForm:treeSingle,:updatePositionErrMsg,:mainForm:msg,:update_position_form"
+					oncomplete="handleUpdatePositionRequest(xhr, status, args);"/>
+				<p:commandButton value="关闭" onclick="update_position_dialog.hide();"
+					icon="ui-icon ui-icon-cancel" style="margin-left:15px;"
+					update=":update_position_form" type="button" />
+			</div>
+		</h:form>
+	</p:dialog>
+</ui:composition>

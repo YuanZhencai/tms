@@ -1,0 +1,41 @@
+<ui:composition xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<p:dialog id="update_dialog_id" widgetVar="update_dialog_dialog"
+		resizable="false" width="500" height="200" header="编辑岗位信息"
+		modal="true">
+		<p:messages id="updateErrMsg" autoUpdate="true" showDetail="true" showSummary="true"/>
+		<h:form prependId="false" id="update_form">
+			<h:panelGrid columns="2">
+				<h:outputText value="岗位名称： " />
+				<h:column>
+				<p:inputText id="updateName" value="#{positionBean.position.name}"
+					validator="#{positionBean.validPosition}" />
+				<span style="color: red">*</span>
+				</h:column>
+
+				<h:outputText value="岗位描述： " />
+				<p:inputText id="updateDesc" value="#{positionBean.position.desc}"
+					style="width: 350px;" validator="#{positionBean.validPosition}" />
+
+				<h:outputText value="是否有效： " />
+				<h:selectOneRadio id="updateDefunctInd"
+					value="#{positionBean.position.defunctInd}"
+					validator="#{positionBean.validPosition}">
+					<f:selectItem itemLabel="生效" itemValue="N" />
+					<f:selectItem itemLabel="失效" itemValue="Y" />
+				</h:selectOneRadio>
+			</h:panelGrid>
+			<div style="margin-top: 3px; text-align: right;">
+				<p:commandButton value="保存" image="ui-icon ui-icon-disk"
+					oncomplete="handleUpdateRequest(xhr, status, args);ensureTable();"
+					actionListener="#{positionBean.updatePosition}"
+					update="positionQueryForm, update_form, updateErrMsg" />
+				<p:commandButton value="关闭" image="ui-icon ui-icon-cancel"
+					oncomplete="update_dialog_dialog.hide()" />
+			</div>
+		</h:form>
+	</p:dialog>
+</ui:composition>

@@ -1,0 +1,36 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<p:outputPanel id="procRptCreditOutTable">
+		<p:dataTable var="procRptCredit" id="procRptCreditTableId"
+			value="#{bankCreditBean.propLayModel}" rowKey="#{procRptCredit.id}"
+			rows="100" paginatorPosition="bottom" emptyMessage="#{msgs.empty_data_msg}">
+			<f:facet name="header">#{msgs.head_procRptCredit}</f:facet>
+			<p:column headerText="#{msgs.headerText_cdProName}">
+				<h:outputText value="#{procRptCredit.cdProName}" />
+			</p:column>
+			<p:column headerText="#{msgs.headerText_cdProLimit}">
+				<h:outputText value="#{procRptCredit.cdProLimit}" >
+					<f:convertNumber pattern="#,##0.####" />
+				</h:outputText>
+			</p:column>
+			<p:column headerText="#{msgs.col_operate}" styleClass="operating_60">
+				<p:commandButton title="#{msgs.btn_edit}" icon="ui-icon ui-icon-pencil"
+					update="editbankcreditPanel,bankCreditMsg"
+					oncomplete="editOtherProdDialog.show()">
+					<f:setPropertyActionListener
+						target="#{bankCreditBean.rptCreditEdit}" value="#{procRptCredit}" />
+				</p:commandButton>
+
+				<p:commandButton title="#{msgs.btn_delete}" icon="ui-icon ui-icon-close"
+					oncomplete="confirmation.show()"
+					update="procRptCreditOutTable,bankCreditMsg">
+					<f:setPropertyActionListener
+						target="#{bankCreditBean.rptCreditEdit}" value="#{procRptCredit}" />
+				</p:commandButton>
+			</p:column>
+		</p:dataTable>
+	</p:outputPanel>
+</ui:composition>

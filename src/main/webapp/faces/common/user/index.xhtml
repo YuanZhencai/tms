@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/template/template.xhtml">
+
+	<ui:define name="title">用户管理</ui:define>
+
+	<ui:define name="styleAndScript">
+
+		<style type="text/css">
+.changeColor {
+	background: #DEEDF7;
+}
+
+.operation_button {
+	width: 30px;
+	height: 25px;
+}
+
+input[type='checkbox'] {
+	width: 10px;
+}
+
+input[type='radio'] {
+	width: 10px;
+}
+
+.input_checkbox_div {
+	width: 10px;
+}
+
+.input_disabled {
+	width: 180px;
+}
+</style>
+
+		<!-- 
+		<script type="text/javascript">
+			jQuery(document).ready(function(){
+				$("th").each(function(index){
+					switch(index) {
+						// first table
+						case 0: $(this).css("width","150px"); break;
+						case 1: $(this).css("width","100px"); break;
+						case 2: $(this).css("width","150px"); break;
+						case 3: $(this).css("width","100px"); break;
+						case 4: $(this).css("width","150px"); break;
+						
+						default: break;
+					}
+				});
+			});
+		</script>
+		 -->
+	</ui:define>
+
+	<ui:define name="content">
+
+		<input type="hidden" id="menuOne" value="23" />
+		<input type="hidden" id="menuTwo" value="24" />
+
+		<p:panel styleClass="panel1">
+			<p:message id="msg" for="msg" />
+			<ui:include src="breadcrumb.xhtml" />
+			<div style="position: relative; margin-top: 5px;">
+				<ui:include src="search_form.xhtml" />
+			</div>
+			<div style="position: relative; margin-top: 5px;">
+				<ui:include src="search_table.xhtml" />
+			</div>
+			<ui:include src="insert_user_dialog.xhtml" />
+			<ui:include src="update_dialog.xhtml" />
+			<ui:include src="user_role_dialog.xhtml" />
+		</p:panel>
+		
+		<script type="text/javascript">
+			function handleRequest(xhr, status, args) {
+				if(args.issucc == "yes") {
+					//closeOverDiv();
+				} else {
+					updateUserDialog.show();
+				}
+			}
+
+			function handleUpdateRequest(xhr, status, args) {
+				if(args.issucc == "yes") {
+					updateUserDialog.hide();
+				}
+			}
+
+			function handleSaveRequest(xhr, status, args) {
+				if(args.issucc == "yes") {
+					saveUserDialog.hide();
+				}
+			}
+		</script>
+		
+	</ui:define>
+
+</ui:composition>

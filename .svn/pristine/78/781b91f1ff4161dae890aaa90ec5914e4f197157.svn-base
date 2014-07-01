@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+	<TITLE>登录</TITLE>
+	<link rel="shortcut icon" href="favicon.ico" />
+	<script type="text/javascript"
+		src="#{request.contextPath}/template/js/jquery.min.js"></script>
+
+	<script language="JavaScript">
+	function login(){
+		var account = $("#userAccount").val();
+		alert(account);
+		var loginUserLink= $("#loginUserLink").val();
+		var newLink = loginUserLink.substring(0,loginUserLink.indexOf("userAccount=")+12)+account+loginUserLink.substring(loginUserLink.indexOf("&amp;"),loginUserLink.length);
+		alert(newLink);
+		$("#loginUserLink").val(newLink);
+	}
+
+	function sub(){
+		var account = $("#userAccount").val();
+		var loginUserLink= $("#loginUserLink").val();
+		var newLink = loginUserLink.substring(0,loginUserLink.indexOf("userAccount=")+12)+account+loginUserLink.substring(loginUserLink.indexOf("&amp;"),loginUserLink.length);
+		$("#loginUserLink").val(newLink);
+		newLink = $("#loginUserLink").val();
+		window.location.href=newLink;
+	}
+</script>
+	<style>
+.input_1 {
+	FONT-SIZE: 20px;
+	HEIGHT: 30px;
+	width: 150px;
+	MARGIN-BOTTOM: 5px;
+}
+
+body {
+	TEXT-ALIGN: center;
+}
+</style>
+
+</h:head>
+<h:body>
+	<h:form id="form1" prependId="false">
+		<h:messages />
+		<h:panelGrid columns="3">
+			<h:outputLabel value="用户名" />
+			<h:inputText value="" id="userAccount"  />
+			<h:commandButton type="button" value="提交" onclick="sub()" />
+			<h:inputHidden
+				value="#{request.contextPath}/faces/process/common/processWait-list.xhtml?userAccount=shenbo&amp;op=log"
+				id="loginUserLink" />
+
+		</h:panelGrid>
+	</h:form>
+
+</h:body>
+</html>

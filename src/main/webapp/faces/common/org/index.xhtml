@@ -1,0 +1,104 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/template/template.xhtml">
+	<ui:define name="content">
+		<f:view>
+			<h:form id="mainForm" prependId="false">
+				<p:panel id="orgInforMain" styleClass="panel1">
+					<f:facet name="header">
+						<img class="header_title_img"
+						src="#{facesContext.externalContext.requestContextPath}/images/icons/tabTitle.gif"
+						alt="" />
+						<h:outputLabel value="组织机构" />
+					</f:facet>
+					<p:message id="msg" for="msg"/>
+					<div style="margin-top: 20px;">
+						<p:fieldset id="treeSet" legend="组织机构树">
+							<p:contextMenu for="treeSingle" id="treeContextMenu" nodeType="company">
+							<!--	<p:menuitem value="增加公司" update="treeSingle, :add_form, :add_dialog_id"
+									icon="ui-icon-plus" oncomplete="document.forms['add_form'].reset();add_company_dialog.show();"
+									action="#{orgManagerBean.forwordSaveCompany}" rendered="#{orgManagerBean.selectType == 'root'}">
+								</p:menuitem>  -->
+								<p:menuitem value="增加部门" update="treeSingle, :add_form, :add_dialog_id"
+									icon="ui-icon-plus" oncomplete="document.forms['add_form'].reset();add_company_dialog.show();"
+									action="#{orgManagerBean.forwordSaveCompany}" rendered="#{orgManagerBean.selectType == 'company' || orgManagerBean.selectType == 'rootCompany'}">
+								</p:menuitem>
+								<p:menuitem value="增加岗位" update="treeSingle, :add_position_form, :add_position_dialog_id"
+									icon="ui-icon-plus" oncomplete="document.forms['add_position_form'].reset();add_position_dialog.show();"
+									action="#{orgManagerBean.forwordSavePosition}" rendered="#{orgManagerBean.selectType == 'company'}">
+								</p:menuitem>
+								<p:menuitem value="更新信息" update="treeSingle, :update_form ,:update_dialog_id"
+									icon="ui-icon-plus" oncomplete="update_company_dialog.show();"
+									action="#{orgManagerBean.forwordUpdateCompany}" rendered="#{orgManagerBean.selectType == 'company' || orgManagerBean.selectType == 'rootCompany'}">
+								</p:menuitem>
+								<p:menuitem value="删除部门" update="treeSingle, msg"
+									icon="ui-icon-plus" action="#{orgManagerBean.deleteCompany}" rendered="#{orgManagerBean.selectType == 'company' || orgManagerBean.selectType == 'rootCompany'}">
+								</p:menuitem>
+							</p:contextMenu>
+							
+							<p:contextMenu for="treeSingle" id="treeContextMenu1" nodeType="position">
+								<p:menuitem value="更新岗位" update="treeSingle, :update_position_form, :update_position_dialog_id"
+									icon="ui-icon-plus" oncomplete="update_position_dialog.show();"
+									action="#{orgManagerBean.forwordUpdatePosition}">
+								</p:menuitem>
+								<p:menuitem value="删除岗位" update="treeSingle, msg"
+									icon="ui-icon-plus" action="#{orgManagerBean.deletePosition}">
+								</p:menuitem>
+							</p:contextMenu>
+							
+							
+							<p:tree id="treeSingle" value="#{orgManagerBean.root}" var="node"
+								dynamic="true" cache="true" selectionMode="single"
+								selection="#{orgManagerBean.selectedNode}" style="width:500px">
+								<p:ajax event="expand" listener="#{orgManagerBean.onNodeExpand}" />
+								<p:ajax event="select" update="treeSet" listener="#{orgManagerBean.onNodeSelect}" />
+								<p:treeNode id="rootTreeCompanyNode" type="root" icon="ui-icon-video">
+									<h:outputText value="#{node.stext}"/>
+								</p:treeNode>
+								<p:treeNode id="treeCompanyNode" type="company" icon="ui-icon-video">
+									<h:outputText value="#{node.stext}"/>
+								</p:treeNode>
+								<p:treeNode id="treePositionNode" type="position" icon="ui-icon-document">
+									<h:outputText value="#{node.stext}"/>
+								</p:treeNode>
+							</p:tree>
+						</p:fieldset>
+					</div>
+				</p:panel>
+			</h:form>
+		</f:view>
+		<script type="text/javascript">
+			function handleSaveRequest(xhr, status, args) {
+				if(args.issucc == "yes") {
+					add_company_dialog.hide();
+				}
+			}
+
+			function handleSavePositionRequest(xhr, status, args) {
+				if(args.issucc == "yes") {
+					add_position_dialog.hide();
+				}
+			}
+
+			function handleUpdateRequest(xhr, status, args) {
+				if(args.issucc == "yes") {
+					update_company_dialog.hide();
+				}
+			}
+
+			function handleUpdatePositionRequest(xhr, status, args) {
+				if(args.issucc == "yes") {
+					update_position_dialog.hide();
+				}
+			}
+		</script>
+		<ui:include src="insert_company.xhtml" />
+		<ui:include src="insert_position.xhtml" />
+		<ui:include src="update_company.xhtml" />
+		<ui:include src="update_position.xhtml" />
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,211 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:wcs="http://www.wcs-global.com/customtaglib"
+	xmlns:commentProcess="http://java.sun.com/jsf/composite/commentProcess"
+	template="/template/dialog_template.xhtml">
+
+	<ui:define name="title">其他特殊的借款流程申请</ui:define>
+
+	<ui:define name="content">
+
+		<input type="hidden" id="menuOne" value="15" />
+		<input type="hidden" id="menuTwo" value="${elseSpeLoanBean.menuTwo}" />
+
+		<p:panel styleClass="panel1">
+			<h:form id="elseSpeLoanForm" prependId="false">
+				<p:breadCrumb preview="true" expandEffectDuration="200"
+					previewWidth="24" style="width: 99.1%">
+					<p:menuitem value="#{msgs.menItem_process}" url="#" />
+					<p:menuitem value="#{msgs.menItem_process}" url="#" />
+					<p:menuitem value="其他特殊的借款流程" url="#" />
+				</p:breadCrumb>
+
+				<p:messages id="msg" />
+				<div style="position: relative; margin-top: 5px;">
+					<div class="style1">
+						<h:panelGrid columns="3" columnClasses="column41,column2,column2">
+							<h:outputLabel value="是否为借款：" />
+							<h:panelGroup>
+								<p:selectOneRadio id="loanIdentifier" disabled="true"
+									value="#{elseSpeLoanBean.procElseSpeLoan.loanIden}"
+									required="true" requiredMessage="请选择是否为借款">
+									<f:selectItem itemLabel="借款" itemValue="L" />
+									<f:selectItem itemLabel="转款" itemValue="T" />
+									<f:selectItem itemLabel="借款+转款" itemValue="A" />
+								</p:selectOneRadio>
+							</h:panelGroup>
+							<h:outputLabel value="（自有资金下拨请选择“转款”，非自有资金请选择“借款”）" />
+						</h:panelGrid>
+						<h:panelGrid columns="8"
+							columnClasses="column41,column2,column0,column2,column2,column2,column2,column2">
+							<h:outputLabel value="申请公司名称：" />
+							<h:panelGroup>
+								<h:selectOneMenu id="companyName" style="width:330px"
+									disabled="true"
+									value="#{elseSpeLoanBean.procElseSpeLoan.company.id}"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+									<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" itemValue="" />
+									<f:selectItems value="#{elseSpeLoanBean.companyNameSelect}" />
+									<p:ajax listener="#{elseSpeLoanBean.ajaxCompany}"
+										update="msg,receiverName,depositBank,accounts" />
+								</h:selectOneMenu>
+							</h:panelGroup>
+
+							<h:outputLabel value="收款人户名：" />
+							<p:inputText id="receiverName" label="收款人户名"
+								value="#{elseSpeLoanBean.procElseSpeLoan.receiverName}"
+								disabled="true" style="width:330px" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+
+							<h:outputLabel value="填制时间：" />
+							<p:inputText id="applyTime" disabled="true" style="width:200px"
+								value="#{elseSpeLoanBean.procElseSpeLoan.createdDatetime}">
+								<f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd" />
+							</p:inputText>
+
+							<h:outputLabel value="账户描述：" />
+							<h:panelGroup>
+								<h:selectOneMenu id="depositBank" style="width:340px"
+									disabled="true"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									value="#{elseSpeLoanBean.procElseSpeLoan.accountDesc}">
+									<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" itemValue="" />
+									<f:selectItems value="#{elseSpeLoanBean.depositBankSelect}" />
+								</h:selectOneMenu>
+							</h:panelGroup>
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+
+							<h:outputLabel value="付款日期：" />
+							<h:panelGroup>
+								<p:inputText id="payDatetime" disabled="true"
+									value="#{elseSpeLoanBean.procElseSpeLoan.paymentDate}"
+									styleClass="ui-date" style="width:200px" title="付款日期"
+									onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'%y-%M-%d'});">
+									<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+								</p:inputText>
+							</h:panelGroup>
+
+							<h:outputLabel value="账号：" />
+							<h:panelGroup>
+								<h:selectOneMenu id="accounts" style="width:340px"
+									disabled="true"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									value="#{elseSpeLoanBean.procElseSpeLoan.accountNumber}">
+									<f:selectItems value="#{elseSpeLoanBean.bankAccountSelect}" />
+								</h:selectOneMenu>
+							</h:panelGroup>
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+
+							<h:outputLabel value="金额（小写）：" />
+							<h:panelGroup>
+								<p:inputText id="amount_low" label="金额（小写）" disabled="true"
+									style="width:200px"
+									value="#{elseSpeLoanBean.procElseSpeLoan.amount}">
+									<f:convertNumber pattern="#,##0.00" />
+									<f:validateDoubleRange maximum="99999999.9999" minimum="0"></f:validateDoubleRange>
+									<p:ajax event="blur" listener="#{elseSpeLoanBean.lowToUp}"
+										update="msg,amount_up,amount_low" />
+								</p:inputText>
+								<h:outputLabel value="万" />
+							</h:panelGroup>
+							<h:outputLabel value="金额（大写）：" />
+							<p:inputText id="amount_up" label="金额（大写）" style="width:330px"
+								disabled="true" value="#{elseSpeLoanBean.upAmount}" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+						</h:panelGrid>
+
+						<h:panelGrid columns="2" columnClasses="column41,column2">
+							<h:outputLabel value="下拨资金用途描述：" />
+							<h:panelGroup>
+								<p:inputTextarea id="use" rows="4" cols="106" disabled="true"
+									value="#{elseSpeLoanBean.procElseSpeLoan.useDesc}"
+									autoResize="false" style="width:760px">
+									<f:validateLength maximum="200" />
+								</p:inputTextarea>
+							</h:panelGroup>
+						</h:panelGrid>
+					</div>
+				</div>
+				<br />
+				<p:outputPanel id="detailVoListPl">
+					<p:dataTable var="detailVo" id="detailVoList"
+						value="#{elseSpeLoanBean.detailVos}" rowKey="#{detailVo.id}"
+						rows="100" emptyMessage="#{msgs.dataTable_empty}">
+
+						<f:facet name="header">#{msgs.head_detailVoList}</f:facet>
+
+						<p:column headerText="#{msgs.headerText_prossNodeName}">
+							<h:outputText value="#{detailVo.prossNodeName}" />
+						</p:column>
+
+						<p:column headerText="#{msgs.headerText_operatorsName}">
+							<h:outputText
+								value="#{currentUser.exchange2CN(detailVo.operatorsName)}" />
+						</p:column>
+
+						<p:column headerText="#{msgs.headerText_operatorTime}">
+							<h:outputText value="#{detailVo.operatorTime}">
+								<f:convertDateTime timeZone="GMT+8"
+									pattern="yyyy-MM-dd HH:mm:ss" />
+							</h:outputText>
+						</p:column>
+
+						<p:column headerText="#{msgs.headerText_remark}">
+							<h:outputText value="#{detailVo.nodeMemo}" />
+						</p:column>
+					</p:dataTable>
+				</p:outputPanel>
+			</h:form>
+
+			<h:form>
+				<p:outputPanel id="payDetailVoListPl">
+					<p:dataTable var="payDetailVo" id="payDetailVoList"
+						value="#{elseSpeLoanBean.payDetailVos}"
+						rowKey="#{payDetailVo.serialNumber}" rows="100"
+						emptyMessage="#{msgs.dataTable_empty}">
+						<f:facet name="header">付款详细过程</f:facet>
+						<p:column headerText="序号">
+							<h:outputText value="#{payDetailVo.serialNumber}" />
+						</p:column>
+						<p:column headerText="付款时间">
+							<h:outputText value="#{payDetailVo.payDatetime}">
+								<f:convertDateTime timeZone="GMT+8"
+									pattern="yyyy-MM-dd HH:mm:ss" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="付款方式">
+							<h:outputText
+								value="#{payDetailVo.payWay=='S'?'SUNGARD支付':'网银支付'}" />
+						</p:column>
+						<p:column headerText="付款金额（万）">
+							<h:outputText value="#{payDetailVo.payFundsTotal}">
+								<f:convertNumber pattern="#,##0.00" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="付款人">
+							<h:outputText
+								value="#{currentUser.exchange2CN(payDetailVo.payer)}" />
+						</p:column>
+					</p:dataTable>
+				</p:outputPanel>
+			</h:form>
+		</p:panel>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,234 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:wcs="http://www.wcs-global.com/customtaglib"
+	xmlns:commentProcess="http://java.sun.com/jsf/composite/commentProcess"
+	template="/template/template.xhtml">
+
+	<ui:define name="title">#{msgs.menuItem_bankCredBlocView}</ui:define>
+	<ui:define name="styleAndScript">
+
+	</ui:define>
+	<ui:define name="content">
+		<p:panel styleClass="panel1">
+			<h:form prependId="false" id="addRegisterForm">
+				<p:breadCrumb preview="true" expandEffectDuration="200"
+					previewWidth="24" style="width: 99.1%">
+					<p:menuitem value="#{msgs.menuItem_processNew}" url="#" />
+					<p:menuitem value="#{msgs.menuItem_bankCredBlocView}" url="#" />
+				</p:breadCrumb>
+				<p:messages id="msg" />
+
+				<div style="position: relative; margin-top: 5px;">
+					<div class="style1">
+						<h:panelGrid columns="6"
+							columnClasses="column41,column42,column41,column2,column41,column2">
+							<h:outputLabel value="#{msgs.lbl_formFillDate}" />
+							<p:inputText id="registerDate" disabled="true"
+								value="#{bankCreidtBlocCompanyConfirmBean.bankCreditBlocView.applyDate}">
+								<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+							</p:inputText>
+							<h:outputLabel value="#{msgs.lbl_fondsCurrency}：" />
+							<h:selectOneMenu id="creditLineCu" disabled="true"
+								value="#{bankCreidtBlocCompanyConfirmBean.bankCreditBlocView.creditLineCu}"
+								styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+								<f:selectItems value="#{bankCreditBlocBean.currencySelect}" />
+							</h:selectOneMenu>
+							<h:outputLabel value="#{msgs.lbl_limitDate}：" />
+							<h:panelGroup>
+								<p:inputText id="startDate" label="#{msgs.lbl_startDate}"
+									disabled="true"
+									value="#{bankCreidtBlocCompanyConfirmBean.blocConpanyConfirm.creditStart}"
+									style="font-size: 9px;width:90px;" styleClass="ui-date">
+									<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+								</p:inputText>
+								<h:outputText value="~" />
+								<p:inputText id="endDate" label="#{msgs.lbl_endDate}"
+									disabled="true"
+									value="#{bankCreidtBlocCompanyConfirmBean.blocConpanyConfirm.creditEnd}"
+									styleClass="ui-date" style="font-size: 9px;width:90px;" >
+									<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+								</p:inputText>
+							</h:panelGroup>
+							</h:panelGrid>
+							<h:panelGrid columns="2"
+							columnClasses="column41,column42">
+							<h:outputLabel value="#{msgs.lbl_companyNameCn}：" />
+							<h:panelGroup>
+								<h:selectOneMenu id="companyNameCn" disabled="true"
+									value="#{bankCreidtBlocCompanyConfirmBean.bankCreditBlocView.company.id}"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all" style="width:307px;">
+									<f:selectItems value="#{bankCreditBlocBean.companyNameSelect}" />
+								</h:selectOneMenu>
+							</h:panelGroup>
+							<h:outputLabel value="#{msgs.lbl_creditBank}：" />
+							<h:selectOneMenu id="topBankId" disabled="true"
+								value="#{bankCreidtBlocCompanyConfirmBean.bankCreditBlocView.bank.id}"
+								styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all" style="width:307px;">
+								<f:selectItems value="#{bankCreditBlocBean.topLevelSelect}" />
+							</h:selectOneMenu>
+						</h:panelGrid>		
+					</div>
+						
+					<div class="style11">
+						<h:panelGrid columns="8"
+							columnClasses="column41,column42,column41,column2,column41,column2,column41,column2">
+							<h:outputLabel value="#{msgs.lbl_lastCreditLine}：" />
+							<p:inputText id="lastCreditLine" disabled="true"
+								value="#{bankCreidtBlocCompanyConfirmBean.bankCreditBlocView.lastCreditLine}">
+								<f:convertNumber pattern="#,##0" />
+							</p:inputText>
+							<h:outputLabel value="#{msgs.lbl_lastCreditTotal}：" />
+							<p:inputText id="lastCreditTotal" disabled="true"
+								value="#{bankCreidtBlocCompanyConfirmBean.bankCreditBlocView.lastCreditTotal}">
+								<f:convertNumber pattern="#,##0" />
+							</p:inputText>
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+						</h:panelGrid>		
+					</div>
+						
+					<div class="style11">
+						<h:panelGrid columns="8"
+							columnClasses="column41,column42,column41,column2,column41,column2,column41,column2">
+							<h:outputLabel value="#{msgs.lbl_creditLineAprovedSum}：" />
+							<p:inputText id="creditLine" disabled="true"
+								value="#{bankCreidtBlocCompanyConfirmBean.bankCreditBlocView.creditLine}">
+								<f:convertNumber pattern="#,##0.####" />
+							</p:inputText>
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+
+
+							<h:outputLabel value="#{msgs.lbl_assureWay}：" styleClass="title_1"/>
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+
+							<h:outputLabel value="#{msgs.lbl_credit}：" />
+							<p:inputText id="guaranteeCd" disabled="true"
+								value="#{bankCreidtBlocCompanyConfirmBean.bankCreditBlocView.guaranteeCd}">
+								<f:convertNumber pattern="#,##0" />
+							</p:inputText>
+							<h:outputLabel value="#{msgs.lbl_guarantee}：" />
+							<p:inputText id="guaranteeMg" disabled="true"
+								value="#{bankCreidtBlocCompanyConfirmBean.bankCreditBlocView.guaranteeMg}">
+								<f:convertNumber pattern="#,##0" />
+							</p:inputText>
+							<h:outputLabel value="#{msgs.lbl_assure}：" />
+							<p:inputText id="guaranteeGr" disabled="true"
+								value="#{bankCreidtBlocCompanyConfirmBean.bankCreditBlocView.guaranteeGr}">
+								<f:convertNumber pattern="#,##0" />
+							</p:inputText>
+							<h:outputLabel value="#{msgs.lbl_guaranteeQm}：" />
+							<p:inputText id="guaranteeQm" disabled="true"
+								value="#{bankCreidtBlocCompanyConfirmBean.bankCreditBlocView.guaranteeQm}">
+								<f:convertNumber pattern="#,##0" />
+							</p:inputText>
+							<h:outputLabel value="#{msgs.lbl_guaranteeOt}：" />
+							<p:inputText id="guaranteeOt" disabled="true"
+								value="#{bankCreidtBlocCompanyConfirmBean.bankCreditBlocView.guaranteeOt}">
+								<f:convertNumber pattern="#,##0" />
+							</p:inputText>
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+						</h:panelGrid>
+					</div>
+					<div style="#{bankCreidtBlocCompanyConfirmBean.ifRequest ? '':'display:none;'}">
+						<h:panelGrid columns="3" columnClasses="column41,column2,column2">
+							<h:outputLabel value="Credit Line Code：" />
+								<h:panelGroup>
+									<p:inputText id="creditLineCode" label="Credit Line Code" disabled="true"
+										value="#{bankCreidtBlocCompanyConfirmBean.blocConpanyConfirm.creditLineCode}">
+									</p:inputText>
+								</h:panelGroup>
+						</h:panelGrid>
+					</div>
+				</div>
+				<div style="position: relative; margin-top: 5px;">
+					<p:outputPanel id="procBlocComanyPanel">
+						<p:dataTable var="pBlocCredit" id="pBlocCreditTableId"
+							value="#{bankCreidtBlocCompanyConfirmBean.procBlocCompanyComfirmLayModel}"
+							rowKey="#{pBlocCredit.id}" rows="100" paginatorPosition="bottom"
+							emptyMessage="#{msgs.empty_data_msg}">
+							<f:facet name="header">#{msgs.head_submitedCredAppMemList}</f:facet>
+							<p:column headerText="#{msgs.lbl_memberCompanyName}">
+								<h:outputText value="#{pBlocCredit.company.companyName}" />
+							</p:column>
+							<p:column headerText="#{msgs.txt_submittedTime}">
+								<h:outputText value="#{pBlocCredit.createdDatetime}">
+									<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"
+										timeZone="GMT+8" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="#{msgs.lbl_creditLimit}">
+								<h:outputText value="#{pBlocCredit.creditLine}">
+									<f:convertNumber pattern="#,##0.####" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="#{msgs.lbl_approveLine}">
+								<h:outputText value="#{pBlocCredit.notarizeCreditLine}">
+									<f:convertNumber pattern="#,##0.####" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="#{msgs.txt_condition}">
+								<h:outputText
+									value="#{bankCreidtBlocCompanyConfirmBean.statusChinse(pBlocCredit.status)}">
+								</h:outputText>
+							</p:column>
+							<p:column headerText="#{msgs.col_operate}" styleClass="operating_30">
+								<p:commandButton title="#{msgs.btn_view}" icon="ui-icon ui-icon-zoomin"
+									update="viewBlocCompanyCreditFrom,viewBlocCompanyCredit"
+									oncomplete="blocCompanyDetailDialog.show()"
+									action="#{bankCreidtBlocCompanyConfirmBean.viewCompanyCofnirm}">
+									<f:setPropertyActionListener
+										target="#{bankCreidtBlocCompanyConfirmBean.blocCompanyConfirmView}"
+										value="#{pBlocCredit}" />
+								</p:commandButton>
+							</p:column>
+						</p:dataTable>
+					</p:outputPanel>
+				</div>
+			</h:form>
+			<!-- 附件列表 -->
+			<div align="center" style="#{!bankCreidtBlocCompanyConfirmBean.ifAccessory ? 'display:none;' : '' }">
+				<h:form prependId="false" id="fileForm">
+					<div style="position: relative; margin-top: 5px;">
+						<p:outputPanel id="attachmentPanel">
+							<commentProcess:filedownload updateComenId="attachmentPanel"
+								isDisable="true" dataList="#{bankCreidtBlocCompanyConfirmBean.processFileList}" />
+						</p:outputPanel>
+					</div>
+				</h:form>
+			</div>
+			<p:dialog header="#{msgs.dialog_memComAppDetail}" widgetVar="blocCompanyDetailDialog"
+				modal="true" width="1300" height="600" resizable="false">
+				<ui:include src="creditBloc-company-confirm-view-inc.xhtml" />
+			</p:dialog>	
+			
+			<h:form prependId="false" id="stepDetailForm">
+				<div style="position: relative; margin-top: 5px;">
+					<p:outputPanel id="processDetailPanel">
+						<commentProcess:processDetail
+							dataList="#{bankCreidtBlocCompanyConfirmBean.processDetailList}" />
+					</p:outputPanel>
+				</div>
+			</h:form>
+		</p:panel>
+	</ui:define>
+</ui:composition>

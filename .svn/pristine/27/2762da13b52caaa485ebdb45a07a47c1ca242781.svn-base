@@ -1,0 +1,176 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/template/template.xhtml">
+	<ui:define name="styleAndScript">
+		<style type="text/css">
+			.lazy_datatable_row {
+				background: #DEEDF7;
+			}
+			td div span {
+				overflow:hidden;		/**超过长度文本隐藏*/
+				white-space:nowrap;		/**强制不换行*/
+				text-overflow:ellipsis;	/**ie专属,后跟省略号*/
+			}
+			input[type='radio'] {
+				width: 20px;
+			}
+			input[type='checkbox'] {
+				width: 20px;
+			}
+			.op_button {
+				width: 20px;
+				height: 20px;
+			}
+		</style>
+		<script type="text/javascript">
+			jQuery(document).ready(function(){
+				ensureTable();
+				
+				$("div#position_company_form th").each(function(index){
+					// position_company_form
+					switch(index) {
+						case 1: $(this).css("width", "5%"); break;
+						case 2: $(this).css("width", "40%"); break;
+						default: break;
+					}
+				});
+				
+				$("div#company_datatable th").each(function(index){
+					// company_datatable
+					switch(index) {
+						case 1: $(this).css("width", "5%"); break;
+						case 2: $(this).css("width", "40%"); break;
+						case 3: $(this).css("width", "40%"); break;
+						default: break;
+					}
+				});
+			});
+			
+			function ensureTable() {
+				$("div#resultTable th").each(function(index){
+					switch(index) {
+						// first table
+						case 0: $(this).css("width","30%"); break;
+						case 1: $(this).css("width","10%"); break;
+						// case 2: $(this).css("width","100px"); break;
+						case 3: $(this).css("width","10%"); break;
+						default: break;
+					}
+				});
+			}
+		</script>
+	</ui:define>
+
+	<ui:define name="content">
+	<p:panel id="positionMain">
+		
+		<h:form id="positionQueryForm" prependId="false">
+			<p:breadCrumb preview="true" expandEffectDuration="200"
+				previewWidth="24" style="width: 99.1%">
+				<p:menuitem value="系统管理" url="#" />
+				<p:menuitem value="组织用户管理" url="#" />
+				<p:menuitem value="岗位管理" url="#" />
+			</p:breadCrumb>
+			<div class="style1">
+				<h:panelGrid columns="6" id="userSerachGrid"
+					columnClasses="column1,column2,column1,column2,column1,column2">
+					<h:outputText value="岗位："/>
+					<p:inputText value="#{positionBean.query['name']}"/>
+					<h:outputText value="所属公司："/>
+					<p:inputText value="#{positionBean.query['stext']}"/>
+					<h:outputText value="状态："/>
+					<h:selectOneMenu value="#{positionBean.query['del']}">
+						<f:selectItem itemLabel="请选择" itemValue=""/>
+						<f:selectItem itemLabel="生效" itemValue="N"/>
+						<f:selectItem itemLabel="失效" itemValue="Y"/>
+					</h:selectOneMenu>
+				</h:panelGrid>
+				<div>
+					<p:commandButton id="positionSearch" value="查询" action="#{positionBean.search}"
+						image="ui-icon ui-icon-search" style="margin-right: 5px;" ajax="false"/>
+					<p:commandButton value="重置" image="ui-icon ui-icon-arrowrefresh-1-e"
+						action="#{positionBean.reset}" update="userSerachGrid"/>
+				</div>
+			</div>
+			
+			<p:dataTable id="resultTable" var="p" value="#{positionBean.positionLazyModel}" 
+			paginatorPosition="bottom" rowIndexVar="index" paginator="true" rows="10" lazy="true"
+			paginatorTemplate="{FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+			rowStyleClass="#{index mod 2 == 1 ? 'lazy_datatable_row' : null}"
+			style="margin-top: 5px;" emptyMessage="没有记录">
+			
+				<f:facet name="header">
+					岗位列表
+					<div style="text-align: right; position: relative; margin: -13px -5px 0px 0px; vertical-align: middle">
+					<p:commandButton value="添加" oncomplete="insert_dialog_dialog.show()" update="insert_dialog_id"
+						image="ui-icon ui-icon-disk" action="#{positionBean.editBelong}">
+						<f:setPropertyActionListener target="#{positionBean.position}" value=""/>
+					</p:commandButton>
+					</div>
+				</f:facet>
+				<p:column headerText="岗位名称" style="width: 90%;">
+					<h:outputText value="#{p.name}" title="#{p.name}"/>
+				</p:column>
+				<!-- p:column headerText="创建人员" style="width: 90%;">
+					<h:outputText value="#{p.createdBy}" title="#{p.createdBy}"/>
+				</p:column>
+				<p:column headerText="创建时间" style="width: 90%;">
+					<h:outputText value="#{p.createdDatetime}" title="#{p.createdDatetime}">
+						<f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd"/>
+					</h:outputText>
+				</p:column>
+				<p:column headerText="更新人员" style="width: 90%;">
+					<h:outputText value="#{p.updatedBy}" title="#{p.updatedBy}"/>
+				</p:column>
+				<p:column headerText="更新时间" style="width: 90%;">
+					<h:outputText value="#{p.updatedDatetime}" title="#{p.updatedDatetime}">
+						<f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd"/>
+					</h:outputText>
+				</p:column -->
+				<p:column headerText="状态" style="width: 90%;">
+					<h:outputText value="#{p.defunctInd == 'Y' ? '失效' : '生效'}" title="#{p.defunctInd == 'Y' ? '生效' : '失效'}"/>
+				</p:column>
+				<p:column headerText="岗位描述" style="width: 90%;">
+					<h:outputText value="#{p.desc}" title="#{p.desc}"/>
+				</p:column>
+				<p:column headerText="操作" style="width: 90%; text-align: center;">
+					<p:commandButton title="编辑" image="ui-icon ui-icon-wrench" update="update_dialog_id"
+						oncomplete="update_dialog_dialog.show();" styleClass="op_button"
+						action="#{positionBean.editBelong}">
+						<f:setPropertyActionListener target="#{positionBean.position}" value="#{p}"/>
+					</p:commandButton>
+					<p:commandButton title="所属公司" image="ui-icon ui-icon-search" update="position_company_id"
+						action="#{positionBean.searchBelongCompany}" styleClass="op_button"
+						oncomplete="position_company_dialog.show();">
+						<f:setPropertyActionListener target="#{positionBean.position}" value="#{p}"/>
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+		</p:panel>
+		
+		<ui:include src="insert_dialog.xhtml"/>
+		<ui:include src="update_dialog.xhtml"/>
+		<ui:include src="position_company_dialog.xhtml"/>
+		<ui:include src="company_dialog.xhtml"/>
+		
+		<script type="text/javascript">
+			function handleSaveRequest(xhr, status, args) {
+				if(args.issucc == "yes") {
+					insert_dialog_dialog.hide();
+				}
+			}
+			
+			function handleUpdateRequest(xhr, status, args) {
+				if(args.issucc == "yes") {
+					update_dialog_dialog.hide();
+				}
+			}
+		</script>
+	
+	</ui:define>
+</ui:composition>

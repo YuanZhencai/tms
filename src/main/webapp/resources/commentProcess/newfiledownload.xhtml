@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite">
+
+	<composite:interface>
+		<composite:attribute name="dataList" />
+		<composite:attribute name="downloadBean" />
+		<composite:attribute name="updateComenId" />
+	</composite:interface>
+	<composite:implementation>
+
+		<p:dataTable value="#{cc.attrs.dataList}" var="fileDoc"
+			id="filedownShowId" paginatorPosition="bottom" rows="100"
+			emptyMessage="#{msgs.no_data_msg}">
+			<f:facet name="header">#{msgs.head_list_attachDetail}</f:facet>
+			<p:column headerText="#{msgs.txt_fileName}">
+				<h:outputText value="#{fileDoc.fileName}" />
+			</p:column>
+			<p:column headerText="#{msgs.txt_creater}">
+				<h:outputText value="#{fileDoc.creater}" />
+			</p:column>
+			<p:column headerText="#{msgs.txt_uploadDate}">
+				<h:outputText value="#{fileDoc.uploadDate}">
+					<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" timeZone="GMT+8" />
+				</h:outputText>
+			</p:column>
+			<p:column headerText="#{msgs.col_operate}" styleClass="operating_60">
+				<p:commandButton title="#{msgs.btn_download}" icon="ui-icon ui-icon-arrowthick-1-s"
+					ajax="false" action="#{cc.attrs.downloadBean.downloadFile}">
+					<f:setPropertyActionListener
+						target="#{cc.attrs.downloadBean.processFile}" value="#{fileDoc}" />
+				</p:commandButton>
+				<p:commandButton title="#{msgs.btn_delete}" icon="ui-icon ui-icon-close"
+					action="#{cc.attrs.downloadBean.deleteDocument}"
+					update="#{cc.attrs.updateComenId}">
+					<f:setPropertyActionListener
+						target="#{cc.attrs.downloadBean.processFile}" value="#{fileDoc}" />
+				</p:commandButton>
+			</p:column>
+		</p:dataTable>
+	</composite:implementation>
+
+</ui:composition>

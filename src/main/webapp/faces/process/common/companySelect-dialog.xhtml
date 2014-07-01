@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:w="http://www.wcs-global.com/customtaglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<p:dialog header="公司选择" widgetVar="companyDialogVar"
+		id="companyDialogId" resizable="false" width="900" height="400"
+		modal="true">
+		<p:ajax event="close" listener="#{companySelectBean.clear}"
+			update="companyTable" />
+		<h:form id="companyForm" prependId="false">
+			<p:dataTable id="companyTable" var="company"
+				value="#{companySelectBean.lazyDataModel}"
+				widgetVar="companyTableVar" paginator="true"
+				paginatorPosition="bottom" selectionMode="single"
+				rowKey="#{company.id}" rows="10"
+				selection="#{companySelectBean.selectedCompany}"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+				currentPageReportTemplate="{currentPage}/{totalPage}"
+				emptyMessage="#{msgs.dataTable_empty}">
+				<p:ajax event="rowSelect" update="companyNameTwo,companyName,childBankName,companyNameTxt"
+					listener="#{companySelectBean.beforeClose}"
+					oncomplete="companyDialogVar.hide();" />
+				<p:column>
+					<f:facet name="header">
+						<div>公司代码</div>
+						<p:inputText id="sapCode" style="width: 100px;"
+							value="#{companySelectBean.sapCode}">
+							<p:ajax event="change" update="companyTable"
+								listener="#{companySelectBean.filterCompany}" />
+						</p:inputText>
+					</f:facet>
+					<h:outputText value="#{company.sapCode}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<div>#{msgs.col_companyName}</div>
+						<p:inputText id="companyName" style="width: 320px;"
+							value="#{companySelectBean.companyName}">
+							<p:ajax event="change" update="companyTable"
+								listener="#{companySelectBean.filterCompany}" />
+						</p:inputText>
+					</f:facet>
+					<h:outputText value="#{company.companyName}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<div>英文名称</div>
+						<p:inputText di="companyEnName" style="width: 320px;"
+							value="#{companySelectBean.companyEnName}">
+							<p:ajax event="change" update="companyTable"
+								listener="#{companySelectBean.filterCompany}" />
+						</p:inputText>
+					</f:facet>
+					<h:outputText value="#{company.companyEn}" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</p:dialog>
+</ui:composition>

@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:form id="userDataTableForm" prependId="false">
+		<!--  <p:growl id="messages" showDetail="true" for="messages" life="2000"/> -->
+		<p:dataTable emptyMessage="#{msgs.dataTable_empty}" id="userDataTable"
+			var="user" value="#{userBean.lazyUsermstrVoModel}" lazy="true"
+			paginator="true" rows="10" paginatorPosition="bottom"
+			rowIndexVar="index"
+			rowStyleClass="#{index mod 2 == 1 ? 'changeColor' : null}"
+			paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
+			currentPageReportTemplate="{currentPage}/{totalPage}"
+			rowKey="#{user.id}">
+			<f:facet name="header">
+				<h:outputText value="用户列表" />
+			</f:facet>
+			<p:column headerText="ID">
+				<h:outputText value="#{user.usermstr.pernr}" />
+			</p:column>
+			<p:column headerText="用户帐号">
+				<h:outputText value="#{user.usermstr.adAccount}" />
+			</p:column>
+			<p:column headerText="姓名">
+				<h:outputText value="#{user.p.nachn}" />
+			</p:column>
+			<p:column headerText="联系电话">
+				<h:outputText value="#{user.p.telno}" />
+			</p:column>
+			<p:column headerText="角色">
+				<h:outputText value="#{user.roleNames}" />
+			</p:column>
+			<p:column headerText="状态">
+				<h:panelGroup rendered="#{user.usermstr.defunctInd eq 'N'}">
+					<h:outputText
+					value="#{msgs.txt_effective}" />
+				</h:panelGroup>
+				<h:panelGroup rendered="#{user.usermstr.defunctInd eq 'Y'}">
+					<font color="red"><h:outputText value="#{msgs.txt_effectiveLost}" /></font>
+				</h:panelGroup>
+			</p:column>
+			<p:column headerText="操作" styleClass="operating_120">
+				
+				<p:commandButton action="#{userBean.disable}"
+					image="ui-icon ui-icon-close" title="禁用/启用"
+					update=":userDataTableForm,msg">
+					<f:setPropertyActionListener value="#{user.usermstr}"
+						target="#{userBean.usermstr}" />
+				</p:commandButton>
+				
+				<p:commandButton action="#{userBean.updateUser}"
+					oncomplete="updateUserDialog.show()" update="updateUserDlg"
+					title="编辑" image="ui-icon ui-icon-pencil">
+					<f:setPropertyActionListener target="#{userBean.method}"
+						value="update" />
+					<f:setPropertyActionListener
+						target="#{userBean.selectedUsermstrVo}" value="#{user}" />
+				</p:commandButton>
+				<p:commandButton action="#{userBean.userRole}"
+					oncomplete="userRoleDialog.show()" update="userRoleDlg,msg"
+					title="角色分配" image="ui-icon ui-icon-person">
+					<f:setPropertyActionListener
+						target="#{userBean.selectedUsermstrVo}" value="#{user}" />
+				</p:commandButton>
+			</p:column>
+		</p:dataTable>
+	</h:form>
+
+</ui:composition>

@@ -1,0 +1,60 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<p:outputPanel id="stockholderOutTable">
+		<p:dataTable id="stockholderListId" var="stockholder"
+			value="#{shareHolderBean.shareHolderModel}" paginator="true"
+			rows="10" paginatorPosition="bottom" rowKey="#{stockholder.id}"
+			paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport}"
+			currentPageReportTemplate="{currentPage}/{totalPage}"
+			emptyMessage="#{msgs.empty_data_msg}" >
+			<f:facet name="header">股东信息列表</f:facet>
+			<p:column headerText="股东名称">
+				<h:outputText value="#{stockholder.shareHolderName}" />
+			</p:column>
+			<p:column headerText="股权比例(%)">
+				<h:outputText id="equityPercTable" value="#{stockholder.equityPerc}">
+					<f:convertNumber type="number" pattern="###.##" />
+				</h:outputText>
+			</p:column>
+			<p:column headerText="币别">
+				<h:outputText
+					value="#{commonBean.getValueByDictCatAndKey('TMS_TAX_PROJECT_CURRENCY_TYPE',stockholder.fondsCurrency)}" />
+			</p:column>
+			<p:column headerText="注册金额(万)">
+				<h:outputText value="#{stockholder.fondsTotal}">
+					<f:convertNumber pattern="#,##0.####" />
+				</h:outputText>
+			</p:column>
+			<p:column headerText="已到位资金(万)">
+				<h:outputText value="#{stockholder.fondsInPlace}">
+					<f:convertNumber pattern="#,##0.####" />
+				</h:outputText>
+			</p:column>
+			<p:column headerText="未到位资金(万)">
+				<h:outputText
+					value="#{stockholder.fondsTotal-stockholder.fondsInPlace}">
+					<f:convertNumber pattern="#,##0.####" />
+				</h:outputText>
+			</p:column>
+			<p:column headerText="操作" styleClass="operating_60">
+				<p:commandButton icon="ui-icon ui-icon-pencil" title="编辑"
+					action="#{shareHolderBean.beforeEdit}"
+					oncomplete="sharedEditDialog.show()"
+					update="shareEditPanel,shareholderMsgId,shareHolderNameMsgEdit,shareholderMsgIdDiglog,fondsTotalMsgEdit">
+					<f:setPropertyActionListener
+						target="#{shareHolderBean.shareHolder}" value="#{stockholder}" />
+				</p:commandButton>
+				<p:commandButton icon="ui-icon ui-icon-close" title="删除"
+					update="stockholderOutTable" oncomplete="confirmation.show()">
+					<f:setPropertyActionListener
+						target="#{shareHolderBean.shareHolder}" value="#{stockholder}" />
+				</p:commandButton>
+			</p:column>
+		</p:dataTable>
+	</p:outputPanel>
+
+</ui:composition>

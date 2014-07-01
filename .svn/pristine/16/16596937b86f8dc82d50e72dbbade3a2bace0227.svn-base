@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:shiro="http://shiro.apache.org/tags">
+<h:head>
+</h:head>
+<h:body>
+	#{currentUser.getCurrentUserName()}
+	<shiro:hasPermission name="anon">
+		<h:form>
+	add usermstr:
+	<p:commandButton action="#{persistenceController.addUser}" value="add" />
+		</h:form>
+	</shiro:hasPermission>
+	<br />
+	<shiro:guest>
+	Hi there!  Please <a href="login.jsp">Login</a> or <a href="signup.jsp">Signup</a> today!
+	</shiro:guest>
+	<br />
+	<shiro:user>
+    Welcome back John!  Not John? Click <a href="login.jsp">here</a>
+				to login. 
+	</shiro:user>
+	<br />
+	<shiro:authenticated>
+		<a href="updateAccount.jsp">Update your contact information</a>.
+	</shiro:authenticated>
+	<br />
+	<shiro:notAuthenticated>
+    Please <a href="login.jsp">login</a> in order to update your credit card information.
+	</shiro:notAuthenticated>
+	<br />
+	Hello, <shiro:principal />, how are you today?
+	
+</h:body>
+</html>

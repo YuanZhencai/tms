@@ -1,0 +1,73 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<ul id="nav">
+		<ui:repeat var="midMenu" value="#{currentUser.midNavs}"
+			varStatus="current">
+			<li><a href="#{request.contextPath}/template/template.xhtml#"
+				id="#{midMenu.data.id}"><h:outputText
+						value="#{midMenu.data.name}" /> </a>
+				<ul>
+					<ui:repeat var="btmNav" value="#{midMenu.children}">
+
+						<li id="#{btmNav.data.id}"><a
+							href="#{request.contextPath}#{btmNav.data.uri}"><h:outputText
+									value="#{btmNav.data.name}" /> </a></li>
+					</ui:repeat>
+				</ul></li>
+		</ui:repeat>
+		<li style="display: none"><a href="#{request.contextPath}/template/template.xhtml#"
+			id="zsjgl" ><h:outputText value="主数据管理" /> </a>
+			<ul>
+				<li id="yhxxgl"><a
+					href="#{facesContext.externalContext.requestContextPath}/faces/system/bankManage/bankManage-list.xhtml"><h:outputText
+							value="银行信息管理" /> </a></li>
+							
+				<li id="gsxxgl"><a
+					href="#{facesContext.externalContext.requestContextPath}/faces/system/companyManage/comManage-list.xhtml"><h:outputText
+							value="公司信息管理" /> </a></li>
+
+				<li id="xtlcgl"><a
+					href="#{facesContext.externalContext.requestContextPath}/faces/system/systemProcess/systemProcess-list.xhtml"><h:outputText
+							value="系统流程管理" /> </a></li>
+			</ul></li>
+		<li style="display: none"><a href="#{request.contextPath}/template/template.xhtml#"
+			id="lc"><h:outputText value="流程" /> </a>
+			<ul>
+				<li id="ytjlc"><a
+					href="#{facesContext.externalContext.requestContextPath}/faces/process/common/processSubed-list.xhtml"><h:outputText
+							value="已提交的流程" /> </a></li>
+				<li id="yclrw"><a
+					href="#{facesContext.externalContext.requestContextPath}/faces/process/common/processDealed-list.xhtml"><h:outputText
+							value="已处理的任务" /> </a></li>
+				<li id="ytjlc"><a
+					href="#{facesContext.externalContext.requestContextPath}/faces/process/common/processWait-list.xhtml"><h:outputText
+							value="待接收任务" /> </a></li>
+				<li id="ytjlc"><a
+					href="#{facesContext.externalContext.requestContextPath}/faces/process/common/processAccept-list.xhtml"><h:outputText
+							value="已接收任务" /> </a></li>
+				<li id="fqxlc"><a
+					href="#{facesContext.externalContext.requestContextPath}/faces/process/common/processNew-list.xhtml"><h:outputText
+							value="发起新流程" /> </a></li>
+			</ul></li>
+		<li style="display: none"><a href="#{request.contextPath}/template/template.xhtml#"
+			id="bb"><h:outputText value="报表" /> </a>
+			<ul>
+				<li id="wzsqmxb"><a
+					href="#{facesContext.externalContext.requestContextPath}/faces/report/debtBorrow/debtBorrow-detail.xhtml"><h:outputText
+							value="外债申请明细表" /> </a></li>
+				<li id="tzlcmxb"><a
+					href="#{facesContext.externalContext.requestContextPath}/faces/report/inveProduct/inveProduct-detail.xhtml"><h:outputText
+							value="投资理财产品额度明细表" /> </a></li>
+				<li id="sxedmxb"><a
+					href="#{facesContext.externalContext.requestContextPath}/faces/report/bankCredit/bankCredit-detail.xhtml"><h:outputText
+							value="授信额度明细表" /> </a></li>
+							
+			</ul></li>
+	</ul>
+
+</ui:composition>

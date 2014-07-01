@@ -1,0 +1,202 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:commentProcess="http://java.sun.com/jsf/composite/commentProcess"
+	template="/template/template.xhtml">
+	<ui:define name="metadata">
+
+	</ui:define>
+	<ui:define name="title">注册资本金变更审批</ui:define>
+	<ui:define name="styleAndScript">
+
+	</ui:define>
+	<ui:define name="content">
+
+		<input type="hidden" id="menuOne" value="15" />
+		<input type="hidden" id="menuTwo" value="20" />
+
+		<p:panel styleClass="panel1">
+			<h:form prependId="false" id="addRegisterChangeForm"
+				onsubmit="statusComplete();">
+				<p:breadCrumb preview="true" expandEffectDuration="200"
+					previewWidth="24" style="width: 99.1%">
+					<p:menuitem value="注册资本金变更" url="#" />
+					<p:menuitem value="#{registerCaptialChangeBean.title}" url="#" />
+				</p:breadCrumb>
+				<p:messages id="msg" />
+				<div style="position: relative; margin-top: 5px;">
+					<div class="style1">
+						<h:panelGrid columns="4"
+							columnClasses="column40,column2,column40,column2">
+							<h:outputLabel value="#{msgs.lbl_formFillDate}：" />
+							<p:inputText disabled="true"
+								value="#{registerCaptialChangeBean.registerDate}" />
+							<h:outputLabel value="#{msgs.lbl_user_filling}：" />
+							<p:inputText disabled="true" label="#{msgs.lbl_user_filling}"
+								value="#{currentUser.getCurrentCN()}" />
+							<h:outputLabel value="#{msgs.lbl_companyName_CN}" />
+							<h:panelGroup>
+								<h:selectOneMenu id="companyNameCn" disabled="true" required="true"
+									requiredMessage="#{msgs.msg_select_company}"
+									value="#{registerCaptialChangeBean.companyId}"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									style="width:376px;">
+									<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" />
+									<f:selectItems
+										value="#{registerCaptialChangeBean.companyNameSelect}" />
+									<p:ajax listener="#{registerCaptialChangeBean.companyEnName}"
+										update="companyNameEn,stockholderOutTable,payer" />
+								</h:selectOneMenu>
+								<h:outputText style="color:red;" value=" *" />
+							</h:panelGroup>
+
+							<h:outputLabel value="#{msgs.lbl_companyName_EN}" />
+							<p:inputText id="companyNameEn" disabled="true"
+								style="width:366px;"
+								value="#{registerCaptialChangeBean.companyNameEn}" />
+							<h:outputLabel value="新投资总额：" />
+							<h:panelGroup>
+								<p:inputText id="investTotal1" label="新投资总额"
+									style="width: 200px;" disabled="true"
+									value="#{registerCaptialChangeBean.instance.investTotal}">
+									<f:convertNumber pattern="#,##0.####" />
+									<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"></f:validateDoubleRange>
+								</p:inputText>
+								<h:outputLabel value="(万)"></h:outputLabel>
+								<h:selectOneMenu id="investCurrency1" name="afcePaidCu" disabled="true"
+									value="#{registerCaptialChangeBean.instance.investCurrency}"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+									<f:selectItems
+										value="#{registerCaptialChangeBean.currencySelect}" />
+								</h:selectOneMenu>
+							</h:panelGroup>
+							<h:outputLabel value="原投资总额：" />
+							<h:panelGroup>
+								<p:inputText id="investTotal2" label="原投资总额"
+									style="width: 200px;" disabled="true"
+									value="#{registerCaptialChangeBean.instance.investTotalOri}">
+									<f:convertNumber pattern="#,##0.####" />
+									<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"></f:validateDoubleRange>
+								</p:inputText>
+								<h:outputLabel value="(万)"></h:outputLabel>
+								<h:selectOneMenu id="investCurrency2" name="afcePaidCu" disabled="true"
+									value="#{registerCaptialChangeBean.instance.investCurrencyOri}"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+									<f:selectItems
+										value="#{registerCaptialChangeBean.currencySelect}" />
+								</h:selectOneMenu>
+							</h:panelGroup>
+						</h:panelGrid>
+						<h:panelGrid columns="6"
+							columnClasses="column40,column2,column2,column40,column2,column2">
+							<h:outputLabel value="新投注差可用：" />
+							<p:selectOneRadio id="isInvestRegRemaAvai1" required="true"
+								requiredMessage="#{msgs.msg_select_applyType}" disabled="true"
+								value="#{registerCaptialChangeBean.instance.isInvestRegRemaAvai}">
+								<f:selectItem itemLabel="是" itemValue="1" />
+								<f:selectItem itemLabel="否" itemValue="0" />
+							</p:selectOneRadio>
+							<h:panelGroup>
+								<p:inputText id="investRegRemaFunds1"
+									label="#{msgs.lbl_afcePaid}" disabled="true"
+									value="#{registerCaptialChangeBean.instance.investRegRemaFunds}">
+									<f:convertNumber pattern="#,##0.####" />
+									<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"></f:validateDoubleRange>
+								</p:inputText>
+								<h:selectOneMenu id="investRegRemaFundsCu1"
+									name="investRegRemaFundsCu" disabled="true"
+									value="#{registerCaptialChangeBean.instance.investRegRemaFundsCu}"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+									<f:selectItems
+										value="#{registerCaptialChangeBean.currencySelect}" />
+								</h:selectOneMenu>
+								<h:outputText style="color:red;visibility: hidden;" value=" *" />
+							</h:panelGroup>
+
+							<h:outputLabel value="原投注差可用：" />
+							<p:selectOneRadio id="isInvestRegRemaAvai2" required="true" disabled="true"
+								requiredMessage="#{msgs.msg_select_applyType}"
+								value="#{registerCaptialChangeBean.instance.isInvestRegRemaAvaiOri}">
+								<f:selectItem itemLabel="是" itemValue="1" />
+								<f:selectItem itemLabel="否" itemValue="0" />
+							</p:selectOneRadio>
+							<h:panelGroup>
+								<p:inputText id="investRegRemaFunds2"
+									label="#{msgs.lbl_afcePaid}" disabled="true"
+									value="#{registerCaptialChangeBean.instance.investRegRemaFundsOri}">
+									<f:convertNumber pattern="#,##0.####" />
+									<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"></f:validateDoubleRange>
+								</p:inputText>
+								<h:selectOneMenu id="investRegRemaFundsCu2"
+									name="investRegRemaFundsCu" disabled="true"
+									value="#{registerCaptialChangeBean.instance.investRegRemaFundsCuOri}"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+									<f:selectItems
+										value="#{registerCaptialChangeBean.currencySelect}" />
+								</h:selectOneMenu>
+							</h:panelGroup>
+
+						</h:panelGrid>
+					</div>
+					<div style="position: relative; margin-top: 5px;">
+						<ui:include src="shareholder-list.xhtml" />
+					</div>
+					<div align="right">
+						<h:panelGrid columns="2" columnClasses="column40,column2">
+							<h:outputLabel value="#{msgs.lbl_doNext}" />
+							<p:selectBooleanCheckbox id="doNext"
+								value="#{registerCaptialChangeBean.doNext}" />
+						</h:panelGrid>
+						&#160;&#160;
+						<p:commandButton id="pass" onclick="buttonDisable('pass');"
+							icon="ui-icon ui-icon-circle-check" value="#{msgs.btn_approve}"
+							ajax="false"
+							action="#{registerCaptialChangeBean.approveRegisterCaptialChange()}">
+							<f:param name="auit" value="Y" />
+							<f:param name="wobj" value="#{requestScope.procInstId}" />
+						</p:commandButton>
+						&#160;&#160;
+						<p:commandButton id="reject" onclick="buttonDisable('reject');"
+							icon="ui-icon ui-icon-circle-close" value="#{msgs.btn_sendBack}"
+							ajax="false"
+							action="#{registerCaptialChangeBean.approveRegisterCaptialChange()}">
+							<f:param name="auit" value="N" />
+						</p:commandButton>
+					</div>
+				</div>
+			</h:form>
+			<h:form prependId="false" id="stepDetailForm">
+				<div style="position: relative; margin-top: 5px;">
+					<p:outputPanel id="processDetailPanel">
+						<commentProcess:processDetail
+							dataList="#{registerCaptialChangeBean.processDetailList}" />
+					</p:outputPanel>
+				</div>
+			</h:form>
+			<h:form prependId="false" id="fileForm">
+				<div style="position: relative; margin-top: 5px;">
+					<p:outputPanel id="attachmentPanel">
+						<commentProcess:filedownload updateComenId="attachmentPanel"
+							isDisable="true" dataList="#{fileDownloadBean.processFileList}" />
+					</p:outputPanel>
+				</div>
+			</h:form>
+			<ui:include src="save_holder_dialog.xhtml" />
+		</p:panel>
+		<script type="text/javascript">
+			var isFirst = "true";
+			function buttonDisable(buttonId){
+				if("true"==isFirst){
+					isFirst="false";
+					return true;
+				}else{
+					document.getElementById(buttonId).disabled=true;
+					return false;
+				}
+			}
+		</script>
+	</ui:define>
+</ui:composition>

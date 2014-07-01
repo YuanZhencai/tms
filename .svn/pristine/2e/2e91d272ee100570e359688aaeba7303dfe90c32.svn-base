@@ -1,0 +1,225 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/template/template.xhtml">
+
+	<ui:define name="title">公司信息管理</ui:define>
+
+	<ui:define name="content">
+
+		<input type="hidden" id="menuOne" value="27" />
+		<input type="hidden" id="menuTwo" value="29" />
+
+		<h:form id="companyListForm" prependId="false" onsubmit="statusComplete();">
+			<p:panel styleClass="panel1">
+				<p:breadCrumb preview="true" expandEffectDuration="200"
+					previewWidth="24" style="width: 99.1%">
+					<p:menuitem value="系统管理" url="#" />
+					<p:menuitem value="主数据管理" url="#" />
+					<p:menuitem value="公司信息管理" url="#" />
+				</p:breadCrumb>
+
+				<p:message id="msg" for="msg" />
+
+				<div class="style1">
+					<h:panelGrid columns="10"
+						columnClasses="column0,column2,column0,column2,column0,column2,column0,column2,column0,column2">
+
+
+						<h:outputLabel value="公司名称：" />
+						<p:inputText id="companyName"
+							value="#{companyTmsBean.conditionMap['companyName']}" />
+
+						<h:outputLabel value="英文名称：" />
+						<p:inputText id="companyEn"
+							value="#{companyTmsBean.conditionMap['companyEn']}" />
+
+						<h:outputLabel value="SAP代码：" />
+						<p:inputText id="sapCode"
+							value="#{companyTmsBean.conditionMap['sapCode']}" />
+
+						<h:outputLabel value="集团公司：" />
+						<h:selectOneMenu id="corporationFlag" name="corporationFlag"
+							value="#{companyTmsBean.conditionMap['corporationFlag']}"
+							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+							<f:selectItem itemLabel="全部" itemValue="all" />
+							<f:selectItem itemLabel="集团公司" itemValue="Y" />
+							<f:selectItem itemLabel="非集团公司" itemValue="N" />
+						</h:selectOneMenu>
+						
+						<h:outputLabel value="状态：" />
+						<h:selectOneMenu id="corporationState" name="corporationState"
+							value="#{companyTmsBean.conditionMap['state']}"
+							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+							<f:selectItem itemLabel="全部" itemValue="all" />
+							<f:selectItem itemLabel="可用" itemValue="Y" />
+							<f:selectItem itemLabel="不可用" itemValue="N" />
+						</h:selectOneMenu>
+
+					</h:panelGrid>
+
+					<div>
+						<p:commandButton id="query" action="#{companyTmsBean.searchComp}"
+							update="companyListPl,msg,errorMsg" value="查询" image="ui-icon ui-icon-search" />
+
+						<p:commandButton id="toAdd" action="#{companyTmsBean.clear}"
+							update="companyAddForm,msg,errorMsg" oncomplete="companyDialog.show()"
+							value="新建" image="ui-icon ui-icon-plus" />
+					</div>
+				</div>
+				<br />
+				<p:outputPanel id="companyListPl">
+					<p:dataTable var="company" id="companyList"
+						value="#{companyTmsBean.companyLazyModel}" rowKey="#{company.id}"
+						paginator="true" rows="10" paginatorPosition="bottom"
+						paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
+						currentPageReportTemplate="{currentPage}/{totalPage}"
+						emptyMessage="无满足条件数据！">
+
+						<f:facet name="header">公司列表</f:facet>
+
+
+						<p:column headerText="公司名称">
+							<h:outputText value="#{company.companyName}" />
+						</p:column>
+
+						<p:column headerText="英文名称">
+							<h:outputText value="#{company.companyEn}" />
+						</p:column>
+
+						<p:column headerText="公司SAP代码">
+							<h:outputText value="#{company.sapCode}" />
+						</p:column>
+
+						<p:column headerText="公司投资总额">
+							<h:panelGroup>
+								<h:outputText value="#{company.investTotal}" ><f:convertNumber pattern="#,##0.####"/></h:outputText>
+								<h:outputLabel>万</h:outputLabel>
+							</h:panelGroup>
+						</p:column>
+						
+						<p:column headerText="币种">
+							<h:outputText value="#{commonBean.getValueByDictCatAndKey('TMS_TAX_PROJECT_CURRENCY_TYPE',company.investCurrency)}" />
+						</p:column>
+
+						<p:column headerText="状态">
+							<h:outputText value="#{company.status == 'Y' ? '可用' : '不可用'}" />
+						</p:column>
+
+						<p:column styleClass="operating_150" headerText="操作">
+
+							<p:commandButton action="#{companyTmsBean.disable}"
+								image="ui-icon ui-icon-close" title="禁用/启用"
+								update="companyListPl,msg">
+								<f:setPropertyActionListener value="#{company}"
+									target="#{companyTmsBean.company}" />
+							</p:commandButton>
+							<p:commandButton action="#{shareHolderBean.goInput}"
+								image="ui-icon ui-icon-billing" title="股东维护" ajax="false">
+								<f:param name="compId" value="#{company.id}" />
+							</p:commandButton>
+							
+							<p:commandButton action="#{companyCreidtBean.goInput}"
+								image="ui-icon ui-icon-gear" title="公司授信" ajax="false">
+								<f:param name="compId" value="#{company.id}" />
+							</p:commandButton>
+							
+							<p:commandButton action="#{companyAccountBean.goInput}"
+								image="ui-icon ui-icon-review" title="公司账户" ajax="false">
+								<f:param name="compId" value="#{company.id}" />
+							</p:commandButton>
+							
+							<p:commandButton action="#{guaranteeBean.searchGuar}"
+								image="ui-icon ui-icon-person" title="担保信息" ajax="false">
+								<f:param name="compId" value="#{company.id}" />
+							</p:commandButton>
+							
+							<p:commandButton action="#{guaranteeBean.goSearchCash}"
+								image="ui-icon ui-icon-assign" title="头寸信息" ajax="false">
+								<f:param name="compId" value="#{company.id}" />
+							</p:commandButton>
+							
+							<p:commandButton action="#{companyTmsBean.toEdit}"
+								image="ui-icon ui-icon-pencil" title="修改" oncomplete="companyDialog.show()"
+								update="companyListPl,companyAddForm,msg,errorMsg">
+								<f:setPropertyActionListener value="#{company}"
+									target="#{companyTmsBean.company}" />
+							</p:commandButton>
+						</p:column>
+
+					</p:dataTable>
+				</p:outputPanel>
+			</p:panel>
+		</h:form>
+		<h:form prependId="false" id="companyAddForm">
+			<p:dialog header="#{companyTmsBean.op}公司" widgetVar="companyDialog" resizable="false"
+				modal="true" id="companyDlg" width="800">
+				<p:messages id="errorMsg" />
+				<h:panelGrid columns="6"
+					columnClasses="column0,column2,column0,column2,column0,column2">
+					<h:outputLabel value="公司名称：" />
+					<h:panelGroup>
+						<p:inputText id="dia_companyName"
+							value="#{companyTmsBean.company.companyName}" maxlength="50" required="true" requiredMessage="公司名称：不可为空!"/>
+						<h:outputLabel value="*" style="color:red" />
+					</h:panelGroup>
+
+					<h:outputLabel value="英文名称：" />
+					<h:panelGroup>
+						<p:inputText id="dia_companyEn"
+							value="#{companyTmsBean.company.companyEn}" maxlength="100" required="true" requiredMessage="英文名称：不可为空!">
+						</p:inputText>
+						<h:outputLabel value="*" style="color:red" />
+					</h:panelGroup>
+
+					<h:outputLabel value="SAP代码：" />
+					<h:panelGroup>
+						<p:inputText id="dia_sapCode"
+							value="#{companyTmsBean.company.sapCode}" maxlength="5" disabled="#{companyTmsBean.op == '修改' ? true :false}" required="true" requiredMessage="SAP代码：不可为空!">
+						</p:inputText>
+						<h:outputLabel value="*" style="color:red" />
+					</h:panelGroup>
+
+					<h:outputLabel value="投资总额：" />
+					<h:panelGroup>
+						<p:inputText id="dia_investTotal" label="投资总额"
+							value="#{companyTmsBean.company.investTotal}" maxlength="16" required="true" requiredMessage="投资总额：不可为空!">
+							<f:convertNumber pattern="#,##0.####"/>
+							<f:validateDoubleRange maximum="99999999.9999"></f:validateDoubleRange>
+						</p:inputText>
+						<h:outputLabel>万</h:outputLabel>
+						<h:outputLabel value="*" style="color:red" />
+					</h:panelGroup>
+					
+					<h:outputLabel value="币种：" />
+					<h:selectOneMenu id="investCurrency" name="investCurrency"
+							value="#{companyTmsBean.company.investCurrency}"
+							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+							<f:selectItems value="#{companyTmsBean.currencySelect}" />
+					</h:selectOneMenu>
+
+					<h:outputLabel value="集团公司：" />
+					<p:selectBooleanCheckbox id="dia_corporationFlag"
+						value="#{companyTmsBean.company.corporationFlagEx}" />
+				</h:panelGrid>
+				<f:facet name="footer">
+					<p:commandButton action="#{companyTmsBean.saveCom}" value="保存"
+						id="add" icon="ui-icon ui-icon-disk" update="companyListPl,msg,errorMsg"
+						oncomplete="handleComplete(companyDialog,args);" />
+						&#160;&#160;
+						<p:commandButton value="取消" onclick="companyDialog.hide()"
+						type="button" id="roleBACKID" icon="ui-icon ui-icon-cancel" />
+				</f:facet>
+			</p:dialog>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>
+
+

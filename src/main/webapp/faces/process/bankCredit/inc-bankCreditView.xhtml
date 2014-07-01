@@ -1,0 +1,661 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:form prependId="false" id="addRegisterForm">
+	<div style="position: relative; margin-top: 5px;">
+		<div class="style11">	
+			<h:panelGrid columns="8"
+				columnClasses="column41,column2,column41,column2,column41,column2,column41,column2">
+				<h:outputLabel value="#{msgs.lbl_formFillDate}：" />
+				<p:inputText id="dia_registerDateview" disabled="true"
+					value="#{bankCreditConfirmBean.procBankCredit.applyDate}">
+					<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+				</p:inputText>
+				<h:outputLabel value="#{msgs.lbl_notarizeCreditLine}：" />
+				<h:panelGroup>
+					<p:inputText
+						value="#{bankCreditConfirmBean.procBankCredit.notarizeCreditLine}"
+						id="dia_notarizeCreditLine" disabled="true">
+						<f:convertNumber pattern="#,##0.####" />
+					</p:inputText>
+					<h:outputText value="#{msgs.lbl_tenThousand}" />
+				</h:panelGroup>
+				<h:outputLabel value="#{msgs.lbl_fondsCurrency}：" />
+				<h:selectOneMenu
+					value="#{bankCreditConfirmBean.procBankCredit.creditLineCu}"
+					id="dia_creditLineCuView" disabled="true"
+					styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+					<f:selectItems value="#{bankCreditConfirmBean.currencySelect}" />
+				</h:selectOneMenu>
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+			</h:panelGrid>
+			<h:panelGrid columns="2"
+				columnClasses="column41,column2">
+				<h:outputLabel value="#{msgs.lbl_companyNameCn}：" />
+				<h:panelGroup>
+					<p:inputText id="dia_companyNameCnView" disabled="true" style="width:297px;"
+						value="#{bankCreditConfirmBean.procBankCredit.company.companyName}">
+					</p:inputText>
+					<h:outputText value="&#160;&#160;&#160;" />
+				</h:panelGroup>
+	
+				<h:outputLabel value="#{msgs.lbl_topBank}：" />
+				<h:selectOneMenu id="dia_topBankIdView" disabled="true" style="width:307px;"
+					value="#{bankCreditConfirmBean.procBankCredit.bank.topBankId}"
+					styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+					<f:selectItems value="#{bankCreditConfirmBean.topLevelSelect}" />
+				</h:selectOneMenu>
+	
+	
+				<h:outputLabel value="#{msgs.lbl_branchSelect}：" />
+				<h:selectOneMenu id="dia_branchSelectIdView" disabled="true" style="width:307px;"
+					value="#{bankCreditConfirmBean.procBankCredit.bank.id}"
+					styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+					<f:selectItems value="#{bankCreditConfirmBean.requestbranchSelect}" />
+				</h:selectOneMenu>
+	
+			</h:panelGrid>
+		</div>
+		
+		<div class="style11">
+			<h:panelGrid columns="8"
+				columnClasses="column41,column2,column41,column2,column41,column2,column41,column2">
+				<h:outputLabel value="#{msgs.lbl_lastCreditLine}：" />
+				<h:panelGroup>
+					<p:inputText id="dia_lastCreditLineView" disabled="true"
+						value="#{bankCreditConfirmBean.procBankCredit.lastCreditLine}">
+						<f:convertNumber pattern="#,##0" />
+					</p:inputText>
+					<h:outputText value="#{msgs.lbl_tenThousand}" />
+				</h:panelGroup>
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+	
+	
+				<h:outputLabel value="#{msgs.lbl_lastAssureWay}：" styleClass="title_1" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+	
+				<h:outputLabel value="#{msgs.lbl_credit}：" />
+				<h:panelGroup>
+					<p:inputText id="dia_lastGuaranteeCdView" disabled="true"
+						value="#{bankCreditConfirmBean.procBankCredit.lastGuaranteeCd}">
+						<f:convertNumber pattern="#,##0" />
+					</p:inputText>
+					<h:outputText value="#{msgs.lbl_tenThousand}" />
+				</h:panelGroup>
+	
+				<h:outputLabel value="#{msgs.lbl_guarantee}：" />
+				<h:panelGroup>
+					<p:inputText id="dia_lastGuaranteeMgView" disabled="true"
+						value="#{bankCreditConfirmBean.procBankCredit.lastGuaranteeMg}">
+						<f:convertNumber pattern="#,##0" />
+					</p:inputText>
+					<h:outputText value="#{msgs.lbl_tenThousand}" />
+				</h:panelGroup>
+	
+				<h:outputLabel value="#{msgs.lbl_pledge}：" />
+				<h:panelGroup>
+					<p:inputText id="dia_lastGuaranteeQmView" disabled="true"
+						value="#{bankCreditConfirmBean.procBankCredit.lastGuaranteeQm}">
+						<f:convertNumber pattern="#,##0" />
+					</p:inputText>
+					<h:outputText value="#{msgs.lbl_tenThousand}" />
+				</h:panelGroup>
+	
+				<h:outputLabel value="#{msgs.lbl_assure}：" />
+				<h:panelGroup>
+					<p:inputText id="dia_lastGuaranteeGrView" disabled="true"
+						value="#{bankCreditConfirmBean.procBankCredit.lastGuaranteeGr}">
+						<f:convertNumber pattern="#,##0" />
+					</p:inputText>
+					<h:outputText value="#{msgs.lbl_tenThousand}" />
+				</h:panelGroup>
+	
+				<h:outputLabel value="#{msgs.lbl_other}：" />
+				<h:panelGroup>
+					<p:inputText id="dia_lastGuaranteeOtView" disabled="true"
+						value="#{bankCreditConfirmBean.procBankCredit.lastGuaranteeOt}">
+						<f:convertNumber pattern="#,##0" />
+					</p:inputText>
+					<h:outputText value="#{msgs.lbl_tenThousand}" />
+				</h:panelGroup>
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				
+				<h:outputLabel value="#{msgs.lbl_lastCreditTotal}：" />
+				<h:panelGroup>
+					<p:inputText id="dia_lastCreditTotalView"
+						value="#{bankCreditConfirmBean.procBankCredit.lastCreditTotal}"
+						disabled="true">
+						<f:convertNumber pattern="#,##0" />
+					</p:inputText>
+					<h:outputText value="#{msgs.lbl_tenThousand}" />
+				</h:panelGroup>
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+			</h:panelGrid>
+		</div>
+		
+		<div class="style11">
+			<h:panelGrid columns="8"
+				columnClasses="column41,column2,column41,column2,column41,column2,column41,column2">
+				<h:outputLabel value="#{msgs.lbl_creditLine}：" />
+				<h:panelGroup>
+					<p:inputText id="dia_creditLineView" disabled="true"
+						value="#{bankCreditConfirmBean.procBankCredit.creditLine}">
+						<f:convertNumber pattern="#,##0.####" />
+					</p:inputText>
+					<h:outputText value="#{msgs.lbl_tenThousand}" />
+				</h:panelGroup>
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+	
+				<h:outputLabel value="#{msgs.lbl_assureWay}：" styleClass="title_1" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="#{msgs.lbl_credit}：" />
+				<h:panelGroup>
+					<p:inputText id="dia_guaranteeCdView" disabled="true"
+						value="#{bankCreditConfirmBean.procBankCredit.guaranteeCd}">
+						<f:convertNumber pattern="#,##0" />
+					</p:inputText>
+					<h:outputText value="#{msgs.lbl_tenThousand}" />
+				</h:panelGroup>
+	
+				<h:outputLabel value="#{msgs.lbl_guarantee}：" />
+				<h:panelGroup>
+					<p:inputText id="dia_guaranteeMgView" disabled="true"
+						value="#{bankCreditConfirmBean.procBankCredit.guaranteeMg}">
+						<f:convertNumber pattern="#,##0" />
+					</p:inputText>
+					<h:outputText value="#{msgs.lbl_tenThousand}" />
+				</h:panelGroup>
+				<h:outputLabel value="#{msgs.lbl_pledge}：" />
+				<h:panelGroup>
+					<p:inputText id="dia_guaranteeQmView" disabled="true"
+						value="#{bankCreditConfirmBean.procBankCredit.guaranteeQm}">
+						<f:convertNumber pattern="#,##0" />
+					</p:inputText>
+					<h:outputText value="#{msgs.lbl_tenThousand}" />
+				</h:panelGroup>
+				<h:outputLabel value="#{msgs.lbl_assure}：" />
+				<h:panelGroup>
+					<p:inputText id="dia_guaranteeGrView" disabled="true"
+						value="#{bankCreditConfirmBean.procBankCredit.guaranteeGr}">
+						<f:convertNumber pattern="#,##0" />
+					</p:inputText>
+					<h:outputText value="#{msgs.lbl_tenThousand}" />
+				</h:panelGroup>
+				<h:outputLabel value="#{msgs.lbl_other}：" />
+				<h:panelGroup>
+					<p:inputText id="dia_guaranteeOtView" disabled="true"
+						value="#{bankCreditConfirmBean.procBankCredit.guaranteeOt}">
+						<f:convertNumber pattern="#,##0" />
+					</p:inputText>
+					<h:outputText value="#{msgs.lbl_tenThousand}" />
+				</h:panelGroup>
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+			</h:panelGrid>
+		</div>
+		
+		<div class="style11">
+			<h:panelGrid columns="8"
+				columnClasses="column41,column2,column41,column2,column41,column2,column41,column2">
+				<h:outputLabel value="#{msgs.lbl_dollarFlow}：" styleClass="title_2" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				
+				<h:outputLabel value="#{msgs.lbl_amount}：" />
+				<h:panelGroup>
+					<p:inputText id="dia_dollarFlowFinanceView" disabled="true"
+						value="#{bankCreditConfirmBean.procBankCredit.dollarFlowFinance}">
+						<f:convertNumber pattern="#,##0.####" />
+					</p:inputText>
+					<h:outputText value="#{msgs.lbl_tenThousand}" />
+				</h:panelGroup>
+				<h:outputLabel value="#{msgs.lbl_importFinanceLink}：" />
+				<h:selectOneMenu id="dia_dollarFlowLinkView" disabled="true"
+					value="#{bankCreditConfirmBean.procBankCredit.dollarFlowLink}"
+					styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+					<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" />
+					<f:selectItems value="#{bankCreditConfirmBean.rateHookSelect}" />
+				</h:selectOneMenu>
+				<h:outputLabel value="利率（或 加点数）：" />
+				<h:panelGroup>
+					<p:inputText id="dia_dollarFlowPointView" disabled="true"
+						value="#{bankCreditConfirmBean.procBankCredit.dollarFlowPoint}">
+						<f:convertNumber pattern="#0.00" />
+					</p:inputText>
+				</h:panelGroup>
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				
+				
+				
+				
+				<h:outputLabel value="#{msgs.lbl_liquidityPayment}：" styleClass="title_2" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="#{msgs.lbl_amount}：" />
+				<h:panelGroup>
+					<p:inputText id="dia_liquCredView" disabled="true"
+						value="#{bankCreditConfirmBean.procBankCredit.liquCred}">
+						<f:convertNumber pattern="#,##0.####" />
+					</p:inputText>
+					<h:outputText value="#{msgs.lbl_tenThousand}" />
+				</h:panelGroup>
+				<h:outputLabel value="#{msgs.lbl_financeRa}：" />
+							<h:panelGroup>
+								<p:inputText id="dia_liquCredApView" label="#{msgs.lbl_liquCredAp}"
+									disabled="true" value="#{bankCreditConfirmBean.instance.liquCredAp}">
+									<f:validateDoubleRange maximum="100" minimum="0" />
+									<f:convertNumber pattern="#0.00" />
+								</p:inputText>
+							</h:panelGroup>
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				
+				<h:outputLabel value="#{msgs.lbl_importFinanceLink}：" />
+				<h:panelGroup>
+					<h:selectOneMenu id="dia_liquCredRaView" disabled="true"
+						value="#{bankCreditConfirmBean.procBankCredit.liquCredRa}"
+						styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+						<f:selectItems value="#{bankCreditConfirmBean.rmbFlowSelect}" />
+					</h:selectOneMenu>
+					<!-- <p:inputText id="dia_liquCredRaView" disabled="true"
+						value="#{bankCreditConfirmBean.procBankCredit.liquCredRa}">
+						<f:convertNumber pattern="#0.00" />
+					</p:inputText> -->
+				</h:panelGroup>
+				
+				<h:outputLabel value="上浮/下浮" />
+							<h:selectOneMenu id="dia_floatFlagView" label="上浮/下浮"
+									value="#{bankCreditConfirmBean.instance.floatFlag}" disabled="true"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+									<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" />
+									<f:selectItem itemLabel="上浮" itemValue="U"/>
+									<f:selectItem itemLabel="下浮" itemValue="D"/>
+									<p:ajax update="float1,float2,floatFlag" />
+							</h:selectOneMenu>
+							<h:outputLabel value="" />
+								<p:inputText id="dia_float1View" label="#{msgs.lbl_liquCred}"
+									disabled="true"
+									value="#{bankCreditConfirmBean.instance.float1}">
+									<f:validateDoubleRange maximum="99999999.9999" minimum="0" />
+									<f:convertNumber pattern="#,##0.####" />
+								</p:inputText>
+								<h:outputLabel value="=" />
+								<p:inputText id="dia_float2View" label="#{msgs.lbl_liquCred}"
+								disabled="true"
+									value="#{bankCreditConfirmBean.instance.float2}">
+									<f:validateDoubleRange maximum="99999999.9999" minimum="0" />
+									<f:convertNumber pattern="#,##0.####" />
+								</p:inputText>
+							
+				
+				
+				<h:outputLabel value="#{msgs.lbl_importCredLetter}：" styleClass="title_2" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="#{msgs.lbl_amount}：" />
+				<h:panelGroup>
+					<p:inputText id="dia_importCreditView" disabled="true"
+						value="#{bankCreditConfirmBean.procBankCredit.importCredit}">
+						<f:convertNumber pattern="#,##0.####" />
+					</p:inputText>
+					<h:outputText value="#{msgs.lbl_tenThousand}" />
+				</h:panelGroup>
+				<h:outputLabel value="#{msgs.lbl_bankAcptGp}：" />
+				<h:panelGroup>
+					<p:inputText id="dia_importCreditGpView" disabled="true"
+						value="#{bankCreditConfirmBean.procBankCredit.importCreditGp}">
+						<f:convertNumber pattern="#0.00" />
+					</p:inputText>
+					<h:outputText value="%" />
+				</h:panelGroup>
+				<h:outputLabel value="#{msgs.lbl_importCreditFe}：" />
+				<h:panelGroup>
+					<p:inputText id="dia_importCreditFeView" disabled="true"
+						value="#{bankCreditConfirmBean.procBankCredit.importCreditFe}">
+						<f:convertNumber pattern="#0.00" />
+					</p:inputText>
+					<h:outputText value="%" />
+				</h:panelGroup>
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				
+				
+				<h:outputLabel value="#{msgs.lbl_nationCredLetter}：" styleClass="title_2" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="#{msgs.lbl_amount}：" />
+				<h:panelGroup>
+					<p:inputText id="dia_domesticCredView" disabled="true"
+						value="#{bankCreditConfirmBean.procBankCredit.domesticCred}">
+						<f:convertNumber pattern="#,##0.####" />
+					</p:inputText>
+					<h:outputText value="#{msgs.lbl_tenThousand}" />
+				</h:panelGroup>
+				<h:outputLabel value="#{msgs.lbl_bankAcptGp}：" />
+				<h:panelGroup>
+					<p:inputText id="dia_domesticCredGpView" disabled="true"
+						value="#{bankCreditConfirmBean.procBankCredit.domesticCredGp}">
+						<f:convertNumber pattern="#0.00" />
+					</p:inputText>
+					<h:outputText value="%" />
+				</h:panelGroup>
+				<h:outputLabel value="#{msgs.lbl_poundage}：" />
+				<h:panelGroup>
+					<p:inputText id="dia_domesticCredFeView" disabled="true"
+						value="#{bankCreditConfirmBean.procBankCredit.domesticCredFe}">
+						<f:convertNumber pattern="#0.00" />
+					</p:inputText>
+					<h:outputText value="%" />
+				</h:panelGroup>
+				<h:outputLabel value="#{msgs.lbl_domesticCredDf}：" />
+				<h:panelGroup>
+					<p:inputText id="dia_domesticCredDfView" disabled="true"
+						value="#{bankCreditConfirmBean.procBankCredit.domesticCredDf}">
+						<f:convertNumber pattern="#0.00" />
+					</p:inputText>
+					<h:outputText value="%" />
+				</h:panelGroup>
+				
+				
+				<h:outputLabel value="#{msgs.lbl_importFinance}：" styleClass="title_2" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="#{msgs.lbl_amount}：" />
+				<h:panelGroup>
+					<p:inputText id="dia_importFinanceView" disabled="true"
+						value="#{bankCreditConfirmBean.procBankCredit.importFinance}">
+						<f:convertNumber pattern="#,##0.####" />
+					</p:inputText>
+					<h:outputText value="#{msgs.lbl_tenThousand}" />
+				</h:panelGroup>
+				<h:outputLabel value="#{msgs.lbl_importFinanceLink}：" />
+				<h:selectOneMenu id="dia_importFinanceLinkView" disabled="true"
+					value="#{bankCreditConfirmBean.procBankCredit.importFinanceLink}"
+					styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+					<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" />
+					<f:selectItems value="#{bankCreditConfirmBean.importFinanceLinkSelect}" />
+				</h:selectOneMenu>
+	
+				<h:outputLabel value="#{msgs.lbl_importFinancePonit}：" />
+				<h:panelGroup>
+					<p:inputText id="dia_importFinancePonitView" disabled="true"
+						value="#{bankCreditConfirmBean.procBankCredit.importFinancePonit}">
+						<f:convertNumber pattern="#0.00" />
+					</p:inputText>
+				</h:panelGroup>
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				
+				
+				<h:outputLabel value="#{msgs.lbl_exportFinance}：" styleClass="title_2" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="#{msgs.lbl_amount}：" />
+				<h:panelGroup>
+					<p:inputText id="dia_exportFinanceView" disabled="true"
+						value="#{bankCreditConfirmBean.procBankCredit.exportFinance}">
+						<f:convertNumber pattern="#,##0.####" />
+					</p:inputText>
+					<h:outputText value="#{msgs.lbl_tenThousand}" />
+				</h:panelGroup>
+				<h:outputLabel value="#{msgs.lbl_importFinanceLink}：" />
+				<h:selectOneMenu id="dia_exportFinanceLinkView" disabled="true"
+					value="#{bankCreditConfirmBean.procBankCredit.exportFinanceLink}"
+					styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+					<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" />
+					<f:selectItems value="#{bankCreditConfirmBean.importFinanceLinkSelect}" />
+				</h:selectOneMenu>
+				<h:outputLabel value="#{msgs.lbl_importFinancePonit}：" />
+				<h:panelGroup>
+					<p:inputText id="dia_exportFinancePonitView" disabled="true"
+						value="#{bankCreditConfirmBean.procBankCredit.exportFinancePonit}">
+						<f:convertNumber pattern="#0.00" />
+					</p:inputText>
+				</h:panelGroup>
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				
+				
+				<h:outputLabel value="#{msgs.lbl_bussTicket}：" styleClass="title_2" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="#{msgs.lbl_amount}：" />
+				<h:panelGroup>
+					<p:inputText id="dia_bussTicketView" label="#{msgs.lblel_bussTicket}" disabled="true"
+						value="#{bankCreditConfirmBean.procBankCredit.bussTicket}">
+						<f:convertNumber pattern="#,##0.####" />
+					</p:inputText>
+					<h:outputText value="#{msgs.lbl_tenThousand}" />
+				</h:panelGroup>
+	
+				<h:outputLabel value="#{msgs.lbl_bankAcptGp}：" />
+				<h:panelGroup>
+					<p:inputText id="dia_bussTicketGpView" label="#{msgs.lbl_bussTicketGp}" disabled="true"
+						value="#{bankCreditConfirmBean.procBankCredit.bussTicketGp}">
+						<f:convertNumber pattern="#0.00" />
+					</p:inputText>
+					<h:outputText value="%" />
+				</h:panelGroup>
+				<h:outputLabel value="#{msgs.lbl_poundage}：" />
+				<h:panelGroup>
+					<p:inputText id="dia_bussTicketFeView" label="#{msgs.lbl_bussTicketFe}" disabled="true"
+						value="#{bankCreditConfirmBean.procBankCredit.bussTicketFe}">
+						<f:convertNumber pattern="#0.00" />
+					</p:inputText>
+					<h:outputText value="%" />
+				</h:panelGroup>
+	
+				<h:outputLabel value="#{msgs.lbl_discount}：" />
+				<h:panelGroup>
+					<p:inputText id="dia_bussTicketDcView" label="#{msgs.lbl_bussTicketDc}" disabled="true"
+						value="#{bankCreditConfirmBean.procBankCredit.bussTicketDc}">
+						<f:convertNumber pattern="#0.00" />
+					</p:inputText>
+					<h:outputText value="%" />
+				</h:panelGroup>
+	
+	
+	
+	
+				<h:outputLabel value="#{msgs.lbl_bankAcpt}：" styleClass="title_2" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="" />
+				<h:outputLabel value="#{msgs.lbl_amount}：" />
+				<h:panelGroup>
+					<p:inputText id="dia_bankAcptView" disabled="true"
+						value="#{bankCreditConfirmBean.procBankCredit.bankAcpt}">
+						<f:convertNumber pattern="#,##0.####" />
+					</p:inputText>
+					<h:outputText value="#{msgs.lbl_tenThousand}" />
+				</h:panelGroup>
+				<h:outputLabel value="#{msgs.lbl_bankAcptGp}：" />
+				<h:panelGroup>
+					<p:inputText id="dia_bankAcptGpView" disabled="true"
+						value="#{bankCreditConfirmBean.procBankCredit.bankAcptGp}">
+						<f:convertNumber pattern="#0.00" />
+					</p:inputText>
+					<h:outputText value="%" />
+				</h:panelGroup>
+				<h:outputLabel value="#{msgs.lbl_poundage}：" />
+				<h:panelGroup>
+					<p:inputText id="dia_bankAcptFeView" disabled="true"
+						value="#{bankCreditConfirmBean.procBankCredit.bankAcptFe}">
+						<f:convertNumber pattern="#0.00" />
+					</p:inputText>
+					<h:outputText value="%" />
+				</h:panelGroup>
+				<h:outputLabel value="#{msgs.lbl_openFee}：" />
+				<h:panelGroup>
+					<p:inputText id="dia_bankAcptEfView" disabled="true"
+						value="#{bankCreditConfirmBean.procBankCredit.bankAcptEf}">
+						<f:convertNumber pattern="#0.00" />
+					</p:inputText>
+					<h:outputText value="%" />
+				</h:panelGroup>
+	
+				
+							<h:outputLabel value="远期交易：" styleClass="title_2"/>
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							
+							<h:outputLabel value="#{msgs.lbl_amount}：" />
+							<h:panelGroup>
+								<p:inputText id="forwTradeView" label="远期交易额度"
+								disabled="true"
+									value="#{bankCreditConfirmBean.procBankCredit.forwTrade}">
+									<f:validateDoubleRange maximum="99999999.9999" minimum="0" />
+									<f:convertNumber pattern="#,##0.####" />
+								</p:inputText>
+								<h:outputText value="#{msgs.lbl_tenThousand}" />
+							</h:panelGroup>
+							<h:outputLabel value="费率：" />
+							<h:panelGroup>
+								<p:inputText id="forwTradeCrView" label="#{msgs.lblel_forwTradeCr}"
+									disabled="true" value="#{bankCreditConfirmBean.procBankCredit.forwTradeCr}">
+									<f:validateDoubleRange maximum="100" minimum="0" />
+									<f:convertNumber pattern="#0.00" />
+								</p:inputText>
+							</h:panelGroup>
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+	
+				
+	
+				
+	
+	
+				
+	
+				
+	
+				
+	
+			</h:panelGrid>
+			<h:panelGrid columns="2" columnClasses="column41,column2">
+				<h:outputLabel value="#{msgs.lbl_otherPro}：" styleClass="title_2"/>
+				<p:dataTable var="procRptCredit" id="dia_procRptCreditTableId" style="width:1005px;"
+					value="#{bankCreditConfirmBean.propLayModel}"
+					paginatorPosition="bottom" rowKey="#{procRptCredit.id}" rows="100"
+					emptyMessage="#{msgs.empty_data_msg}" >
+					<p:column headerText="#{msgs.headerText_cdProName}">
+						<h:outputText value="#{procRptCredit.cdProName}" />
+					</p:column>
+					<p:column headerText="#{msgs.headerText_cdProLimit}">
+						<h:outputText value="#{procRptCredit.cdProLimit}">
+							<f:convertNumber pattern="#,##0.####" />
+						</h:outputText>
+					</p:column>
+				</p:dataTable>
+			</h:panelGrid>
+		</div>
+		
+		<div class="style11">
+			<h:panelGrid columns="2" columnClasses="column41,column2">
+				<h:outputLabel value="#{msgs.lbl_cooperatio}：" />
+				<p:inputTextarea id="dia_useView" style="width:988px;" rows="3"
+					disabled="true"
+					value="#{bankCreditConfirmBean.procBankCredit.cooperationReason}"
+					autoResize="false" />
+			</h:panelGrid>
+		</div>
+	</div>
+	</h:form>
+
+	<div style="position: relative; margin-top: 5px;">
+		<div align="center">
+			<p:commandButton id="dia_cloaseProcessDetail" value="#{msgs.btn_close}" type="button"
+				icon="ui-icon ui-icon-cancel"
+				onclick="bankProcessDetailDialog.hide()" />
+		</div>
+	</div>
+</ui:composition>

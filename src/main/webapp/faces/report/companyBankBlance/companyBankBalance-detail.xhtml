@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/template/template.xhtml">
+
+	<ui:define name="title">公司银行余额表</ui:define>
+
+	<ui:define name="content">
+
+		<input type="hidden" id="menuOne" value="21" />
+		<input type="hidden" id="menuTwo" value="22" />
+
+		<p:panel styleClass="panel1">
+			<h:form id="balanceListForm" prependId="false">
+				<p:breadCrumb preview="true" expandEffectDuration="200"
+					previewWidth="24" style="width: 99.1%">
+					<p:menuitem value="#{msgs.menItem_form}" url="#" />
+					<p:menuitem value="#{msgs.menItem_form}" url="#" />
+					<p:menuitem value="公司银行余额表" url="#" />
+				</p:breadCrumb>
+
+				<p:messages id="doneMsg" />
+
+
+				<div class="style1">
+					<h:panelGrid columns="6"
+						columnClasses="column0,column2,column0,column2,column0,column2,column0,column2">
+					<h:outputLabel value="公司名称：" />
+						<h:panelGroup>
+							<h:selectManyListbox id="companyName"
+								styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+								style="width: 210px;height:40px;">
+								<f:selectItems value="#{companyBankBalanceReportBean.companies}"
+									var="company" itemLabel="#{company.companyName}"
+									itemValue="#{company.id}" />
+							</h:selectManyListbox>
+							<p:commandButton immediate="true" value="#{msgs.btn_select}"
+								style="width: 70px;" image="ui-icon ui-icon-zoomin"
+								action="#{companyBankBalanceReportBean.companyMultipleSelectBean.clear}"
+								oncomplete="companyMultipleSelectDialogVar.show();"
+								update="companyMultipleSelectForm">
+								<f:setPropertyActionListener
+									target="#{companyBankBalanceReportBean.companyMultipleSelectBean.method}"
+									value="companyBankBalanceReportBean.setValueBySelectedCompanies" />
+							</p:commandButton>
+						</h:panelGroup>
+						
+						<h:outputLabel value="余额日期：" />
+						<h:panelGroup>
+							<p:inputText id="updateByTmsDate"
+								value="#{companyBankBalanceReportBean.conditionMap['updateByTmsDate']}"
+								styleClass="ui-date" style="font-size: 9px;width:90px;"
+								title="#{msgs.txt_startTime}"
+								onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd'});">
+								<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+							</p:inputText>
+						</h:panelGroup>
+					</h:panelGrid>
+					<div>
+						<p:commandButton id="query"
+							action="#{companyBankBalanceReportBean.searchCompanyBankBalance}" 
+							update="doneMsg,companyBankBalanceReportPl" value="#{msgs.btn_query}"
+							image="ui-icon ui-icon-search" />
+						<p:commandButton value="#{msgs.btn_reset}"
+							action="#{companyBankBalanceReportBean.reset}"
+							icon="ui-icon ui-icon-arrowrefresh-1-e" style="margin: 5px;"
+							update="companyName,updateByTmsDate"
+							/>
+					</div>
+				</div>
+				<br />
+
+				<p:outputPanel id="companyBankBalanceReportPl">
+					<p:dataTable id="companyBankBalanceReports" var="balanceVo"
+						value="#{companyBankBalanceReportBean.companyBankBalanceVos}" paginator="true"
+						rows="50" paginatorPosition="bottom" 
+						currentPageReportTemplate="{currentPage}/{totalPage}"
+						paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
+						rowKey="#{balanceVo.companyName}" emptyMessage="#{msgs.dataTable_empty}">
+
+						<f:facet name="header">公司银行余额表</f:facet>
+						<p:column headerText="公司名称">
+							<h:outputText value="#{balanceVo.companyName}" />
+						</p:column>
+						<p:column headerText="中国工商银行">
+							<h:outputText value="#{balanceVo.ICBCBalance}" />
+						</p:column>
+						<p:column headerText="中国农业银行">
+							<h:outputText value="#{balanceVo.ABCBalance}"/>
+						</p:column>
+						<p:column headerText="中国招商银行">
+							<h:outputText value="#{balanceVo.CCBBalance}" />
+						</p:column>
+						<p:column headerText="中国银行">
+							<h:outputText value="#{balanceVo.BOCBalance}"/>
+						</p:column>
+						<p:column headerText="交通银行">
+							<h:outputText value="#{balanceVo.BCMBalance}"/>
+						</p:column>
+						<p:column headerText="合计余额(元)">
+							<h:outputText value="#{balanceVo.amountSum}"/>
+						</p:column>
+					</p:dataTable>
+				</p:outputPanel>
+
+			</h:form>
+		</p:panel>
+		<ui:include
+			src="/faces/process/common/companyMultipleSelect-dialog.xhtml" />
+	</ui:define>
+
+</ui:composition>
+
+

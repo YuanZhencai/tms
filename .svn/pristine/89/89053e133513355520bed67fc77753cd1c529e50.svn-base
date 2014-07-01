@@ -1,0 +1,221 @@
+package com.wcs.tms.model;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.wcs.base.model.BaseEntity;
+/**
+ * <p>Project: tms</p>
+ * <p>Description: 注册资本金变更流程</p>
+ * <p>Copyright (c) 2014 Wilmar Consultancy Services</p>
+ * <p>All Rights Reserved.</p>
+ * </a>
+ */
+@Entity
+@Table(name = "PROC_REGI_CAPITAL_CHANGE_SHAREHOLDER")
+public class ProcRegiCapitalChangeShareholder extends BaseEntity{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7368853102849558388L;
+
+	@Override
+	public String getDisplayText() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+//	@ManyToOne(fetch = FetchType.LAZY)
+//	@JoinColumn(name = "REGI_CAPITAL_CHANGE_ID")
+//	private Long regiCapitalChangeId;
+	
+	@Column(name = "REGI_CAPITAL_CHANGE_ID")
+	private Long regiCapitalChangeId;
+	
+	@Column(name = "SHAREHOLDER_ID_ORIGINAL")
+	private Long shareholderIdOriginal;
+	
+	@Column(name = "SHAREHOLDER_NAME_ORIGINAL")
+	private String shareholderNameOriginal;
+	
+	@Column(name = "FONDS_TOTAL_ORIGINAL")
+	private Double fondsTotalOriginal;
+	
+	@Column(name = "FONDS_CURRENCY_ORIGINAL")
+	private String fondsCurrencyOriginal;
+	
+	@Column(name = "EQUITY_PERC_ORIGINAL")
+	private Double equityPercOriginal;
+	
+	@Column(name = "FONDS_IN_PLACE_ORIGINAL")
+	private Double fondsInPlaceOriginal;
+	
+	@Column(name = "IS_EQUITY_RELATED_ORIGINAL", length=1)
+	private String isEquityRelatedOriginal;
+	
+	@Column(name = "RELATED_PERC_ORIGINAL")
+	private Double relatedPercOriginal;
+	
+	@Column(name = "SHAREHOLDER_NAME")
+	private String shareholderName;
+	
+	@Column(name = "FONDS_TOTAL")
+	private Double fondsTotal;
+	
+	@Column(name = "FONDS_CURRENCY")
+	private String fondsCurrency;
+	
+	@Column(name = "EQUITY_PERC")
+	private Double equityPerc;
+	
+	@Column(name = "FONDS_IN_PLACE")
+	private Double fondsInPlace;
+	
+	@Column(name = "IS_EQUITY_RELATED", length=1)
+	private String isEquityRelated;
+	
+	@Column(name = "RELATED_PERC")
+	private Double relatedPerc;
+	
+	@Transient
+	private String status;
+
+	public Long getRegiCapitalChangeId() {
+		return regiCapitalChangeId;
+	}
+
+	public void setRegiCapitalChangeId(Long regiCapitalChangeId) {
+		this.regiCapitalChangeId = regiCapitalChangeId;
+	}
+
+	public Long getShareholderIdOriginal() {
+		return shareholderIdOriginal;
+	}
+
+	public void setShareholderIdOriginal(Long shareholderIdOriginal) {
+		this.shareholderIdOriginal = shareholderIdOriginal;
+	}
+
+	public String getShareholderNameOriginal() {
+		return shareholderNameOriginal;
+	}
+
+	public void setShareholderNameOriginal(String shareholderNameOriginal) {
+		this.shareholderNameOriginal = shareholderNameOriginal;
+	}
+
+	public Double getFondsTotalOriginal() {
+		return fondsTotalOriginal;
+	}
+
+	public void setFondsTotalOriginal(Double fondsTotalOriginal) {
+		this.fondsTotalOriginal = fondsTotalOriginal;
+	}
+
+	public String getFondsCurrencyOriginal() {
+		return fondsCurrencyOriginal;
+	}
+
+	public void setFondsCurrencyOriginal(String fondsCurrencyOriginal) {
+		this.fondsCurrencyOriginal = fondsCurrencyOriginal;
+	}
+
+	public Double getEquityPercOriginal() {
+		return equityPercOriginal;
+	}
+
+	public void setEquityPercOriginal(Double equityPercOriginal) {
+		this.equityPercOriginal = equityPercOriginal;
+	}
+
+	public Double getFondsInPlaceOriginal() {
+		return fondsInPlaceOriginal;
+	}
+
+	public void setFondsInPlaceOriginal(Double fondsInPlaceOriginal) {
+		this.fondsInPlaceOriginal = fondsInPlaceOriginal;
+	}
+
+	public String getIsEquityRelatedOriginal() {
+		return isEquityRelatedOriginal;
+	}
+
+	public void setIsEquityRelatedOriginal(String isEquityRelatedOriginal) {
+		this.isEquityRelatedOriginal = isEquityRelatedOriginal;
+	}
+
+	public Double getRelatedPercOriginal() {
+		return relatedPercOriginal;
+	}
+
+	public void setRelatedPercOriginal(Double relatedPercOriginal) {
+		this.relatedPercOriginal = relatedPercOriginal;
+	}
+
+	public String getShareholderName() {
+		return shareholderName;
+	}
+
+	public void setShareholderName(String shareholderName) {
+		this.shareholderName = shareholderName;
+	}
+
+	public Double getFondsTotal() {
+		return fondsTotal;
+	}
+
+	public void setFondsTotal(Double fondsTotal) {
+		this.fondsTotal = fondsTotal;
+	}
+
+	public String getFondsCurrency() {
+		return fondsCurrency;
+	}
+
+	public void setFondsCurrency(String fondsCurrency) {
+		this.fondsCurrency = fondsCurrency;
+	}
+
+	public Double getEquityPerc() {
+		return equityPerc;
+	}
+
+	public void setEquityPerc(Double equityPerc) {
+		this.equityPerc = equityPerc;
+	}
+
+	public Double getFondsInPlace() {
+		return fondsInPlace;
+	}
+
+	public void setFondsInPlace(Double fondsInPlace) {
+		this.fondsInPlace = fondsInPlace;
+	}
+
+	public String getIsEquityRelated() {
+		return isEquityRelated;
+	}
+
+	public void setIsEquityRelated(String isEquityRelated) {
+		this.isEquityRelated = isEquityRelated;
+	}
+
+	public Double getRelatedPerc() {
+		return relatedPerc;
+	}
+
+	public void setRelatedPerc(Double relatedPerc) {
+		this.relatedPerc = relatedPerc;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+}

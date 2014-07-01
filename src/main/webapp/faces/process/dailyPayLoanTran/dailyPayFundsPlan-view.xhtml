@@ -1,0 +1,183 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:wcs="http://www.wcs-global.com/customtaglib"
+	xmlns:commentProcess="http://java.sun.com/jsf/composite/commentProcess"
+	template="/template/template.xhtml">
+
+	<ui:define name="title">日常付款借款转款申请</ui:define>
+
+	<ui:define name="content">
+
+		<input type="hidden" id="menuOne" value="15" />
+		<input type="hidden" id="menuTwo" value="16" />
+
+		<p:panel styleClass="panel1">
+			<h:form id="dailyPayLoanTranForm" prependId="false">
+				<p:breadCrumb preview="true" expandEffectDuration="200"
+					previewWidth="24" style="width: 99.1%">
+					<p:menuitem value="流程" url="#" />
+					<p:menuitem value="流程" url="#" />
+					<p:menuitem value="日常付款借款转款申请表" url="#" />
+				</p:breadCrumb>
+
+				<p:messages id="msg" />
+
+				<div class="style1">
+					<h:panelGrid columns="3" columnClasses="column41,column2,column2">
+						<h:outputLabel value="是否为借款：" />
+						<h:panelGroup>
+								<p:selectOneRadio id="isLoan" required="true" disabled="true"
+									requiredMessage="是否为借款不能为空"
+									value="#{dailyPayLoanTranBean.dailyPayLoanTran.loanIden}">
+									<f:selectItem itemLabel="借款" itemValue="loan" />
+									<f:selectItem itemLabel="转款" itemValue="tran" />
+									<f:selectItem itemLabel="借款+转款" itemValue="loanAndTran" />
+								</p:selectOneRadio>
+						</h:panelGroup>
+						<h:outputLabel value="（自有资金下拨请选择“转款”，非自有资金请选择“借款”）"/>
+					</h:panelGrid>
+					
+					<h:panelGrid  columns="8" columnClasses="column41,column2,column0,column2,column2,column2,column2,column2">
+						<h:outputLabel value="申请公司名称：" />
+						<h:panelGroup>
+								<h:selectOneMenu id="appCompanyName"
+									value="#{dailyPayLoanTranBean.dailyPayLoanTran.company.id}"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									style="width:330px" required="true" disabled="true">
+									<f:selectItem itemLabel="请选择"/>
+									 <f:selectItems value="#{dailyPayLoanTranBean.companySelect}" />
+									<p:ajax listener="#{dailyPayLoanTranBean.companyChange}" update="payeeName,msg,openBank"/>  
+								</h:selectOneMenu>
+								<h:outputText style="color:red;" value=" *" />
+						</h:panelGroup>
+						<h:outputLabel value="收款人户名：" />
+						<p:inputText id="payeeName" 
+							value="#{dailyPayLoanTranBean.dailyPayLoanTran.payeeName}" disabled="true"/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						
+						<h:outputLabel value="填制时间：" />
+						<p:inputText id="applyDate"
+							value="#{dailyPayLoanTranBean.applyDate}" disabled="true"/>
+						<h:outputLabel value="账户描述：" />
+						<h:panelGroup>
+								<h:selectOneMenu id="openBank" disabled="true"
+									value="#{dailyPayLoanTranBean.dailyPayLoanTran.accountDesc}"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									style="width:145px">
+									<f:selectItem itemLabel="请选择"/>
+									<f:selectItems value="#{dailyPayLoanTranBean.bankSelect}" />
+									<!-- <p:ajax listener="#"
+										update=" " /> -->
+								</h:selectOneMenu>
+								<h:outputText style="color:red;" value=" *" />
+						</h:panelGroup>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						
+						<h:outputLabel value="付款日期：" />
+						<h:panelGroup>
+							<p:inputText id="paymentDate" disabled="true"
+								value="#{dailyPayLoanTranBean.dailyPayLoanTran.paymentDate}" styleClass="ui-date"
+								style="font-size: 9px;" title="付款日期"
+								onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'applyDate\')}'});">
+								<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+							</p:inputText>
+						</h:panelGroup>
+						<h:outputLabel value="账号：" />
+						<p:inputText id="accountNumber"
+							value="#{dailyPayLoanTranBean.dailyPayLoanTran.accountNumber}" disabled="true"/>
+						<h:outputLabel value="金额(小写)：" />	
+						<p:inputText id="fundsTotal" value="#{dailyPayLoanTranBean.dailyPayLoanTran.amount}" 
+						disabled="true" >
+							<p:ajax listener="#{dailyPayLoanTranBean.formatFundsTotal}" update="fundsTotalCh,msg"
+							/>
+							<f:validateDoubleRange maximum="99999999.99" minimum="0" />
+							<f:convertNumber pattern="#,##0.00" />
+						</p:inputText>
+						<h:outputLabel value="金额(大写)：" />
+						<p:inputText id="fundsTotalCh" value="#{dailyPayLoanTranBean.fundsTotalCh}" title="#{dailyPayLoanTranBean.fundsTotalCh}" disabled="true"/>
+					</h:panelGrid>
+					
+					<h:panelGrid columns="2" columnClasses="column40,column2">
+						<h:outputLabel value="下拨资金用途描述:" />
+						<p:inputTextarea id="stirFundsUseDesc" cols="100" rows="5" autoResize="false" value="#{dailyPayLoanTranBean.dailyPayLoanTran.useDesc}"
+						disabled="true"></p:inputTextarea>
+					</h:panelGrid>
+				</div>
+				<br />
+				<p:outputPanel id="detailVoListPl">
+					<p:dataTable var="detailVo" id="detailVoList" value="#{dailyPayLoanTranBean.detailVos}" rowKey="#{detailVo.id}" rows="100" emptyMessage="#{msgs.dataTable_empty}">
+
+						<f:facet name="header">#{msgs.head_detailVoList}</f:facet>
+
+						<p:column headerText="#{msgs.headerText_prossNodeName}">
+							<h:outputText value="#{detailVo.prossNodeName}" />
+						</p:column>
+
+						<p:column headerText="#{msgs.headerText_operatorsName}">
+							<h:outputText value="#{currentUser.exchange2CN(detailVo.operatorsName)}" />
+						</p:column>
+
+						<p:column headerText="#{msgs.headerText_operatorTime}">
+							<h:outputText value="#{detailVo.operatorTime}" >
+								<f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd HH:mm:ss"/>
+							</h:outputText>
+						</p:column>
+						
+						<p:column headerText="#{msgs.headerText_remark}">
+							<h:outputText value="#{detailVo.nodeMemo}" />
+						</p:column>
+					</p:dataTable>
+				</p:outputPanel>
+			</h:form>
+			
+			<h:form>
+				<p:outputPanel id="paymentListPl">
+					<p:dataTable var="paymentVo" id="paymentList" value="#{dailyPayLoanTranBean.paymentVos}" rowKey="#{paymentVo.serialNumber}" rows="100" emptyMessage="#{msgs.dataTable_empty}">
+
+						<f:facet name="header">付款详细过程</f:facet>
+
+						<p:column headerText="序号">
+							<h:outputText value="#{paymentVo.serialNumber}" />
+						</p:column>
+
+						<p:column headerText="付款时间">
+							<h:outputText value="#{paymentVo.payDatetime}" >
+								<f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd HH:mm:ss"/>
+							</h:outputText>
+						</p:column>
+
+						<p:column headerText="付款方式">
+							<h:outputText value="#{paymentVo.payWay}" />
+						</p:column>
+						
+						<p:column headerText="付款金额（万）">
+							<h:outputText value="#{paymentVo.payFundsTotal}" >
+								<f:convertNumber pattern="#,##0.00" />
+							</h:outputText>
+						</p:column>
+						
+						<p:column headerText="付款人">
+							<h:outputText value="#{paymentVo.payer}" />
+						</p:column>
+					</p:dataTable>
+				</p:outputPanel>
+			</h:form>
+			
+		</p:panel>
+
+	</ui:define>
+
+</ui:composition>
+
+

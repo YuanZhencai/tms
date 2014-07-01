@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<p:dialog header="#{registerCaptialChangeBean.operate == 'add' ? '新增股东':'编辑股东'}" id="saveHolderDialog"
+		widgetVar="saveHolderDialogVar" modal="true" showEffect="fade"
+		hideEffect="fade" resizable="false">
+		<h:form id="saveHolderForm" prependId="false">
+			<p:messages id="saveHolderMessage" autoUpdate="false"
+				showDetail="true" />
+			<h:panelGrid columns="2" columnClasses="column1,column2">
+				<h:outputText value="股东名称" />
+				<p:inputText id="shareHolderName"
+					value="#{registerCaptialChangeBean.shareHolder.shareholderName}"></p:inputText>
+			</h:panelGrid>
+			<h:panelGrid columns="4"
+				columnClasses="column1,column2,column1,column2">
+				<h:outputText value="注册资金" />
+				<p:inputText id="fondsTotal"
+					value="#{registerCaptialChangeBean.shareHolder.fondsTotal}">
+					<p:ajax event="blur" listener="#{registerCaptialChangeBean.caculationTotal()}" process="@all" update=":saveHolderForm" />	
+				</p:inputText>
+				<h:outputText value="币种" />
+				<h:selectOneMenu name="fondsCurrency"
+					value="#{registerCaptialChangeBean.shareHolder.fondsCurrency}"
+					styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+					<f:selectItems value="#{registerCaptialChangeBean.currencySelect}" />
+				</h:selectOneMenu>
+				<h:outputText value="到位资金" />
+				<p:inputText
+					value="#{registerCaptialChangeBean.shareHolder.fondsInPlace}">
+					<p:ajax event="blur" process="@all" update=":saveHolderForm" />	
+				</p:inputText>
+				<h:outputText value="股权关联" />
+				<p:selectOneRadio
+					value="#{registerCaptialChangeBean.shareHolder.isEquityRelated}">
+					<f:selectItem itemLabel="是" itemValue="1" />
+					<f:selectItem itemLabel="否" itemValue="0" />
+				</p:selectOneRadio>
+				<h:outputText value="未到位资金" />
+				<p:inputText disabled="true"
+					value="#{registerCaptialChangeBean.shareHolder.fondsTotal - registerCaptialChangeBean.shareHolder.fondsInPlace}"></p:inputText>
+				<h:outputText value="关联比例" />
+				<p:inputText
+					value="#{registerCaptialChangeBean.shareHolder.relatedPerc}">
+					<f:convertNumber type="number" pattern="###.##" />
+					<p:ajax event="blur" process="@all" update=":saveHolderForm" />	
+				</p:inputText>
+				<h:outputText value="股权比例" />
+				<p:inputText disabled="true"
+					value="#{registerCaptialChangeBean.shareHolder.equityPerc}">
+					<f:convertNumber type="number" pattern="###.##" />
+				</p:inputText>
+				<h:outputText value="实际股权比例" />
+				<p:inputText disabled="true"
+					value="#{registerCaptialChangeBean.shareHolder.equityPerc * registerCaptialChangeBean.shareHolder.relatedPerc}">
+					<f:convertNumber type="number" pattern="###.##" />	
+				</p:inputText>
+			</h:panelGrid>
+			<div style="text-align: center; margin-top: 5px;">
+				<p:commandButton icon="ui-icon ui-icon-check"
+					rendered="#{registerCaptialChangeBean.operate == 'add' ? 'true':'false'}"
+					value="新增" update=":addRegisterChangeForm,:saveHolderForm"
+					action="#{registerCaptialChangeBean.createShareholder()}"
+					style="margin-right: 5px;"
+					oncomplete="handleDialog(xhr, status, args);" />
+				<p:commandButton icon="ui-icon ui-icon-check"
+					rendered="#{registerCaptialChangeBean.operate == 'edit'  ? 'true':'false'}"
+					value="更新" update=":addRegisterChangeForm,:saveHolderForm"
+					action="#{registerCaptialChangeBean.updateShareholder()}"
+					style="margin-right: 5px;"
+					oncomplete="handleDialog(xhr, status, args);" />
+				<p:commandButton icon="ui-icon ui-icon-cancel"
+					value="#{msgs.btn_cancel}" type="button"
+					onclick="saveHolderDialogVar.hide()" />
+			</div>
+		</h:form>
+	</p:dialog>
+</ui:composition>

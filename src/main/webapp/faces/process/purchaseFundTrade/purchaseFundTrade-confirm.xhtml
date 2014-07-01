@@ -1,0 +1,535 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:wcs="http://www.wcs-global.com/customtaglib"
+	xmlns:commentProcess="http://java.sun.com/jsf/composite/commentProcess"
+	template="/template/template.xhtml">
+
+	<ui:define name="title">采购资金（贸易）借款/转款流程申请</ui:define>
+
+	<ui:define name="content">
+
+		<input type="hidden" id="menuOne" value="15" />
+		<input type="hidden" id="menuTwo" value="16" />
+
+		<p:panel styleClass="panel1">
+			<h:form id="purchaseTradeForm" prependId="false"
+				onsubmit="statusComplete();">
+				<p:breadCrumb preview="true" expandEffectDuration="200"
+					previewWidth="24" style="width: 99.1%">
+					<p:menuitem value="#{msgs.menItem_process}" url="#" />
+					<p:menuitem value="#{msgs.menItem_process}" url="#" />
+					<p:menuitem value="采购资金（贸易）借款/转款流程" url="#" />
+				</p:breadCrumb>
+
+				<p:messages id="msg" />
+				<div style="position: relative; margin-top: 5px;">
+					<div class="style11">
+						<h:panelGrid columns="3" columnClasses="column41,column2,column2">
+							<h:outputLabel value="是否为借款：" />
+							<h:panelGroup>
+								<p:selectOneRadio id="loanIdentifier" disabled="true"
+									value="#{purchaseFundTradeBean.procPurchaseFundTrade.loanIden}">
+									<f:selectItem itemLabel="借款&#160;&#160;&#160;&#160;"
+										itemValue="L" />
+									<f:selectItem itemLabel="转款&#160;&#160;&#160;&#160;"
+										itemValue="T" />
+									<f:selectItem itemLabel="借款+转款" itemValue="A" />
+								</p:selectOneRadio>
+							</h:panelGroup>
+							<h:outputLabel value="（自有资金下拨请选择“转款”，非自有资金请选择“借款”）" />
+						</h:panelGrid>
+						<h:panelGrid columns="8"
+							columnClasses="column41,column2,column0,column2,column2,column2,column2,column2">
+							<h:outputLabel value="申请公司名称：" />
+							<h:panelGroup>
+								<h:selectOneMenu id="companyName" name="companyName"
+									style="width:330px" disabled="true"
+									value="#{purchaseFundTradeBean.procPurchaseFundTrade.company.id}"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+									<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" itemValue="" />
+									<f:selectItems
+										value="#{purchaseFundTradeBean.companyNameSelect}" />
+									<p:ajax listener="#{purchaseFundTradeBean.ajaxCompany}"
+										update="msg,receiverName,depositBank,accounts" />
+								</h:selectOneMenu>
+							</h:panelGroup>
+
+							<h:outputLabel value="收款人户名：" />
+							<p:inputText id="receiverName" label="收款人户名"
+								value="#{purchaseFundTradeBean.procPurchaseFundTrade.receiverName}"
+								disabled="true" style="width:330px" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+
+							<h:outputLabel value="填制时间：" />
+							<p:inputText id="applyTime" disabled="true" style="width:200px"
+								value="#{purchaseFundTradeBean.procPurchaseFundTrade.createdDatetime}">
+								<f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd" />
+							</p:inputText>
+
+							<h:outputLabel value="账户描述：" />
+							<h:panelGroup>
+								<h:selectOneMenu id="depositBank" name="depositBank"
+									style="width:340px" disabled="true"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									value="#{purchaseFundTradeBean.procPurchaseFundTrade.accountDesc}">
+									<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" itemValue="" />
+									<f:selectItems
+										value="#{purchaseFundTradeBean.depositBankSelect}" />
+								</h:selectOneMenu>
+							</h:panelGroup>
+
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+
+							<h:outputLabel value="付款日期：" />
+							<h:panelGroup>
+								<p:inputText id="payDatetime" title="付款日期"
+									value="#{purchaseFundTradeBean.procPurchaseFundTrade.paymentDate}" 
+									disabled="false" styleClass="ui-date" style="width:200px;"
+									onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'%y-%M-%d',readOnly:true});">
+									<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+								</p:inputText>
+							</h:panelGroup>
+
+							<h:outputLabel value="账号：" />
+							<p:inputText id="accounts" label="账号" style="width:330px"
+								disabled="true"
+								value="#{purchaseFundTradeBean.procPurchaseFundTrade.accountNumber}" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+
+							<h:outputLabel value="金额（小写）：" />
+							<h:panelGroup>
+								<p:inputText id="amount_low" label="金额（小写）" disabled="true"
+									value="#{purchaseFundTradeBean.procPurchaseFundTrade.amount}"
+									style="width:200px">
+									<f:convertNumber pattern="#,##0.00" />
+									<p:ajax event="blur"
+										listener="#{purchaseFundTradeBean.lowToUp}"
+										update="msg,amount_up,amount_low" />
+								</p:inputText>
+								<h:outputLabel value="万" />
+							</h:panelGroup>
+							<h:outputLabel value="金额（大写）：" />
+							<p:inputText id="amount_up" label="金额（大写）" style="width:330px"
+								disabled="true" value="#{purchaseFundTradeBean.upAmount}" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+						</h:panelGrid>
+
+						<h:panelGrid columns="2" columnClasses="column41,column2">
+							<h:outputLabel value="下拨资金用途描述：" />
+							<h:panelGroup>
+								<p:inputTextarea id="use" rows="4" cols="106" disabled="true"
+									validatorMessage="下拨资金用途描述必须在200个字符以内"
+									value="#{purchaseFundTradeBean.procPurchaseFundTrade.useDesc}"
+									autoResize="false" style="width:760px">
+									<f:validateLength maximum="200" />
+								</p:inputTextarea>
+							</h:panelGroup>
+						</h:panelGrid>
+						<h:panelGrid columns="2" columnClasses="column41,column2">
+							<h:outputLabel value="#{msgs.lbl_approveRemark}：" />
+							<h:panelGroup>
+								<p:inputTextarea id="peMemo" rows="4" cols="106"
+									autoResize="false" style="width:760px"
+									value="#{purchaseFundTradeBean.procPurchaseFundTrade.peMemo}"
+									validatorMessage="#{msgs.txt_approveRemarkLonger}200">
+									<f:validateLength maximum="200" for="peMemo" />
+								</p:inputTextarea>
+							</h:panelGroup>
+						</h:panelGrid>
+						<h:panelGrid columns="2" columnClasses="column40,column2">
+							<h:outputLabel value="品种信息:" styleClass="title_2" />
+							<h:outputLabel value="" />
+						</h:panelGrid>
+						<h:panelGrid columns="2" columnClasses="column1r,column2">
+							<h:outputLabel value="" />
+							<p:outputPanel id="varietyOutTable">
+								<p:dataTable var="procPurchaseFundVo" id="varietyOutTableId"
+									value="#{purchaseFundTradeBean.procPurchaseFundVos}"
+									rowKey="#{purchaseFund.id}" rows="10" paginatorPosition="bottom"
+									emptyMessage="#{msgs.empty_data_msg}" style="width:1200px;">
+									<p:column headerText="品种"
+										style="width:40px;white-space:nowrap;">
+										<h:outputText
+											value="#{purchaseFundTradeBean.getVarietyName(procPurchaseFundVo.varietyId)}" />
+									</p:column>
+									<p:column headerText="剩余头寸数量（吨）" style="width:80px;">
+										<h:outputText value="#{procPurchaseFundVo.lessPurchaseNum}">
+											<f:convertNumber pattern="#,##0.00" />
+										</h:outputText>
+									</p:column>
+									<p:column headerText="本次申请数量" style="width:80px;">
+										<h:outputText value="#{procPurchaseFundVo.thisPurchaseNum}">
+											<f:convertNumber pattern="#,##0.00" />
+										</h:outputText>
+									</p:column>
+									<p:column headerText="剩余需要审批数量" style="width:80px;">
+										<h:outputText value="#{procPurchaseFundVo.needPurchaseNum}">
+											<f:convertNumber pattern="#,##0.00" />
+										</h:outputText>
+									</p:column>
+
+									<p:column headerText="本次审批数量" style="width:80px;">
+										<h:outputText value="#{procPurchaseFundVo.thisPurchaseNumPay}">
+											<f:convertNumber pattern="#,##0.00" />
+										</h:outputText>
+									</p:column>
+
+									<p:column headerText="本次申请金额（万）" style="width:80px;">
+										<h:outputText value="#{procPurchaseFundVo.thisPurchaseAmount}">
+											<f:convertNumber pattern="#,##0.00" />
+										</h:outputText>
+									</p:column>
+									<p:column headerText="剩余需要支付金额" style="width:80px;">
+										<h:outputText
+											value="#{procPurchaseFundVo.lessPurchaseAmountPay}">
+											<f:convertNumber pattern="#,##0.00" />
+										</h:outputText>
+									</p:column>
+
+									<p:column headerText="本次支付金额" style="width:80px;">
+										<h:outputText
+											value="#{procPurchaseFundVo.thisPurchaseAmountPay}">
+											<f:convertNumber pattern="#,##0.00" />
+										</h:outputText>
+									</p:column>
+									<p:column headerText="是否为关联方" style="width:90px;">
+										<h:outputText
+											value="#{procPurchaseFundVo.varietyRelated=='Y'?'是':'否'}">
+										</h:outputText>
+									</p:column>
+									<p:column headerText="备注"
+										style="width:260px;white-space:normal;word-wrap:break-word;">
+										<h:outputText value="#{procPurchaseFundVo.remark}">
+										</h:outputText>
+									</p:column>
+
+									<p:column headerText="#{msgs.col_operate}"
+										styleClass="operating_60" style="width:100px;">
+										<p:commandButton title="#{msgs.btn_edit}"
+											icon="ui-icon ui-icon-pencil"
+											update="editVoPanel,editVoMsg,msg,amountRemain,amountThis"
+											action="#{purchaseFundTradeBean.beforeEditVo}"
+											immediate="true" oncomplete="editVoDialog.show()">
+											<f:setPropertyActionListener
+												target="#{purchaseFundTradeBean.ppfVoEdit}"
+												value="#{procPurchaseFundVo}" />
+										</p:commandButton>
+
+										<p:commandButton title="#{msgs.btn_delete}"
+											icon="ui-icon ui-icon-close"
+											update="editVoPanel,editVoMsg,msg"
+											oncomplete="voconfirmation.show()" immediate="true">
+											<f:setPropertyActionListener
+												target="#{purchaseFundTradeBean.ppfVoEdit}"
+												value="#{procPurchaseFundVo}" />
+										</p:commandButton>
+									</p:column>
+								</p:dataTable>
+							</p:outputPanel>
+						</h:panelGrid>
+						<h:panelGrid columns="5"
+							columnClasses="column2,column2,column1r,column2,column2">
+							<h:outputLabel value="剩余需要支付的金额（小写）：" />
+							<h:panelGroup>
+								<p:inputText id="amountRemain" disabled="true"
+									value="#{purchaseFundTradeBean.remainPay}" style="width:215px">
+									<f:convertNumber pattern="#,##0.00" />
+									<p:ajax event="blur" update="upAmountRemain"
+										listener="#{purchaseFundTradeBean.lowToUp2(remainPay)}" />
+								</p:inputText>
+								<h:outputLabel value="万" />
+							</h:panelGroup>
+							<h:outputLabel value="" />
+
+							<h:outputLabel value="剩余需要支付的金额（大写）：" />
+							<h:panelGroup>
+								<p:inputText id="upAmountRemain" disabled="true"
+									style="width:260px"
+									value="#{purchaseFundTradeBean.upRemainPay}" />
+							</h:panelGroup>
+							<h:outputLabel value="本次支付的金额（小写）：" />
+							<h:panelGroup>
+								<p:inputText id="amountThis" disabled="true"
+									value="#{purchaseFundTradeBean.thisPay}" style="width:215px">
+									<f:convertNumber pattern="#,##0.00" />
+									<p:ajax event="blur"
+										listener="#{purchaseFundTradeBean.lowToUp3(thisPay)}"
+										update="upThisPay,amountThis,msg" />
+								</p:inputText>
+								<h:outputLabel value="万" />
+							</h:panelGroup>
+							<h:outputLabel value="" />
+							<h:outputLabel value="本次支付的金额（大写）：" />
+							<h:panelGroup>
+								<p:inputText id="upThisPay" disabled="true" style="width:260px"
+									value="#{purchaseFundTradeBean.upThisPay}">
+								</p:inputText>
+							</h:panelGroup>
+						</h:panelGrid>
+
+						<h:panelGrid columns="5"
+							columnClasses="column41,column41,column41,column41,column41">
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:panelGroup>
+								<p:selectBooleanCheckbox id="doNext" required="true"
+									value="#{purchaseFundTradeBean.doNext}" itemLabel="处理下一项任务">
+								</p:selectBooleanCheckbox>
+							</h:panelGroup>
+						</h:panelGrid>
+						<div style="text-align: center">
+							<h:panelGrid columns="6"
+								columnClasses="column42,column42,column42,column42,column42,column42">
+								<h:outputLabel value="" />
+								<p:commandButton id="sungardPay" styleClass="btn2"
+									title="通过SUNGARD支付" oncomplete="confirmation.show()"
+									value="SUNGARD支付">
+									<f:setPropertyActionListener
+										target="#{purchaseFundTradeBean.confirmStatus}" value="S"></f:setPropertyActionListener>
+								</p:commandButton>
+								<h:outputLabel value="" />
+								<p:commandButton id="onlineBank" title="通过网银支付"
+									oncomplete="confirmation.show()" value="网银支付" styleClass="btn1">
+									<f:setPropertyActionListener
+										target="#{purchaseFundTradeBean.confirmStatus}" value="O"></f:setPropertyActionListener>
+								</p:commandButton>
+								<h:outputLabel value="" />
+								<p:commandButton id="stopPay" oncomplete="confirm.show()"
+									value="终止付款" styleClass="btn3" title="终止付款">
+									<f:setPropertyActionListener
+										target="#{purchaseFundTradeBean.confirmStatus}" value="P"></f:setPropertyActionListener>
+								</p:commandButton>
+							</h:panelGrid>
+						</div>
+					</div>
+				</div>
+				<br />
+				<p:confirmDialog message="该删除为不可逆，是否确定删除该品种？"
+					header="#{msgs.head_confirmDialog}" severity="alert"
+					widgetVar="voconfirmation">
+					<div align="center">
+						<p:commandButton
+							update="msg,varietyOutTable,amountRemain,amountThis,upThisPay,upAmountRemain"
+							value="#{msgs.btn_ok}" icon="ui-icon ui-icon-check"
+							immediate="true" oncomplete="voconfirmation.hide();"
+							action="#{purchaseFundTradeBean.deleteVarietyVo}" />
+						&#160;&#160;
+						<p:commandButton value="#{msgs.btn_cancel}"
+							onclick="voconfirmation.hide()" type="button"
+							icon="ui-icon ui-icon-cancel" />
+					</div>
+				</p:confirmDialog>
+				<p:confirmDialog id="payDialog" message="确定要付款吗？" header="付款确认"
+					severity="alert" widgetVar="confirmation">
+					<div align="center">
+						<p:commandButton id="pass" onclick="buttonDisable('pass');" value="#{msgs.btn_ok}" ajax="false"
+							icon="ui-icon ui-icon-check" oncomplete="confirmation.hide();"
+							action="#{purchaseFundTradeBean.doConfirm}" />
+						&#160;&#160;
+						<p:commandButton value="#{msgs.btn_cancel}"
+							onclick="confirmation.hide()" type="button"
+							icon="ui-icon ui-icon-cancel" />
+					</div>
+				</p:confirmDialog>
+				<p:confirmDialog id="stopDialog" message="确定要终止付款吗？" header="终止付款确认"
+					severity="alert" widgetVar="confirm">
+					<div align="center">
+						<p:commandButton id="stop" onclick="buttonDisable('stop');" value="#{msgs.btn_ok}" ajax="false"
+							icon="ui-icon ui-icon-check" oncomplete="confirm.hide();"
+							action="#{purchaseFundTradeBean.doConfirm}" />
+						&#160;&#160;
+						<p:commandButton value="#{msgs.btn_cancel}"
+							onclick="confirm.hide()" type="button"
+							icon="ui-icon ui-icon-cancel" />
+					</div>
+				</p:confirmDialog>
+				<p:outputPanel id="detailVoListPl">
+					<p:dataTable var="detailVo" id="detailVoList"
+						value="#{purchaseFundTradeBean.detailVos}" rowKey="#{detailVo.id}"
+						rows="100" emptyMessage="#{msgs.dataTable_empty}">
+
+						<f:facet name="header">#{msgs.head_detailVoList}</f:facet>
+
+						<p:column headerText="#{msgs.headerText_prossNodeName}">
+							<h:outputText value="#{detailVo.prossNodeName}" />
+						</p:column>
+
+						<p:column headerText="#{msgs.headerText_operatorsName}">
+							<h:outputText
+								value="#{currentUser.exchange2CN(detailVo.operatorsName)}" />
+						</p:column>
+
+						<p:column headerText="#{msgs.headerText_operatorTime}">
+							<h:outputText value="#{detailVo.operatorTime}">
+								<f:convertDateTime timeZone="GMT+8"
+									pattern="yyyy-MM-dd HH:mm:ss" />
+							</h:outputText>
+						</p:column>
+
+						<p:column headerText="#{msgs.headerText_remark}">
+							<h:outputText value="#{detailVo.nodeMemo}" />
+						</p:column>
+					</p:dataTable>
+				</p:outputPanel>
+			</h:form>
+
+			<h:form prependId="false" id="editVarietyForm">
+				<p:dialog header="修改付款品种头寸数量及金额" widgetVar="editVoDialog"
+					resizable="false" width="600" modal="true">
+					<p:messages id="editVoMsg" />
+					<p:outputPanel id="editVoPanel">
+						<h:panelGrid id="editVoTable" columns="4"
+							columnClasses="column41,column42,column41,column42">
+							<h:outputLabel value="品种类型：" />
+							<h:panelGroup>
+								<h:selectOneMenu id="varietyType" disabled="true"
+									value="#{purchaseFundTradeBean.varietyType}"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+									<f:selectItem itemLabel="请选择" itemValue="" />
+									<f:selectItems
+										value="#{purchaseFundTradeBean.varietyTypeSelect}" />
+									<p:ajax listener="#{purchaseFundTradeBean.initVarietySelect}"
+										update="msg,editVarietyVoName" />
+								</h:selectOneMenu>
+							</h:panelGroup>
+							<h:outputLabel value="品种：" />
+							<h:panelGroup>
+								<h:selectOneMenu id="editVarietyVoName" disabled="true"
+									value="#{purchaseFundTradeBean.ppfVoEdit.varietyId}"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+									<f:selectItem itemLabel="请选择" />
+									<f:selectItems value="#{purchaseFundTradeBean.varietySelect}" />
+								</h:selectOneMenu>
+							</h:panelGroup>
+
+							<h:outputLabel value="剩余需要审批数量：" />
+							<h:panelGroup>
+								<p:inputText id="editNeedPurchaseNum" label="剩余需要审批数量"
+									disabled="true"
+									value="#{purchaseFundTradeBean.ppfVoEdit.needPurchaseNum}">
+									<f:convertNumber pattern="#,##0.00" />
+								</p:inputText>
+								<h:outputText value="吨" />
+							</h:panelGroup>
+
+							<h:outputLabel value="本次审批数量：" />
+							<h:panelGroup>
+								<p:inputText id="editThisPurchaseNumPay" label="本次审批数量"
+									required="true" requiredMessage="本次审批数量：不可为空！"
+									validatorMessage="本次审批数量必须在0~100,000,000之间"
+									value="#{purchaseFundTradeBean.ppfVoEdit.thisPurchaseNumPay}">
+									<f:validateDoubleRange maximum="99999999.9999" minimum="0" />
+									<f:convertNumber pattern="#,##0.00" />
+									<p:ajax event="blur"
+										listener="#{purchaseFundTradeBean.lowToUpNumEditVo}"
+										update="editVoMsg,editThisPurchaseNumPay" />
+								</p:inputText>
+								<h:outputText value="吨" />
+								<h:outputText style="color:red;" value=" *" />
+							</h:panelGroup>
+
+							<h:outputLabel value="剩余需要支付的申请金额：" />
+							<h:panelGroup>
+								<p:inputText id="editLessPurchaseAmountPay" label="剩余需要支付的申请金额"
+									disabled="true"
+									value="#{purchaseFundTradeBean.ppfVoEdit.lessPurchaseAmountPay}">
+									<f:convertNumber pattern="#,##0.00" />
+								</p:inputText>
+								<h:outputText value="#{msgs.lbl_tenThousand}" />
+							</h:panelGroup>
+
+							<h:outputLabel value="本次支付金额：" />
+							<h:panelGroup>
+								<p:inputText id="editThisPurchaseAmountPay" label="本次支付金额"
+									required="true" requiredMessage="本次支付金额：不可为空！"
+									validatorMessage="本次支付金额必须在0~100,000,000之间"
+									value="#{purchaseFundTradeBean.ppfVoEdit.thisPurchaseAmountPay}">
+									<f:validateDoubleRange maximum="99999999.9999" minimum="0" />
+									<f:convertNumber pattern="#,##0.00" />
+									<p:ajax event="blur"
+										listener="#{purchaseFundTradeBean.lowToUpAmountEditVo}"
+										update="editVoMsg,editThisPurchaseAmountPay" />
+								</p:inputText>
+								<h:outputText value="#{msgs.lbl_tenThousand}" />
+								<h:outputText style="color:red;" value=" *" />
+							</h:panelGroup>
+
+							<div align="center">
+								<p:commandButton id="editVarietyBtn" value="#{msgs.btn_save}"
+									update="varietyOutTable,msg,editVoMsg,amountRemain,amountThis,upThisPay,upAmountRemain"
+									oncomplete="handleComplete(editVoDialog,args)"
+									action="#{purchaseFundTradeBean.editVarietyVo}"
+									icon="ui-icon ui-icon-disk" />
+								&#160;&#160;
+								<p:commandButton value="#{msgs.btn_cancel}" type="button"
+									onclick="editVoDialog.hide()" id="editVoCanelBtn"
+									icon="ui-icon ui-icon-cancel" />
+							</div>
+						</h:panelGrid>
+					</p:outputPanel>
+				</p:dialog>
+			</h:form>
+
+			<p:outputPanel id="payDetailVoListPl">
+				<p:dataTable var="payDetailVo" id="payDetailVoList"
+					value="#{purchaseFundTradeBean.payDetailVos}"
+					rowKey="#{payDetailVo.serialNumber}" rows="100"
+					emptyMessage="#{msgs.dataTable_empty}">
+					<f:facet name="header">付款详细过程</f:facet>
+					<p:column headerText="序号">
+						<h:outputText value="#{payDetailVo.serialNumber}" />
+					</p:column>
+					<p:column headerText="付款时间">
+						<h:outputText value="#{payDetailVo.payDatetime}">
+							<f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd HH:mm:ss" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="付款方式">
+						<h:outputText
+							value="#{payDetailVo.payWay=='S'?'SUNGARD支付':'网银支付'}" />
+					</p:column>
+					<p:column headerText="付款金额（万）">
+						<h:outputText value="#{payDetailVo.payFundsTotal}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="付款人">
+						<h:outputText
+							value="#{currentUser.exchange2CN(payDetailVo.payer)}" />
+					</p:column>
+				</p:dataTable>
+			</p:outputPanel>
+		</p:panel>
+		<script type="text/javascript">
+			var isFirst = "true";
+			function buttonDisable(buttonId){
+				if("true"==isFirst){
+					isFirst="false";
+					return true;
+				}else{
+					document.getElementById(buttonId).disabled=true;
+					return false;
+				}
+			}
+		</script>
+	</ui:define>
+</ui:composition>

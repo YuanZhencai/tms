@@ -1,0 +1,175 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/template/template.xhtml">
+
+	<ui:define name="styleAndScript">
+		<style type="text/css">
+.changeColor {
+	background: #DEEDF7;
+}
+</style>
+	</ui:define>
+	<ui:define name="content">
+		<h:form prependId="false" id="sysEjbtimerFormId">
+			<p:panel styleClass="panel1">
+
+				<f:facet name="header">
+					<img class="header_title_img"
+						src="#{facesContext.externalContext.requestContextPath}/images/icons/tabTitle.gif"
+						alt="" />
+					<h:outputLabel value="任务管理" />
+				</f:facet>
+				<p:messages id="msg" autoUpdate="true" />
+				<div class="style1" style="margin-top: 5px; margin-bottom: 5px;">
+					<h:panelGrid columns="8" id="sysEjbtimerSearchGrid"
+						columnClasses="column1,column2,column1,column2,column1,column2,column1,column2">
+
+						<h:outputText value="任务名称: " />
+						<p:inputText value="#{sysJobBean.query['jobSubject']}" />
+
+						
+						<h:outputText value="是否启用 : " />
+						<h:selectOneMenu value="#{sysJobBean.query['isEnabled']}"
+							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+							<f:selectItem itemLabel="全部" itemValue=""></f:selectItem>
+							<f:selectItem itemLabel="是" itemValue="true"></f:selectItem>
+							<f:selectItem itemLabel="否" itemValue="false"></f:selectItem>
+						</h:selectOneMenu>
+						
+					</h:panelGrid>
+
+					<DIV>
+						<p:commandButton value="查询"
+							image="ui-icon ui-icon-search"
+							actionListener="#{sysJobBean.serachData}" update=":sysEjbtimerFormId"
+							style="margin-right:5px" />
+						<p:commandButton value="重置"
+							image="ui-icon ui-icon-cancel" action="#{sysJobBean.reset}"
+							update=":sysEjbtimerFormId:sysEjbtimerSearchGrid" style="margin-right:5px" />
+						<p:commandButton value="导入"
+							image="ui-icon ui-icon-plus"
+							oncomplete="document.forms['addDlgFormId'].reset();"
+							actionListener="#{sysJobBean.importSysJob2DB}"
+							update=":sysEjbtimerFormId" style="margin-right:5px" />				
+					
+					</DIV>
+				</div>
+
+				<p:dataTable emptyMessage="#{msgs.dataTable_empty}" id="ejbTimerTab"
+					var="ss" value="#{sysJobBean.jobInfoLazyModel}" lazy="true"
+					paginator="true" rows="10" paginatorPosition="bottom"
+					rowIndexVar="index"
+					rowStyleClass="#{index mod 2 == 1 ? 'changeColor' : null}"
+					style="margin-top: 5px;"
+					paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
+					currentPageReportTemplate="{currentPage}/{totalPage}"
+					rowKey="#{ss.id}">
+
+					<f:facet name="header">
+						任务列表
+					</f:facet>
+					
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="任务名称" />
+						</f:facet>
+						<h:outputText value="#{ss.jobSubject}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="任务代码" />
+						</f:facet>						
+						<h:outputText value="#{ss.jobService}.#{ss.jobMethod}()" >							
+						</h:outputText>
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="触发时间" />
+						</f:facet>						
+						
+						<h:outputText value="#{sysJobBean.getChineseByCron(ss.cronExpression)}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="下次运行" />
+						</f:facet>						
+						<h:outputText value="#{sysJobBean.getNextRunTimeByTimerID(ss.id,ss.isEnabled)}" >							
+						</h:outputText>
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="是否启用" />
+						</f:facet>
+						<h:outputText value="#{(ss.isEnabled)=='true'?'是':'否'}" />
+					</p:column>
+					
+					
+					<p:column headerText="操作">
+						<p:commandButton image="ui-icon ui-icon-pencil"
+							title="#{msgs.btn_edit }" 	
+							oncomplete="updateDlgVar.show();changeInputType('common');" update=":updateDlgFormId">
+							<f:setPropertyActionListener target="#{sysJobBean.selectData}"
+								value="#{ss}" />
+						</p:commandButton>
+						
+						<p:commandButton title="运行任务"
+								icon="ui-icon ui-icon-wrench"
+								oncomplete="confirmationRun.show()">								
+								<f:setPropertyActionListener value="#{ss}"
+									target="#{sysJobBean.selectData}"></f:setPropertyActionListener>
+								<f:setPropertyActionListener value="runJob"
+									target="#{sysJobBean.confirmType}"></f:setPropertyActionListener>
+							</p:commandButton>
+						
+						<p:commandButton title="#{ss.isEnabled == 'true' ? '设为禁用' : '设为启用'}"
+								icon="#{ss.isEnabled == 'true' ? 'ui-icon ui-icon-close' : 'ui-icon ui-icon-effective'}"
+								oncomplete="confirmationStatusffective.show()">								
+								<f:setPropertyActionListener value="#{ss}"
+									target="#{sysJobBean.selectData}"></f:setPropertyActionListener>
+								<f:setPropertyActionListener value="setEnableStatus"
+									target="#{sysJobBean.confirmType}"></f:setPropertyActionListener>
+							</p:commandButton>
+					</p:column>
+				</p:dataTable>
+
+			</p:panel>
+		</h:form>
+
+		<ui:include src="/faces/sys/ejbtimer/insert_dialog.xhtml" />
+		<ui:include src="/faces/sys/ejbtimer/update_dialog.xhtml" />
+		<ui:include src="/faces/sys/ejbtimer/ejbtimer_changeStatusConfirm_dialog.xhtml" />
+		<ui:include src="/faces/sys/ejbtimer/ejbtimer_run_confirmdialog.xhtml" />
+		<script type="text/javascript">
+		//<![CDATA[	
+			function handleSaveRequest(xhr, status, args) {
+				if (args.addInfo == "yes") {
+					addDlgVar.hide();
+				} else {
+					
+				}
+			}
+
+			function handleUpdateRequest(xhr, status, args) {
+				if (args.updateInfo == "yes") {
+					updateDlgVar.hide();
+				} else {
+
+				}
+			}
+
+			function closeOverDiv() {
+				$("div.ui-widget-overlay").each(function() {
+					$(this).hide();
+				});
+			}
+			//]]>
+		</script>
+
+	</ui:define>
+</ui:composition>
+

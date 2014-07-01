@@ -1,0 +1,218 @@
+package com.wcs.tms.model;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.wcs.base.model.BaseEntity;
+/**
+ * <p>Project: tms</p>
+ * <p>Description: 注册资本金变更流程</p>
+ * <p>Copyright (c) 2014 Wilmar Consultancy Services</p>
+ * <p>All Rights Reserved.</p>
+ * </a>
+ */
+@Entity
+@Table(name = "PROC_REGI_CAPITAL_CHANGE")
+public class ProcRegiCapitalChange extends BaseEntity{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7368853102849558388L;
+
+	@Override
+	public String getDisplayText() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Column(name = "PROC_INST_ID")
+	private String procInstId;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "COMPANY_ID")
+	private Company company;
+	
+//	@Column(name = "COMPANY_NAME")
+//	private String companyName;
+	
+//	@Column(name = "COMPANY_EN")
+//	private String companyEn;
+	
+//	@ManyToOne(fetch = FetchType.LAZY)
+//	@JoinColumn(name = "DEBT_ACCOUNT_ID")
+//	private RemittanceLineAccount debtAccountId;
+	
+	@Column(name = "INVEST_TOTAL")
+	private Double investTotal;
+	
+	@Column(name = "INVEST_CURRENCY")
+	private String investCurrency;
+	
+	@Column(name = "IS_INVEST_REG_REMA_AVAI", length=1)
+	private String isInvestRegRemaAvai;
+	
+	@Column(name = "INVEST_REG_REMA_FUNDS")
+	private Double investRegRemaFunds;
+	
+	@Column(name = "INVEST_REG_REMA_FUNDS_CU")
+	private String investRegRemaFundsCu;
+	
+	@Column(name = "INVEST_TOTAL_ORI")
+	private Double investTotalOri;
+	
+	@Column(name = "INVEST_CURRENCY_ORI")
+	private String investCurrencyOri;
+	
+	@Column(name = "IS_INVEST_REG_REMA_AVAI_ORI", length=1)
+	private String isInvestRegRemaAvaiOri;
+	
+	@Column(name = "INVEST_REG_REMA_FUNDS_ORI")
+	private Double investRegRemaFundsOri;
+	
+	@Column(name = "INVEST_REG_REMA_FUNDS_CU_ORI")
+	private String investRegRemaFundsCuOri;
+	
+	@Column(name = "PROCESS_STATUS")
+	private String processStatus;
+	
+	@Column(name = "CURRENT_NODE")
+	private String currentNode;
+	
+	/** 保存PE的备注*/
+	@Transient
+	private String peMemo;
+	
+	public ProcRegiCapitalChange(){
+		this.company = new Company();
+	}
+
+	public String getProcInstId() {
+		return procInstId;
+	}
+
+	public void setProcInstId(String procInstId) {
+		this.procInstId = procInstId;
+	}
+
+	public Company getCompany() {
+		return company;
+	}
+
+	public void setCompany(Company company) {
+		this.company = company;
+	}
+
+	public Double getInvestTotal() {
+		return investTotal;
+	}
+
+	public void setInvestTotal(Double investTotal) {
+		this.investTotal = investTotal;
+	}
+
+	public String getInvestCurrency() {
+		return investCurrency;
+	}
+
+	public void setInvestCurrency(String investCurrency) {
+		this.investCurrency = investCurrency;
+	}
+
+	public Double getInvestTotalOri() {
+		return investTotalOri;
+	}
+
+	public void setInvestTotalOri(Double investTotalOri) {
+		this.investTotalOri = investTotalOri;
+	}
+
+	public String getInvestCurrencyOri() {
+		return investCurrencyOri;
+	}
+
+	public void setInvestCurrencyOri(String investCurrencyOri) {
+		this.investCurrencyOri = investCurrencyOri;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public String getIsInvestRegRemaAvai() {
+		return isInvestRegRemaAvai;
+	}
+
+	public void setIsInvestRegRemaAvai(String isInvestRegRemaAvai) {
+		this.isInvestRegRemaAvai = isInvestRegRemaAvai;
+	}
+
+	public Double getInvestRegRemaFunds() {
+		return investRegRemaFunds;
+	}
+
+	public void setInvestRegRemaFunds(Double investRegRemaFunds) {
+		this.investRegRemaFunds = investRegRemaFunds;
+	}
+
+	public String getInvestRegRemaFundsCu() {
+		return investRegRemaFundsCu;
+	}
+
+	public void setInvestRegRemaFundsCu(String investRegRemaFundsCu) {
+		this.investRegRemaFundsCu = investRegRemaFundsCu;
+	}
+
+	public String getIsInvestRegRemaAvaiOri() {
+		return isInvestRegRemaAvaiOri;
+	}
+
+	public void setIsInvestRegRemaAvaiOri(String isInvestRegRemaAvaiOri) {
+		this.isInvestRegRemaAvaiOri = isInvestRegRemaAvaiOri;
+	}
+
+	public Double getInvestRegRemaFundsOri() {
+		return investRegRemaFundsOri;
+	}
+
+	public void setInvestRegRemaFundsOri(Double investRegRemaFundsOri) {
+		this.investRegRemaFundsOri = investRegRemaFundsOri;
+	}
+
+	public String getInvestRegRemaFundsCuOri() {
+		return investRegRemaFundsCuOri;
+	}
+
+	public void setInvestRegRemaFundsCuOri(String investRegRemaFundsCuOri) {
+		this.investRegRemaFundsCuOri = investRegRemaFundsCuOri;
+	}
+
+	public String getProcessStatus() {
+		return processStatus;
+	}
+
+	public void setProcessStatus(String processStatus) {
+		this.processStatus = processStatus;
+	}
+
+	public String getCurrentNode() {
+		return currentNode;
+	}
+
+	public void setCurrentNode(String currentNode) {
+		this.currentNode = currentNode;
+	}
+
+	public String getPeMemo() {
+		return peMemo;
+	}
+
+	public void setPeMemo(String peMemo) {
+		this.peMemo = peMemo;
+	}
+	
+}

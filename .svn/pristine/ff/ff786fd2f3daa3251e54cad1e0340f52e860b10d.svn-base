@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:form id="userIitemsFrom" prependId="false">
+		<div class="style1">
+			<h:panelGrid id="formItems" columns="8"
+				columnClasses="column1,column2,column1,column2,column1,column2">
+				<h:outputText value="用户帐号：" />
+				<p:inputText value="#{userBean.usermstrFormItemsVo.adAccount}"
+					maxlength="20" />
+				<h:outputText value="用户姓名：" />
+				<p:inputText value="#{userBean.usermstrFormItemsVo.userName}"
+					maxlength="10" />
+				<h:outputText value="角色 ：" />
+				<h:selectOneMenu value="#{userBean.usermstrFormItemsVo.rolemstrId}"
+					styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+					<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" itemValue="" />
+					<f:selectItems value="#{userBean.rolemstrList}" var="roleVo"
+						itemLabel="#{roleVo.rolemstr.name}"
+						itemValue="#{roleVo.rolemstr.id}" />
+				</h:selectOneMenu>
+				<h:outputText value="状态 ：" />
+				<h:selectOneMenu value="#{userBean.usermstrFormItemsVo.status}"
+					styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+					style="width:140px">
+					<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" itemValue="" />
+					<f:selectItem itemLabel="#{msgs.txt_effective}" itemValue="N" />
+					<f:selectItem itemLabel="#{msgs.txt_effectiveLost}" itemValue="Y" />
+				</h:selectOneMenu>
+			</h:panelGrid>
+			<div>
+				<p:commandButton actionListener="#{userBean.search}"
+					style="margin-right: 5px;" update="msg,userDataTable"
+					value="#{msgs.btn_query}" image="ui-icon ui-icon-search" />
+				<p:commandButton actionListener="#{userBean.reset}"
+					update="msg,formItems" value="#{msgs.btn_reset}"
+					image="ui-icon ui-icon-cancel" />
+				<p:commandButton value="#{msgs.btn_add}" image="ui-icon ui-icon-plus" action="#{userBean.forwordSaveUser}"
+					oncomplete="document.forms['saveUserDialogForm'].reset();saveUserDialog.show();" update="msg,errorSaveMsg,saveUserDialogForm">
+					<f:setPropertyActionListener target="#{userBean.method}"
+						value="insert" />
+				</p:commandButton>
+			</div>
+		</div>
+	</h:form>
+
+</ui:composition>

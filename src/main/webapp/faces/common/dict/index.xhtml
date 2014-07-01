@@ -1,0 +1,174 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/template/template.xhtml">
+
+	<ui:define name="styleAndScript">
+		<style type="text/css">
+.changeColor {
+	background: #DEEDF7;
+}
+</style>
+	</ui:define>
+	<ui:define name="content">
+		
+		<input type="hidden" id="menuOne" value="23" />
+		<input type="hidden" id="menuTwo" value="26" />
+		<p:message id="msg" for="msg" showDetail="true" showSummary="false"/>
+		<h:form prependId="false" id="dictFormId">
+			<p:panel styleClass="panel1">
+
+				<f:facet name="header">
+					<img class="header_title_img"
+						src="#{facesContext.externalContext.requestContextPath}/images/icons/tabTitle.gif"
+						alt="" />
+					<h:outputLabel value="字典表管理 " />
+				</f:facet>
+				<div class="style1"  style="margin-top: 5px;margin-bottom: 5px;">
+					<h:panelGrid columns="8" id="dictSearchGrid"
+						columnClasses="column1,column2,column1,column2,column1,column2,column1,column2">
+
+						<h:outputText value="类别 : " />
+						<p:inputText value="#{dictBean.query['codeCat']}" maxlength="50"/>
+
+						<h:outputText value="键 : " />
+						<p:inputText value="#{dictBean.query['codeKey']}" maxlength="30"/>
+
+						<h:outputText value="值 : " />
+						<p:inputText value="#{dictBean.query['codeVal']}" maxlength="30"/>
+
+						<h:outputText value="系统标识 : " />
+						<h:selectOneMenu value="#{dictBean.query['sysInd']}"
+							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+							<f:selectItem itemLabel="全部" itemValue=""></f:selectItem>
+							<f:selectItem itemLabel="是" itemValue="N"></f:selectItem>
+							<f:selectItem itemLabel="否" itemValue="Y"></f:selectItem>
+						</h:selectOneMenu>
+
+						<h:outputText value="语言 : " />
+						<p:inputText value="#{dictBean.query['lang']}" maxlength="30"/>
+					</h:panelGrid>
+
+					<DIV>
+						<p:commandButton value="#{msgs.btn_query}" image="ui-icon ui-icon-search"  
+							actionListener="#{dictBean.serachData}" update="dictFormId"  
+							style="margin-right:5px" />
+						<p:commandButton value="#{msgs.btn_refreshDict }" image="ui-icon ui-icon-cancel"
+							action="#{commonBean.refreshDictData}" update="dictSearchGrid, dictTab, messages" />
+						<p:commandButton value="#{msgs.btn_add}" image="ui-icon ui-icon-plus" 
+							oncomplete="addDlgVar.show();document.forms['addDlgFormId'].reset();"   
+							actionListener="#{dictBean.initAddDict}" 
+							update="addMessagesId"  
+								 />
+					</DIV>
+				</div>
+				
+				<p:dataTable emptyMessage="#{msgs.dataTable_empty}" id="dictTab"
+					var="ss" value="#{dictBean.indexLazyModel}" lazy="true"
+					paginator="true" rows="10" paginatorPosition="bottom"
+					rowIndexVar="index"
+					rowStyleClass="#{index mod 2 == 1 ? 'changeColor' : null}" 
+					style="margin-top: 5px;"
+					paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
+					currentPageReportTemplate="{currentPage}/{totalPage}"
+					rowKey="#{ss.id}" >
+
+					<f:facet name="header">
+					字典列表
+					</f:facet>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="类别" />
+						</f:facet>
+						<h:outputText value="#{ss.codeCat}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="键" />
+						</f:facet>
+						<h:outputText value="#{ss.codeKey }" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="值" />
+						</f:facet>
+						<h:outputText value="#{ss.codeVal}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="顺序号" />
+						</f:facet>
+						<h:outputText value="#{ss.seqNo}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="系统标识" />
+						</f:facet>
+						<h:outputText value="#{(ss.sysInd)=='N'?'是':'否'}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="语言" />
+						</f:facet>
+						<h:outputText value="#{ss.lang }" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="状态" />
+						</f:facet>
+						<h:outputText value="#{(ss.defunctInd)=='N'?'有效':'无效'}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="备注" />
+						</f:facet>
+						<h:outputText value="#{ss.remarks}" />
+					</p:column>
+					<p:column headerText="操作" styleClass="operating_30">
+						<p:commandButton 
+							image="ui-icon ui-icon-pencil" title="#{msgs.btn_edit }"  
+							oncomplete="updateDlgVar.show();"  update="updateDlgFormId"  
+							>
+							<f:setPropertyActionListener target="#{dictBean.selectData}" value="#{ss}" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+
+			</p:panel>
+		</h:form>
+		
+		
+		<ui:include src="/faces/common/dict/insert_dialog.xhtml" />
+		<ui:include src="/faces/common/dict/update_dialog.xhtml" />
+		<script type="text/javascript">
+			function handleSaveRequest(xhr, status, args) {
+				if (args.addInfo == "yes") {
+					addDlgVar.hide();
+				} else {
+					
+				}
+			}
+
+			function handleUpdateRequest(xhr, status, args) {
+				if (args.updateInfo == "yes") {
+					updateDlgVar.hide();
+				} else {
+
+				}
+			}
+
+			function closeOverDiv() {
+				$("div.ui-widget-overlay").each(function() {
+					$(this).hide();
+				});
+			}
+		</script>
+
+	</ui:define>
+</ui:composition>
+

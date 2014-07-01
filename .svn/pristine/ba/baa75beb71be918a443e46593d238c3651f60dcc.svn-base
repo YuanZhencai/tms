@@ -1,0 +1,421 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/template/template.xhtml">
+
+	<ui:define name="title">现金池查询清单</ui:define>
+
+	<ui:define name="content">
+
+		<input type="hidden" id="menuOne" value="21" />
+		<input type="hidden" id="menuTwo" value="22" />
+
+		<p:panel styleClass="panel1">
+			<h:form id="dbListForm" prependId="false">
+				<p:breadCrumb preview="true" expandEffectDuration="200"
+					previewWidth="24" style="width: 99.1%">
+					<p:menuitem value="#{msgs.menItem_form}" url="#" />
+					<p:menuitem value="#{msgs.menItem_form}" url="#" />
+					<p:menuitem value="现金池查询清单" url="#" />
+				</p:breadCrumb>
+
+				<p:messages id="doneMsg" />
+
+
+				<div class="style1">
+					<h:panelGrid columns="6"
+						columnClasses="column0,column2,column0,column2,column0,column2">
+
+						<h:outputLabel value="填制时间：" />
+						<h:panelGroup>
+							<p:inputText id="paymentStartDate"
+								value="#{cashPoolReportBean.conditionMap['paymentStartDate']}"
+								styleClass="ui-date" style="font-size: 9px;width:90px;"
+								title="#{msgs.txt_startTime}"
+								onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'paymentEndDate\')}'});">
+								<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+							</p:inputText>
+							<h:outputText value="~" />
+							<p:inputText id="paymentEndDate"
+								value="#{cashPoolReportBean.conditionMap['paymentEndDate']}"
+								styleClass="ui-date" style="font-size: 9px;width:90px;"
+								title="#{msgs.txt_endTime}"
+								onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'paymentStartDate\')}'});">
+								<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+							</p:inputText>
+						</h:panelGroup>
+
+						<h:outputLabel value="申请付款时间：" />
+						<h:panelGroup>
+							<p:inputText id="appPaymentStartDate"
+								value="#{cashPoolReportBean.conditionMap['appPaymentStartDate']}"
+								styleClass="ui-date" style="font-size: 9px;width:90px;"
+								title="#{msgs.txt_startTime}"
+								onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'appPaymentEndDate\')}'});">
+								<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+							</p:inputText>
+							<h:outputText value="~" />
+							<p:inputText id="appPaymentEndDate"
+								value="#{cashPoolReportBean.conditionMap['appPaymentEndDate']}"
+								styleClass="ui-date" style="font-size: 9px;width:90px;"
+								title="#{msgs.txt_endTime}"
+								onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'appPaymentStartDate\')}'});">
+								<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+							</p:inputText>
+						</h:panelGroup>
+
+						<h:outputLabel value="提交时间：" />
+						<h:panelGroup>
+							<p:inputText id="submitStartDate"
+								value="#{cashPoolReportBean.conditionMap['submitStartDate']}"
+								styleClass="ui-date" style="font-size: 9px;width:90px;"
+								title="#{msgs.txt_startTime}"
+								onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',maxDate:'#F{$dp.$D(\'submitEndDate\')}'});">
+								<f:convertDateTime pattern="yyyy-MM-dd HH:mm" timeZone="GMT+8" />
+							</p:inputText>
+							<h:outputText value="~" />
+							<p:inputText id="submitEndDate"
+								value="#{cashPoolReportBean.conditionMap['submitEndDate']}"
+								styleClass="ui-date" style="font-size: 9px;width:90px;"
+								title="#{msgs.txt_endTime}"
+								onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',minDate:'#F{$dp.$D(\'submitEndDate\')}'});">
+								<f:convertDateTime pattern="yyyy-MM-dd HH:mm" timeZone="GMT+8" />
+							</p:inputText>
+						</h:panelGroup>
+
+						<h:outputLabel value="收款公司：" />
+						<h:panelGroup>
+							<h:selectManyListbox id="receiveCom"
+								styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+								style="width: 210px;height:40px;">
+								<f:selectItems value="#{cashPoolReportBean.receiveComs}"
+									var="receiveCom" itemLabel="#{receiveCom.companyName}"
+									itemValue="#{receiveCom.id}" />
+							</h:selectManyListbox>
+							<p:commandButton immediate="true" value="#{msgs.btn_select}"
+								style="width: 70px;" image="ui-icon ui-icon-zoomin"
+								action="#{cashPoolReportBean.companyMultipleSelectBean.clear}"
+								oncomplete="companyMultipleSelectDialogVar.show();"
+								update="companyMultipleSelectForm">
+								<f:setPropertyActionListener
+									target="#{cashPoolReportBean.companyMultipleSelectBean.method}"
+									value="cashPoolReportBean.setValueBySelectedCompanies" />
+							</p:commandButton>
+						</h:panelGroup>
+
+						<h:outputLabel value="实例编号：" />
+						<h:panelGroup>
+							<h:selectManyListbox id="instanceNum"
+								styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+								style="width: 250px;height:40px;">
+								<f:selectItems value="#{cashPoolReportBean.instanceNums}"
+									var="instanceNum" itemLabel="#{instanceNum}"
+									itemValue="#{instanceNum}" />
+							</h:selectManyListbox>
+							<p:commandButton immediate="true" value="#{msgs.btn_select}"
+								style="width: 70px;" image="ui-icon ui-icon-zoomin"
+								action="#{cashPoolReportBean.processNumberSelectBean.clear}"
+								oncomplete="processNumberSelectDialogVar.show();"
+								update="processNumberSelectForm">
+								<f:setPropertyActionListener
+									target="#{cashPoolReportBean.processNumberSelectBean.method}"
+									value="cashPoolReportBean.setValueBySelectedProcessMaps" />
+							</p:commandButton>
+						</h:panelGroup>
+
+						<h:outputLabel value="收款银行：" />
+						<h:panelGroup>
+							<h:selectManyListbox id="receiveBank"
+								styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+								style="width: 210px;height:40px;">
+								<f:selectItems value="#{cashPoolReportBean.receiveBanks}"
+									var="receiveBank" itemLabel="#{receiveBank.bankName}"
+									itemValue="#{receiveBank.bankName}" />
+							</h:selectManyListbox>
+							<p:commandButton immediate="true" value="#{msgs.btn_select}"
+								style="width: 70px;" image="ui-icon ui-icon-zoomin"
+								action="#{cashPoolReportBean.bankMultipleSelectBean.clear}"
+								oncomplete="bankMultiSelectDialogVar.show();"
+								update="bankMultiSelectForm">
+								<f:setPropertyActionListener
+									target="#{cashPoolReportBean.bankMultipleSelectBean.method}"
+									value="cashPoolReportBean.setValueBySelectedBanks" />
+							</p:commandButton>
+						</h:panelGroup>
+
+						<h:outputLabel value="申请金额：" />
+						<h:panelGroup>
+							<p:inputText id="appAmountStart" style="width:92px"
+								label="申请金额上限"
+								value="#{cashPoolReportBean.conditionMap['appAmountStart']}"
+								validatorMessage="申请金额上限必须为数字">
+								<p:ajax event="blur" update="msg,appAmountStart" />
+							</p:inputText>
+							<h:outputText value="~" />
+							<p:inputText id="appAmountEnd" style="width:92px" label="申请金额下限"
+								value="#{cashPoolReportBean.conditionMap['appAmountEnd']}"
+								validatorMessage="申请金额下限必须为数字">
+								<p:ajax event="blur" update="msg,appAmountEnd" />
+							</p:inputText>
+							<h:outputText value="万" />
+						</h:panelGroup>
+
+						<h:outputLabel value="#{msgs.col_processName}：" />
+						<h:selectOneMenu id="processName" style="width:250px;"
+							value="#{cashPoolReportBean.conditionMap['processId']}"
+							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+							<f:selectItem itemLabel="#{msgs.lbl_all}" />
+							<f:selectItems value="#{cashPoolReportBean.processNameSelect}" />
+						</h:selectOneMenu>
+
+						<h:outputLabel value="剩余支付金额：" />
+						<h:panelGroup>
+							<p:selectOneRadio id="lastAmountIsZero"
+								value="#{cashPoolReportBean.conditionMap['lastAmountIsZero']}">
+								<f:selectItem itemLabel="等于0" itemValue="Y" />
+								<f:selectItem itemLabel="大于0" itemValue="N" />
+							</p:selectOneRadio>
+						</h:panelGroup>
+					</h:panelGrid>
+					<div>
+						<p:commandButton id="query"
+							action="#{cashPoolReportBean.searchCashpoolDetail}" oncomplete="completeTable()"
+							update="doneMsg,cashPoolReportPl" value="#{msgs.btn_query}"
+							image="ui-icon ui-icon-search" />
+						<p:commandButton value="#{msgs.btn_reset}"
+							action="#{cashPoolReportBean.reset}"
+							icon="ui-icon ui-icon-arrowrefresh-1-e" style="margin: 5px;"
+							update="paymentStartDate,paymentEndDate,processName,
+						receiveCom,instanceNum,receiveBank,appPaymentStartDate,appPaymentEndDate,appAmountStart,appAmountEnd,lastAmountIsZero,submitStartDate,submitEndDate" />
+					</div>
+				</div>
+				<br />
+
+				<p:outputPanel id="cashPoolReportPl">
+					<p:dataTable id="cashPoolReports" var="cashPoolVo"
+						value="#{cashPoolReportBean.cashPoolVos}" paginator="true"
+						rows="150" paginatorPosition="bottom" 
+						currentPageReportTemplate="{currentPage}/{totalPage}"
+						paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
+						rowKey="#{cashPoolVo.id}" emptyMessage="#{msgs.dataTable_empty}">
+
+						<f:facet name="header">现金池查询清单</f:facet>
+						<p:column headerText="流程实例编号">
+							<h:outputText value="#{cashPoolVo.procInstId}" />
+						</p:column>
+
+						<p:column headerText="填制时间">
+							<h:outputText value="#{cashPoolVo.applyDate}">
+								<f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd" />
+							</h:outputText>
+						</p:column>
+
+						<p:column headerText="申请付款时间">
+							<h:outputText value="#{cashPoolVo.appPaymentDate}">
+								<f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd" />
+							</h:outputText>
+						</p:column>
+
+						<p:column headerText="提交时间">
+							<h:outputText value="#{cashPoolVo.applyDate}">
+								<f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd HH:mm" />
+							</h:outputText>
+						</p:column>
+
+						<p:column headerText="收款公司">
+							<h:outputText value="#{cashPoolVo.receiveCompany.companyName}" />
+						</p:column>
+
+						<p:column headerText="流程名称">
+							<h:outputText value="#{cashPoolVo.processName}" />
+						</p:column>
+
+						<p:column headerText="收款银行">
+							<h:outputText value="#{cashPoolVo.payeeBank.bankName}" />
+						</p:column>
+
+						<p:column headerText="申请金额(万)">
+							<h:panelGroup>
+								<h:outputText value="#{cashPoolVo.fundsTotal}">
+									<f:convertNumber pattern="#,##0.00" />
+								</h:outputText>
+							</h:panelGroup>
+						</p:column>
+
+						<p:column headerText="支付方式">
+							<h:outputText value="#{cashPoolVo.payWay}" />
+						</p:column>
+
+						<p:column headerText="拆分付款次数">
+							<h:outputText value="#{cashPoolVo.paymentNumber}" />
+						</p:column>
+
+						<p:column headerText="实际付款金额(万)">
+							<h:outputText value="#{cashPoolVo.realPaymentAmount}" />
+						</p:column>
+
+						<p:column headerText="TMS付款状态">
+							<h:outputText value="#{cashPoolVo.tmsStatus}" />
+						</p:column>
+
+						<p:column headerText="付款描述">
+							<h:outputText value="#{cashPoolVo.payDetail}" />
+						</p:column>
+
+						<p:column headerText="付款日期">
+							<h:outputText value="#{cashPoolVo.payDate}">
+								<f:convertDateTime timeZone="GMT+8"
+									pattern="yyyy-MM-dd HH:mm:ss" />
+							</h:outputText>
+						</p:column>
+
+						<p:column headerText="TMS参考号">
+							<h:outputText value="#{cashPoolVo.tmsRefNumber}" />
+						</p:column>
+
+						<p:column headerText="剩余需支付金额(万)">
+							<h:outputText value="#{cashPoolVo.lastPaymentAmount}">
+								<f:convertNumber pattern="#,##0.00" />
+							</h:outputText>
+						</p:column>
+						<p:columnGroup type="footer">
+							<p:row>
+								<p:column colspan="7" footerText="人民币合计 "
+									style="text-align:center" />
+								<p:column colspan="3" style="text-align:left"
+									footerText="#{cashPoolReportBean.appAmountTotal}" />
+								<p:column colspan="5" style="text-align:left"
+									footerText="#{cashPoolReportBean.realPaymentAmountTotal}" />
+								<p:column style="text-align:left"
+									footerText="#{cashPoolReportBean.lastPaymentAmountTotal}" />
+							</p:row>
+						</p:columnGroup>
+
+					</p:dataTable>
+				</p:outputPanel>
+
+			</h:form>
+		</p:panel>
+		<ui:include
+			src="/faces/process/common/bankMultipleSelect-dialog.xhtml" />
+		<ui:include
+			src="/faces/process/common/companyMultipleSelect-dialog.xhtml" />
+		<ui:include
+			src="/faces/process/common/processNumberSelect-dialog.xhtml" />
+		<script type="text/javascript">
+			$(document).ready(function () {
+				/*alert("111");
+					$("table table tr").css({"border-style":"solid",
+					"border-bottom-color":"#DCDCDC",
+					"border-top-color":"Transparent",
+					"border-left-color":"Transparent",
+					"border-right-color":"Transparent"});
+					//$("table table tr").addClass("ui-widget-content");
+					//$("table[id='paymentNum']").children().children().addClass('ui-widget-content');
+					if($("table[name$='paymentNum']").length){
+						alert("存在");
+					}else{
+						alert("不存在");
+					}
+					$("table[name$='paymentNum']").css("border-collapse","separate"); 
+						
+					})*/
+					$("#cashPoolReports > table").rowspan(0);
+			});
+
+			function completeTable() {
+				$("#cashPoolReports > table").rowspan(0);
+			}
+			
+			jQuery.fn.rowspan = function(colIdx) {
+				if($(this).find("tr").length > 5){
+					return this.each(function() {
+		                var that;
+		                var that1;
+		                var that2;
+		                var that3;
+		                var that4;
+		                var that5;
+		                var that6;
+		                var that7;
+		                var that15;
+		                $('tr', this).each(function(row) {
+		                    var thisRow = $('td:eq(' + colIdx + '),th:eq(' + colIdx + ')', this);
+		                    var thisRow1 = $('td:eq(1),th:eq(1)', this);
+		                    var thisRow2 = $('td:eq(2),th:eq(2)', this);
+		                    var thisRow3 = $('td:eq(3),th:eq(3)', this);
+		                    var thisRow4 = $('td:eq(4),th:eq(4)', this);
+		                    var thisRow5 = $('td:eq(5),th:eq(5)', this);
+		                    var thisRow6 = $('td:eq(6),th:eq(6)', this);
+		                    var thisRow7 = $('td:eq(7),th:eq(7)', this);
+		                    var thisRow15 = $('td:eq(15),th:eq(15)', this);
+		                    if (that != null) {
+			                    if($(thisRow).html() == $(that).html()) {
+			                    	rowspan = $(that).attr("rowSpan");
+			                        if (rowspan == undefined) {
+			                            $(that).attr("rowSpan", 1);
+			                            rowspan = $(that).attr("rowSpan");
+			                        }
+			                        rowspan = Number(rowspan) + 1;
+			                        $(that).attr("rowSpan", rowspan);
+			                        $(thisRow).remove(); ////$(thisRow).hide(); 
+			                        $(that1).attr("rowSpan", rowspan);
+			                        $(thisRow1).remove();
+			                        $(that2).attr("rowSpan", rowspan);
+			                        $(thisRow2).remove();
+			                        $(that3).attr("rowSpan", rowspan);
+			                        $(thisRow3).remove();
+			                        $(that4).attr("rowSpan", rowspan);
+			                        $(thisRow4).remove();
+			                        $(that5).attr("rowSpan", rowspan);
+			                        $(thisRow5).remove();
+			                        $(that6).attr("rowSpan", rowspan);
+			                        $(thisRow6).remove();
+			                        $(that7).attr("rowSpan", rowspan);
+			                        $(thisRow7).remove();
+			                        $(that15).attr("rowSpan", rowspan);
+			                        $(thisRow15).remove();
+					            }else {
+					            	that = thisRow;
+					            	that1 = thisRow1;
+					            	that2 = thisRow2;
+					            	that3 = thisRow3;
+					            	that4 = thisRow4;
+					            	that5 = thisRow5;
+					            	that6 = thisRow6;
+					            	that7 = thisRow7;
+					            	that15 = thisRow15;
+							    }
+		                    } else {
+		                        that = thisRow;
+		                        that1 = thisRow1;
+				            	that2 = thisRow2;
+				            	that3 = thisRow3;
+				            	that4 = thisRow4;
+				            	that5 = thisRow5;
+				            	that6 = thisRow6;
+				            	that7 = thisRow7;
+				            	that15 = thisRow15;
+		                    }
+		                    that = (that == null) ? thisRow : that;
+		                });
+		            });
+				}else {
+					return;
+				}
+	        }
+		</script>
+		<style type="text/css">
+		#cashPoolReports table tbody td{
+	        border:1px solid #ccc;
+	    }
+		</style>
+	</ui:define>
+
+</ui:composition>
+
+

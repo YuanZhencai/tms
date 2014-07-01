@@ -1,0 +1,137 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/template/template.xhtml">
+	<ui:define name="styleAndScript">
+		<style type="text/css">
+			.lazy_datatable_row {
+				background: #DEEDF7;
+			}
+			td div span {
+				overflow:hidden;		/**超过长度文本隐藏*/
+				white-space:nowrap;		/**强制不换行*/
+				text-overflow:ellipsis;	/**ie专属,后跟省略号*/
+			}
+			input[type='radio'] {
+				width: 20px;
+			}
+			input[type='checkbox'] {
+				width: 20px;
+			}
+			.op_button {
+				width: 20px;
+				height: 20px;
+			}
+		</style>
+		<script type="text/javascript">
+			jQuery(document).ready(function(){
+				ensureTable();
+				
+				$("div#position_company_form th").each(function(index){
+					// position_company_form
+					switch(index) {
+						case 1: $(this).css("width", "5%"); break;
+						case 2: $(this).css("width", "40%"); break;
+						default: break;
+					}
+				});
+				
+				$("div#company_datatable th").each(function(index){
+					// company_datatable
+					switch(index) {
+						case 1: $(this).css("width", "5%"); break;
+						case 2: $(this).css("width", "40%"); break;
+						case 3: $(this).css("width", "40%"); break;
+						default: break;
+					}
+				});
+			});
+			
+			function ensureTable() {
+				$("div#resultTable th").each(function(index){
+					switch(index) {
+						// first table
+						case 0: $(this).css("width","10%"); break;
+						case 1: $(this).css("width","10%"); break;
+						// case 2: $(this).css("width","100px"); break;
+						case 3: $(this).css("width","10%"); break;
+						default: break;
+					}
+				});
+			}
+		</script>
+	</ui:define>
+
+	<ui:define name="content">
+	<p:panel id="poSearchMain" styleClass="panel1">
+		
+		<h:form id="poSearchForm" prependId="false">
+			<div class="style1">
+				<h:panelGrid columns="8" id="userSerachGrid"
+					columnClasses="column0,column2,column0,column2,column0,column2,column0,column2">
+					<h:outputText value="姓名："/>
+					<p:inputText value="#{poSearchBean.conditionMap['pName']}"/>
+					<h:outputText value="人员账号："/>
+					<p:inputText value="#{poSearchBean.conditionMap['userName']}"/>
+					<h:outputText value="岗位名称："/>
+					<p:inputText value="#{poSearchBean.conditionMap['stationName']}"/>
+					<h:outputText value="岗位机构："/>
+					<p:inputText value="#{poSearchBean.conditionMap['oPath']}"/>
+				</h:panelGrid>
+				<div>
+					<p:commandButton id="poSearch" value="查询" action="#{poSearchBean.searchByCondition}"
+						image="ui-icon ui-icon-search" style="margin-right: 5px;" ajax="false"/>
+					<p:commandButton value="重置" image="ui-icon ui-icon-arrowrefresh-1-e"
+						action="#{poSearchBean.reset}" update="userSerachGrid"/>
+				</div>
+			</div>
+			
+			<p:dataTable id="resultTable" var="poVo" value="#{poSearchBean.poVosLazyModel}" 
+			paginatorPosition="bottom" rowIndexVar="index" paginator="true" rows="10" lazy="true"
+			paginatorTemplate="{FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+			rowStyleClass="#{index mod 2 == 1 ? 'lazy_datatable_row' : null}"
+			currentPageReportTemplate="{currentPage}/{totalPage}"
+			style="margin-top: 5px;" emptyMessage="没有可显示的记录">
+			
+				<f:facet name="header">
+					人员岗位机构列表
+				</f:facet>
+				<p:column headerText="人员ID" >
+					<h:outputText value="#{poVo.pId}" title="#{poVo.pId}"/>
+				</p:column>
+				<p:column headerText="姓名" >
+					<h:outputText value="#{poVo.pName}" title="#{poVo.pName}"/>
+				</p:column>
+				<p:column headerText="账号" >
+					<h:outputText value="#{poVo.userName}" title="#{poVo.userName}"/>
+				</p:column>
+				<p:column headerText="岗位名称" >
+					<h:outputText value="#{poVo.stationName}" title="#{poVo.stationName}"/>
+				</p:column>
+				<p:column headerText="岗位机构" >
+					<h:outputText value="#{poVo.oPath}" title="#{poVo.oPath}"/>
+				</p:column>	
+			</p:dataTable>
+		</h:form>
+		</p:panel>
+		
+		
+		<script type="text/javascript">
+			function handleSaveRequest(xhr, status, args) {
+				if(args.issucc == "yes") {
+					insert_dialog_dialog.hide();
+				}
+			}
+			
+			function handleUpdateRequest(xhr, status, args) {
+				if(args.issucc == "yes") {
+					update_dialog_dialog.hide();
+				}
+			}
+		</script>
+	
+	</ui:define>
+</ui:composition>

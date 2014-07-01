@@ -1,0 +1,115 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
+	xmlns:w="http://www.wcs-global.com/customtaglib"
+	>
+	<p:dialog header="添加定时任务" widgetVar="addDlgVar" showEffect="fade"
+		hideEffect="fade" modal="true" resizable="false" id="addDlgId">
+		<h:form id="addDlgFormId" prependId="false">
+			<p:messages id="addMessagesId" showDetail="true"  autoUpdate="true"/>
+			
+			<h:panelGrid columns="6"
+				columnClasses="column1,column2,column1,column2,column1,column2">
+
+				<h:outputText value="任务名称:" />
+				<h:panelGroup>
+					<p:inputText value="#{sysJobBean.addSysJobInfo.jobSubject}">
+						<f:validator validatorId="customValidator"/>
+						<w:validateRequired required="true" requiredMark="任务名称" />
+						<w:validateMaxLength maxLength="100" maxLengthMark="任务名称,100" />
+					</p:inputText>
+					<h:outputText style="color:red;" value="*" />
+				</h:panelGroup>
+				
+			</h:panelGrid>
+			
+			<h:panelGrid columns="6" columnClasses="column1,column2,column1,column2,column1,column2">
+						<h:outputLabel value="任务描述:" />
+						<h:panelGroup>
+							<p:inputTextarea id="jobDesc" autoResize="false" cols="100" rows="5" value="#{sysJobBean.addSysJobInfo.jobDesc}">
+								<f:validateLength maximum="500" for="jobDesc" />
+							</p:inputTextarea>
+						</h:panelGroup>
+			</h:panelGrid>	
+			
+			
+			<h:panelGrid columns="6"
+				columnClasses="column1,column2,column1,column2,column1,column2">	
+				<h:outputText value="类名:" />
+				<h:panelGroup>
+					<p:inputText value="#{sysJobBean.addSysJobInfo.jobService}">
+						<f:validator validatorId="customValidator"/>
+						<w:validateRequired required="true" requiredMark="类名" />
+						<w:validateMaxLength maxLength="200" maxLengthMark="类名,200" />
+					</p:inputText>
+					<h:outputText style="color:red;" value="*" />
+				</h:panelGroup>
+				
+				<h:outputText value="方法名:" />
+				<h:panelGroup>
+					<p:inputText value="#{sysJobBean.addSysJobInfo.jobMethod}">
+						<f:validator validatorId="customValidator"/>
+						<w:validateRequired required="true" requiredMark="方法名" />
+						<w:validateMaxLength maxLength="50"  maxLengthMark="方法名,50" />
+					</p:inputText>
+					<h:outputText style="color:red;" value="*" />
+				</h:panelGroup>
+			</h:panelGrid>
+			
+			
+			<h:panelGrid columns="6"
+				columnClasses="column1,column2,column1,column2,column1,column2">	
+				<h:outputText value="触发时间:" />
+				<h:panelGroup>
+					<p:inputText value="#{sysJobBean.addSysJobInfo.cronExpression}">
+						<f:validator validatorId="customValidator"/>
+						<w:validateRequired required="true" requiredMark="触发时间" />
+						<w:validateMaxLength maxLength="200"  maxLengthMark="触发时间,200" />						
+					</p:inputText>
+					<h:outputText style="color: transparent;" value="*" />
+				</h:panelGroup>
+				
+			<h:outputText value="是否EJB:" />
+				<h:panelGroup >
+				<h:selectOneRadio styleClass="checkbox" 
+					value="#{sysJobBean.addSysJobInfo.isEJB}">
+					<f:selectItem itemLabel="是" itemValue="true"></f:selectItem>
+					<f:selectItem itemLabel="否" itemValue="false"></f:selectItem>
+				</h:selectOneRadio>
+				</h:panelGroup>
+				
+			</h:panelGrid>
+			
+			
+			
+			
+			<h:panelGrid columns="6" 
+					columnClasses="column1,column2,column1,column2,column1,column2">
+				<h:outputText value="是否启用:" />
+				<h:panelGroup>
+				<h:selectOneRadio styleClass="checkbox" 
+					value="#{sysJobBean.addSysJobInfo.isEnabled}">
+					<f:selectItem itemLabel="启用" itemValue="true"></f:selectItem>
+					<f:selectItem itemLabel="禁用" itemValue="false"></f:selectItem>
+				</h:selectOneRadio>
+				</h:panelGroup>
+			</h:panelGrid>
+			
+			
+			
+			<div>&#160;</div>
+			<div align="center">
+				<p:commandButton value="#{msgs.btn_save}"  actionListener="#{sysJobBean.insertData}"   
+					  style="margin-right:5px"  oncomplete="handleSaveRequest(xhr, status, args);"  
+					update=":addDlgFormId:addMessagesId,:sysEjbtimerFormId" image="ui-icon ui-icon-disk" />
+				<p:commandButton type="button" value="#{msgs.btn_cancel }" onclick="addDlgVar.hide();"
+					image="ui-icon ui-icon-cancel" />
+			</div>
+
+		</h:form>
+
+	</p:dialog>
+</ui:composition>

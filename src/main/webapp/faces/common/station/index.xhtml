@@ -1,0 +1,159 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/template/template.xhtml">
+	<ui:define name="styleAndScript">
+		<style type="text/css">
+			.lazy_datatable_row {
+				background: #DEEDF7;
+			}
+			td div span {
+				overflow:hidden;		/**超过长度文本隐藏*/
+				white-space:nowrap;		/**强制不换行*/
+				text-overflow:ellipsis;	/**ie专属,后跟省略号*/
+			}
+			input[type='radio'] {
+				width: 20px;
+			}
+			input[type='checkbox'] {
+				width: 20px;
+			}
+			.op_button {
+				width: 20px;
+				height: 20px;
+			}
+		</style>
+		<script type="text/javascript">
+			jQuery(document).ready(function(){
+				ensureTable();
+				
+				$("div#position_company_form th").each(function(index){
+					// position_company_form
+					switch(index) {
+						case 1: $(this).css("width", "5%"); break;
+						case 2: $(this).css("width", "40%"); break;
+						default: break;
+					}
+				});
+				
+				$("div#company_datatable th").each(function(index){
+					// company_datatable
+					switch(index) {
+						case 1: $(this).css("width", "5%"); break;
+						case 2: $(this).css("width", "40%"); break;
+						case 3: $(this).css("width", "40%"); break;
+						default: break;
+					}
+				});
+			});
+			
+			function ensureTable() {
+				$("div#resultTable th").each(function(index){
+					switch(index) {
+						// first table
+						case 0: $(this).css("width","100%"); break;
+						case 1: $(this).css("width","10%"); break;
+						case 2: $(this).css("width","35%"); break;
+						case 3: $(this).css("width","35%"); break;
+						case 4: $(this).css("width","10%"); break;
+						case 5: $(this).css("width","10%"); break; 
+						default: break;
+					}
+				});
+			}
+		</script>
+	</ui:define>
+
+	<ui:define name="content">
+	<p:panel id="stationMain" styleClass="panel1">
+		
+		<f:facet name="header">
+			<img class="header_title_img"
+				src="#{facesContext.externalContext.requestContextPath}/images/icons/tabTitle.gif"
+				alt="" />
+			<h:outputLabel value="岗位管理" />
+		</f:facet>
+		
+		<h:form id="stationQueryForm" prependId="false">
+			<p:messages id="msg" autoUpdate="true" />
+			<div class="style1">
+				<h:panelGrid columns="6" id="userSerachGrid"
+					columnClasses="column0,column2,column0,column2,column0,column2">
+					<h:outputText value="岗位名称："/>
+					<p:inputText value="#{stationBean.conditionMap['stationName']}"/>
+					<h:outputText value="所属机构名称："/>
+					<p:inputText value="#{stationBean.conditionMap['parentComName']}"/>
+					<h:outputText value="状态："/>
+					<h:selectOneMenu value="#{stationBean.conditionMap['defunctFlag']}">
+						<f:selectItem itemLabel="请选择" itemValue=""/>
+						<f:selectItem itemLabel="有效" itemValue="N"/>
+						<f:selectItem itemLabel="失效" itemValue="Y"/>
+					</h:selectOneMenu>
+				</h:panelGrid>
+				<div>
+					<p:commandButton id="stationSearch" value="查询" action="#{stationBean.searchByCondition}"
+						image="ui-icon ui-icon-search" style="margin-right: 5px;" ajax="false"/>
+					<p:commandButton value="重置" image="ui-icon ui-icon-arrowrefresh-1-e"
+						action="#{stationBean.reset}" update="userSerachGrid"/>
+				</div>
+			</div>
+			
+			<p:dataTable id="resultTable" var="s" value="#{stationBean.stationLazyModel}" 
+			paginatorPosition="bottom" rowIndexVar="index" paginator="true" rows="10" lazy="true"
+			paginatorTemplate="{FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+			rowStyleClass="#{index mod 2 == 1 ? 'lazy_datatable_row' : null}"
+			currentPageReportTemplate="{currentPage}/{totalPage}"
+			style="margin-top: 5px;" emptyMessage="没有可显示的记录">
+			
+				<f:facet name="header">
+					岗位列表
+				</f:facet>
+				
+				<p:column headerText="岗位ID" >
+					<h:outputText value="#{s.id}" title="#{s.id}"/>
+				</p:column>
+				<p:column headerText="岗位名称" >
+					<h:outputText value="#{s.stext}" title="#{s.stext}"/>
+				</p:column>
+				<p:column headerText="所属机构名称" >
+					<h:outputText value="#{stationBean.findParentComNameByOId(s.oid)}" title="#{stationBean.findParentComNameByOId(s.oid)}"/>
+				</p:column>
+				<p:column headerText="状态" >
+					<h:outputText value="#{s.defunctInd == 'Y' ? '失效' : '有效'}" title="#{s.defunctInd == 'Y' ? '有效' : '失效'}"/>
+				</p:column>
+				<p:column headerText="操作" >
+					<p:commandButton title="已分配人员" oncomplete="distributed_person_dialog.show();" image="ui-icon ui-icon-search"  
+					action="#{stationBean.findDistributedPersons}" update="distributed_person_form">
+						<f:setPropertyActionListener target="#{stationBean.station}" value="#{s}"/>
+					</p:commandButton>
+					<p:commandButton title="分配人员" image="ui-icon ui-icon-wrench" oncomplete="personMultipleSelectDialogVar.show();"
+					action="#{stationBean.filterPerson}" update="personMultipleSelectTable">
+						<f:setPropertyActionListener target="#{stationBean.station}" value="#{s}"/>
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+		<ui:include src="distributed-person-list.xhtml" />
+		<ui:include src="distribute-dialog.xhtml" />
+		</p:panel>
+		
+		
+		<script type="text/javascript">
+			function handleSaveRequest(xhr, status, args) {
+				if(args.issucc == "yes") {
+					insert_dialog_dialog.hide();
+				}
+			}
+			
+			function handleUpdateRequest(xhr, status, args) {
+				if(args.issucc == "yes") {
+					update_dialog_dialog.hide();
+				}
+			}
+		</script>
+	
+	</ui:define>
+</ui:composition>

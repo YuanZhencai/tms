@@ -1,0 +1,712 @@
+﻿<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.wcs</groupId>
+	<artifactId>tms</artifactId>
+	<packaging>war</packaging>
+	<version>1.0.6</version>
+	<name>tms</name>
+
+	<properties>
+		<endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<arquillian.version>1.0.0.CR5</arquillian.version>
+		<junit.version>4.8.2</junit.version>
+		<arquillian.version>1.0.0.Alpha5</arquillian.version>
+		<glassfish.version>3.1</glassfish.version>
+		<jersey.version>1.5</jersey.version>
+		<filenet.version>5.1</filenet.version>
+		<was8.wasHome>C:\Program Files\IBM\WebSphere\AppServer</was8.wasHome>
+		<!-- <was8.targetServer></was8.targetServer> -->
+		<!-- <was8.server></was8.server> -->
+		<was8.profileName>AppSrv01</was8.profileName>
+		<was8.host>localhost</was8.host>
+		<was8.conntype>SOAP</was8.conntype>
+		<was8.port>8880</was8.port>
+		<was8.username>admin</was8.username>
+		<was8.password>123456</was8.password>
+		<was8.verbose>true</was8.verbose>
+		<!-- need to be false first time it's deployed to a server -->
+		<was8.updateExisting>false</was8.updateExisting>
+		<was8.failOnError>false</was8.failOnError>
+		<!-- 益海嘉里《BPM-TMS前置流程平台》 -->
+		<system.name>BPM-TMS\u524d\u7f6e\u6d41\u7a0b\u5e73\u53f0</system.name>
+	</properties>
+
+	<profiles>
+		<profile>
+			<id>local</id>
+			<properties>
+				<profile.id>dev</profile.id>
+				<!-- <version.name>内测版</version.name> -->
+				<version.name>\u5185\u6D4B\u7248</version.name>
+				<system.skin>Blue Gray</system.skin>
+				<webXmlPath>${basedir}/src/main/assemble/dev/web.xml</webXmlPath>
+			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+		<profile>
+			<id>was8</id>
+			<properties>
+				<profile.id>local</profile.id>
+				<!-- <version.name>内测版</version.name> -->
+				<version.name>\u5185\u6D4B\u7248</version.name>
+				<system.skin>Blue Gray</system.skin>
+				<webXmlPath>${basedir}/src/main/webapp/WEB-INF/web.xml</webXmlPath>
+			</properties>
+			<!-- <activation>
+				<activeByDefault>true</activeByDefault>
+			</activation> -->
+		</profile>
+		<profile>
+			<id>uat</id>
+			<properties>
+				<profile.id>uat</profile.id>
+				<!-- <version.name>公测版</version.name> -->
+				<version.name>UAT\u7248</version.name>
+				<system.skin>Light Blue</system.skin>
+				<webXmlPath>${basedir}/src/main/assemble/uat/web.xml</webXmlPath>
+				<!-- <version.name>正式版</version.name> -->
+			</properties>
+		</profile>
+
+		<profile>
+			<id>qas</id>
+			<properties>
+				<profile.id>qas</profile.id>
+				<!-- <version.name>用户生成版</version.name> -->
+				<version.name>QAS\u7248</version.name>
+				<system.skin>Blue Gray</system.skin>
+				<filenet.version>5.1</filenet.version>
+				<webXmlPath>${basedir}/src/main/assemble/qas/web.xml</webXmlPath>
+
+			</properties>
+		</profile>
+
+		<profile>
+			<id>prd</id>
+			<properties>
+				<profile.id>prd</profile.id>
+				<!-- <version.name>正式版</version.name> -->
+				<version.name>\u6B63\u5F0F\u7248</version.name>
+				<system.skin>Deep Blue</system.skin>
+				<filenet.version>5.1</filenet.version>
+				<webXmlPath>${basedir}/src/main/assemble/prd/web.xml</webXmlPath>
+			</properties>
+		</profile>
+	</profiles>
+
+	<dependencies>
+
+		<!-- cas client 3.2.0 -->
+		<dependency>
+			<groupId>com.wcs.cas</groupId>
+			<artifactId>casclient</artifactId>
+			<version>3.2.0</version>
+		</dependency>
+
+		<!-- PE pe3pt.jar before javaee-api -->
+		<!-- <dependency> <groupId>pe3pt</groupId> <artifactId>pe3pt</artifactId> 
+			<version>5.0</version> <scope>system</scope> <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/pe3pt.jar</systemPath> 
+			</dependency> -->
+		<dependency>
+			<groupId>com.ibm</groupId>
+			<artifactId>filenet</artifactId>
+			<version>${filenet.version}</version>
+			<classifier>pe3pt</classifier>
+		</dependency>
+
+		<!-- Java EE -->
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-api</artifactId>
+			<version>6.0</version>
+			<scope>provided</scope>
+		</dependency>
+
+
+		<dependency>
+			<groupId>javax.faces</groupId>
+			<artifactId>jsf-api</artifactId>
+			<version>2.1</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.primefaces</groupId>
+			<artifactId>primefaces</artifactId>
+			<version>3.0.1</version>
+		</dependency>
+
+		<!-- shiro -->
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-core</artifactId>
+			<version>1.2.0</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>commons-beanutils</artifactId>
+					<groupId>commons-beanutils</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-web</artifactId>
+			<version>1.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-ehcache</artifactId>
+			<version>1.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-faces</artifactId>
+			<version>2.0-SNAPSHOT</version>
+		</dependency>
+
+		<!-- 日期工具类 -->
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>2.0</version>
+		</dependency>
+
+		<!-- CE -->
+		<!-- <dependency> <groupId>jace</groupId> <artifactId>jace</artifactId> 
+			<version>5.0</version> <scope>system</scope> <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/Jace.jar</systemPath> 
+			</dependency> -->
+		<dependency>
+			<groupId>com.ibm</groupId>
+			<artifactId>filenet</artifactId>
+			<version>${filenet.version}</version>
+			<classifier>jace</classifier>
+		</dependency>
+
+		<dependency>
+			<groupId>stax</groupId>
+			<artifactId>stax-api</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<!-- bi report -->
+		<dependency>
+			<groupId>com.wcs.bi.sap</groupId>
+			<artifactId>cecore</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/src/main/webapp/WEB-INF/lib/cecore.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.wcs.bi.sap</groupId>
+			<artifactId>celib</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/src/main/webapp/WEB-INF/lib/celib.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.wcs.bi.sap</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/src/main/webapp/WEB-INF/lib/aspectjrt.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.wcs.bi.sap</groupId>
+			<artifactId>logging</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/src/main/webapp/WEB-INF/lib/logging.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.wcs.bi.sap</groupId>
+			<artifactId>ceaspect</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/src/main/webapp/WEB-INF/lib/ceaspect.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.wcs.bi.sap</groupId>
+			<artifactId>TraceLog</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/src/main/webapp/WEB-INF/lib/TraceLog.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.wcs.bi.sap</groupId>
+			<artifactId>corbaidl</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/src/main/webapp/WEB-INF/lib/corbaidl.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.wcs.bi.sap</groupId>
+			<artifactId>cryptojFIPS</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/src/main/webapp/WEB-INF/lib/cryptojFIPS.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.wcs.bi.sap</groupId>
+			<artifactId>bcm</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/src/main/webapp/WEB-INF/lib/bcm.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.wcs.bi.sap</groupId>
+			<artifactId>ebus405</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/src/main/webapp/WEB-INF/lib/ebus405.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.wcs.bi.sap</groupId>
+			<artifactId>cession</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/src/main/webapp/WEB-INF/lib/cesession.jar</systemPath>
+		</dependency>
+
+		<!-- <dependency> <groupId>peResources</groupId> <artifactId>peResources</artifactId> 
+			<version>1.0</version> <scope>system</scope> <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/peResources.jar</systemPath> 
+			</dependency> -->
+		<dependency>
+			<groupId>com.ibm</groupId>
+			<artifactId>filenet</artifactId>
+			<version>5.1</version>
+			<classifier>peResource</classifier>
+		</dependency>
+
+		<dependency>
+			<groupId>xlxpScanner</groupId>
+			<artifactId>xlxpScanner</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/src/main/webapp/WEB-INF/lib/xlxpScanner.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>xlxpScannerUtils</groupId>
+			<artifactId>xlxpScannerUtils</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/src/main/webapp/WEB-INF/lib/xlxpScannerUtils.jar</systemPath>
+		</dependency>
+		<!-- PE -->
+		<!-- <dependency> <groupId>pe</groupId> <artifactId>pe</artifactId> <version>5.0</version> 
+			<scope>system</scope> <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/pe.jar</systemPath> 
+			</dependency> -->
+		<dependency>
+			<groupId>com.ibm</groupId>
+			<artifactId>filenet</artifactId>
+			<version>${filenet.version}</version>
+			<classifier>pe</classifier>
+		</dependency>
+
+		<dependency>
+			<groupId>stax-api</groupId>
+			<artifactId>stax-api</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/src/main/webapp/WEB-INF/lib/stax-api.jar</systemPath>
+		</dependency>
+		<!-- jasperreports -->
+		<dependency>
+			<groupId>net.sf.jasperreports</groupId>
+			<artifactId>jasperreports</artifactId>
+			<version>4.0.2</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>jfreechart</artifactId>
+					<groupId>jfree</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jcommon</artifactId>
+					<groupId>jfree</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jdtcore</artifactId>
+					<groupId>eclipse</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>commons-logging</artifactId>
+					<groupId>commons-logging</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>commons-collections</artifactId>
+					<groupId>commons-collections</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>commons-beanutils</artifactId>
+					<groupId>commons-beanutils</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>bcprov-jdk14</artifactId>
+					<groupId>org.bouncycastle</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>bcmail-jdk14</artifactId>
+					<groupId>org.bouncycastle</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<!-- utils -->
+		<dependency>
+			<groupId>rapid</groupId>
+			<artifactId>xsqlbuilder</artifactId>
+			<version>1.0.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.3</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>dom4j</groupId>
+			<artifactId>dom4j</artifactId>
+			<version>1.6.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>jaxen</groupId>
+			<artifactId>jaxen</artifactId>
+			<version>1.1.1</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>icu4j</artifactId>
+					<groupId>com.ibm.icu</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.5</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.2.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>1.4</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>commons-configuration</groupId>
+			<artifactId>commons-configuration</artifactId>
+			<version>1.7</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>commons-logging</artifactId>
+					<groupId>commons-logging</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>commons-collections</artifactId>
+					<groupId>commons-collections</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>commons-beanutils</artifactId>
+					<groupId>commons-beanutils</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>commons-net</groupId>
+			<artifactId>commons-net</artifactId>
+			<version>1.4.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.0.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>r09</version>
+		</dependency>
+
+		<dependency>
+			<groupId>ch.qos.cal10n</groupId>
+			<artifactId>cal10n-api</artifactId>
+			<version>0.7.4</version>
+		</dependency>
+
+		<!-- logger -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.6.2</version>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.6.2</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<!-- for glassfish 3.26 -->
+		<!-- OpenJPA -->
+		<dependency>
+			<groupId>org.apache.openjpa</groupId>
+			<artifactId>openjpa-all</artifactId>
+			<version>2.1.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.1.18</version>
+		</dependency>
+		<!-- poi -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.8</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<finalName>tms</finalName>
+		<resources>
+			<resource>
+				<filtering>true</filtering>
+				<directory>src/main/resources</directory>
+			</resource>
+		</resources>
+
+		<plugins>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<inherited>true</inherited>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+					<compilerArguments>
+						<endorseddirs>${endorsed.dir}</endorseddirs>
+					</compilerArguments>
+					<encoding>${project.build.sourceEncoding}</encoding>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+					<webXml>${webXmlPath}</webXml>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.3</version>
+				<executions>
+					<execution>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${endorsed.dir}</outputDirectory>
+							<silent>true</silent>
+							<artifactItems>
+								<artifactItem>
+									<groupId>javax</groupId>
+									<artifactId>javaee-endorsed-api</artifactId>
+									<version>6.0</version>
+									<type>jar</type>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<outputDirectory>..\tms-dist\${version}</outputDirectory>
+					<finalName>tms-${version}-${SVN.revision}-${profile.id}</finalName>
+					<appendAssemblyId>false</appendAssemblyId>
+					<descriptors>
+						<descriptor>src/main/assemble/ear.xml</descriptor>
+					</descriptors>
+					<archiverConfig>
+						<appxml>src/main/assemble/application.xml</appxml>
+					</archiverConfig>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- <plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>was6-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>install</phase>
+						<goals>
+							<goal>wsUninstallApp</goal>
+							<goal>installApp</goal>
+							<goal>wsStartApp</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<earFile>..\tms-dist\${version}/tms-${version}-${SVN.revision}-${profile.id}.ear</earFile>
+					<applicationName>tms</applicationName>
+					<wasHome>${was8.wasHome}</wasHome>
+					<host>${was8.host}</host>
+					<username>${was8.username}</username>
+					<password>${was8.password}</password>
+					<profileName>${was8.profileName}</profileName>
+					<conntype>${was8.conntype}</conntype>
+					<port>${was8.port}</port>
+					<verbose>${was8.verbose}</verbose>
+					<updateExisting>${was8.updateExisting}</updateExisting>
+					<failOnError>${was8.failOnError}</failOnError>
+				</configuration>
+			</plugin> -->
+
+			<!-- add by yanchangjing on 2013-07-01 -->
+			<!-- <plugin>
+				<groupId>com.google.code.maven-svn-revision-number-plugin</groupId>
+				<artifactId>svn-revision-number-maven-plugin</artifactId>
+				<version>1.13</version> please use the latest version
+				<executions>
+					<execution>
+						<goals>
+							<goal>revision</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<entries>
+						<entry>
+							<prefix>SVN</prefix>
+						</entry>
+					</entries>
+				</configuration>
+			</plugin> -->
+		</plugins>
+
+		<pluginManagement>
+			<plugins>				
+
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.apache.maven.plugins
+										</groupId>
+										<artifactId>
+											maven-dependency-plugin
+										</artifactId>
+										<versionRange>
+											[2.3,)
+										</versionRange>
+										<goals>
+											<goal>copy</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+								<!-- 此配置为解决生成svn号码插件报错的问题添加的 -->
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											com.google.code.maven-svn-revision-number-plugin
+										</groupId>
+										<artifactId>
+											svn-revision-number-maven-plugin
+										</artifactId>
+										<versionRange>
+											[1.13,)
+										</versionRange>
+										<goals>
+											<goal>revision</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+
+			</plugins>
+		</pluginManagement>
+
+	</build>
+
+	<repositories>
+		<repository>
+			<id>nexus</id>
+			<name>local private nexus</name>
+			<url>http://maven.oschina.net/content/groups/public/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>wcs-central</id>
+			<url>http://10.229.14.10:8080/nexus/content/groups/public</url>
+		</repository>
+
+		<repository>
+			<id>prime-repo</id>
+			<name>PrimeFaces Maven Repository</name>
+			<url>http://repository.primefaces.org</url>
+			<layout>default</layout>
+		</repository>
+
+		<repository>
+			<id>shiro-faces.snapshorts</id>
+			<url>http://deluan.googlecode.com/svn/snapshots</url>
+		</repository>
+	</repositories>
+
+</project>

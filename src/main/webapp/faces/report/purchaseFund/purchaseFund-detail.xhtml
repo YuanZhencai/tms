@@ -1,0 +1,285 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/template/template.xhtml">
+
+	<ui:define name="title">采购资金情况表</ui:define>
+
+	<ui:define name="content">
+
+		<input type="hidden" id="menuOne" value="21" />
+		<input type="hidden" id="menuTwo" value="22" />
+
+		<h:form id="purchaseForm" prependId="false"
+			onsubmit="statusComplete();">
+			<p:panel styleClass="panel1">
+				<p:breadCrumb preview="true" expandEffectDuration="200"
+					previewWidth="24" style="width: 99.1%">
+					<p:menuitem value="#{msgs.menItem_form}" url="#" />
+					<p:menuitem value="#{msgs.menItem_form}" url="#" />
+					<p:menuitem value="采购资金情况表" url="#" />
+				</p:breadCrumb>
+
+				<p:messages id="doneMsg" />
+
+				<div class="style1">
+					<h:panelGrid columns="8"
+						columnClasses="column0,column2,column0,column2,column0,column2,column0,column2">
+						<h:outputLabel value="申请日期：" />
+						<h:panelGroup>
+							<p:inputText id="startDate"
+								value="#{purchaseFundReportBean.conditionMap['startDate']}"
+								styleClass="ui-date" style="font-size: 12px;width:100px;"
+								title="#{msgs.txt_startTime}"
+								onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'endDate\')}'});">
+								<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+							</p:inputText>
+							<h:outputText value="~" />
+							<p:inputText id="endDate"
+								value="#{purchaseFundReportBean.conditionMap['endDate']}"
+								styleClass="ui-date" style="font-size: 12px;width:100px;"
+								title="#{msgs.txt_endTime}"
+								onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'startDate\')}'});">
+								<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+							</p:inputText>
+						</h:panelGroup>
+
+						<h:outputLabel value="#{msgs.col_companyName}："
+							rendered="#{!purchaseFundReportBean.isCopUser}" />
+						<h:panelGroup rendered="#{!purchaseFundReportBean.isCopUser}">
+							<h:selectOneMenu id="companyName" name="companyName"
+								style="width:330px;"
+								value="#{purchaseFundReportBean.conditionMap['companyId']}"
+								styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+								<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" itemValue="" />
+								<f:selectItems value="#{purchaseFundReportBean.companySelect}" />
+							</h:selectOneMenu>
+						</h:panelGroup>
+
+						<h:outputLabel value="#{msgs.col_companyName}："
+							rendered="#{purchaseFundReportBean.isCopUser}" />
+						<h:panelGroup rendered="#{purchaseFundReportBean.isCopUser}">
+							<p:inputText id="companyNameTwo" disabled="true"
+								style="width: 320px;"
+								value="#{purchaseFundReportBean.company.companyName}" />
+						</h:panelGroup>
+						<p:commandButton immediate="true" value="#{msgs.btn_select}"
+							style="width: 70px;" image="ui-icon ui-icon-zoomin"
+							rendered="#{purchaseFundReportBean.isCopUser}"
+							actionListener="#{purchaseFundReportBean.clear}"
+							oncomplete="companyDialogVar.show();" update="companyForm">
+							<f:setPropertyActionListener
+								target="#{purchaseFundReportBean.companySelectBean.method}"
+								value="purchaseFundReportBean.getSelectedCompany" />
+						</p:commandButton>
+					</h:panelGrid>
+					<div>
+						<p:commandButton id="query" value="#{msgs.btn_query}"
+							image="ui-icon ui-icon-search"
+							action="#{purchaseFundReportBean.searchPurchaseDetail}"
+							update="doneMsg,purchaseFundPl" />
+						<p:commandButton value="#{msgs.btn_reset}" style="margin: 5px;"
+							icon="ui-icon ui-icon-arrowrefresh-1-e"
+							action="#{purchaseFundReportBean.reset}"
+							update="startDate,endDate,companyName,companyNameTwo" />
+					</div>
+				</div>
+				<br />
+
+				<p:outputPanel id="purchaseFundPl">
+
+					<p:dataTable id="purchaseFundTable" var="purchaseFundVo"
+						value="#{purchaseFundReportBean.purchaseFundVos}"
+						emptyMessage="#{msgs.dataTable_empty}"
+						sortBy="#{purchaseFundVo.payDate}" sortOrder="descending">
+
+						<f:facet name="header">采购资金情况表</f:facet>
+
+						<p:columnGroup type="header">
+
+							<p:row>
+
+								<p:column colspan="2" headerText="流程信息" />
+								<p:column colspan="7" headerText="总头寸" />
+								<p:column colspan="2" headerText="期限" />
+								<p:column colspan="4" headerText="已用头寸" />
+								<p:column colspan="2" headerText="可用头寸" />
+								<p:column colspan="3" headerText="本次申请" />
+							</p:row>
+
+							<p:row>
+								<p:column headerText="付款时间" />
+								<p:column headerText="流程实例编号"
+									sortBy="#{purchaseFundVo.procInstId}" />
+
+								<p:column headerText="公司名称" />
+								<p:column headerText="品种" />
+								<p:column headerText="类型" />
+								<p:column headerText="审批总头寸(吨)" />
+								<p:column headerText="均价(元)" />
+								<p:column headerText="总金额(万元)" />
+								<p:column headerText="审批人" />
+
+								<p:column headerText="起始日期" />
+								<p:column headerText="结束日期" />
+
+								<p:column headerText="已累计采购数量" />
+								<p:column headerText="已累计采购金额" />
+								<p:column headerText="集团提供资金" />
+								<p:column headerText="自有资金" />
+
+								<p:column headerText="剩余采购头寸" />
+								<p:column headerText="金额" />
+
+								<p:column headerText="本次采购数量" />
+								<p:column headerText="采购金额" />
+								<p:column headerText="采购平均单价" />
+							</p:row>
+						</p:columnGroup>
+						<p:column headerText="付款时间">
+							<h:outputText value="#{purchaseFundVo.payDate}">
+								<f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="流程实例编号">
+							#{purchaseFundVo.procInstId}
+						</p:column>
+						<p:column headerText="公司名称">
+							<h:outputText
+								value="#{purchaseFundVo.companyName }" />	
+						</p:column>
+						<p:column headerText="品种">
+							<h:outputText
+								value="#{purchaseFundReportBean.getVarietyName(purchaseFundVo.varietyId)}" />
+						</p:column>
+						<p:column headerText="类型">
+							<h:outputText
+								value="#{commonBean.getValueByDictCatAndKey('TMS_PURCHASE_FUND_TYPE',purchaseFundVo.type)}" />
+						</p:column>
+						<p:column headerText="审批总头寸（吨）">
+							<h:outputText value="#{purchaseFundVo.totalCash}"
+								style="text-align:right">
+								<f:convertNumber pattern="#,##0.00" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="均价（元）">
+							<h:outputText value="#{purchaseFundVo.amountAverage}"
+								style="text-align:right">
+								<f:convertNumber pattern="#,##0.00" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="总金额（万元）">
+							<h:outputText value="#{purchaseFundVo.totalCashAmount}"
+								style="text-align:right">
+								<f:convertNumber pattern="#,##0.00" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="审批人">
+							<h:outputText
+								value="#{currentUser.exchange2CN(purchaseFundVo.updatedBy)}" />
+						</p:column>
+
+						<p:column headerText="起始日期">
+							<h:outputText value="#{purchaseFundVo.startDate}">
+								<f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="结束日期">
+							<h:outputText value="#{purchaseFundVo.endDate}">
+								<f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd" />
+							</h:outputText>
+						</p:column>
+
+						<p:column headerText="已累计采购数量">
+							<h:outputText value="#{purchaseFundVo.allPurchaseNum}"
+								style="text-align:right">
+								<f:convertNumber pattern="#,##0.00" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="已累计采购金额">
+							<h:outputText value="#{purchaseFundVo.allPurchaseAmount}"
+								style="text-align:right">
+								<f:convertNumber pattern="#,##0.00" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="集团提供资金">
+							<h:outputText value="#{purchaseFundVo.groPrivader}"
+								style="text-align:right">
+								<f:convertNumber pattern="#,##0.00" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="自有资金">
+							<h:outputText value="#{purchaseFundVo.orgOwner}"
+								style="text-align:right">
+								<f:convertNumber pattern="#,##0.00" />
+							</h:outputText>
+						</p:column>
+
+						<p:column headerText="剩余采购头寸">
+							<h:outputText value="#{purchaseFundVo.lessPurchaseNum}"
+								style="text-align:right">
+								<f:convertNumber pattern="#,##0.00" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="金额">
+							<h:outputText value="#{purchaseFundVo.lessPurchaseAmount}"
+								style="text-align:right">
+								<f:convertNumber pattern="#,##0.00" />
+							</h:outputText>
+						</p:column>
+
+						<p:column headerText="本次采购数量">
+							<h:outputText value="#{purchaseFundVo.thisPurchaseNum}"
+								style="text-align:right">
+								<f:convertNumber pattern="#,##0.00" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="采购金额">
+							<h:outputText value="#{purchaseFundVo.thisPurchaseAmount}"
+								style="text-align:right">
+								<f:convertNumber pattern="#,##0.00" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="采购平均单价">
+							<h:outputText value="#{purchaseFundVo.purchaseAverage}"
+								style="text-align:right">
+								<f:convertNumber pattern="#,##0.00" />
+							</h:outputText>
+						</p:column>
+
+						<p:summaryRow>
+							<p:column colspan="20">
+							&#160;
+							</p:column>
+						</p:summaryRow>
+					</p:dataTable>
+				</p:outputPanel>
+			</p:panel>
+		</h:form>
+		<ui:include src="/faces/process/common/companySelect-dialog.xhtml" />
+
+		<script type="text/javascript">
+			function handleSaveRequest(xhr, status, args) {
+				if (args.issucc == "yes") {
+					companyDialogVar.hide();
+				}
+			}
+
+			function handleUpdateRequest(xhr, status, args) {
+				if (args.issucc == "yes") {
+					companyDialogVar.hide();
+				}
+			}
+
+			function handleTreeRequest(xhr, status, args) {
+				if (args.issucc == "yes") {
+					companyDialogVar.hide();
+				}
+			}
+		</script>
+	</ui:define>
+</ui:composition>

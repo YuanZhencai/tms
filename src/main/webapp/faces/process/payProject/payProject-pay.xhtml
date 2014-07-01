@@ -1,0 +1,398 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:wcs="http://www.wcs-global.com/customtaglib"
+	xmlns:commentProcess="http://java.sun.com/jsf/composite/commentProcess"
+	template="/template/template.xhtml">
+
+	<ui:define name="title">付工程款股利及归还股东借款流程付款</ui:define>
+
+	<ui:define name="content">
+
+		<input type="hidden" id="menuOne" value="15" />
+		<input type="hidden" id="menuTwo" value="16" />
+
+		<p:panel styleClass="panel1">
+			<h:form id="payProjectForm" prependId="false" onsubmit="statusComplete();">
+				<p:breadCrumb preview="true" expandEffectDuration="200"
+					previewWidth="24" style="width: 99.1%">
+					<p:menuitem value="#{msgs.menItem_process}" url="#" />
+					<p:menuitem value="#{msgs.menItem_process}" url="#" />
+					<p:menuitem value="付工程款股利及归还股东借款流程" url="#" />
+				</p:breadCrumb>
+
+				<p:messages id="msg" />
+				<div style="position: relative; margin-top: 5px;">
+					<div class="style1">
+						<h:panelGrid columns="8"
+							columnClasses="column41,column2,column0,column2,column2,column2,column2,column2">
+							<h:outputLabel value="表单类型：" />
+							<h:panelGroup>
+								<p:selectOneRadio id="formType" disabled="true"
+									value="#{payProjectBean.procPayProject.formType}"
+									required="true" requiredMessage="请选择表单类型">
+									<f:selectItem itemLabel="付工程款&#160;" itemValue="E" />
+									<f:selectItem itemLabel="支付股利&#160;" itemValue="D" />
+									<f:selectItem itemLabel="归还股东借款" itemValue="A" />
+									<p:ajax listener="#{payProjectBean.changeView}"
+										update="msg,payProjectForm,repayDetail,repayDetails,amountCuId,repayAmount,expireTime" />
+								</p:selectOneRadio>
+							</h:panelGroup>
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+						</h:panelGrid>
+						<h:panelGrid columns="3" columnClasses="column41,column2,column2">
+							<h:outputLabel value="是否为借款：" />
+							<h:panelGroup>
+								<p:selectOneRadio id="loanIdentifier" disabled="true"
+									value="#{payProjectBean.procPayProject.loanIden}">
+									<f:selectItem
+										itemLabel="借款&#160;&#160;&#160;&#160;&#160;&#160;&#160;"
+										itemValue="L" />
+									<f:selectItem
+										itemLabel="转款&#160;&#160;&#160;&#160;&#160;&#160;&#160;"
+										itemValue="T" />
+									<f:selectItem itemLabel="借款+转款" itemValue="A" />
+								</p:selectOneRadio>
+							</h:panelGroup>
+							<h:outputLabel value="（自有资金下拨请选择“转款”，非自有资金请选择“借款”）" />
+						</h:panelGrid>
+						<h:panelGrid columns="8"
+							columnClasses="column41,column2,column0,column2,column2,column2,column2,column2">
+							<h:outputLabel value="申请公司名称：" />
+							<h:panelGroup>
+								<h:selectOneMenu id="companyName" style="width:330px"
+									disabled="true"
+									value="#{payProjectBean.procPayProject.company.id}"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+									<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" itemValue="" />
+									<f:selectItems value="#{payProjectBean.companyNameSelect}" />
+									<p:ajax listener="#{payProjectBean.ajaxCompany}"
+										update="msg,receiverName,depositBank,accounts" />
+								</h:selectOneMenu>
+							</h:panelGroup>
+
+							<h:outputLabel value="收款人户名：" />
+							<p:inputText id="receiverName" label="收款人户名"
+								value="#{payProjectBean.procPayProject.receiverName}"
+								disabled="true" style="width:330px" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+
+							<h:outputLabel value="填制时间：" />
+							<p:inputText id="applyTime" disabled="true" style="width:200px"
+								value="#{payProjectBean.procPayProject.createdDatetime}">
+								<f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd" />
+							</p:inputText>
+
+							<h:outputLabel value="账户描述：" />
+							<h:panelGroup>
+								<h:selectOneMenu id="depositBank" style="width:340px"
+									disabled="true"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									value="#{payProjectBean.procPayProject.accountDesc}">
+									<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" itemValue="" />
+									<f:selectItems value="#{payProjectBean.depositBankSelect}" />
+								</h:selectOneMenu>
+							</h:panelGroup>
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+
+							<h:outputLabel value="付款日期：" />
+							<h:panelGroup>
+								<p:inputText id="payDatetime" disabled="false"
+									value="#{payProjectBean.procPayProject.paymentDate}"
+									required="true" requiredMessage="请选择付款日期" styleClass="ui-date"
+									style="width:200px"
+									onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'%y-%M-%d'});">
+									<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+								</p:inputText>
+							</h:panelGroup>
+
+							<h:outputLabel value="账号：" />
+							<p:inputText id="accounts"
+								value="#{payProjectBean.procPayProject.accountNumber}"
+								style="width:330px" disabled="true" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+
+							<h:outputLabel value="金额（小写）：" />
+							<h:panelGroup>
+								<p:inputText id="amount_low" label="金额（小写）" disabled="true"
+									value="#{payProjectBean.procPayProject.amount}"
+									style="width:200px">
+									<f:convertNumber pattern="#,##0.00" />
+									<f:validateDoubleRange maximum="99999999.9999" minimum="0.01"></f:validateDoubleRange>
+									<p:ajax event="blur" listener="#{payProjectBean.lowToUp}"
+										update="msg,amount_up,amount_low" />
+								</p:inputText>
+								<h:outputLabel value="万" />
+							</h:panelGroup>
+							<h:outputLabel value="金额（大写）：" />
+							<p:inputText id="amount_up" label="金额（大写）" style="width:330px"
+								disabled="true" value="#{payProjectBean.upAmount}" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+						</h:panelGrid>
+						<h:panelGrid columns="2" columnClasses="column40,column2"
+							id="repayDetail" rendered="#{payProjectBean.ifRepay}">
+							<h:outputLabel value="还款明细:" styleClass="title_2" />
+							<h:outputLabel value="" />
+						</h:panelGrid>
+						<h:panelGrid id="repayDetails" columns="8"
+							rendered="#{payProjectBean.ifRepay}"
+							columnClasses="column41,column2,column0,column2,column0,column2,column2,column2">
+							<h:outputLabel id="amountCu" value="还款币别：" />
+							<h:panelGroup>
+								<h:selectOneMenu id="amountCuId" style="width:210px"
+									disabled="true"
+									value="#{payProjectBean.procPayProject.amountCu}"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+									<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" />
+									<f:selectItems value="#{payProjectBean.currencySelect}" />
+								</h:selectOneMenu>
+							</h:panelGroup>
+							<h:outputLabel value="还款金额：" />
+							<h:panelGroup>
+								<p:inputText id="repayAmount" disabled="true"
+									value="#{payProjectBean.procPayProject.repayAmount}"
+									style="width:167px">
+									<f:convertNumber pattern="#,##0.00" />
+									<f:validateDoubleRange maximum="99999999.9999" minimum="0"></f:validateDoubleRange>
+									<p:ajax event="blur" listener="#{payProjectBean.lowToUp4}"
+										update="msg,repayAmount" />
+								</p:inputText>
+								<h:outputLabel value="万" />
+							</h:panelGroup>
+							<h:outputLabel value="到期日：" />
+							<h:panelGroup>
+								<p:inputText id="expireTime" style="width:160px"
+									value="#{payProjectBean.procPayProject.expireTime}"
+									styleClass="ui-date" disabled="true"
+									onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd'});">
+									<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+								</p:inputText>
+							</h:panelGroup>
+						</h:panelGrid>
+						<h:panelGrid columns="2" columnClasses="column41,column2">
+							<h:outputLabel value="下拨资金用途描述：" />
+							<h:panelGroup>
+								<p:inputTextarea id="use" rows="4" cols="106" disabled="true"
+									value="#{payProjectBean.procPayProject.useDesc}"
+									autoResize="false" style="width:760px">
+									<f:validateLength maximum="200" />
+								</p:inputTextarea>
+							</h:panelGroup>
+							<h:outputLabel value="#{msgs.lbl_approveRemark}：" />
+							<h:panelGroup>
+								<p:inputTextarea id="peMemo" rows="4" cols="106"
+									value="#{payProjectBean.procPayProject.peMemo}"
+									validatorMessage="#{msgs.txt_approveRemarkLonger}200"
+									autoResize="false" style="width:760px">
+									<f:validateLength maximum="200" for="peMemo" />
+								</p:inputTextarea>
+							</h:panelGroup>
+						</h:panelGrid>
+						<h:panelGrid columns="5"
+							columnClasses="column2,column2,column1r,column2,column2">
+							<h:outputLabel value="剩余需要支付的金额（小写）：" />
+							<h:panelGroup>
+								<p:inputText id="amountRemain" disabled="true"
+									value="#{payProjectBean.remainPay}" style="width:208px">
+									<f:convertNumber pattern="#,##0.00" />
+									<f:validateDoubleRange maximum="99999999.9999" minimum="0.01"></f:validateDoubleRange>
+									<p:ajax event="blur" listener="#{payProjectBean.lowToUp2}"
+										update="upAmountRemain" />
+								</p:inputText>
+								<h:outputLabel value="万" />
+							</h:panelGroup>
+							<h:outputLabel value="" />
+							<h:outputLabel value="剩余需要支付的金额（大写）：" />
+							<h:panelGroup>
+								<p:inputText id="upAmountRemain" disabled="true"
+									style="width:260px" value="#{payProjectBean.upRemainPay}" />
+							</h:panelGroup>
+							
+							<h:outputLabel value="本次支付的金额（小写）：" />
+							<h:panelGroup>
+								<p:inputText id="amountThis" label="本次支付的金额" style="width:208px"
+									value="#{payProjectBean.procPayProjectDetails.payFundsTotal}"
+									validatorMessage="本次支付的金额必须在0.01~100,000,000之间">
+									<f:convertNumber pattern="#,##0.00" />
+									<f:validateDoubleRange maximum="99999999.9999" minimum="0.01"></f:validateDoubleRange>
+									<p:ajax event="blur" listener="#{payProjectBean.lowToUp3}"
+										update="upThisPay,amountRemain,upAmountRemain,amountThis,msg" />
+								</p:inputText>
+								<h:outputLabel value="万" />
+								<h:outputText style="color:red;" value=" *" />
+							</h:panelGroup>
+							<h:outputLabel value="" />
+							<h:outputLabel value="本次支付的金额（大写）：" />
+							<h:panelGroup>
+								<p:inputText id="upThisPay" disabled="true" style="width:260px"
+									value="#{payProjectBean.upThisPay}">
+								</p:inputText>
+							</h:panelGroup>
+						</h:panelGrid>
+						<h:panelGrid columns="5"
+							columnClasses="column41,column41,column41,column41,column41">
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:panelGroup>
+								<p:selectBooleanCheckbox id="doNext" required="true"
+									value="#{payProjectBean.doNext}" itemLabel="处理下一项任务">
+								</p:selectBooleanCheckbox>
+							</h:panelGroup>
+						</h:panelGrid>
+						<div style="text-align: center">
+							<h:panelGrid columns="6"
+								columnClasses="column42,column42,column42,column42,column42,column42">
+								<h:outputLabel value="" />
+								<p:commandButton id="sungardPay" styleClass="btn2"
+									title="通过SUNGARD支付" oncomplete="confirmation.show()"
+									value="SUNGARD支付">
+									<f:setPropertyActionListener
+										target="#{payProjectBean.confirmStatus}" value="S"></f:setPropertyActionListener>
+								</p:commandButton>
+								<h:outputLabel value="" />
+								<p:commandButton id="onlineBank" title="通过网银支付"
+									oncomplete="confirmation.show()" value="网银支付" styleClass="btn1">
+									<f:setPropertyActionListener
+										target="#{payProjectBean.confirmStatus}" value="O"></f:setPropertyActionListener>
+								</p:commandButton>
+								<h:outputLabel value="" />
+								<p:commandButton id="stopPay" oncomplete="confirm.show()"
+									value="终止付款" styleClass="btn3" title="终止付款">
+									<f:setPropertyActionListener
+										target="#{payProjectBean.confirmStatus}" value="P"></f:setPropertyActionListener>
+								</p:commandButton>
+							</h:panelGrid>
+						</div>
+					</div>
+				</div>
+				<p:confirmDialog id="payDialog" message="确定要付款吗？" header="付款确认"
+					severity="alert" widgetVar="confirmation">
+					<div align="center">
+						<p:commandButton id="pass" onclick="buttonDisable('pass');"  value="#{msgs.btn_ok}" ajax="false"
+							icon="ui-icon ui-icon-check" oncomplete="confirmation.hide();"
+							action="#{payProjectBean.doConfirm}" />
+						&#160;&#160;
+						<p:commandButton value="#{msgs.btn_cancel}"
+							onclick="confirmation.hide()" type="button"
+							icon="ui-icon ui-icon-cancel" />
+					</div>
+				</p:confirmDialog>
+				<p:confirmDialog id="stopDialog" message="确定要终止付款吗？" header="终止付款确认"
+					severity="alert" widgetVar="confirm">
+					<div align="center">
+						<p:commandButton id="stop" onclick="buttonDisable('stop');"  value="#{msgs.btn_ok}" ajax="false"
+							icon="ui-icon ui-icon-check" oncomplete="confirm.hide();"
+							action="#{payProjectBean.doConfirm}" />
+						&#160;&#160;
+						<p:commandButton value="#{msgs.btn_cancel}"
+							onclick="confirm.hide()" type="button"
+							icon="ui-icon ui-icon-cancel" />
+					</div>
+				</p:confirmDialog>
+				<br />
+				<p:outputPanel id="detailVoListPl">
+					<p:dataTable var="detailVo" id="detailVoList"
+						value="#{payProjectBean.detailVos}" rowKey="#{detailVo.id}"
+						rows="100" emptyMessage="#{msgs.dataTable_empty}">
+
+						<f:facet name="header">#{msgs.head_detailVoList}</f:facet>
+
+						<p:column headerText="#{msgs.headerText_prossNodeName}">
+							<h:outputText value="#{detailVo.prossNodeName}" />
+						</p:column>
+
+						<p:column headerText="#{msgs.headerText_operatorsName}">
+							<h:outputText
+								value="#{currentUser.exchange2CN(detailVo.operatorsName)}" />
+						</p:column>
+
+						<p:column headerText="#{msgs.headerText_operatorTime}">
+							<h:outputText value="#{detailVo.operatorTime}">
+								<f:convertDateTime timeZone="GMT+8"
+									pattern="yyyy-MM-dd HH:mm:ss" />
+							</h:outputText>
+						</p:column>
+
+						<p:column headerText="#{msgs.headerText_remark}">
+							<h:outputText value="#{detailVo.nodeMemo}" />
+						</p:column>
+					</p:dataTable>
+				</p:outputPanel>
+			</h:form>
+			<h:form prependId="false" id="fileForm"
+				rendered="#{payProjectBean.existAttach}">
+				<div style="position: relative; margin-top: 5px;">
+					<p:outputPanel id="attachmentPanel">
+						<commentProcess:filedownload updateComenId="attachmentPanel"
+							isDisable="true" dataList="#{payProjectBean.processFileList}" />
+					</p:outputPanel>
+				</div>
+			</h:form>
+			<p:outputPanel id="payDetailVoListPl">
+				<p:dataTable var="payDetailVo" id="payDetailVoList"
+					value="#{payProjectBean.payDetailVos}"
+					rowKey="#{payDetailVo.serialNumber}" rows="100"
+					emptyMessage="#{msgs.dataTable_empty}">
+					<f:facet name="header">付款详细过程</f:facet>
+					<p:column headerText="序号">
+						<h:outputText value="#{payDetailVo.serialNumber}" />
+					</p:column>
+					<p:column headerText="付款时间">
+						<h:outputText value="#{payDetailVo.payDatetime}">
+							<f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd HH:mm:ss" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="付款方式">
+						<h:outputText
+							value="#{payDetailVo.payWay=='S'?'SUNGARD支付':'网银支付'}" />
+					</p:column>
+					<p:column headerText="付款金额（万）">
+						<h:outputText value="#{payDetailVo.payFundsTotal}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="付款人">
+						<h:outputText
+							value="#{currentUser.exchange2CN(payDetailVo.payer)}" />
+					</p:column>
+				</p:dataTable>
+			</p:outputPanel>
+
+		</p:panel>
+		<script type="text/javascript">
+			var isFirst = "true";
+			function buttonDisable(buttonId){
+				if("true"==isFirst){
+					isFirst="false";
+					return true;
+				}else{
+					document.getElementById(buttonId).disabled=true;
+					return false;
+				}
+			}
+		</script>
+	</ui:define>
+</ui:composition>

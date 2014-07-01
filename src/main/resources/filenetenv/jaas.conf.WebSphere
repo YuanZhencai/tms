@@ -1,0 +1,28 @@
+
+FileNetP8 {
+	 com.ibm.ws.security.common.auth.module.WSLoginModuleImpl required;
+};
+
+FileNetP8WSI {
+	com.filenet.api.util.WSILoginModule required;
+};
+
+FileNetP8Engine {
+	com.ibm.ws.security.common.auth.module.proxy.WSLoginModuleProxy required
+						delegate=com.ibm.ws.security.common.auth.module.WSLoginModuleImpl;
+};
+
+FileNetP8Server {
+	com.ibm.ws.security.common.auth.module.proxy.WSLoginModuleProxy required
+						delegate=com.ibm.ws.security.common.auth.module.WSLoginModuleImpl;
+};
+
+FileNetP8KerberosService {
+	com.ibm.ws.security.common.auth.module.proxy.WSLoginModuleProxy required
+						delegate=com.filenet.engine.authentication.kerberos.login.KrbServiceLoginModule;
+	com.ibm.ws.security.common.auth.module.proxy.WSLoginModuleProxy required
+						delegate=com.ibm.ws.security.server.lm.ltpaLoginModule;
+	com.ibm.ws.security.common.auth.module.proxy.WSLoginModuleProxy required
+						delegate=com.ibm.ws.security.server.lm.wsMapDefaultInboundLoginModule;
+};
+

@@ -1,0 +1,125 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
+	xmlns:w="http://www.wcs-global.com/customtaglib"
+	>
+	<p:dialog header="添加字典表信息" widgetVar="addDlgVar" showEffect="fade"
+		hideEffect="fade" modal="true" resizable="false" id="addDlgId">
+		<h:form id="addDlgFormId" prependId="false">
+			<p:messages id="addMessagesId" showDetail="true"  autoUpdate="true"/>
+			
+			<h:panelGrid columns="6"
+				columnClasses="column1,column2,column1,column2,column1,column2">
+
+				<h:outputText value="类别 : " />
+				<h:panelGroup>
+					<p:inputText value="#{dictBean.addDict.codeCat}" >
+						<f:validator validatorId="customValidator"/>
+						<w:validateRequired required="true" requiredMark="类别" />
+						<w:validateMaxLength maxLength="50" maxLengthMark="类别,50" />
+					</p:inputText>
+					<h:outputText style="color:red;" value="*" />
+				</h:panelGroup>
+				
+				<h:outputText value="语言 : " />
+				<h:panelGroup>
+					<p:inputText value="#{dictBean.addDict.lang}">
+						<f:validator validatorId="customValidator"/>
+						<w:validateRequired required="true" requiredMark="语言" />
+						<w:validateMaxLength maxLength="5"  maxLengthMark="语言,5"/>
+					</p:inputText>
+					<h:outputText style="color:red;" value="*" />
+				</h:panelGroup>
+				
+			</h:panelGrid>
+			
+			<h:panelGrid columns="6"
+				columnClasses="column1,column2,column1,column2,column1,column2">	
+				<h:outputText value="键 : " />
+				<h:panelGroup>
+					<p:inputText value="#{dictBean.addDict.codeKey}">
+						<f:validator validatorId="customValidator"/>
+						<w:validateRequired required="true" requiredMark="键" />
+						<w:validateMaxLength maxLength="50" maxLengthMark="键,50" />
+					</p:inputText>
+					<h:outputText style="color:red;" value="*" />
+				</h:panelGroup>
+				
+				<h:outputText value="值 : " />
+				<h:panelGroup>
+					<p:inputText value="#{dictBean.addDict.codeVal}">
+						<f:validator validatorId="customValidator"/>
+						<w:validateRequired required="true" requiredMark="值" />
+						<w:validateMaxLength maxLength="100"  maxLengthMark="值,100" />
+					</p:inputText>
+					<h:outputText style="color:red;" value="*" />
+				</h:panelGroup>
+			</h:panelGrid>
+			
+			
+			<h:panelGrid columns="6"
+				columnClasses="column1,column2,column1,column2,column1,column2">	
+				<h:outputText value="顺序名 : " />
+				<h:panelGroup>
+					<p:inputText value="#{dictBean.dictSeqNo}">
+						<f:validator validatorId="customValidator"/>
+						<w:validateMaxLength maxLength="8"  maxLengthMark="顺序名,8" />
+						<w:validateRegex regex="ONLYNUM" regexMark="顺序名" />
+					</p:inputText>
+					<h:outputText style="color: transparent;" value="*" />
+				</h:panelGroup>
+				
+			<h:outputText value="系统标识 : " />
+				<h:panelGroup >
+				<h:selectOneRadio styleClass="checkbox" 
+					value="#{dictBean.sysInd}">
+					<f:selectItem itemLabel="是" itemValue="N"></f:selectItem>
+					<f:selectItem itemLabel="否" itemValue="Y"></f:selectItem>
+				</h:selectOneRadio>
+				</h:panelGroup>
+				
+			</h:panelGrid>
+			
+			
+			<h:panelGrid columns="2"
+				columnClasses="column1,column6">	
+				<h:outputText value="备注 : " />
+				<h:panelGroup>
+					<p:inputText value="#{dictBean.addDict.remarks}" style="width:362px">
+						<f:validator validatorId="customValidator"/>
+						<w:validateMaxLength maxLength="200" maxLengthMark="备注" />
+					</p:inputText>
+					<h:outputText style="color:transparent;" value="*" />
+				</h:panelGroup>
+			</h:panelGrid>
+			
+			<h:panelGrid columns="6" 
+					columnClasses="column1,column2,column1,column2,column1,column2">
+				<h:outputText value="是否生效 : " />
+				<h:panelGroup>
+				<h:selectOneRadio styleClass="checkbox" 
+					value="#{dictBean.defunctInd}">
+					<f:selectItem itemLabel="生效" itemValue="N"></f:selectItem>
+					<f:selectItem itemLabel="失效" itemValue="Y"></f:selectItem>
+				</h:selectOneRadio>
+				</h:panelGroup>
+			</h:panelGrid>
+			
+			
+			
+			<div>&#160;</div>
+			<div align="center">
+				<p:commandButton value="#{msgs.btn_save}"  actionListener="#{dictBean.insertData}"   
+					  style="margin-right:5px"  oncomplete="handleSaveRequest(xhr, status, args);"  
+					update="addMessagesId,dictFormId" image="ui-icon ui-icon-disk" />
+				<p:commandButton type="button" value="#{msgs.btn_cancel }" onclick="addDlgVar.hide();"
+					image="ui-icon ui-icon-cancel" />
+			</div>
+
+		</h:form>
+
+	</p:dialog>
+</ui:composition>

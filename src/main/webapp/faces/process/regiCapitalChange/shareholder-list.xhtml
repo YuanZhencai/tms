@@ -1,0 +1,125 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<p:outputPanel id="stockholderOutTable">
+		<p:dataTable id="stockholderListId" var="stockholder"
+			value="#{registerCaptialChangeBean.changeShareHolders}"
+			paginator="true" rows="10" paginatorPosition="bottom"
+			rowKey="#{stockholder.changeShareholder}"
+			paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport}"
+			currentPageReportTemplate="{currentPage}/{totalPage}"
+			emptyMessage="#{msgs.no_data_msg}">
+			<f:facet name="header">#{msgs.shareholder_list_msg}</f:facet>
+			<p:column headerText="#{msgs.lbl_shareHolderName}">
+				<h:outputText value="#{stockholder.shareHolders.get(stockholder.shareHolders.size()-1).shareholderName}" />
+			</p:column>
+			<p:column headerText="状态">
+				<h:outputText value="#{stockholder.shareHolders.get(stockholder.shareHolders.size()-1).status}" />
+			</p:column>
+			<p:column headerText="#{msgs.txt_currency}">
+				<h:dataTable var="shareHolder" value="#{stockholder.shareHolders}"
+					rowClasses="row"
+					style="border-bottom-color:#DCDCDC;border-top-color:Transparent;border-left-color:Transparent;border-right-color:Transparent">
+					<p:column>
+						<h:outputText
+							value="#{commonBean.getValueByDictCatAndKey('TMS_TAX_PROJECT_CURRENCY_TYPE',shareHolder.fondsCurrency)}">
+						</h:outputText>
+					</p:column>
+				</h:dataTable>
+			</p:column>
+			<p:column headerText="#{msgs.txt_registerAmount}">
+				<h:dataTable var="shareHolder" value="#{stockholder.shareHolders}"
+					rowClasses="row"
+					style="border-bottom-color:#DCDCDC;border-top-color:Transparent;border-left-color:Transparent;border-right-color:Transparent">
+					<p:column>
+						<h:outputText value="#{shareHolder.fondsTotal}">
+							<f:convertNumber pattern="#,##0.####" type="number" />
+						</h:outputText>
+					</p:column>
+				</h:dataTable>
+			</p:column>
+			<p:column headerText="#{msgs.txt_alreadyAmount}">
+				<h:dataTable var="shareHolder" value="#{stockholder.shareHolders}"
+					rowClasses="row"
+					style="border-bottom-color:#DCDCDC;border-top-color:Transparent;border-left-color:Transparent;border-right-color:Transparent">
+					<p:column>
+						<h:outputText value="#{shareHolder.fondsInPlace}">
+							<f:convertNumber pattern="#,##0.####" type="number" />
+						</h:outputText>
+					</p:column>
+				</h:dataTable>
+			</p:column>
+			<p:column headerText="#{msgs.txt_notReadyAmount}">
+				<h:dataTable var="shareHolder" value="#{stockholder.shareHolders}"
+					rowClasses="row"
+					style="border-bottom-color:#DCDCDC;border-top-color:Transparent;border-left-color:Transparent;border-right-color:Transparent">
+					<p:column>
+						<h:outputText
+							value="#{shareHolder.fondsTotal-shareHolder.fondsInPlace}">
+							<f:convertNumber pattern="#,##0.####" type="number" />
+						</h:outputText>
+					</p:column>
+				</h:dataTable>
+
+			</p:column>
+			<p:column headerText="#{msgs.lbl_equityPerc}">
+				<h:dataTable var="shareHolder" value="#{stockholder.shareHolders}"
+					rowClasses="row"
+					style="border-bottom-color:#DCDCDC;border-top-color:Transparent;border-left-color:Transparent;border-right-color:Transparent">
+					<p:column>
+						<h:outputText value="#{shareHolder.equityPerc}">
+							<f:convertNumber type="number" pattern="###.##" />
+						</h:outputText>
+					</p:column>
+				</h:dataTable>
+			</p:column>
+			<p:column headerText="股权关联">
+				<h:outputText value="#{stockholder.shareHolders.get(stockholder.shareHolders.size()-1).isEquityRelated}" />
+			</p:column>
+			<p:column headerText="实际股权比例">
+				<h:dataTable var="shareHolder" value="#{stockholder.shareHolders}"
+					rowClasses="row"
+					style="border-bottom-color:#DCDCDC;border-top-color:Transparent;border-left-color:Transparent;border-right-color:Transparent">
+					<p:column>
+						<h:outputText
+							value="#{shareHolder.equityPerc * shareHolder.relatedPerc}">
+							<f:convertNumber type="number" pattern="###.##" />
+						</h:outputText>
+					</p:column>
+				</h:dataTable>
+			</p:column>
+			<p:column headerText="操作" rendered="#{not registerCaptialChangeBean.viewPage}">
+				<p:commandButton
+					action="#{registerCaptialChangeBean.editShareholder()}" value="编辑" 
+					oncomplete="saveHolderDialogVar.show();" update="saveHolderDialog">
+					<f:setPropertyActionListener
+						target="#{registerCaptialChangeBean.selectedHolder}"
+						value="#{stockholder}" />
+					<f:setPropertyActionListener
+						target="#{registerCaptialChangeBean.operate}" value="edit" />
+				</p:commandButton>
+				<p:commandButton
+					action="#{registerCaptialChangeBean.deleteShareholder()}" value="删除" update=":addRegisterChangeForm">
+					<f:setPropertyActionListener
+						target="#{registerCaptialChangeBean.selectedHolder}"
+						value="#{stockholder}" />
+					<f:setPropertyActionListener
+						target="#{registerCaptialChangeBean.operate}" value="delete" />
+				</p:commandButton>
+			</p:column>
+
+		</p:dataTable>
+		<div>
+			<p:commandButton icon="ui-icon ui-icon-disk" value="添加股东"
+				oncomplete="handleDialog(xhr, status, args);" rendered="#{not registerCaptialChangeBean.viewPage}"
+				update="saveHolderDialog,:addRegisterChangeForm:msg"
+				action="#{registerCaptialChangeBean.addShareholder()}">
+				<f:setPropertyActionListener
+					target="#{registerCaptialChangeBean.operate}" value="add" />
+			</p:commandButton>
+		</div>
+	</p:outputPanel>
+</ui:composition>

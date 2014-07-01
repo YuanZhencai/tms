@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	>
+	<p:dialog id="rolequeue_list_dialog_id" widgetVar="rolequeue_list_dialog"
+		resizable="false" width="600" height="300" header="队列分配"
+		modal="true">
+			<h:form prependId="false" id="addSharedForm"
+				onsubmit="statusComplete();">
+				<div style="position: relative; margin-top: 5px;">
+					<div class="style1">
+						<p:pickList id="pickList" value="#{roleQueueBean.queueModel}"
+							var="queue" itemLabel="#{queue.queueName_CN}" addLabel="添加"
+							addAllLabel="全选" removeLabel="删除" removeAllLabel="全删"
+							itemValue="#{queue.queueName_EN}" />
+						<div>
+							<p:commandButton value="保存" icon="ui-icon ui-icon-plus" update="msg"
+								action="#{roleQueueBean.addRoleQueue}" oncomplete="rolequeue_list_dialog.hide();" />
+						</div>
+					</div>
+
+				</div>
+			</h:form>
+	</p:dialog>
+</ui:composition>

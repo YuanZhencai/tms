@@ -1,0 +1,533 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
+	xmlns:w="http://www.wcs-global.com/customtaglib"
+	>
+<script type="text/javascript">
+//<![CDATA[	
+var errorInteger = "{0} 必须为整数.";
+var errorRange = "{0} 没有在区间 {1} 和 {2}之间.";
+var fieldMessages = "秒,分,时,日,月,周,年".split(",");
+var isShowHelp = false;
+var re_Number = /[^\d]/gi;
+
+
+function checkSubmitForm(){	
+	var inputType = $("#inputType").val();
+	var frequencyFieldValue = $("#frequency").val();	
+	if(inputType != ""){
+		if(frequencyFieldValue == ""){
+			alert("运行频率 不能为空");
+			return false;
+		}
+		if(inputType == "common"){
+		 	if(!buildCronExpression()){
+				return false;
+		 	}
+		}
+	}
+	var cronExpression = $("#cronExpression").val(); 
+	if(cronExpression==""){
+		alert("CronExpression 不能为空");
+		return false;
+	}
+	return true;
+}
+
+function changeInputType(value){
+	
+	//设置输入方式的值
+	$("#inputType").val(value);
+	
+	if(value=="common"){		
+		//切换到常用编辑模式，解释CronExpression
+		parseCronExpression();
+			
+	}else{
+		//切换到CronExpression编辑模式，构造CronExpression，若构造失败，不切换编辑模式
+		if(!buildCronExpression()){
+			$("#inputType").eq(0).attr("checked", true);
+			return;
+		}
+	}
+	//根据  显示/隐藏相关行
+	if(value=="common"){
+		$("#TABLE_frequency").show();
+		$("#TABLE_FrequencySetting").show();
+		$("#TABLE_cronSetting").hide();
+	}else{
+		$("#TABLE_frequency").hide();
+		$("#TABLE_FrequencySetting").hide();
+		$("#TABLE_cronSetting").show();
+	}
+	
+	
+	//对隐藏的行进行调整
+	if(value=="common"){		
+		$("[name='inputType']").eq(0).attr("checked", true);
+		refreshInpuType0();
+	}else{		
+		$("[name='inputType']").eq(1).attr("checked", true);
+		refreshInpuType1();
+	}
+
+	$("input[type='text']").addClass("ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all ui-state-hover");
+	return true;
+};
+
+function refreshInpuType0(){
+	var frequencyFieldValue = $("#frequency").val();
+	var tableObj = $("#TABLE_FrequencySetting");	
+	if(frequencyFieldValue == ""){
+		//频率没有设置，隐藏设置栏		
+		tableObj.css("display","none");
+		return;
+	}
+	tableObj.css("display","block");
+	
+	//调整设置项的显示
+	var displayArr; //年,月,日,星期,时,分,秒,间隔	
+	switch(frequencyFieldValue){
+		case "once":
+			displayArr = new Array("", "", "", "none", "", "", "", "none");
+			break;
+		case "year":
+			displayArr = new Array("none", "", "", "none", "", "", "", "none");
+			break;
+		case "month":
+			displayArr = new Array("none", "none", "", "none", "", "", "", "none");
+			break;
+		case "week":
+			displayArr = new Array("none", "none", "none", "", "", "", "", "none");
+			break;
+		case "day":
+			displayArr = new Array("none", "none", "none", "none", "", "", "", "none");
+			break;
+		case "everyHour":
+			displayArr = new Array("none", "none", "none", "none", "none", "", "", "none");
+			break;
+		case "every":
+			displayArr = new Array("none", "none", "none", "none", "none", "none", "none", "");
+		}
+
+	
+	 $("#TABLE_FrequencySetting span").each(function(i){
+		this.style.display = displayArr[i];		
+	 });	
+};
+
+function refreshInpuType1(){
+	//调整帮助栏的显示
+	//var trObj = document.getElementById("TR_CronExpressionHelp");
+	//trObj.style.display = isShowHelp?"block":"none";
+};
+
+
+//构造CronExpression，并写入cronExpression中，返回false则表示构造失败
+function buildCronExpression(){
+	var frequency = $("#frequency").val();
+	
+	//若没有选择频率，不处理
+	if(frequency == "")
+		return true;
+	//获取所有设置项的信息
+	var year = $("#year").val();
+	var month = $("#month").val();
+	var day = $("#dayOfMonth").val();
+	var week = $("#dayOfWeek").val();
+	var hour = $("#hour").val();
+	var minute = $("#minute").val();
+	var second = $("#second").val();
+	var every = $("#every").val();	
+
+	//根据频率调整参数	
+	switch(frequency){						
+		case "every":
+			minute = "0/"+every;
+		case "everyHour":
+		case "hour":
+			hour = "*";	
+		case "day":
+			day = "*";			
+		case "week":
+		case "month":
+			month = "*";		
+		case "year":
+			year = "";
+		break;	
+	}
+	//构造CronExpression
+	try{
+		var expression = formatCronExpressionField(second, fieldMessages[0], 0, 59)+" ";
+		if(frequency=="every"){
+			expression += minute+" ";
+		}
+		else{
+			expression += formatCronExpressionField(minute, fieldMessages[1], 0, 59)+" ";
+		}
+		
+		if(frequency=="everyHour"){
+			expression += "*/1" + " ";
+		}else{
+			expression += formatCronExpressionField(hour, fieldMessages[2], 0, 23)+" ";	
+		}
+		
+		if(frequency=="week"){
+			expression += "? ";
+			expression += formatCronExpressionField(month, fieldMessages[4], 1, 12)+" ";
+			expression += week;
+		}else{
+			expression += formatCronExpressionField(day, fieldMessages[3], 1, 31)+" ";
+			expression += formatCronExpressionField(month, fieldMessages[4], 1, 12)+" ";
+			expression += "?";
+		}
+		if(year!="")
+			expression += " "+formatCronExpressionField(year, fieldMessages[6], 1970, 2099);
+	}catch(e){
+		//构造过程校验出错，返回false，e==""表示是formatCronExpressionField函数抛出的错误
+		if(e=="")
+			return false;
+		throw e;
+	}	
+	$("#cronExpression").val(expression);
+	return true;
+};
+
+//整理域的信息，若校验出错，抛出""
+function formatCronExpressionField(value, fieldMsg, minValue, maxValue){
+	if(value=="*")
+		return value;
+	if(value=="")
+		return minValue;
+	value = parseInt(value, 10);
+	if(isNaN(value)){
+		alert(errorInteger.replace(/\{0\}/, fieldMsg));
+		throw "";
+	}
+	if(value<minValue || value>maxValue){
+		var msg = errorRange.replace(/\{0\}/, fieldMsg);
+		msg = msg.replace(/\{1\}/, minValue);
+		msg = msg.replace(/\{2\}/, maxValue);
+		alert(msg);
+		throw "";
+	}
+	if(value<minValue || value>maxValue)
+		return value;
+	return value;
+};
+
+//解释CronExpression，并将值写入到相关的设置项中
+function parseCronExpression(){
+	var expressionFieldValue = $("#cronExpression").val();
+	var expression;
+	expression = expressionFieldValue.split(/\s+/gi);
+	var data = new Array();
+	data.every = 5;	
+	var frequency = null;
+	try{
+		switch(expression.length){
+		case 7:			
+			//判断年
+			if(!checkCronExpressionField("year", expression[6], data, frequency)){
+				frequency = "once";
+			}
+		case 6:			
+			//判断月
+			if(!checkCronExpressionField("month", expression[4], data, frequency) && frequency==null)
+				frequency = "year";
+			//判断星期
+			if(expression[5]!="?"){
+				if(expression[3]!="?" || frequency!=null)
+					throw "";
+				if(expression[5]!="*"){
+					if(re_Number.test(expression[5]))
+						throw "";
+					data.week = expression[5];
+					frequency = "week";
+				}
+			}else{
+			//判断日期
+				if(!checkCronExpressionField("day", expression[3], data, frequency) && frequency==null)
+					frequency = "month";
+			}
+
+			
+			//判断小时,如果不是数字类型，说明频率是每小时			
+			if(re_Number.test(expression[2]) && expression[2] != "*"){
+				if(frequency!=null)
+					throw "";
+				var tmpArr = expression[2].split("/");
+				if(tmpArr.length!=2 || re_Number.test(tmpArr[1]))
+					throw "";
+				data.everyHour = tmpArr[1];				
+				frequency = "everyHour";
+			}else{				
+				if(!checkCronExpressionField("hour", expression[2], data, frequency) && frequency==null){					
+					if(data.week==null)
+						frequency = "day";
+					else
+						frequency = "week";
+				}
+			}
+						
+			//判断分
+			if(expression[1]=="*")
+				throw "";
+			if(re_Number.test(expression[1])){
+				if(frequency!=null)
+					throw "";
+				var tmpArr = expression[1].split("/");
+				if(tmpArr.length!=2 || re_Number.test(tmpArr[0]) || re_Number.test(tmpArr[1]))
+					throw "";
+				data.every = tmpArr[1];
+				frequency = "every";
+			}else{
+				if(frequency==null)
+					frequency = "everyHour";
+				data.minute = expression[1];
+			}
+			//判断秒
+			if(checkCronExpressionField("second", expression[0], data, frequency))
+				throw "";
+		}
+	}catch(e){
+		if(e=="")
+			frequency = null;
+		else
+			throw e;
+	}
+	
+	if(frequency==null || frequency==""){
+		data = new Array();
+	}
+	else{
+		data.frequency = frequency;
+	}
+
+	
+	$("#frequency").val(frequency);
+	$("#every").val(data.every);
+	$("#dayOfWeek").val(data.week);
+	setCronExpressionField(data);
+};
+
+/*
+校验CronExpression的域（年、月、时、秒），并把值写到data中。
+返回：true（该字段未限定）false（该字段已经限定）
+抛出：""，该域无法解释
+*/
+function checkCronExpressionField(fieldName, fieldValue, data, frequency){
+	
+	if(fieldValue=="*" || fieldValue==""){
+		//若前面频率已经确定，但当前字段却没有限定，不满足常用的模式，抛出无法解释
+		if(frequency!=null)
+			throw "";
+		return true;
+	}
+	if(re_Number.test(fieldValue))
+		throw "";
+	data[fieldName] = fieldValue;
+	return false;
+};
+
+
+//将数据写入设置数据项中
+function setCronExpressionField(data){
+	$("#year").val(data.year==null?"":data.year);
+	$("#month").val(data.month==null?"":data.month);
+	$("#dayOfMonth").val(data.day==null?"":data.day);
+	$("#dayOfWeek").val(data.week==null?"":data.week);
+	$("#hour").val((typeof data.hour == "undefined")?0:data.hour);
+	
+	$("#everyHour").val((typeof data.everyHour == "undefined")||data.everyHour==null?1:data.everyHour);
+	$("#minute").val(data.minute==null?0:data.minute);
+	$("#second").val(data.second==null?0:data.second);	
+	$("#every").val(typeof data.every=='undefined'||data.every ==null?5:data.every);
+	$("#frequency").val(data.frequency==null?"day":data.frequency);
+	
+};
+
+
+
+//]]>
+</script>
+
+	<p:dialog header="编辑任务" widgetVar="updateDlgVar" showEffect="fade"
+		hideEffect="fade" modal="true" resizable="false" id="updateDlgId">
+		<h:form id="updateDlgFormId" prependId="false">
+			<p:messages id="updateMessagesId" showDetail="true"  autoUpdate="true"/>
+			
+			<h:panelGrid columns="6"
+				columnClasses="column1,column2,column1,column2,column1,column2">
+
+				<h:outputText value="任务名称:" />
+				<h:panelGroup>
+					<h:outputLabel value="#{sysJobBean.selectData.jobSubject}" />
+					
+				</h:panelGroup>
+				
+							
+			</h:panelGrid>
+			
+			<h:panelGrid columns="6" columnClasses="column1,column2,column1,column2,column1,column2">
+						<h:outputLabel value="任务描述:" />
+						<h:panelGroup>
+							<h:outputLabel value="#{sysJobBean.selectData.jobDesc}" />							
+						</h:panelGroup>
+			</h:panelGrid>	
+			
+			<h:panelGrid columns="6"
+				columnClasses="column1,column2,column1,column2,column1,column2">	
+				<h:outputText value="任务代码: " />
+				<h:panelGroup>
+					<h:outputLabel value="#{sysJobBean.selectData.jobService}.#{sysJobBean.selectData.jobMethod}()" />
+					
+				</h:panelGroup>
+				
+				
+			</h:panelGrid>	
+			
+			<h:panelGrid columns="6"
+				columnClasses="column1,column2,column1,column2,column1,column2">	
+				<h:outputText value="是否EJB类: " />
+				<h:panelGroup>
+					<h:selectOneRadio disabled="true" styleClass="checkbox" value="#{sysJobBean.selectData.isEJB}">
+					<f:selectItem itemLabel="是" itemValue="true"></f:selectItem>
+					<f:selectItem itemLabel="否" itemValue="false"></f:selectItem>
+				</h:selectOneRadio>
+					
+				</h:panelGroup>
+				
+				
+			</h:panelGrid>				
+			
+			
+			<h:panelGrid columns="4"
+				columnClasses="column1,column2,column43,column2">
+				
+				<h:outputText value="输入方式:" />
+				<h:panelGroup >
+					
+				<h:selectOneRadio id="inputType" styleClass="checkbox" value="common" onclick="changeInputType(this.value)">
+					<f:selectItem itemLabel="常用方式" itemValue="common" ></f:selectItem>
+					<f:selectItem itemLabel="cron表达式" itemValue="cronEdit"></f:selectItem>
+				</h:selectOneRadio>
+				</h:panelGroup>				
+				
+			</h:panelGrid>
+			
+			
+			<h:panelGrid columns="4" id="TABLE_frequency"
+				columnClasses="column1,column2,column43,column2">
+				
+				<h:outputText value="运行频率:" />
+					<select id="frequency" name="frequency" onchange="refreshInpuType0()">				
+							<option value="">==请选择==</option>						
+							<option value="year">每年</option>						
+							<option value="month">每月</option>						
+							<option value="week">每周</option>						
+							<option value="day">每天</option>						
+							<option value="everyHour">每小时</option>
+							<option value="every">每隔几分钟</option>												
+						</select>					
+			</h:panelGrid>
+			
+			
+			<h:panelGrid columns="4" id="TABLE_FrequencySetting" columnClasses="column1,column2,column43,column2">			
+				
+				<h:outputText value="运行时间:" />
+				
+					<span><input type="text" id="year" name="year" size="4" />年</span>
+					<span><input type="text" id="month" name="month" size="2" />月</span>
+					<span><input type="text" id="dayOfMonth" name="dayOfMonth" size="2" />日</span>
+					<span>				
+						
+						<select id="dayOfWeek" name="dayOfWeek">				
+							<option value="7">星期日</option>						
+							<option value="1">星期一</option>						
+							<option value="2">星期二</option>						
+							<option value="3">星期三</option>						
+							<option value="4">星期四</option>						
+							<option value="5">星期五</option>						
+							<option value="6">星期六</option>
+													
+						</select>
+						
+					</span>
+					<span><input type="text" id="hour" name="hour" size="2" />时</span>
+					<span><input type="text" id="minute" name="minute" size="2" />分</span>
+					<span><input type="text" id="second" name="second" size="2" />秒</span>
+					<span>
+						每隔
+						<select id="every" name="every">
+							<option value="5">5</option>
+							<option value="10">10</option>
+							<option value="15">15</option>
+							<option value="20">20</option>
+							<option value="25">25</option>
+							<option value="30">30</option>
+							<option value="35">35</option>
+							<option value="40">40</option>
+							<option value="45">45</option>
+							<option value="50">50</option>
+							<option value="55">55</option>
+						</select>
+						分钟
+					</span>		
+					<input type="hidden" id="everyHour" value="1" name="everyHour" />
+		
+			</h:panelGrid>
+			
+			
+			<h:panelGrid columns="4" id="TABLE_cronSetting" columnClasses="column1,column2,column43,column2">				
+				
+				<h:outputText value="cron表达式:" />
+				<h:panelGroup>
+					<p:inputText id="cronExpression" value="#{sysJobBean.selectData.cronExpression}">
+						<f:validator validatorId="customValidator"/>
+						<w:validateRequired required="true" requiredMark="触发时间" />
+						<w:validateMaxLength maxLength="200"  maxLengthMark="触发时间,200" />						
+					</p:inputText>
+					<h:outputText style="color: red;" value="*" />
+				</h:panelGroup>
+				
+			</h:panelGrid>
+			
+			
+			
+			<h:panelGrid columns="4" 
+					columnClasses="column1,column2,column43,column2">				
+					
+				<h:outputText value="是否启用 : " />
+				<h:panelGroup>
+				<h:selectOneRadio styleClass="checkbox" value="#{sysJobBean.selectData.isEnabled}">
+					<f:selectItem itemLabel="启用" itemValue="true"></f:selectItem>
+					<f:selectItem itemLabel="禁用" itemValue="false"></f:selectItem>
+				</h:selectOneRadio>
+				</h:panelGroup>
+			</h:panelGrid>		
+			
+			
+			<div>&#160;</div>
+			<div align="center">
+			
+				
+				<p:commandButton id="submitButton" onstart="checkSubmitForm();"  value="#{msgs.btn_save}"  actionListener="#{sysJobBean.updateData}"   
+					  style="margin-right:5px"  oncomplete="handleUpdateRequest(xhr, status, args);"  
+					update=":updateDlgFormId:updateMessagesId,:sysEjbtimerFormId" image="ui-icon ui-icon-disk" />
+				<p:commandButton type="button" value="#{msgs.btn_cancel }" onclick="updateDlgVar.hide();"
+					image="ui-icon ui-icon-cancel" />
+			</div>
+
+		</h:form>
+		<script type="text/javascript">
+		//<![CDATA[	
+			
+		//]]>
+		</script>
+
+	</p:dialog>
+</ui:composition>

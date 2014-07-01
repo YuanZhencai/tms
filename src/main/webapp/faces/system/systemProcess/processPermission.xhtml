@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/template/template.xhtml">
+	<ui:define name="title">流程权限授权</ui:define>
+
+	<ui:define name="content">
+	
+		<input type="hidden" id="menuOne" value="27" />
+		<input type="hidden" id="menuTwo" value="30" />
+
+		<p:panel styleClass="panel1">
+			<h:form prependId="false" id="proceePermissionFormId" onsubmit="statusComplete();">
+				<p:breadCrumb preview="true" expandEffectDuration="200"
+					previewWidth="24">
+					<p:menuitem value="系统管理" url="#" />
+					<p:menuitem value="主数据管理" url="#" />
+					<p:menuitem value="系统流程管理" url="#" />
+				</p:breadCrumb>
+				<div style="position: relative; margin-top: 5px;" class="style1">
+
+					<h:panelGrid columns="3" >
+						<p:tree value="#{processPermissionBean.root}" var="node"
+							id="resourcesTree" style="width: 96%;" 
+							selectionMode="single"  
+							selection="#{processPermissionBean.selectedNode}">
+							<p:treeNode>
+								<h:outputText value="#{node}" />
+							</p:treeNode>
+						</p:tree>
+						
+						<h:panelGrid >
+							<p:commandButton value="选定" />
+							<p:commandButton value="选定" />
+						</h:panelGrid>
+					
+						<p:dataList value="#{processNodeBean.processNodeList}" var="car"
+							id="cars">
+							<h:outputText value="#{car.nodeName}" style="margin-left:10px" />
+						</p:dataList>
+					</h:panelGrid>
+
+
+				</div>
+
+
+			</h:form>
+		</p:panel>
+
+	</ui:define>
+
+</ui:composition>
+
+

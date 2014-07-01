@@ -1,0 +1,34 @@
+<ui:composition xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<p:dialog id="add_position_dialog_id" widgetVar="add_position_dialog"
+		resizable="false" header="组织机构—添加" modal="true" width="700">
+		<p:messages id="addPositionErrMsg" showDetail="true" showSummary="false" />
+		<h:form prependId="false" id="add_position_form">
+			<h2 align="center">新增岗位</h2>
+			<div align="center" style="margin-top: 10px; height: 70px;">
+				<h:panelGrid columns="4">
+					<h:outputText value="岗位名称：" style="color: blue;" />
+					<p:inputText style="width: 230px;" title="请填写真确的岗位名称"
+						value="#{orgManagerBean.position.stext}" required="true"
+						label="岗位名称" validatorMessage="验证错误：名称字符长度必须小于等于15个字符">
+						<f:validateLength maximum="15" />
+					</p:inputText>
+					<h:outputText value="上级部门：" />
+					<p:inputText style="width: 230px;" disabled="true"
+						value="#{orgManagerBean.parentOrgNode.stext}" />
+				</h:panelGrid>
+			</div>
+			<div align="center" style="margin-top: 10px;">
+				<p:commandButton value="保存" icon="ui-icon ui-icon-disk"
+					action="#{orgManagerBean.savePosition}"
+					update=":mainForm:treeSingle,:addPositionErrMsg,:mainForm:msg,:add_position_form"
+					oncomplete="handleSavePositionRequest(xhr, status, args);"/>
+				<p:commandButton value="关闭" onclick="add_position_dialog.hide();"
+					icon="ui-icon ui-icon-cancel" style="margin-left:15px;"
+					update=":add_position_form" type="button" />
+			</div>
+		</h:form>
+	</p:dialog>
+</ui:composition>

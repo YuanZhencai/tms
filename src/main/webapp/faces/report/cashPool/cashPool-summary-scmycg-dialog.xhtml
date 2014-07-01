@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:w="http://www.wcs-global.com/customtaglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<p:dialog
+		header="#{cashPoolSummaryReportBean.relatedType eq 'Y'? '关联' :'非关联'}方明细----实际下拨"
+		widgetVar="cashPoolSumGlFglfDialogVar" id="cashPoolSumGlFglfDialogId"
+		resizable="false" height="400" modal="true">
+		<p:tabView id="cashPoolSumZjmyscTabView">
+			<p:tab id="cashPoolSumZjmyTab" title="贸易采购">
+				<h:form id="cashPoolSumZjmyForm">
+					<p:dataTable id="cashPoolSumZjmyTable"
+						value="#{cashPoolSummaryReportBean.cashPoolZjmyVo}"
+						paginator="true" var="zjmyscVo" rows="10"
+						paginatorPosition="bottom" style="margin-top:3px;"
+						currentPageReportTemplate="{currentPage}/{totalPage}"
+						paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
+						rowKey="#{zjmyscVo.cpId}" emptyMessage="#{msgs.dataTable_empty}">
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="公司名称" />
+							</f:facet>
+							<h:outputText value="#{zjmyscVo.cpName}" />
+						</p:column>
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="小计" />
+							</f:facet>
+							<h:outputText value="#{zjmyscVo.xiaoji}" />
+						</p:column>
+						<p:columns value="#{cashPoolSummaryReportBean.zjmyscColumns}"
+							columnIndexVar="colIndex" var="colu">
+							<f:facet name="header">
+								<h:outputText value="#{colu.columnName} " />
+							</f:facet>
+							<h:outputText value="#{zjmyscVo.datas[colu.key]}" />
+						</p:columns>
+					</p:dataTable>
+				</h:form>
+			</p:tab>
+			<p:tab id="cashPoolSumZjscTab" title="生产采购">
+				<h:form id="cashPoolSumZjscForm">
+					<p:dataTable id="cashPoolSumZjscTable"
+						value="#{cashPoolSummaryReportBean.cashPoolZjscVo}"
+						paginator="true" var="zjmyscVo" rows="10"
+						paginatorPosition="bottom" style="margin-top:3px;"
+						currentPageReportTemplate="{currentPage}/{totalPage}"
+						paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
+						rowKey="#{zjmyscVo.cpId}" emptyMessage="#{msgs.dataTable_empty}">
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="公司名称" />
+							</f:facet>
+							<h:outputText value="#{zjmyscVo.cpName}" />
+						</p:column>
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="小计" />
+							</f:facet>
+							<h:outputText value="#{zjmyscVo.xiaoji}" />
+						</p:column>
+						<p:columns value="#{cashPoolSummaryReportBean.zjmyscColumns}"
+							columnIndexVar="colIndex" var="colu">
+							<f:facet name="header">
+								<h:outputText value="#{colu.columnName} " />
+							</f:facet>
+							<h:outputText value="#{zjmyscVo.datas[colu.key]}" />
+						</p:columns>
+					</p:dataTable>
+				</h:form>
+			</p:tab>
+			<p:tab id="cashPoolSumZjAllTab" title="贸易/生产采购">
+				<h:form id="cashPoolSumZjAllForm">
+					<p:dataTable id="cashPoolSumZjAllTable"
+						value="#{cashPoolSummaryReportBean.cashPoolZjallVo}"
+						paginator="true" var="zjmyscVo" rows="10"
+						paginatorPosition="bottom" style="margin-top:3px;"
+						currentPageReportTemplate="{currentPage}/{totalPage}"
+						paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
+						rowKey="#{zjmyscVo.cpId}" emptyMessage="#{msgs.dataTable_empty}">
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="公司名称" />
+							</f:facet>
+							<h:outputText value="#{zjmyscVo.cpName}" />
+						</p:column>
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="小计" />
+							</f:facet>
+							<h:outputText value="#{zjmyscVo.xiaoji}" />
+						</p:column>
+						<p:columns value="#{cashPoolSummaryReportBean.zjmyscColumns}"
+							columnIndexVar="colIndex" var="colu">
+							<f:facet name="header">
+								<h:outputText value="#{colu.columnName} " />
+							</f:facet>
+							<h:outputText value="#{zjmyscVo.datas[colu.key]}" />
+						</p:columns>
+					</p:dataTable>
+				</h:form>
+			</p:tab>
+		</p:tabView>
+
+	</p:dialog>
+</ui:composition>

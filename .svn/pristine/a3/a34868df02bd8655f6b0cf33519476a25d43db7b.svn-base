@@ -1,0 +1,159 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/template/template.xhtml">
+
+	<ui:define name="title">注册资本金详细表</ui:define>
+
+	<ui:define name="content">
+
+		<input type="hidden" id="menuOne" value="21" />
+		<input type="hidden" id="menuTwo" value="22" />
+
+		<h:form id="purchaseForm" prependId="false"
+			onsubmit="statusComplete();">
+			<p:panel styleClass="panel1">
+				<p:breadCrumb preview="true" expandEffectDuration="200"
+					previewWidth="24" style="width: 99.1%">
+					<p:menuitem value="#{msgs.menItem_form}" url="#" />
+					<p:menuitem value="#{msgs.menItem_form}" url="#" />
+					<p:menuitem value="注册资本情况一览表" url="#" />
+				</p:breadCrumb>
+
+				<p:messages id="doneMsg" />
+
+				<div class="style1">
+					<h:panelGrid columns="8"
+						columnClasses="column0,column2,column0,column2,column2,column2,column2,column2">
+						<h:outputLabel value="#{msgs.col_companyName}："
+							rendered="#{!regicapitalGeneralReBean.isCopUser}" />
+						<h:panelGroup rendered="#{!regicapitalGeneralReBean.isCopUser}">
+							<h:selectOneMenu id="companyName" name="companyName"
+								style="width:330px;"
+								value="#{regicapitalGeneralReBean.conditionMap['companyId']}"
+								styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+								<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" itemValue="" />
+								<f:selectItems value="#{regicapitalGeneralReBean.companySelect}" />
+							</h:selectOneMenu>
+						</h:panelGroup>
+
+						<h:outputLabel value="#{msgs.col_companyName}："
+							rendered="#{regicapitalGeneralReBean.isCopUser}" />
+						<h:panelGroup rendered="#{regicapitalGeneralReBean.isCopUser}">
+							<p:inputText id="companyNameTwo" disabled="true"
+								style="width: 320px;"
+								value="#{regicapitalGeneralReBean.company.companyName}" />
+						</h:panelGroup>
+						<p:commandButton immediate="true" value="#{msgs.btn_select}"
+							style="width: 70px;" image="ui-icon ui-icon-zoomin"
+							rendered="#{regicapitalGeneralReBean.isCopUser}"
+							actionListener="#{regicapitalGeneralReBean.clear}"
+							oncomplete="companyDialogVar.show();" update="companyForm">
+							<f:setPropertyActionListener
+								target="#{regicapitalGeneralReBean.companySelectBean.method}"
+								value="regicapitalGeneralReBean.getSelectedCompany" />
+						</p:commandButton>
+					</h:panelGrid>
+					<div>
+						<p:commandButton id="query" value="#{msgs.btn_query}"
+							image="ui-icon ui-icon-search"
+							action="#{regicapitalGeneralReBean.searchRegiCaitalDetail}"
+							update="doneMsg,regiCapitalPl" />
+						<p:commandButton value="#{msgs.btn_reset}" style="margin: 5px;"
+							icon="ui-icon ui-icon-arrowrefresh-1-e"
+							action="#{regicapitalGeneralReBean.reset}"
+							update="startDate,endDate,companyName,companyNameTwo" />
+					</div>
+				</div>
+				<br />
+				<p:outputPanel id="regiCapitalPl">
+
+					<p:dataTable id="regiCapitalTable" var="shareHolderVo"
+						value="#{regicapitalGeneralReBean.shareHolderVoModel}"
+						emptyMessage="#{msgs.dataTable_empty}" paginator="true"
+						paginatorPosition="bottom" rows="5"
+						ortBy="#{shareHolderVo.companyId}" sortOrder="descending"
+						paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+						currentPageReportTemplate="{currentPage}/{totalPage}">
+
+						<f:facet name="header">注册资本情况一览表</f:facet>
+
+						<p:column headerText="公司名称" style="white-space:nowrap;">
+							<h:outputText
+								value="#{shareHolderVo.companyName}" />
+						</p:column>
+						<p:column headerText="币种" style="white-space:nowrap;">
+							<h:outputText
+								value="#{commonBean.getValueByDictCatAndKey('TMS_TAX_PROJECT_CURRENCY_TYPE',shareHolderVo.companyCu)}" />
+						</p:column>
+						<p:column headerText="投资总额（万）">
+							<h:outputText value="#{shareHolderVo.companyAmount}">
+								<f:convertNumber pattern="#,##0.00" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="股东信息" style="white-space:nowrap;">
+							<h:dataTable var="shareHolder"
+								value="#{shareHolderVo.shareHolder}"
+								style="border-bottom-color:#DCDCDC;border-top-color:Transparent;border-left-color:Transparent;border-right-color:Transparent;">
+								<p:column>
+									<h:outputText value="#{shareHolder.shareHolderName}" />
+								</p:column>
+							</h:dataTable>
+						</p:column>
+						<p:column headerText="注册资本（万）">
+							<h:outputText value="#{shareHolderVo.regiCapi}" >
+								<f:convertNumber pattern="#,##0.00" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="已到位注册资本（万）">
+							<h:dataTable var="shareHolder"
+								value="#{shareHolderVo.shareHolder}"
+								style="border-bottom-color:#DCDCDC;border-top-color:Transparent;border-left-color:Transparent;border-right-color:Transparent;">
+								<p:column>
+									<h:outputText value="#{shareHolder.fondsInPlace}">
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+								</p:column>
+							</h:dataTable>
+						</p:column>
+						<p:column headerText="股权比例">
+							<h:dataTable var="shareHolder"
+								value="#{shareHolderVo.shareHolder}"
+								style="border-bottom-color:#DCDCDC;border-top-color:Transparent;border-left-color:Transparent;border-right-color:Transparent;">
+								<p:column>
+									#{shareHolder.equityPerc}%
+								</p:column>
+							</h:dataTable>
+						</p:column>
+					</p:dataTable>
+				</p:outputPanel>
+			</p:panel>
+		</h:form>
+		<ui:include src="/faces/process/common/companySelect-dialog.xhtml" />
+
+		<script type="text/javascript">
+			function handleSaveRequest(xhr, status, args) {
+				if (args.issucc == "yes") {
+					companyDialogVar.hide();
+				}
+			}
+
+			function handleUpdateRequest(xhr, status, args) {
+				if (args.issucc == "yes") {
+					companyDialogVar.hide();
+				}
+			}
+
+			function handleTreeRequest(xhr, status, args) {
+				if (args.issucc == "yes") {
+					companyDialogVar.hide();
+				}
+			}
+		</script>
+
+	</ui:define>
+</ui:composition>

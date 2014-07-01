@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<p:dialog header="服务公司分配" widgetVar="userCompanyDialog"
+		id="userCompanyDlg" resizable="false" width="600" height="380"
+		modal="true">
+		<h:form id="userCompanyDialogForm" prependId="false">
+			<div class="style1">
+				<h:panelGrid columns="2" columnClasses="column1,column2">
+					<h:outputText value="用户账号：" />
+					<p:inputText value="#{userBean.usermstr.adAccount}"
+						styleClass="input_disabled" disabled="true" />
+					<h:outputText value="用户姓名：" />
+					<p:inputText value="#{userBean.p.nachn}"
+						styleClass="input_disabled" disabled="true" />
+				</h:panelGrid>
+			</div>
+			<p:dataTable emptyMessage="#{msgs.dataTable_empty}" id="userCompanyDataTable"
+				var="userCompanyVo" value="#{userBean.lazyUserCompanymstrVoModel}"
+				lazy="true" paginator="true" rows="5" paginatorPosition="bottom"
+				paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
+				rowIndexVar="index"
+				rowStyleClass="#{index mod 2 == 1 ? 'changeColor' : null}"
+				style="margin-top: 5px;"
+				selection="#{userBean.selectedUserCompanymstrVos}">
+				<f:facet name="header">
+					<h:outputText value="服务公司列表" />
+					<div
+						style="text-align: right; position: relative; margin: -13px -5px 0px 0px; vertical-align: middle">
+						<p:commandButton value="#{msgs.btn_add}"
+							image="ui-icon ui-icon-disk"
+							actionListener="#{userBean.addUserCompany}"
+							oncomplete="companyDialog.show()" update="companyDlg" />
+					</div>
+				</f:facet>
+				<p:column selectionMode="multiple" />
+				<p:column headerText="公司名称">
+					<h:outputText value="#{userCompanyVo.o.stext}" />
+				</p:column>
+				<p:column headerText="所属税务机关">
+					<h:outputText
+						value="#{userCompanyVo.usercompany.companymstr.taxauthority.name}" />
+				</p:column>
+			</p:dataTable>
+			<div style="text-align: center; position: relative; margin-top: 5px;">
+				<p:commandButton action="#{userBean.saveUserCompany}"
+					oncomplete="userCompanyDialog.hide()" update="userGrowl"
+					ajax="false" value="#{msgs.btn_ok}" image="ui-icon ui-icon-check"
+					style="margin-right: 5px;" />
+				<p:commandButton oncomplete="userCompanyDialog.hide()"
+					value="#{msgs.btn_cancel}" image="ui-icon ui-icon-cancel" />
+			</div>
+		</h:form>
+	</p:dialog>
+
+</ui:composition>

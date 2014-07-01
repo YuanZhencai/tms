@@ -1,0 +1,461 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:commentProcess="http://java.sun.com/jsf/composite/commentProcess"
+	template="/template/template.xhtml">
+
+	<ui:define name="title">#{msgs.title_bankCredBloc}</ui:define>
+	<ui:define name="styleAndScript">
+
+	</ui:define>
+	<ui:define name="content">
+		<p:panel styleClass="panel1">
+			<h:form prependId="false" id="addRegisterForm"
+				onsubmit="statusComplete();">
+				<p:breadCrumb preview="true" expandEffectDuration="200"
+					previewWidth="24" style="width: 99.1%">
+					<p:menuitem value="#{msgs.menuItem_processNew}" url="#" />
+					<p:menuitem value="#{msgs.menuItem_bankCredBlocApprove}" url="#" />
+				</p:breadCrumb>
+				<p:messages id="bankCreditMsg" />
+
+				<div style="position: relative; margin-top: 5px;">
+					<div class="style1">
+						<h:panelGrid columns="4"
+							columnClasses="column41,column42,column41,column2">
+							<h:outputLabel value="#{msgs.lbl_formFillDate}：" />
+							<p:inputText id="registerDate" disabled="true"
+								value="#{bankCreditBlocBean.instance.applyDate}">
+								<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+							</p:inputText>
+							<h:outputLabel value="#{msgs.lbl_fondsCurrency}：" />
+							<h:selectOneMenu id="creditLineCu" disabled="true"
+								value="#{bankCreditBlocBean.instance.creditLineCu}"
+								styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+								<f:selectItems value="#{bankCreditBlocBean.currencySelect}" />
+							</h:selectOneMenu>
+						</h:panelGrid>
+						
+						<h:panelGrid columns="2" columnClasses="column41,column2">
+							<h:outputLabel value="#{msgs.lbl_companyNameCn}：" />
+							<h:panelGroup>
+								<h:selectOneMenu id="companyNameCn" disabled="true"
+									value="#{bankCreditBlocBean.instance.company.id}"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									style="width:307px;">
+									<f:selectItems value="#{bankCreditBlocBean.companyNameSelect}" />
+								</h:selectOneMenu>
+							</h:panelGroup>
+							<h:outputLabel value="#{msgs.lbl_creditBank}：" />
+							<h:selectOneMenu id="topBankId" disabled="true"
+								value="#{bankCreditBlocBean.instance.bank.id}"
+								styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+								style="width:307px;">
+								<f:selectItems value="#{bankCreditBlocBean.topLevelSelect}" />
+							</h:selectOneMenu>
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+						</h:panelGrid>
+					</div>
+
+					<div class="style11">
+						<h:panelGrid columns="8"
+							columnClasses="column41,column42,column41,column2,column41,column2,column41,column2">
+							<h:outputLabel value="#{msgs.lbl_lastCreditLine}：" />
+							<h:panelGroup>
+								<p:inputText id="lastCreditLine" disabled="true"
+									value="#{bankCreditBlocBean.instance.lastCreditLine}">
+									<f:convertNumber pattern="#,##0" />
+								</p:inputText>
+								<h:outputText value="#{msgs.lbl_tenThousand}" />
+							</h:panelGroup>
+							<h:outputLabel value="#{msgs.lbl_lastCreditTotal}：" />
+							<h:panelGroup>
+								<p:inputText id="lastCreditTotal" disabled="true"
+									value="#{bankCreditBlocBean.instance.lastCreditTotal}">
+									<f:convertNumber pattern="#,##0" />
+								</p:inputText>
+								<h:outputText value="#{msgs.lbl_tenThousand}" />
+							</h:panelGroup>
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+						</h:panelGrid>
+					</div>
+
+					<div class="style11">
+						<h:panelGrid columns="8"
+							columnClasses="column41,column42,column41,column2,column41,column2,column41,column2">
+							<h:outputLabel value="#{msgs.lbl_creditLine}：" />
+							<h:panelGroup>
+								<p:inputText id="creditLine" label="#{msgs.lbl_creditLine}"
+									disabled="#{bankCreditBlocBean.checkInputable('creditLine') ? false : true}"
+									value="#{bankCreditBlocBean.instance.creditLine}">
+									<f:convertNumber pattern="#,##0.####" />
+									<f:validateDoubleRange maximum="99999999.9999" minimum="0" />
+								</p:inputText>
+								<h:outputText value="#{msgs.lbl_tenThousand}" />
+							</h:panelGroup>
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+
+
+							<h:outputLabel value="#{msgs.lbl_assureWay}："
+								styleClass="title_1" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+
+							<h:outputLabel value="#{msgs.lbl_credit}： " />
+							<h:panelGroup>
+								<p:inputText id="guaranteeCd" label="#{msgs.lbl_thyapplyCred}"
+									disabled="#{bankCreditBlocBean.checkInputable('guaranteeCd') ? false : true}"
+									value="#{bankCreditBlocBean.instance.guaranteeCd}">
+									<f:convertNumber pattern="#,##0" />
+									<f:validateDoubleRange maximum="99999999" minimum="0" />
+								</p:inputText>
+								<h:outputText value="#{msgs.lbl_tenThousand}" />
+							</h:panelGroup>
+							<h:outputLabel value="#{msgs.lbl_guarantee}： " />
+							<h:panelGroup>
+								<p:inputText id="guaranteeMg" label="#{msgs.lbl_thyapplyGt}"
+									disabled="#{bankCreditBlocBean.checkInputable('guaranteeMg') ? false : true}"
+									value="#{bankCreditBlocBean.instance.guaranteeMg}">
+									<f:convertNumber pattern="#,##0" />
+									<f:validateDoubleRange maximum="99999999" minimum="0" />
+								</p:inputText>
+								<h:outputText value="#{msgs.lbl_tenThousand}" />
+							</h:panelGroup>
+							<h:outputLabel value="#{msgs.lbl_assure}：" />
+							<h:panelGroup>
+								<p:inputText id="guaranteeGr" label="#{msgs.lbl_thyapplyAssure}"
+									disabled="#{bankCreditBlocBean.checkInputable('guaranteeGr') ? false : true}"
+									value="#{bankCreditBlocBean.instance.guaranteeGr}">
+									<f:convertNumber pattern="#,##0" />
+									<f:validateDoubleRange maximum="99999999" minimum="0" />
+								</p:inputText>
+								<h:outputText value="#{msgs.lbl_tenThousand}" />
+							</h:panelGroup>
+							<h:outputLabel value="#{msgs.lbl_pledge}： " />
+							<h:panelGroup>
+								<p:inputText id="guaranteeQm" label="#{msgs.lbl_thyapplyPledge}"
+									disabled="#{bankCreditBlocBean.checkInputable('guaranteeQm') ? false : true}"
+									value="#{bankCreditBlocBean.instance.guaranteeQm}">
+									<f:convertNumber pattern="#,##0" />
+									<f:validateDoubleRange maximum="99999999" minimum="0" />
+								</p:inputText>
+								<h:outputText value="#{msgs.lbl_tenThousand}" />
+							</h:panelGroup>
+							<h:outputLabel value="#{msgs.lbl_other}：" />
+							<h:panelGroup>
+								<p:inputText id="guaranteeOt" label="#{msgs.lbl_thyapplyOther}"
+									disabled="#{bankCreditBlocBean.checkInputable('guaranteeOt') ? false : true}"
+									value="#{bankCreditBlocBean.instance.guaranteeOt}">
+									<f:convertNumber pattern="#,##0" />
+									<f:validateDoubleRange maximum="99999999" minimum="0" />
+								</p:inputText>
+								<h:outputText value="#{msgs.lbl_tenThousand}" />
+							</h:panelGroup>
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
+						</h:panelGrid>
+					</div>
+
+					<div class="style11">
+						<h:panelGrid columns="2" columnClasses="column41,column2">
+							<h:outputLabel value="#{msgs.lbl_approveRemark}：" />
+							<h:panelGroup>
+								<p:inputTextarea id="peMemo" label="#{msgs.lbl_approveRemark}"
+									style="width:1005px;" rows="3" autoResize="false"
+									value="#{bankCreditBlocBean.instance.peMemo}"
+									validatorMessage="#{msgs.msg_approveRemark_beyend}">
+									<f:validateLength maximum="200" for="peMemo" />
+								</p:inputTextarea>
+							</h:panelGroup>
+						</h:panelGrid>
+						<div align="right">
+							<h:panelGrid columns="2" columnClasses="column41l,column2">
+								<h:outputLabel value="#{msgs.lbl_doNext}" />
+								<p:selectBooleanCheckbox id="doNext" value="#{bankCreditBlocBean.doNext}"/>
+							</h:panelGrid>
+							&#160;&#160;
+							<p:commandButton id="pass" onclick="buttonDisable('pass');" value="#{msgs.btn_ok}"
+								icon="ui-icon ui-icon-disk" ajax="false"
+								action="#{bankCreditBlocBean.blocConfirmRequest}" />
+							&#160;&#160;
+							<p:commandButton onclick="buttonDisable('blocCreditOperea');" value="#{msgs.btn_reject}"
+								icon="ui-icon ui-icon-cancel" ajax="false"
+								action="#{bankCreditBlocBean.blocConfirmReject}"
+								disabled="#{bankCreditBlocBean.checkInputable('blocCreditOperea') ? false : true}"
+								id="blocCreditOperea" />
+						</div>
+					</div>
+
+				</div>
+				<div style="position: relative; margin-top: 5px;">
+					<p:outputPanel id="procBlocComanyPanel">
+						<p:dataTable var="pBlocCredit" id="pBlocCreditTableId"
+							value="#{bankCreditBlocBean.procBlocCompanyLayModel}"
+							rowKey="#{pBlocCredit.id}" rows="100" paginatorPosition="bottom"
+							emptyMessage="#{msgs.empty_data_msg}" >
+							<f:facet name="header">#{msgs.head_submitedCredAppMemList}</f:facet>
+							<p:column headerText="#{msgs.lbl_memberCompanyName}">
+								<h:outputText value="#{pBlocCredit.company.companyName}" />
+							</p:column>
+							<p:column headerText="#{msgs.txt_submittedTime}">
+								<h:outputText value="#{pBlocCredit.createdDatetime}">
+									<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"
+										timeZone="GMT+8" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="#{msgs.lbl_creditLimit}">
+								<h:outputText value="#{pBlocCredit.creditLine}">
+									<f:convertNumber pattern="#,##0.####" />
+								</h:outputText>
+							</p:column>
+
+							<p:column headerText="#{msgs.lbl_approveLine}">
+								<h:outputText value="#{pBlocCredit.notarizeCreditLine}">
+									<f:convertNumber pattern="#,##0.####" />
+								</h:outputText>
+							</p:column>
+
+							<p:column
+								headerText="#{msgs.lbl_assurePattern}-#{msgs.lbl_credit}">
+								<h:outputText value="#{pBlocCredit.guaranteeCd}">
+									<f:convertNumber pattern="#,##0.####" />
+								</h:outputText>
+							</p:column>
+							<p:column
+								headerText="#{msgs.lbl_assurePattern}-#{msgs.lbl_guarantee}">
+								<h:outputText value="#{pBlocCredit.guaranteeMg}">
+									<f:convertNumber pattern="#,##0.####" />
+								</h:outputText>
+							</p:column>
+							<p:column
+								headerText="#{msgs.lbl_assurePattern}-#{msgs.lbl_assure}">
+								<h:outputText value="#{pBlocCredit.guaranteeGr}">
+									<f:convertNumber pattern="#,##0.####" />
+								</h:outputText>
+							</p:column>
+							<p:column
+								headerText="#{msgs.lbl_assurePattern}-#{msgs.lbl_pledge}">
+								<h:outputText value="#{pBlocCredit.guaranteeQm}">
+									<f:convertNumber pattern="#,##0.####" />
+								</h:outputText>
+							</p:column>
+							<p:column
+								headerText="#{msgs.lbl_assurePattern}-#{msgs.lbl_other}">
+								<h:outputText value="#{pBlocCredit.guaranteeOt}">
+									<f:convertNumber pattern="#,##0.####" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="#{msgs.txt_condition}">
+								<h:outputText
+									value="#{bankCreditBlocBean.statusChinse(pBlocCredit.status)}">
+								</h:outputText>
+							</p:column>
+							<p:column headerText="#{msgs.col_operate}"
+								styleClass="operating_90">
+								<p:commandButton title="#{msgs.btn_view}"
+									icon="ui-icon ui-icon-zoomin"
+									update="viewBlocCompanyCreditFrom,viewBlocCompanyCredit"
+									oncomplete="blocCompanyDetailDialog.show()"
+									action="#{bankCreditBlocBean.viewCompany}">
+									<f:setPropertyActionListener
+										target="#{bankCreditBlocBean.processBlocCompanyView}"
+										value="#{pBlocCredit}" />
+								</p:commandButton>
+								<p:commandButton icon="ui-icon ui-icon-check"
+									title="#{msgs.btn_confirmApply}" id="confirmRequest"
+									update="viewBlocCompanyCreditConfirmFrom"
+									oncomplete="blocCompanyConfirmDetailDialog.show()"
+									action="#{bankCreditBlocBean.confirmCompany}"
+									disabled="#{(pBlocCredit.status != '2' &amp;&amp; bankCreditBlocBean.checkInputable('confirmRequest')) ? false : true}">
+									<f:setPropertyActionListener
+										target="#{bankCreditBlocBean.processBlocCompanyEdit}"
+										value="#{pBlocCredit}" />
+								</p:commandButton>
+								<p:commandButton icon="ui-icon ui-icon-circle-close"
+									title="#{msgs.btn_rejectApply}" id="rejectConfirm"
+									oncomplete="confirmation1.show()" update="bankCreditMsg"
+									disabled="#{(pBlocCredit.status != '5' &amp;&amp; bankCreditBlocBean.checkInputable('rejectConfirm')) ? false : true}">
+									<f:setPropertyActionListener
+										target="#{bankCreditBlocBean.processBlocCompanyView}"
+										value="#{pBlocCredit}" />
+								</p:commandButton>
+							</p:column>
+						</p:dataTable>
+					</p:outputPanel>
+				</div>
+
+				<p:confirmDialog message="#{msgs.msg_isOrNot_rejThisComApply}："
+					header="#{msgs.header_warning}" severity="alert"
+					widgetVar="confirmation1">
+					<div align="center">
+						<p:commandButton
+							update="procBlocComanyPanel,bankCreditMsg,creditLine,
+							guaranteeCd,guaranteeMg,guaranteeGr,guaranteeQm,guaranteeOt"
+							value="#{msgs.btn_ok}" icon="ui-icon ui-icon-check"
+							oncomplete="confirmation1.hide();"
+							actionListener="#{bankCreditBlocBean.rejectRequest}" />
+						&#160;&#160;
+						<p:commandButton value="#{msgs.btn_cancel}"
+							onclick="confirmation1.hide()" type="button"
+							icon="ui-icon ui-icon-cancel" />
+					</div>
+				</p:confirmDialog>
+
+			</h:form>
+
+			<p:dialog header="#{msgs.dialog_memComAppDetail}"
+				widgetVar="blocCompanyDetailDialog" modal="true" width="1300"
+				height="600" resizable="false">
+				<ui:include src="creditBloc-company-view-inc.xhtml" />
+			</p:dialog>
+
+			<p:dialog header="#{msgs.dialog_blocAccountingConfAppDetail}"
+				widgetVar="blocCompanyConfirmDetailDialog" modal="true" width="1300"
+				height="600" resizable="false">
+				<ui:include src="creditBloc-company-confirm.xhtml" />
+			</p:dialog>
+			<h:form>
+				<p:confirmDialog message="#{msgs.msg_isOrNot_delOthProduct}："
+					header="#{msgs.head_confirmDialog}" severity="alert"
+					widgetVar="confirmation">
+					<div align="center">
+						<p:commandButton
+							update="viewBlocCompanyCreditConfirmFrom,bankCreditMsgConfirm"
+							value="#{msgs.btn_ok}" icon="ui-icon ui-icon-check"
+							immediate="true" oncomplete="confirmation.hide();"
+							action="#{bankCreditBlocBean.deleteProcBlocRptCredit}" />
+						&#160;&#160;
+						<p:commandButton value="#{msgs.btn_cancel}"
+							onclick="confirmation.hide()" type="button"
+							icon="ui-icon ui-icon-cancel" />
+					</div>
+				</p:confirmDialog>
+
+			</h:form>
+			<h:form prependId="false" id="addCreditBlocRptForm">
+				<p:dialog header="#{msgs.dialog_addOthCredPro}"
+					widgetVar="blocCreditRptDialog" resizable="false" width="600"
+					modal="true">
+					<p:messages id="fondsCurrencyMsgEdit" />
+					<h:panelGrid id="blocCompanyPanel" columns="4"
+						columnClasses="column41,column42,column41,column42"
+						footerClass="footer1">
+						<h:outputLabel value="#{msgs.lbl_otherProName}：" />
+						<h:panelGroup>
+							<p:inputText id="cdProName" required="true"
+								label="#{msgs.lbl_otherProName}"
+								requiredMessage="#{msgs.lbl_otherProName}"
+								value="#{bankCreditBlocBean.blocCreditRpt.cdProName}" />
+							<h:outputText style="color:red;" value=" *" />
+						</h:panelGroup>
+
+						<h:outputLabel value="#{msgs.lbl_amount}：" />
+						<h:panelGroup>
+							<p:inputText id="cdProLimit"
+								value="#{bankCreditBlocBean.blocCreditRpt.cdProLimit}"
+								label="#{msgs.lbl_otherPro}#{msgs.lbl_amount}" required="true"
+								requiredMessage="#{msgs.txt_pleaseSelect}#{msgs.lbl_otherPro}#{msgs.lbl_amount}">
+								<f:validateDoubleRange maximum="99999999.9999" minimum="0" />
+								<f:convertNumber pattern="#,##0.####" />
+							</p:inputText>
+							<h:outputText value="#{msgs.lbl_tenThousand}" />
+							<h:outputText style="color:red;" value=" *" />
+						</h:panelGroup>
+						<f:facet name="footer">
+							<p:commandButton value="#{msgs.btn_save}"
+								update="fondsCurrencyMsgEdit,viewBlocCompanyCreditConfirmFrom"
+								oncomplete="handleComplete(blocCreditRptDialog,args)"
+								action="#{bankCreditBlocBean.addBlocCreditRpt}"
+								icon="ui-icon ui-icon-disk" />
+			            &#160;&#160;
+			            <p:commandButton value="#{msgs.btn_cancel}" type="button"
+								onclick="blocCreditRptDialog.hide()"
+								icon="ui-icon ui-icon-cancel" />
+						</f:facet>
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>
+
+
+			<h:form prependId="false" id="editOtherBlocProdForm">
+				<p:dialog header="#{msgs.dialog_otherCredProEdit}"
+					widgetVar="editOtherBlocProdDialog" resizable="false" width="600"
+					modal="true">
+					<p:messages id="editcdProNameMsg" />
+					<p:outputPanel id="editBlocbankcreditPanel">
+						<h:panelGrid id="editbankBloccreditTable" columns="4"
+							columnClasses="column41,column42,column41,column42"
+							footerClass="footer1">
+							<h:outputLabel value="#{msgs.lbl_otherPro}：" />
+							<p:inputText id="editcdBlocProName" required="true"
+								label="#{msgs.lbl_otherPro}"
+								requiredMessage="#{msgs.txt_pleaseSelect}#{msgs.lbl_otherPro}"
+								value="#{bankCreditBlocBean.blocCreditRptEdit.cdProName}" />
+							<h:outputLabel value="#{msgs.lbl_amount}：" />
+							<p:inputText id="editcdProLimit" label="#{msgs.lbl_otherPro}"
+								required="true"
+								requiredMessage="#{msgs.txt_pleaseSelect}#{msgs.lbl_otherPro}#{msgs.lbl_amount}"
+								value="#{bankCreditBlocBean.blocCreditRptEdit.cdProLimit}">
+								<f:validateDoubleRange maximum="99999999.9999" minimum="0" />
+								<f:convertNumber pattern="#,##0.####" />
+							</p:inputText>
+
+							<f:facet name="footer">
+								<p:commandButton id="beditankcreditBtn" value="#{msgs.btn_save}"
+									update="viewBlocCompanyCreditConfirmFrom,editcdProNameMsg"
+									oncomplete="handleComplete(editOtherBlocProdDialog,args)"
+									action="#{bankCreditBlocBean.editProcRptCredit}"
+									icon="ui-icon ui-icon-disk" />
+			            &#160;&#160;
+			            <p:commandButton value="#{msgs.btn_cancel}" type="button"
+									onclick="editOtherBlocProdDialog.hide()"
+									id="editbankcreditCanelBtn" icon="ui-icon ui-icon-cancel" />
+							</f:facet>
+						</h:panelGrid>
+					</p:outputPanel>
+				</p:dialog>
+			</h:form>
+			<h:form prependId="false" id="stepDetailForm">
+				<div style="position: relative; margin-top: 5px;">
+					<p:outputPanel id="processDetailPanel">
+						<commentProcess:processDetail
+							dataList="#{bankCreditBlocBean.processDetailList}" />
+					</p:outputPanel>
+				</div>
+			</h:form>
+		</p:panel>
+		<script type="text/javascript">
+			var isFirst = "true";
+			function buttonDisable(buttonId){
+				if("true"==isFirst){
+					isFirst="false";
+					return true;
+				}else{
+					document.getElementById(buttonId).disabled=true;
+					return false;
+				}
+			}
+		</script>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/template/template.xhtml">
+
+	<ui:define name="title">发起新流程</ui:define>
+
+	<ui:define name="content">
+
+		<input type="hidden" id="menuOne" value="15" />
+		<input type="hidden" id="menuTwo" value="16" />
+
+		<h:form id="paListForm" prependId="false" onsubmit="statusComplete();">
+			<p:panel styleClass="panel1">
+				<p:breadCrumb preview="true" expandEffectDuration="200"
+					previewWidth="24" style="width: 99.1%">
+					<p:menuitem value="#{msgs.menItem_process}" url="#" />
+					<p:menuitem value="#{msgs.menItem_process}" url="#" />
+					<p:menuitem value="#{msgs.menItem_processNew}" url="#" />
+				</p:breadCrumb>
+
+				<p:messages id="doneMsg"/>
+
+				
+				<p:outputPanel id="processAuthListPl">
+					<p:dataTable var="processAuth" id="processAuthList"
+						value="#{processNewBean.processAuthList}" rowKey="#{processAuth.id}"
+						paginator="true" rows="14" paginatorPosition="bottom"
+						paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
+						currentPageReportTemplate="{currentPage}/{totalPage}"
+						emptyMessage="#{msgs.dataTable_empty}">
+
+						<f:facet name="header">#{msgs.head_processList}</f:facet>
+
+
+						<p:column headerText="#{msgs.col_processCode}">
+							<h:outputText value="#{processAuth.processDefine.processCode}" />
+						</p:column>
+
+						<p:column headerText="#{msgs.col_processName}">
+							<h:outputText value="#{processAuth.processDefine.processName}" />
+						</p:column>
+
+						<p:column headerText="#{msgs.col_processDesc}">
+							<h:outputText value="#{processAuth.processDefine.processMemo}" />
+						</p:column>
+
+						<p:column headerText="#{msgs.col_processStat}">
+							<h:outputText value="#{processAuth.processDefine.status == 'Y' ? msgs.col_processStatYes: msgs.col_processStatNo}" />
+						</p:column>
+						
+						<p:column headerText="#{msgs.col_processVersion}">
+							<h:outputText value="#{processAuth.processDefine.processVersion}" />
+						</p:column>
+
+						<p:column styleClass="operating_90" headerText="#{msgs.col_operate}">
+							
+							<p:commandButton action="#{processNewBean.toNew}"
+								image="ui-icon ui-icon-plus" title="#{msgs.btn_processNew}" ajax="false"
+								update="processAuthListPl,msg" disabled="#{processAuth.processDefine.status == 'Y' ? false : true}">
+								<f:setPropertyActionListener value="#{processAuth.processDefine}"
+									target="#{processNewBean.processDefine}" />
+							</p:commandButton>
+						</p:column>
+
+					</p:dataTable>
+				</p:outputPanel>
+			</p:panel>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>
+
+

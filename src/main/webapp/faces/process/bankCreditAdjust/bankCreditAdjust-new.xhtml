@@ -1,0 +1,148 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/template/template.xhtml">
+
+	<ui:define name="title">银行授信额度调剂申请</ui:define>
+
+	<ui:define name="content">
+
+		<input type="hidden" id="menuOne" value="15" />
+		<input type="hidden" id="menuTwo" value="16" />
+
+		<h:form id="inveProductForm" prependId="false" onsubmit="statusComplete();">
+			<p:panel styleClass="panel1">
+				<p:breadCrumb preview="true" expandEffectDuration="200"
+					previewWidth="24" style="width: 99.1%">
+					<p:menuitem value="#{msgs.menItem_process}" url="#" />
+					<p:menuitem value="#{msgs.menItem_process}" url="#" />
+					<p:menuitem value="#{msgs.menItem_bankCreditAdjustApply}" url="#" />
+				</p:breadCrumb>
+
+				<p:messages id="msg" />
+
+				<div class="style1">
+					<h:panelGrid columns="8" columnClasses="column40,column2,column40,column2,column0,column2,column0,column2">
+
+						<h:outputLabel value="#{msgs.lbl_zh_applyCompanyName}：" />
+						<h:panelGroup>
+							<h:selectOneMenu id="companyName" name="companyName" style="width:307px;"
+								value="#{bankCreditAdjustBean.procBankCreditAdjust.company.id}" 
+								styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all" required="true" requiredMessage="#{msgs.txt_applyCompanyNoNull}">
+								<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" itemValue=""/>
+								<f:selectItems value="#{bankCreditAdjustBean.companySelect}" />
+								<p:ajax update="msg,childBankName,creditOri,creditCu,bankCreditCu"
+									listener="#{bankCreditAdjustBean.ajaxChildBank}">
+								</p:ajax>
+							</h:selectOneMenu>
+							<h:outputText style="color:red;" value="*" />
+						</h:panelGroup>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						
+						<h:outputLabel value="#{msgs.lbl_subbranchChinaName}：" />
+						<h:panelGroup>
+							<h:selectOneMenu id="childBankName" name="childBankName" style="width:307px;"
+								value="#{bankCreditAdjustBean.procBankCreditAdjust.bank.id}" 
+								styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all" required="true" requiredMessage="#{msgs.txt_subbranchNoNull}">
+								<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" itemValue=""/>
+								<f:selectItems value="#{bankCreditAdjustBean.childBankSelect}" />
+								<p:ajax update="msg,creditOri,creditCu,bankCreditCu"
+									listener="#{bankCreditAdjustBean.ajaxCredit}">
+								</p:ajax>
+							</h:selectOneMenu>
+							<h:outputText style="color:red;" value="*" />
+						</h:panelGroup>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+					</h:panelGrid>
+					<h:panelGrid columns="8" columnClasses="column40,column2,column40,column2,column0,column2,column0,column2">		
+						<h:outputLabel value="#{msgs.lbl_originalCreditLimit}：" />
+						<h:panelGroup>
+							<p:inputText id="creditOri"
+								value="#{bankCreditAdjustBean.procBankCreditAdjust.creditOri}" disabled="true">
+								<f:convertNumber pattern="#,##0.####"/>
+							</p:inputText>
+							<h:outputLabel>#{msgs.lbl_tenThousand}</h:outputLabel>
+						</h:panelGroup>
+						<h:selectOneMenu id="creditCu" name="creditCu"
+							value="#{bankCreditAdjustBean.procBankCreditAdjust.creditCu}"
+							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all" disabled="true">
+							<f:selectItems value="#{bankCreditAdjustBean.currencySelect}" />
+						</h:selectOneMenu>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						
+						<h:outputLabel value="#{msgs.lbl_addCreditLimit}：" />
+						<h:panelGroup>
+							<p:inputText id="creditAdd" label="#{msgs.lbl_addCreditLimit}"
+								value="#{bankCreditAdjustBean.procBankCreditAdjust.creditAdd}" required="true" requiredMessage="#{msgs.txt_addCreditLimitNoNull}">
+								<f:convertNumber pattern="#,##0.####"/>
+								<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"></f:validateDoubleRange>
+							</p:inputText>
+							<h:outputLabel>#{msgs.lbl_tenThousand}</h:outputLabel>
+							<h:outputText style="color:red;" value="*" />
+						</h:panelGroup>
+						<h:selectOneMenu id="bankCreditCu" name="bankCreditCu"
+							value="#{bankCreditAdjustBean.procBankCreditAdjust.creditCu}"
+							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all" disabled="true">
+							<f:selectItems value="#{bankCreditAdjustBean.currencySelect}" />
+						</h:selectOneMenu>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+						<h:outputLabel value=""/>
+					</h:panelGrid>
+					<h:panelGrid columns="2" columnClasses="column40,column2">
+						<h:outputLabel value="#{msgs.lbl_purpose}：" />
+						<h:panelGroup>
+							<p:inputTextarea id="use" cols="100" rows="5" autoResize="false" value="#{bankCreditAdjustBean.procBankCreditAdjust.use}"
+								validatorMessage="#{msgs.msg_debt_use}" required="true" requiredMessage="#{msgs.txt_purposeNoNull}">
+								<f:validateLength maximum="200" for="use" />
+							</p:inputTextarea>
+							<h:outputText style="color:red;" value="*" />
+						</h:panelGroup>
+					</h:panelGrid>
+					
+
+					<div>
+						<p:commandButton id="create" onclick="buttonDisable('create');" action="#{bankCreditAdjustBean.createProcInstance}" ajax="false" value="#{msgs.btn_submit}" image="ui-icon ui-icon-disk" />
+
+					</div>
+				</div>
+				<br />
+			</p:panel>
+		</h:form>
+		<script type="text/javascript">
+			var isFirst = "true";
+			function buttonDisable(buttonId){
+				if("true"==isFirst){
+					isFirst="false";
+					return true;
+				}else{
+					document.getElementById(buttonId).disabled=true;
+					return false;
+				}
+			}
+		</script>
+	</ui:define>
+
+</ui:composition>
+
+

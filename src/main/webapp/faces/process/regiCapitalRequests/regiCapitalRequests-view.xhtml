@@ -1,0 +1,224 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:commentProcess="http://java.sun.com/jsf/composite/commentProcess"
+	template="/template/dialog_template.xhtml">
+
+	<ui:define name="title">注册资本金变更流程</ui:define>
+	<ui:define name="styleAndScript">
+		
+	</ui:define>
+	<ui:define name="content">
+		
+		<input type="hidden" id="menuOne" value="15" />
+		<input type="hidden" id="menuTwo" value="20" />
+		<p:panel styleClass="panel1">
+			<h:form id="debtBorrowForm" prependId="false" onsubmit="statusComplete();">
+				<p:breadCrumb preview="true" expandEffectDuration="200"
+					previewWidth="24" style="width: 99.1%">
+					<p:menuitem value="#{msgs.menItem_process} " url="#" />
+					<p:menuitem value="#{msgs.menItem_process}" url="#" />
+					<p:menuitem value="注册资本金变更流程" url="#" />
+				</p:breadCrumb>
+				
+				<p:messages id="msg" /> 
+				
+				<div class="style11">
+					<h:panelGrid columns="5" columnClasses="column41,column2,column45,column43,column2">
+						<h:outputLabel value="#{msgs.lbl_date_filling}：" />
+						<p:inputText id="createdDatetime" label="#{msgs.lbl_date_filling}" 
+							value="#{regicapitalChargeBean.procRegiCapitalChange.createdDatetime}" disabled="true">
+							<f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd"/>
+						</p:inputText>
+						<h:outputLabel value=" " />
+						
+					</h:panelGrid>
+						
+					<h:panelGrid columns="6" columnClasses="column41,column2,column25,column20column43,column2">
+						<h:outputLabel value="#{msgs.lbl_zh_applyCompanyName}：" />
+						<h:panelGroup>
+							<h:selectOneMenu id="companyName" name="companyName"
+								value="#{regicapitalChargeBean.procRegiCapitalChange.company.id}" label="#{msgs.lbl_zh_applyCompanyName}" style="width:250px;"
+								styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all" disabled="true">
+								<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" itemValue=""/>
+								<f:selectItems value="#{regicapitalChargeBean.companySelect}" />
+								
+							</h:selectOneMenu>
+						</h:panelGroup>
+						<h:outputText  value=" " />
+						<h:outputLabel value="#{msgs.lbl_en_applyCompanyName}：" />
+						<p:inputText id="companyEn" value="#{regicapitalChargeBean.procRegiCapitalChange.company.companyEn}" 
+						             label="#{msgs.lbl_en_applyCompanyName}" style="width:297px;" disabled="true"/>
+					</h:panelGrid>
+					<!-- 新的========================================= -->
+					<h:panelGrid columns="6" columnClasses="column41,column2,column2,column41,column2,column2,">
+						<h:outputLabel value="投资总额：" />
+						<p:inputText id="investTotal" label="#{msgs.lbl_afcePaid}"
+							value="#{regicapitalChargeBean.procRegiCapitalChange.investTotal}" disabled="true">
+							<f:convertNumber pattern="#,##0.####"/>
+							<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"></f:validateDoubleRange>
+						</p:inputText>
+						<h:outputLabel value="(万)"></h:outputLabel>
+						<h:selectOneMenu id="investCurrency" name="afcePaidCu" value="#{regicapitalChargeBean.procRegiCapitalChange.investCurrency}"
+							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all" disabled="true">
+							<f:selectItems value="#{regicapitalChargeBean.currencySelect}" />
+						</h:selectOneMenu>
+					</h:panelGrid>
+					
+					<!-- 原来的========================================= -->
+					<h:panelGrid columns="6" columnClasses="column41,column2,column2,column41,column2,column2,">
+						<h:outputLabel value="原投资总额：" />
+						<p:inputText id="investTotalOri" label="#{msgs.lbl_afcePaid}"
+							value="#{regicapitalChargeBean.procRegiCapitalChange.investTotalOri}" disabled="true">
+							<f:convertNumber pattern="#,##0.####"/>
+							<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"></f:validateDoubleRange>
+						</p:inputText>
+						<h:outputLabel value="(万)"></h:outputLabel>
+						<h:selectOneMenu id="investCurrencyOri" name="investCurrency" disabled="true"
+							value="#{regicapitalChargeBean.procRegiCapitalChange.investCurrencyOri}"
+							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+							<f:selectItems value="#{regicapitalChargeBean.currencySelect}" />
+						</h:selectOneMenu>
+					</h:panelGrid>
+					
+					<!-- 新的========================================= -->
+					<h:panelGrid columns="6" columnClasses="column41,column2,column2,column41,column2,column2,">
+						<h:outputLabel value="投注差可用：" />
+						<p:selectOneRadio id="isInvestRegRemaAvai" value="#{regicapitalChargeBean.procRegiCapitalChange.isInvestRegRemaAvai}" disabled="true">
+							<f:selectItem itemLabel="是" itemValue="1" />
+							<f:selectItem itemLabel="否" itemValue="0" />
+						</p:selectOneRadio>
+						<p:inputText id="investRegRemaFunds" label="#{msgs.lbl_afcePaid}"
+							value="#{regicapitalChargeBean.procRegiCapitalChange.investRegRemaFunds}" disabled="true">
+							<f:convertNumber pattern="#,##0.####"/>
+							<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"></f:validateDoubleRange>
+						</p:inputText>
+						<h:selectOneMenu id="investRegRemaFundsCu" name="investRegRemaFundsCu" 
+							value="#{regicapitalChargeBean.procRegiCapitalChange.investRegRemaFundsCu}"
+							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all" disabled="true">
+							<f:selectItems value="#{regicapitalChargeBean.currencySelect}" />
+						</h:selectOneMenu>
+					</h:panelGrid>
+					
+					<!-- 原来的========================================= -->
+					<h:panelGrid columns="6" columnClasses="column41,column2,column2,column41,column2,column2,">
+						<h:outputLabel value="原投注差可用：" />
+						<p:selectOneRadio id="isInvestRegRemaAvaiOri" disabled="true"
+							value="#{regicapitalChargeBean.procRegiCapitalChange.isInvestRegRemaAvaiOri}">
+							<f:selectItem itemLabel="是" itemValue="1" />
+							<f:selectItem itemLabel="否" itemValue="0" />
+						</p:selectOneRadio>
+						<p:inputText id="investRegRemaFundsOri" label="#{msgs.lbl_afcePaid}"
+							value="#{regicapitalChargeBean.procRegiCapitalChange.investRegRemaFundsOri}" disabled="true">
+							<f:convertNumber pattern="#,##0.####"/>
+							<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"></f:validateDoubleRange>
+							<p:ajax event="blur" update="msg,afcePaid"></p:ajax>
+						</p:inputText>
+						<h:selectOneMenu id="investRegRemaFundsCuOri" disabled="true"
+							value="#{regicapitalChargeBean.procRegiCapitalChange.investRegRemaFundsCuOri}"
+							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+							<f:selectItems value="#{regicapitalChargeBean.currencySelect}" />
+						</h:selectOneMenu>
+					</h:panelGrid>
+				</div>
+				
+				<div class="style11">
+					<p:dataTable value="#{regicapitalChargeBean.prccShareHolderList}" rowKey="#{prccshareHolder}"
+						var="prccshareHolder"
+						id="shareHolder" 
+						styleClass="checkbox" 
+						emptyMessage="没有记录" 
+						rendered="#{regicapitalChargeBean.prccShareHolderList ne null}">
+						<f:facet name="header">
+							股东信息列表
+						</f:facet>
+						<p:column headerText="股东Id" style="width:100px;display:none">
+							<h:outputText value="#{prccshareHolder.shareholderIdOriginal}"/>		
+						</p:column>
+						<p:column headerText="状态" style="width:100px">
+							<h:outputText value="#{prccshareHolder.status}"/>		
+						</p:column>
+						<p:column headerText="股东名称" style="width:100px">
+							<h:panelGrid columns="1">
+								<h:outputText value="#{prccshareHolder.shareholderNameOriginal}"/>
+								<h:outputText value="#{prccshareHolder.shareholderName}"/>	
+							</h:panelGrid>
+						</p:column>
+						<p:column headerText="币种" style="width:100px">
+							<h:panelGrid columns="1">
+								<h:outputText value="#{prccshareHolder.fondsCurrencyOriginal}"/>	
+								<h:outputText value="#{prccshareHolder.fondsCurrency}"/>	
+							</h:panelGrid>
+						</p:column>
+						<p:column headerText="注册资金" style="width:100px">
+							<h:panelGrid columns="1">
+								<h:outputText value="#{prccshareHolder.fondsTotalOriginal}" />		
+								<h:outputText value="#{prccshareHolder.fondsTotal}" />
+							</h:panelGrid>	
+						</p:column>
+						<p:column headerText="到位资金" style="width:100px">
+							<h:panelGrid columns="1">
+								<h:outputText value="#{prccshareHolder.fondsInPlaceOriginal}" />
+								<h:outputText value="#{prccshareHolder.fondsInPlace}" />
+							</h:panelGrid>
+						</p:column>
+						<p:column headerText="未到位资金" style="width:100px">
+							<h:panelGrid columns="1">
+								<h:outputText value="#{prccshareHolder.fondsTotalOriginal-prccshareHolder.fondsInPlaceOriginal}" />
+								<h:outputText value="#{prccshareHolder.fondsTotal-prccshareHolder.fondsInPlace}" />
+							</h:panelGrid>	
+						</p:column>
+						<p:column headerText="股权比例" style="width:100px">
+							<h:panelGrid columns="1">
+								<h:outputText value="#{prccshareHolder.equityPercOriginal}" />
+								<h:outputText value="#{prccshareHolder.equityPerc}" />
+							</h:panelGrid>		
+						</p:column>
+						<p:column headerText="股权关联" style="width:100px">
+							<h:panelGrid columns="1">
+								<h:outputText value="#{prccshareHolder.isEquityRelatedOriginal}" />
+								<h:outputText value="#{prccshareHolder.isEquityRelated}" />
+							</h:panelGrid>		
+						</p:column>
+						<p:column headerText="实际股权比例" style="width:100px">
+							<h:panelGrid columns="1">
+								<h:outputText value="#{prccshareHolder.equityPercOriginal*prccshareHolder.relatedPercOriginal}" />
+								<h:outputText value="#{prccshareHolder.equityPerc*prccshareHolder.relatedPerc}" />
+							</h:panelGrid>	
+						</p:column>
+					</p:dataTable>
+				</div>
+				<p:outputPanel id="detailVoListPl">
+					<p:dataTable var="detailVo" id="detailVoList" value="#{regicapitalChargeBean.detailVos}" rowKey="#{detailVo.id}" rows="100" emptyMessage="#{msgs.empty_data_msg}">
+						<f:facet name="header">#{msgs.head_detailVoList}</f:facet>
+						<p:column headerText="#{msgs.headerText_prossNodeName}">
+							<h:outputText value="#{detailVo.prossNodeName}" />
+						</p:column>
+						<p:column headerText="#{msgs.headerText_operatorsName}">
+							<h:outputText value="#{currentUser.exchange2CN(detailVo.operatorsName)}" />
+						</p:column>
+						<p:column headerText="#{msgs.headerText_operatorTime}">
+							<h:outputText value="#{detailVo.operatorTime}" >
+								<f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd HH:mm:ss"/>
+							</h:outputText>
+						</p:column>
+						<p:column headerText="#{msgs.headerText_remark}">
+							<h:outputText value="#{detailVo.nodeMemo}" />
+						</p:column>
+					</p:dataTable>
+				</p:outputPanel>
+			</h:form>
+			<h:form prependId="false" id="fileForm">
+				<div style="position: relative; margin-top: 5px;">
+					<p:outputPanel id="attachmentPanel">
+						<commentProcess:filedownload updateComenId="attachmentPanel"
+							isDisable="true" dataList="#{regicapitalChargeBean.processFileList}" />
+					</p:outputPanel>
+				</div>
+			</h:form>
+		</p:panel>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,329 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:commentProcess="http://java.sun.com/jsf/composite/commentProcess"
+	template="/template/template.xhtml">
+	<ui:define name="metadata">
+
+	</ui:define>
+	<ui:define name="title">#{msgs.title_registerAmountApplyApprove}</ui:define>
+	<ui:define name="styleAndScript">
+
+	</ui:define>
+	<ui:define name="content">
+
+		<input type="hidden" id="menuOne" value="15" />
+		<input type="hidden" id="menuTwo" value="20" />
+
+		<p:panel styleClass="panel1">
+			<h:form prependId="false" id="addRegisterForm"
+				onsubmit="statusComplete();">
+				<p:breadCrumb preview="true" expandEffectDuration="200"
+					previewWidth="24" style="width: 99.1%">
+					<p:menuitem value="#{msgs.item_regAmount}" url="#" />
+					<p:menuitem value="#{registerCaptialBean.title}" url="#" />
+				</p:breadCrumb>
+				<p:messages id="msg" />
+				<div style="position: relative; margin-top: 5px;">
+					<div class="style1">
+						<h:panelGrid columns="4"
+							columnClasses="column40,column2,column40,column2">
+							<h:outputLabel value="#{msgs.lbl_formFillDate}" />
+							<p:inputText id="registerDate" disabled="true"
+								value="#{registerCaptialBean.registerDate}" />
+							<h:outputLabel value="#{msgs.lbl_applyType}" />
+							<h:panelGroup>
+								<p:selectOneRadio id="applyType" disabled="true"
+									value="#{registerCaptialBean.instance.applyType}">
+									<f:selectItem itemLabel="#{msgs.lbl_isProject}" itemValue="Y" />
+									<f:selectItem itemLabel="#{msgs.lbl_notProject}" itemValue="N" />
+								</p:selectOneRadio>
+							</h:panelGroup>
+
+							<h:outputLabel value="#{msgs.lbl_companyName_CN}" />
+							<h:selectOneMenu id="companyNameCn"
+								value="#{registerCaptialBean.companyId}"
+								styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+								style="width:307px" disabled="true">
+								<f:selectItems value="#{registerCaptialBean.companyNameSelect}" />
+							</h:selectOneMenu>
+							<h:outputLabel value="#{msgs.lbl_companyName_EN}" />
+							<p:inputText id="companyNameEn" disabled="true"
+								style="width:297px" value="#{registerCaptialBean.companyNameEn}" />
+						</h:panelGrid>
+					</div>
+					<div style="position: relative; margin-top: 5px;">
+						<ui:include src="shareholder-list.xhtml" />
+					</div>
+					<div style="position: relative; margin-top: 5px;">
+						<div class="style1">
+							<h:panelGrid columns="4"
+								columnClasses="column41,column2,column21,column2">
+								<h:outputLabel value="#{msgs.lbl_presentCompanyAmountRemain}" />
+								<h:panelGroup>
+									<p:inputText id="rest"
+										value="#{registerCaptialBean.instance.rest}" disabled="true">
+										<f:convertNumber pattern="#,##0.####" type="number" />
+									</p:inputText>
+									<h:outputText value="#{msgs.lbl_tenThousand}" />
+								</h:panelGroup>
+
+								<h:outputLabel value="" />
+								<h:selectOneMenu value="#{registerCaptialBean.instance.restCu}"
+									id="restCu"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									style="width:140px" disabled="true">
+									<f:selectItems value="#{registerCaptialBean.currencySelect}" />
+								</h:selectOneMenu>
+
+								<h:outputLabel value="#{msgs.lbl_amountAvailable}" />
+								<h:panelGroup>
+									<p:inputText id="canUse" disabled="true"
+										value="#{registerCaptialBean.instance.canUse}">
+										<f:convertNumber pattern="#,##0.####" type="number" />
+									</p:inputText>
+									<h:outputText value="#{msgs.lbl_tenThousand}" />
+								</h:panelGroup>
+								<h:outputLabel value="" />
+								<h:selectOneMenu
+									value="#{registerCaptialBean.instance.canUseCu}" id="canUseCu"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									style="width:140px" disabled="true">
+									<f:selectItems value="#{registerCaptialBean.currencySelect}" />
+								</h:selectOneMenu>
+
+								<h:outputLabel value="#{msgs.lbl_margin}" />
+								<h:panelGroup>
+									<p:inputText id="insure" disabled="true"
+										value="#{registerCaptialBean.instance.insure}">
+										<f:convertNumber pattern="#,##0.####" type="number" />
+									</p:inputText>
+									<h:outputText value="#{msgs.lbl_tenThousand}" />
+								</h:panelGroup>
+								<h:outputLabel value="" />
+								<h:selectOneMenu
+									value="#{registerCaptialBean.instance.insureCu}" id="insureCu"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									style="width:140px" disabled="true">
+									<f:selectItems value="#{registerCaptialBean.currencySelect}" />
+								</h:selectOneMenu>
+							</h:panelGrid>
+						</div>
+						<div class="style1">
+							<h:panelGrid columns="4"
+								columnClasses="column41,column2,column21,column2">
+								<h:outputLabel value="#{msgs.lbl_currentApplyAmount}" />
+								<h:panelGroup>
+									<p:inputText id="thisFonds" disabled="true"
+										value="#{registerCaptialBean.instance.thisFonds}">
+										<f:convertNumber pattern="#,##0.####" type="number" />
+									</p:inputText>
+									<h:outputText value="#{msgs.lbl_tenThousand}" />
+								</h:panelGroup>
+								<h:outputLabel value="" />
+								<h:selectOneMenu
+									value="#{registerCaptialBean.instance.thisFondsCu}"
+									id="thisFondsCu"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									style="width:140px" disabled="true">
+									<f:selectItems value="#{registerCaptialBean.currencySelect}" />
+								</h:selectOneMenu>
+								<h:outputLabel value="#{msgs.lbl_shareholder}" />
+								<h:selectOneMenu value="#{registerCaptialBean.instance.payer}"
+									id="payer" disabled="true"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									style="width:145px">
+									<f:selectItems value="#{registerCaptialBean.shareHolderSelect}" />
+								</h:selectOneMenu>
+								<h:outputLabel value="" />
+								<h:outputLabel value="" />
+							</h:panelGrid>
+						</div>
+						<div class="style1">
+							<h:panelGrid columns="4"
+								columnClasses="column41,column2,column21,column2">
+								<h:outputLabel value="#{msgs.lbl_signedContractAmount}" />
+								<h:panelGroup>
+									<p:inputText id="signContract" disabled="true"
+										value="#{registerCaptialBean.instance.signContract}">
+										<f:convertNumber pattern="#,##0.####" />
+									</p:inputText>
+									<h:outputText value="#{msgs.lbl_tenThousand}" />
+								</h:panelGroup>
+								<h:outputLabel value="" />
+								<h:panelGroup>
+									<h:selectOneMenu
+										value="#{registerCaptialBean.instance.signConsCu}"
+										id="signConsCu" disabled="true"
+										styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+										style="width:140px">
+										<f:selectItems value="#{registerCaptialBean.currencySelect}" />
+									</h:selectOneMenu>
+								</h:panelGroup>
+
+								<h:outputLabel value="#{msgs.lbl_payedAmount}" />
+								<h:panelGroup>
+									<p:inputText id="paidFunds" disabled="true"
+										value="#{registerCaptialBean.instance.paidFunds}">
+										<f:convertNumber pattern="#,##0.####" />
+									</p:inputText>
+									<h:outputText value="#{msgs.lbl_tenThousand}" />
+								</h:panelGroup>
+								<h:outputLabel value="" />
+								<h:selectOneMenu
+									value="#{registerCaptialBean.instance.paidFundsCu}"
+									id="paidFundsCu" disabled="true"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									style="width:140px">
+									<f:selectItems value="#{registerCaptialBean.currencySelect}" />
+								</h:selectOneMenu>
+
+								<h:outputLabel value="#{msgs.lbl_notPayed}" />
+								<h:panelGroup>
+									<p:inputText id="notpayFounds" disabled="true"
+										value="#{registerCaptialBean.instance.signContract-registerCaptialBean.instance.paidFunds}">
+										<f:convertNumber pattern="#,##0.####" />
+									</p:inputText>
+									<h:outputText value="#{msgs.lbl_tenThousand}" />
+								</h:panelGroup>
+								<h:outputLabel value="" />
+								<h:selectOneMenu
+									value="#{registerCaptialBean.instance.signConsCu}"
+									id="notpayCu" disabled="true"
+									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+									style="width:140px">
+									<f:selectItems value="#{registerCaptialBean.currencySelect}" />
+								</h:selectOneMenu>
+							</h:panelGrid>
+						</div>
+						<div class="style1">
+							<h:panelGrid columns="2" columnClasses="column41,column2">
+								<h:outputLabel value="#{msgs.lbl_amountApplication}" />
+								<p:inputTextarea rows="2" style="width:910px;"
+									autoResize="false" value="#{registerCaptialBean.instance.use}"
+									validatorMessage="#{msgs.msg_beyondLength_amountApplication}"
+									id="use" disabled="true">
+									<f:validateLength maximum="200" for="use" />
+								</p:inputTextarea>
+								<h:outputLabel value="#{msgs.lbl_remitRouteAndAccountNo}" />
+								<p:inputTextarea rows="5" style="width:910px;"
+									autoResize="false"
+									value="#{registerCaptialBean.instance.pathAndCount}"
+									validatorMessage="#{msgs.msg_beyondLength_remitRouteAndAmountNo}"
+									id="pathAndCount" disabled="true">
+									<f:validateLength maximum="200" for="pathAndCount" />
+								</p:inputTextarea>
+								<h:outputLabel value="#{msgs.headerText_memo}：" />
+								<p:inputTextarea rows="2" style="width:910px;"
+									autoResize="false"
+									value="#{registerCaptialBean.instance.remark}"
+									validatorMessage="#{msgs.msg_beyondLength_remitRouteAndAccountNo}"
+									id="remark" disabled="true">
+									<f:validateLength maximum="200" for="remark" />
+								</p:inputTextarea>
+								<h:outputLabel value="#{msgs.headerText_remark}：" />
+								<h:panelGroup>
+									<p:inputTextarea rows="2" style="width:910px;"
+										autoResize="false"
+										value="#{registerCaptialBean.instance.peMemo}"
+										validatorMessage="#{msgs.msg_beyondLength_remark}" id="pe">
+										<f:validateLength maximum="200" for="pe" />
+									</p:inputTextarea>
+								</h:panelGroup>
+							</h:panelGrid>
+						</div>
+						<div class="style11">
+							<h:panelGrid columns="4"
+								columnClasses="column41,column2,column21,column2">
+								<h:outputLabel value="#{msgs.lbl_actualApproveAmount}" />
+								<h:panelGroup>
+									<p:inputText id="actualAudit"
+										label="#{msgs.lbl_actualApproveAmount_1}"
+										required="#{!registerCaptialBean.checkInputable('actualAuditCu') ? false : true}"
+										requiredMessage="#{msgs.msg_input_actualApproveAmount}"
+										value="#{registerCaptialBean.instance.actualAudit}"
+										converterMessage="#{msgs.msg_actualApproveAmount_mustbe}"
+										validatorMessage="#{msgs.msg_actualApproveAmount_mustBetween}"
+										disabled="#{registerCaptialBean.checkInputable('actualAudit') ? false : true}">
+										<f:validateDoubleRange maximum="99999999.9999" minimum="0.00" />
+										<f:convertNumber pattern="#,##0.####" type="number" />
+									</p:inputText>
+									<h:outputText style="color:red;" value="  *"
+										rendered="#{!registerCaptialBean.checkInputable('actualAuditCu') ? false : true}" />
+									<h:outputText value="#{msgs.lbl_tenThousand}" />
+								</h:panelGroup>
+								<h:outputLabel value="" />
+								<h:panelGroup>
+									<h:selectOneMenu
+										value="#{registerCaptialBean.instance.actualAuditCu}"
+										id="actualAuditCu"
+										requiredMessage="#{msgs.msg_select_actualApproveCurrency}"
+										required="#{!registerCaptialBean.checkInputable('actualAuditCu') ? false : true}"
+										styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+										style="width:140px"
+										disabled="#{registerCaptialBean.checkInputable('actualAuditCu') ? false : true}">
+										<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" />
+										<f:selectItems value="#{registerCaptialBean.currencySelect}" />
+									</h:selectOneMenu>
+									<h:outputText style="color:red;" value="  *"
+										rendered="#{!registerCaptialBean.checkInputable('actualAuditCu') ? false : true}" />
+								</h:panelGroup>
+							</h:panelGrid>
+							<div align="right">
+								<h:panelGrid columns="2" columnClasses="column40,column2">
+									<h:outputLabel value="#{msgs.lbl_doNext}" />
+									<p:selectBooleanCheckbox id="doNext"
+										value="#{registerCaptialBean.doNext}" />
+								</h:panelGrid>
+								&#160;&#160;
+								<p:commandButton id="pass" onclick="buttonDisable('pass');" icon="ui-icon ui-icon-circle-check"
+									value="#{msgs.btn_approve}" ajax="false"
+									action="#{registerCaptialBean.approveRegisterCaptial}">
+									<f:param name="auit" value="Y" />
+									<f:param name="wobj" value="#{requestScope.procInstId}" />
+								</p:commandButton>
+								&#160;&#160;
+								<p:commandButton id="reject" onclick="buttonDisable('reject');" icon="ui-icon ui-icon-circle-close"
+									value="#{msgs.btn_sendBack}" ajax="false"
+									action="#{registerCaptialBean.approveRegisterCaptial}">
+									<f:param name="auit" value="N" />
+								</p:commandButton>
+							</div>
+						</div>
+					</div>
+				</div>
+			</h:form>
+			<h:form prependId="false" id="stepDetailForm">
+				<div style="position: relative; margin-top: 5px;">
+					<p:outputPanel id="processDetailPanel">
+						<commentProcess:processDetail
+							dataList="#{registerCaptialBean.processDetailList}" />
+					</p:outputPanel>
+				</div>
+			</h:form>
+			<h:form prependId="false" id="fileForm">
+				<div style="position: relative; margin-top: 5px;">
+					<p:outputPanel id="attachmentPanel">
+						<commentProcess:filedownload updateComenId="attachmentPanel"
+							isDisable="true" dataList="#{fileDownloadBean.processFileList}" />
+					</p:outputPanel>
+				</div>
+			</h:form>
+		</p:panel>
+		<script type="text/javascript">
+			var isFirst = "true";
+			function buttonDisable(buttonId){
+				if("true"==isFirst){
+					isFirst="false";
+					return true;
+				}else{
+					document.getElementById(buttonId).disabled=true;
+					return false;
+				}
+			}
+		</script>
+	</ui:define>
+</ui:composition>

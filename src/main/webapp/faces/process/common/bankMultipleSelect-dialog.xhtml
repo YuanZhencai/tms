@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:w="http://www.wcs-global.com/customtaglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<p:dialog header="总行选择" widgetVar="bankMultiSelectDialogVar"
+		id="bankMultiSelectDialogId" resizable="false" width="1000" height="400"
+		modal="true" >
+		<h:form id="bankMultiSelectForm" prependId="false">  
+		    <p:dataTable id="bankMultiSelectTable" var="bank" value="#{bankMultipleSelectBean.dataModel}" 
+		    			 widgetVar="bankMultiSelectTableVar" 
+		    			 paginator="true" rows="10" selectionMode="multiple"  selection="#{bankMultipleSelectBean.selectedTopBanks}" 
+		    			 rowKey="#{bank.id}" paginatorPosition="bottom"
+                 		 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink} "  
+                 		 currentPageReportTemplate="{currentPage}/{totalPage}"
+		                 emptyMessage="没有数据！" >
+		         <p:ajax event="page" listener="#{bankMultipleSelectBean.saveLastPageSelection}"/>
+			     <p:column>
+			        <f:facet name="header">
+			        	<div >银行编码</div>
+			        	<p:inputText id="bankCode" value="#{bankMultipleSelectBean.bankCode}" onkeydown="if(event.keyCode==13) { return false; }" onkeyup="if(event.keyCode==13) {document.getElementById('bankMultiSelectTable:bsbCode').focus();}">
+					       	<p:ajax event="change" update=":bankMultiSelectForm:bankMultiSelectTable" listener="#{bankMultipleSelectBean.filterTopBank}" />
+					      </p:inputText>
+			        </f:facet>
+			        <h:outputText value="#{bank.bankCode}"/>
+			     </p:column>
+			     <p:column>
+			        <f:facet name="header">
+			        	<div >BSB代码</div>
+			        	<p:inputText id="bsbCode" value="#{bankMultipleSelectBean.bsbCode}" onkeydown="if(event.keyCode==13) { return false; }" onkeyup="if(event.keyCode==13) {document.getElementById('bankMultiSelectTable:unionBankNo').focus();}">
+					       	<p:ajax event="change" update=":bankMultiSelectForm:bankMultiSelectTable" listener="#{bankMultipleSelectBean.filterTopBank}" />
+					      </p:inputText>
+			        </f:facet>
+			        <h:outputText value="#{bank.bsbCode}"/>
+			     </p:column>
+			     <p:column>
+			        <f:facet name="header">
+			        	<div >联行号</div>
+			        	<p:inputText id="unionBankNo" value="#{bankMultipleSelectBean.unionBankNo}" onkeydown="if(event.keyCode==13) { return false; }" onkeyup="if(event.keyCode==13) {document.getElementById('bankMultiSelectTable:bankName').focus();}">
+					       	<p:ajax event="change" update=":bankMultiSelectForm:bankMultiSelectTable" listener="#{bankMultipleSelectBean.filterTopBank}" />
+					      </p:inputText>
+			        </f:facet>
+			        <h:outputText value="#{bank.unionBankNo}"/>
+			     </p:column>
+			     <p:column>
+			        <f:facet name="header">
+			        	<div >银行名称</div>
+			        	<p:inputText id="bankName" value="#{bankMultipleSelectBean.bankName}" onkeydown="if(event.keyCode==13) { return false; }" onkeyup="if(event.keyCode==13) {document.getElementById('bankMultiSelectTable:bankCode').focus();}">
+					       	<p:ajax event="change" update=":bankMultiSelectForm:bankMultiSelectTable" listener="#{bankMultipleSelectBean.filterTopBank}" />
+					      </p:inputText>
+			        </f:facet>
+			        <h:outputText value="#{bank.bankName}"/>
+			     </p:column>
+			     <f:facet name="footer">  
+            		<p:commandButton value="确定" icon="ui-icon-check" 
+            		action="#{bankMultipleSelectBean.beforeClose}" oncomplete="bankMultiSelectDialogVar.hide();"
+            		update=":dbListForm:receiveBank"/>
+        		</f:facet> 
+		    </p:dataTable>  
+		</h:form>
+	</p:dialog>
+</ui:composition>

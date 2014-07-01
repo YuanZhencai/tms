@@ -1,0 +1,85 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<p:outputPanel id="shareEditPanel">
+		<h:panelGrid id="shareEditPanel1" columns="4"
+			columnClasses="column41,column42,column41,column42"
+			footerClass="footer1">
+			<h:outputLabel value="股东名称：" />
+			<h:panelGroup>
+				<p:inputText id="shareHolderNameEdit" required="true"
+					requiredMessage="请输入股东名称"
+					value="#{shareHolderBean.shareHolder.shareHolderName}">
+				</p:inputText>
+				<h:outputText style="color:red;" value=" *" />
+			</h:panelGroup>
+
+			<h:outputLabel value="币别：" />
+			<h:panelGroup>
+				<h:selectOneMenu id="fondsCurrencyEdit" disabled="false"
+					value="#{shareHolderBean.shareHolder.fondsCurrency}"
+					styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+					style="width:145px">
+					<f:selectItems value="#{shareHolderBean.currencySelect}" />
+				</h:selectOneMenu>
+			</h:panelGroup>
+			<h:outputLabel value="注册金额：" />
+			<h:panelGroup>
+				<p:inputText id="fondsTotalEdit" required="true" label="注册金额"
+					requiredMessage="请输入注册金额" converterMessage="注册金额必须是数字"
+					validatorMessage="注册金额必须在0~100000000之间"
+					value="#{shareHolderBean.shareHolder.fondsTotal}">
+					<f:validateDoubleRange maximum="99999999.9999" minimum="0.00" />
+					<f:convertNumber pattern="#,##0.####" />
+					<p:ajax listener="#{shareHolderBean.equityCalculation(2)}"
+						update="equityPercEdit,fondsNotInPlaceEdit" />
+				</p:inputText>
+				<h:outputLabel value="万" />
+			</h:panelGroup>
+			<h:outputLabel value="股权比例：" />
+			<h:panelGroup>
+				<p:inputText id="equityPercEdit"
+					value="#{shareHolderBean.shareHolder.equityPerc}" disabled="true">
+					<f:convertNumber type="number" pattern="###.##" />
+				</p:inputText>
+				<h:outputLabel value="%" />
+			</h:panelGroup>
+			<h:outputLabel value="已到位金额：" />
+			<h:panelGroup>
+				<p:inputText id="fondsInPlaceEdit" label="已到位金额"
+					converterMessage="已到位金额必须是数字"
+					validatorMessage="已到位金额必须在0~100000000之间"
+					value="#{shareHolderBean.shareHolder.fondsInPlace}">
+					<f:validateDoubleRange maximum="99999999.9999" minimum="0.00" />
+					<f:convertNumber pattern="#,##0.####" />
+					<p:ajax listener="#{shareHolderBean.calculationPlace(2)}"
+						update="fondsNotInPlaceEdit,shareholderMsgIdDiglog,shareEditPanel" />
+				</p:inputText>
+				<h:outputLabel value="万" />
+			</h:panelGroup>
+			<h:outputLabel value="未到位金额：" />
+			<h:panelGroup>
+				<p:inputText id="fondsNotInPlaceEdit" disabled="true"
+					value="#{shareHolderBean.shareHolder.fondsNotTotal}">
+					<f:convertNumber pattern="#,##0.####" />
+				</p:inputText>
+				<h:outputLabel value="万" />
+			</h:panelGroup>
+			<f:facet name="footer">
+				<p:commandButton id="shareUpdateBtn" value="保存"
+					update="stockholderOutTable,shareholderMsgId,shareHolderNameMsgEdit,fondsCurrencyMsgEdit,fondsTotalMsgEdit,shareholderMsgIdDiglog,fondsInPlaceMsgEdit"
+					oncomplete="handleComplete(sharedEditDialog,args)"
+					action="#{shareHolderBean.editShareHolder}"
+					icon="ui-icon ui-icon-disk" />
+			            &#160;&#160;
+			            <p:commandButton value="取消" type="button"
+					onclick="sharedEditDialog.hide()" id="shareUpdateCanelBtn"
+					icon="ui-icon ui-icon-cancel" />
+			</f:facet>
+		</h:panelGrid>
+	</p:outputPanel>
+
+</ui:composition>

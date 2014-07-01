@@ -1,0 +1,152 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<!-- 	<link href="#{request.contextPath}/template/css/oa_default.css"
+		rel="stylesheet" type="text/css" />
+	<script type="text/javascript"
+		src="#{request.contextPath}/template/js/oa_default.js" /> -->
+	<script type="text/javascript"
+		src="#{request.contextPath}/template/js/primefaces_locales.js" />
+	<style type="text/css">
+/* 组件默认样式 */
+
+/* 输入框默认样式 */
+.ui-widget-content input.ui-state-default {
+	font-weight: normal;
+}
+/* dataTable样式 */
+div.ui-datatable select.ui-paginator-rpp-options {
+	width: auto;
+}
+/* 只有图标的按钮的样式 */
+.ui-button-icon-only {
+	width: 20px;
+	height: 20px;
+}
+/* primefaces上传组件样式(火狐不兼容问题) */
+div.fileupload-buttonbar label.fileinput-button {
+	/* overflow: visible; */
+	
+}
+
+div.fileupload-buttonbar label.fileinput-button input { /* width: auto;
+height: auto; */
+	
+}
+</style>
+	<style type="text/css">
+/* 禁用样式 */
+/* 输入框 */
+.ui-widget-content input[disabled=disabled] {
+	border: 0px;
+	background: transparent;
+}
+/* 下拉列表 */
+div.ui-selectonemenu.ui-state-disabled {
+	background: transparent;
+	border: 0px;
+}
+
+div.ui-selectonemenu.ui-state-disabled label {
+	background-color: transparent;
+}
+
+div.ui-selectonemenu.ui-state-disabled div.ui-selectonemenu-trigger {
+	display: none;
+}
+/* 复选框 */
+div.ui-chkbox div.ui-state-disabled {
+	
+}
+/* textarea */
+textarea.ui-inputtextarea.ui-state-disabled {
+	background: transparent;
+}
+</style>
+	<style type="text/css">
+/* OA使用的统一css样式 */
+.oa-panel {
+	background-color: transparent;
+	background: transparent;
+}
+
+.oa-output-normal {
+	font-weight: bold;
+	background-image: none;
+}
+
+.oa-output-must {
+	font-weight: bold;
+	color: red;
+}
+
+.oa-selectOneMenu {
+	/* background: #f2f5f7
+		url(images/ui-bg_highlight-hard_100_f2f5f7_1x100.png) 50% top repeat-x; */
+	color: #362b36;
+	border: 1px solid #aed0ea;
+	margin: 0;
+	outline: medium none;
+	padding: 4px;
+	border-radius: 3px 3px 3px 3px;
+}
+</style>
+	<script type="text/javascript">
+		$(document).ready(
+				function() {
+					// 输入框禁用或者只读
+					$("input[disabled='disabled']").css("background-color",
+							"transparent");
+					$("input[disabled='disabled']").css("color", "black");
+					$("input[readonly='readonly']").css("background-color",
+							"transparent");
+				});
+		$(document).ajaxComplete(
+				function() {
+					// 输入框禁用或者只读
+					$("input[disabled='disabled']").css("background-color",
+							"transparent");
+					$("input[disabled='disabled']").css("color", "black");
+					$("input[readonly='readonly']").css("background-color",
+							"transparent");
+				});
+		//设置火狐浏览器的上传组件样式
+		$(document).ready(
+				function() {
+					var bro = $.browser;
+					if (bro.mozilla) {
+						$(".fileupload-buttonbar label.fileinput-button").css(
+								"overflow", "visible");
+					}
+				});
+		$(document).ajaxComplete(
+				function() {
+					var bro = $.browser;
+					if (bro.mozilla) {
+						$(".fileupload-buttonbar label.fileinput-button").css(
+								"overflow", "visible");
+					}
+				});
+	</script>
+	<script type="text/javascript">
+		//<![CDATA[        
+		function DialogObj() {
+			//添加方法rtFunc为回调函数名称
+			this.modalFunc = function() {
+				$("#submitDiv").css("display", "");
+			}
+			this.modalLessFunc = function() {
+				$("#submitDiv").css("display", "none");
+			}
+		}
+		function showPopgr(diaObj) {
+			var tHtml = "#{request.contextPath}/faces/sys/common/popgr.xhtml";
+			window
+					.showModalDialog(tHtml, diaObj,
+							"status:no;resizable:no;dialogHeight:540px;dialogWidth:800px;help:no;");
+		}
+		//]]>
+	</script>
+</ui:composition>

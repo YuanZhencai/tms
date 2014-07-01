@@ -1,0 +1,218 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/template/template.xhtml">
+
+	<ui:define name="title">银行信息管理</ui:define>
+	<ui:define name="styleAndScript">
+		<script language="JavaScript">
+			window.onload = function() {
+				changeTopFlag();
+			}
+			function changeTopFlag() {
+				var topFlagY = document.getElementById("dia_topBankFlag:0");
+				var topFlagN = document.getElementById("dia_topBankFlag:1");
+				var dia_topBankName = document
+						.getElementById("dia_topBankName");
+				if (topFlagY.checked == true) {
+					dia_topBankName.disabled = true;
+				} else {
+					dia_topBankName.disabled = false;
+				}
+			}
+		</script>
+	</ui:define>
+	<ui:define name="content">
+
+		<input type="hidden" id="menuOne" value="27" />
+		<input type="hidden" id="menuTwo" value="28" />
+
+		<h:form id="bankListForm" prependId="false"
+			onsubmit="statusComplete();">
+			<p:panel styleClass="panel1">
+				<p:breadCrumb preview="true" expandEffectDuration="200"
+					previewWidth="24" style="width: 99.1%">
+					<p:menuitem value="系统管理" url="#" />
+					<p:menuitem value="主数据管理" url="#" />
+					<p:menuitem value="银行信息管理" url="#" />
+				</p:breadCrumb>
+
+				<p:message id="msg" for="msg" />
+
+				<div class="style1">
+					<h:panelGrid columns="8"
+						columnClasses="column0,column2,column0,column2,column0,column2,column0,column2">
+
+						<h:outputLabel value="银行代码：" />
+						<p:inputText id="bankCode"
+							value="#{bankBean.conditionMap['bankCode']}" />
+
+						<h:outputLabel value="银行中文名：" />
+						<p:inputText id="bankName"
+							value="#{bankBean.conditionMap['bankName']}" />
+
+						<h:outputLabel value="银行英文名：" />
+						<p:inputText id="bankEn"
+							value="#{bankBean.conditionMap['bankEn']}" />
+
+						<h:outputLabel value="一级机构名称：" />
+						<h:selectOneMenu id="topBankName"
+							value="#{bankBean.conditionMap['topBankId']}"
+							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+							<f:selectItem itemLabel="全部" itemValue="0" />
+							<f:selectItems value="#{bankBean.topLevelSelect}" />
+						</h:selectOneMenu>
+
+						<h:outputLabel value="BSB代码：" />
+						<p:inputText id="bsbCode"
+							value="#{bankBean.conditionMap['bsbCode']}" />
+
+					</h:panelGrid>
+
+					<div>
+						<p:commandButton id="query" action="#{bankBean.searchBank}"
+							update="bankListPl,msg,errorMsg" value="查询"
+							image="ui-icon ui-icon-search" />
+
+						<p:commandButton id="toAdd" action="#{bankBean.clear}"
+							update="bankDlg,msg,errorMsg" oncomplete="bankDialog.show()"
+							value="新建" image="ui-icon ui-icon-plus" />
+					</div>
+				</div>
+				<br />
+				<p:outputPanel id="bankListPl">
+					<p:dataTable var="bank" id="bankList" value="#{bankBean.bankList}"
+						rowKey="#{bank.id}" paginator="true" rows="10"
+						paginatorPosition="bottom"
+						paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
+						currentPageReportTemplate="{currentPage}/{totalPage}"
+						emptyMessage="无满足条件数据！">
+
+						<f:facet name="header">银行列表</f:facet>
+
+						<p:column headerText="银行代码">
+							<h:panelGroup>
+								<h:outputText value="&#160;&#160;&#160;&#160;&#160;"
+									rendered="#{bank.topLevelFlag == 'N' ? true : false}" />
+								<h:outputText value="#{bank.bankCode}" />
+							</h:panelGroup>
+						</p:column>
+
+						<p:column headerText="银行中文名">
+							<h:outputText value="#{bank.bankName}" />
+						</p:column>
+
+						<p:column headerText="银行英文名">
+							<h:outputText value="#{bank.bankEn}" />
+						</p:column>
+
+						<p:column headerText="状态">
+							<h:outputText value="#{bank.status == 'Y' ? '可用' : '不可用'}" />
+						</p:column>
+
+						<p:column styleClass="operating_90" headerText="操作">
+
+							<p:commandButton action="#{bankBean.disable}"
+								image="ui-icon ui-icon-close" title="禁用/启用"
+								update="bankListPl,msg">
+								<f:setPropertyActionListener value="#{bank}"
+									target="#{bankBean.bank}" />
+							</p:commandButton>
+							<p:commandButton action="#{bankBean.toEdit}"
+								image="ui-icon ui-icon-pencil" title="修改"
+								oncomplete="bankDialog.show();changeTopFlag();"
+								update="bankListPl,bankDlg,msg,errorMsg">
+								<f:setPropertyActionListener value="#{bank}"
+									target="#{bankBean.bank}" />
+							</p:commandButton>
+						</p:column>
+
+					</p:dataTable>
+				</p:outputPanel>
+			</p:panel>
+		</h:form>
+		<h:form prependId="false" id="bankAddForm">
+			<p:dialog header="#{bankBean.op}银行" widgetVar="bankDialog"
+				resizable="false" modal="true" id="bankDlg" width="800">
+				<p:messages id="errorMsg" />
+				<h:panelGrid columns="6"
+					columnClasses="column0,column2,column0,column2,column0,column2">
+
+					<h:outputLabel value="银行代码：" />
+					<h:panelGroup>
+						<p:inputText id="dia_bankCode" value="#{bankBean.bank.bankCode}"
+							maxlength="50" disabled="#{bankBean.op == '修改' ? true :false}"
+							required="true" requiredMessage="银行代码：不可为空!">
+
+						</p:inputText>
+						<h:outputLabel value="*" style="color:red" />
+					</h:panelGroup>
+
+					<h:outputLabel value="银行中文名：" />
+					<h:panelGroup>
+						<p:inputText id="dia_bankName" value="#{bankBean.bank.bankName}"
+							maxlength="50" required="true" requiredMessage="银行中文名：不可为空!" />
+						<h:outputLabel value="*" style="color:red" />
+					</h:panelGroup>
+
+					<h:outputLabel value="银行英文名：" />
+					<h:panelGroup>
+						<p:inputText id="dia_bankEn" value="#{bankBean.bank.bankEn}"
+							maxlength="50" required="true" requiredMessage="银行英文名：不可为空!" />
+						<h:outputLabel value="*" style="color:red" />
+					</h:panelGroup>
+
+					<h:outputLabel value="机构类型：" />
+					<p:selectOneRadio id="dia_topBankFlag"
+						value="#{bankBean.bank.topLevelFlag}" onchange="changeTopFlag();"
+						disabled="#{bankBean.op == '修改' ? true :false}">
+						<f:selectItem itemLabel="一级机构" itemValue="Y" />
+						<f:selectItem itemLabel="分支机构" itemValue="N" />
+					</p:selectOneRadio>
+
+					<h:outputLabel value="一级机构名称：" />
+					<h:selectOneMenu id="dia_topBankName" name="dia_topBankName"
+						value="#{bankBean.bank.topBankId}"
+						styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+						<f:selectItems value="#{bankBean.topLevelSelect}" />
+					</h:selectOneMenu>
+
+					<h:outputLabel value="BSB代码：" />
+					<p:inputText id="dia_bsbCode" value="#{bankBean.bank.bsbCode}" />
+
+					<h:outputLabel value="交易对手代码：" />
+					<p:inputText id="dia_counterpartyCode"
+						value="#{bankBean.bank.counterpartyCode}" />
+
+					<h:outputLabel value="联行号：" />
+					<p:inputText id="dia_unionBankNo"
+						value="#{bankBean.bank.unionBankNo}" />
+
+					<h:outputLabel value="数据类别：" />
+					<h:selectOneMenu id="dia_dataType"
+						value="#{bankBean.bank.accountBankFlag}"
+						styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+						<f:selectItems value="#{bankBean.bankTypeSelect}" />
+					</h:selectOneMenu>
+				</h:panelGrid>
+				<f:facet name="footer">
+					<p:commandButton action="#{bankBean.saveBank}" value="保存" id="add"
+						icon="ui-icon ui-icon-disk" update="bankListPl,msg,errorMsg"
+						oncomplete="handleComplete(bankDialog,args);" />
+						&#160;&#160;
+						<p:commandButton value="取消" onclick="bankDialog.hide()"
+						type="button" id="roleBACKID" icon="ui-icon ui-icon-cancel" />
+				</f:facet>
+			</p:dialog>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>
+
+
