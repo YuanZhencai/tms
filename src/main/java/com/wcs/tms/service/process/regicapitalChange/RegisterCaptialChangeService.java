@@ -36,25 +36,14 @@ import com.wcs.tms.view.process.common.entity.ChangeShareholderVo;
 
 import filenet.vw.api.VWWorkObjectNumber;
 
-/**
- * <p>
- * Project: tms
- * </p>
- * <p>
- * Title: RegisterCaptialChangeService.java
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
- * Copyright (c) 2014 Wilmar Consultancy Services
- * </p>
- * <p>
- * All Rights Reserved.
- * </p>
- * 
- * @author <a href="mailto:yuanzhencai@wcs-global.com">Yuan</a>
- */
+/** 
+* <p>Project: tms</p> 
+* <p>Title: RegisterCaptialChangeService.java</p> 
+* <p>Description: </p> 
+* <p>Copyright (c) 2014 Wilmar Consultancy Services</p>
+* <p>All Rights Reserved.</p>
+* @author <a href="mailto:yuanzhencai@wcs-global.com">Yuan</a> 
+*/
 @Stateless
 public class RegisterCaptialChangeService implements Serializable {
 
@@ -343,7 +332,7 @@ public class RegisterCaptialChangeService implements Serializable {
 			shareHolder.setUpdatedBy(user);
 			shareHolder.setUpdatedDatetime(date);
 			
-			shareHolder.setDefunctInd("N");
+			shareHolder.setDefunctInd("删除".equals(sh.getStatus()) ? "Y": "N");
 			
 			shareHolder.setEquityPerc(sh.getEquityPerc());
 			shareHolder.setFondsCurrency(sh.getFondsCurrency());

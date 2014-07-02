@@ -8,17 +8,16 @@
 		widgetVar="saveHolderDialogVar" modal="true" showEffect="fade"
 		hideEffect="fade" resizable="false">
 		<h:form id="saveHolderForm" prependId="false">
-			<p:messages id="saveHolderMessage" autoUpdate="false"
-				showDetail="true" />
+			<p:messages id="saveHolderMessage" autoUpdate="false" />
 			<h:panelGrid columns="2" columnClasses="column1,column2">
 				<h:outputText value="股东名称" />
-				<p:inputText id="shareHolderName"
+				<p:inputText id="shareHolderName" disabled="#{registerCaptialChangeBean.operate == 'add' ? false:true}"
 					value="#{registerCaptialChangeBean.shareHolder.shareholderName}"></p:inputText>
 			</h:panelGrid>
 			<h:panelGrid columns="4"
 				columnClasses="column1,column2,column1,column2">
 				<h:outputText value="注册资金" />
-				<p:inputText id="fondsTotal"
+				<p:inputText id="fondsTotal" label="注册资金" required="true" requiredMessage="注册资金：不能为空。"
 					value="#{registerCaptialChangeBean.shareHolder.fondsTotal}">
 					<p:ajax event="blur" listener="#{registerCaptialChangeBean.caculationTotal()}" process="@all" update=":saveHolderForm" />	
 				</p:inputText>
@@ -34,14 +33,15 @@
 					<p:ajax event="blur" process="@all" update=":saveHolderForm" />	
 				</p:inputText>
 				<h:outputText value="股权关联" />
-				<p:selectOneRadio
+				<p:selectOneRadio id="isEquityRelated" disabled="#{registerCaptialChangeBean.checkInputable('isEquityRelated') ? false : true}"
 					value="#{registerCaptialChangeBean.shareHolder.isEquityRelated}">
 					<f:selectItem itemLabel="是" itemValue="1" />
 					<f:selectItem itemLabel="否" itemValue="0" />
 				</p:selectOneRadio>
 				<h:outputText value="未到位资金" />
 				<p:inputText disabled="true"
-					value="#{registerCaptialChangeBean.shareHolder.fondsTotal - registerCaptialChangeBean.shareHolder.fondsInPlace}"></p:inputText>
+					value="#{registerCaptialChangeBean.shareHolder.fondsTotal - registerCaptialChangeBean.shareHolder.fondsInPlace}">
+				</p:inputText>
 				<h:outputText value="关联比例" />
 				<p:inputText
 					value="#{registerCaptialChangeBean.shareHolder.relatedPerc}">
@@ -62,13 +62,13 @@
 			<div style="text-align: center; margin-top: 5px;">
 				<p:commandButton icon="ui-icon ui-icon-check"
 					rendered="#{registerCaptialChangeBean.operate == 'add' ? 'true':'false'}"
-					value="新增" update=":addRegisterChangeForm,:saveHolderForm"
+					value="确定" update=":addRegisterChangeForm:stockholderListId,:saveHolderForm"
 					action="#{registerCaptialChangeBean.createShareholder()}"
 					style="margin-right: 5px;"
 					oncomplete="handleDialog(xhr, status, args);" />
 				<p:commandButton icon="ui-icon ui-icon-check"
 					rendered="#{registerCaptialChangeBean.operate == 'edit'  ? 'true':'false'}"
-					value="更新" update=":addRegisterChangeForm,:saveHolderForm"
+					value="确定" update=":addRegisterChangeForm:stockholderListId,:saveHolderForm"
 					action="#{registerCaptialChangeBean.updateShareholder()}"
 					style="margin-right: 5px;"
 					oncomplete="handleDialog(xhr, status, args);" />

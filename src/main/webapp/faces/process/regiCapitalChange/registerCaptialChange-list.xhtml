@@ -63,7 +63,8 @@
 									style="width: 200px;"
 									value="#{registerCaptialChangeBean.instance.investTotal}">
 									<f:convertNumber pattern="#,##0.####" />
-									<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"></f:validateDoubleRange>
+									<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"/>
+									<p:ajax event="blur" process="@all" listener="#{registerCaptialChangeBean.caculationInvestRegRemaFunds()}" update=":addRegisterChangeForm" />	
 								</p:inputText>
 								<h:outputLabel value="(万)"></h:outputLabel>
 								<h:selectOneMenu id="investCurrency1" name="afcePaidCu"
@@ -71,6 +72,7 @@
 									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
 									<f:selectItems
 										value="#{registerCaptialChangeBean.currencySelect}" />
+								
 								</h:selectOneMenu>
 								<h:outputText style="color:red;" value=" *" />
 							</h:panelGroup>
@@ -99,13 +101,13 @@
 								value="#{registerCaptialChangeBean.instance.isInvestRegRemaAvai}">
 								<f:selectItem itemLabel="是" itemValue="1" />
 								<f:selectItem itemLabel="否" itemValue="0" />
+								<p:ajax event="change" process="@all" listener="#{registerCaptialChangeBean.caculationInvestRegRemaFunds()}" update=":addRegisterChangeForm" />	
 							</p:selectOneRadio>
 							<h:panelGroup>
 								<p:inputText id="investRegRemaFunds1"
-									label="#{msgs.lbl_afcePaid}"
+									label="投注差可用"
 									value="#{registerCaptialChangeBean.instance.investRegRemaFunds}">
 									<f:convertNumber pattern="#,##0.####" />
-									<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"></f:validateDoubleRange>
 								</p:inputText>
 								<h:selectOneMenu id="investRegRemaFundsCu1"
 									name="investRegRemaFundsCu"
@@ -142,7 +144,7 @@
 					<div style="position: relative; margin-top: 5px;">
 						<ui:include src="shareholder-list.xhtml" />
 					</div>
-					<div>
+					<div align="right">
 						<p:commandButton icon="ui-icon ui-icon-arrowthick-1-n"
 							value="#{msgs.btn_upload}" title="#{msgs.title_AFCE_attach}"
 							immediate="true" oncomplete="fileUploadDialog.show()"

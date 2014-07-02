@@ -75,12 +75,12 @@ public class RegisterCaptialChangeBean extends FileUpload<ProcRegiCapitalChange>
 	private String title;
 	/** 内嵌股东信息分页模型 */
 	private LazyDataModel<ShareHolder> shareHolderModel;
-	
+
 	private List<ChangeShareholderVo> changeShareHolders;
-	
+
 	private ChangeShareholderVo shareHolder = new ChangeShareholderVo();
 	private ChangeShareholderVo selectedHolder;
-	
+
 	/** 流程详细List数据 */
 	private List<ProcessDetailVo> processDetailList = new ArrayList<ProcessDetailVo>();
 	/** 资金币种下拉 */
@@ -98,14 +98,14 @@ public class RegisterCaptialChangeBean extends FileUpload<ProcRegiCapitalChange>
 	private Integer currentIndex;
 	// 当前处理任务类型（已接受和待接收）
 	private String currentTaskType;
-	
+
 	private String operate;
-	
+
 	private Double holderTotal;
 	private Double oldHolderTotal;
-	
+
 	private Boolean isEquityPercChange = false;
-	
+
 	@Inject
 	private CompanyTmsService companyTmsService;
 	@Inject
@@ -119,14 +119,13 @@ public class RegisterCaptialChangeBean extends FileUpload<ProcRegiCapitalChange>
 	@Inject
 	PatchMainService patchMainService;
 	@Inject
-    private LoginService loginService;
+	private LoginService loginService;
 
 	@Inject
 	PEManager peManager;
 
 	// 是否是补丁表中获取到数据查看，处理2014.4.11~2014.4.28之间发生故障，丢失的流程数据和流程审批日志的查看
 	private String isPatch;
-
 
 	public RegisterCaptialChangeBean() {
 		// list已提价流程界面,input已处理流程界面
@@ -149,7 +148,6 @@ public class RegisterCaptialChangeBean extends FileUpload<ProcRegiCapitalChange>
 				currentTaskType = (String) JSFUtils.getParamValue("currentTaskType");
 
 				title = JSFUtils.getParamValue("stepName");
-				getInputable(title);
 			}
 			displayProcessDetail();
 			displayDetailAttach(workObjNum);
@@ -164,7 +162,9 @@ public class RegisterCaptialChangeBean extends FileUpload<ProcRegiCapitalChange>
 			registerDate = DateUtil.dateToStrShort(DateUtil.getNowDateShort());
 			initdata(false);
 			getInstance().setPeMemo("提交");
+			getInstance().setIsInvestRegRemaAvai("0");
 		}
+		getInputable(title);
 	}
 
 	public void findCaptialChangeByCp() {
@@ -187,6 +187,24 @@ public class RegisterCaptialChangeBean extends FileUpload<ProcRegiCapitalChange>
 	}
 
 	/**
+	 * 恢复股东
+	 */
+	public void recoverShareholder() {
+		List<ChangeShareholderVo> shareHolders = selectedHolder.getShareHolders();
+		ChangeShareholderVo oldShareholderVo = shareHolders.get(0);
+		ChangeShareholderVo newShareholderVo = shareHolders.get(1);
+		try {
+			ConvertUtils.register(new DateConverter(null), java.util.Date.class);
+			BeanUtils.copyProperties(newShareholderVo, oldShareholderVo);
+			newShareholderVo.setStatus("更新");
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		}
+		isEquityPercChange = true;
+		refreshShareHolders();
+	}
+
+	/**
 	 * 添加股东
 	 */
 	public void addShareholder() {
@@ -198,13 +216,14 @@ public class RegisterCaptialChangeBean extends FileUpload<ProcRegiCapitalChange>
 		selectedHolder = new ChangeShareholderVo();
 		handleDialogByWidgetVar("saveHolderDialogVar", "open");
 	}
-	
+
 	/**
 	 * 创建股东
 	 */
 	public void createShareholder() {
-		if(validateSholder(shareHolder)) {
-			if (changeShareHolders == null ) changeShareHolders = new ArrayList<ChangeShareholderVo>();
+		if (validateSholder(shareHolder)) {
+			if (changeShareHolders == null)
+				changeShareHolders = new ArrayList<ChangeShareholderVo>();
 			try {
 				shareHolder.setStatus(shareHolder.getStatus() == null ? "新增" : shareHolder.getStatus());
 				ConvertUtils.register(new DateConverter(null), java.util.Date.class);
@@ -220,17 +239,17 @@ public class RegisterCaptialChangeBean extends FileUpload<ProcRegiCapitalChange>
 			refreshShareHolders();
 		}
 	}
-	
+
 	/**
 	 * 编辑股东
 	 */
 	public void editShareholder() {
 		shareHolder = new ChangeShareholderVo();
-		ChangeShareholderVo changeShareholderVo	= new ChangeShareholderVo();
+		ChangeShareholderVo changeShareholderVo = new ChangeShareholderVo();
 		try {
 			List<ChangeShareholderVo> shareHolders = selectedHolder.getShareHolders();
-			if(shareHolders != null && shareHolders.size() > 1 ) {
-				changeShareholderVo = shareHolders.get(1);		
+			if (shareHolders != null && shareHolders.size() > 1) {
+				changeShareholderVo = shareHolders.get(1);
 			} else {
 				BeanUtils.copyProperties(changeShareholderVo, selectedHolder);
 			}
@@ -240,21 +259,21 @@ public class RegisterCaptialChangeBean extends FileUpload<ProcRegiCapitalChange>
 			logger.error(e.getMessage(), e);
 		}
 	}
-	
+
 	/**
 	 * 更新股东
 	 */
 	public void updateShareholder() {
-		if(validateSholder(shareHolder)) {
+		if (validateSholder(shareHolder)) {
 			try {
-				if(!"新增".equals(shareHolder.getStatus())) {
+				if (!"新增".equals(shareHolder.getStatus())) {
 					shareHolder.setStatus("更新");
 				}
 				ConvertUtils.register(new DateConverter(null), java.util.Date.class);
 				ChangeShareholderVo newHolder = new ChangeShareholderVo();
 				BeanUtils.copyProperties(newHolder, shareHolder);
 				List<ChangeShareholderVo> shareHolders = selectedHolder.getShareHolders();
-				if(shareHolders != null && shareHolders.size() > 1) {
+				if (shareHolders != null && shareHolders.size() > 1) {
 					shareHolders.set(1, newHolder);
 				} else {
 					shareHolders.add(newHolder);
@@ -265,9 +284,9 @@ public class RegisterCaptialChangeBean extends FileUpload<ProcRegiCapitalChange>
 			}
 			refreshShareHolders();
 		}
-		
+
 	}
-	
+
 	/**
 	 * 更新股东
 	 */
@@ -281,13 +300,13 @@ public class RegisterCaptialChangeBean extends FileUpload<ProcRegiCapitalChange>
 			return;
 		}
 		ChangeShareholderVo oldHolder = shareHolders.get(0);
-		ChangeShareholderVo  newHolderVo = new ChangeShareholderVo();
+		ChangeShareholderVo newHolderVo = new ChangeShareholderVo();
 		newHolderVo.getShareHolders().add(newHolderVo);
 		newHolderVo.setShareholderIdOriginal(oldHolder.getShareholderIdOriginal());
 		newHolderVo.setStatus("删除");
 		newHolderVo.setShareholderName(oldHolder.getShareholderName());
 		newHolderVo.setIsEquityRelated(oldHolder.getIsEquityRelated());
-		if(shareHolders.size() > 1) {
+		if (shareHolders.size() > 1) {
 			shareHolders.set(1, newHolderVo);
 		} else {
 			shareHolders.add(newHolderVo);
@@ -295,39 +314,69 @@ public class RegisterCaptialChangeBean extends FileUpload<ProcRegiCapitalChange>
 		isEquityPercChange = true;
 		refreshShareHolders();
 	}
-	
+
 	public boolean validateSholder(ChangeShareholderVo s) {
 		boolean validate = true;
-		
+		String shareholderName = s.getShareholderName();
+		if ("add".equals(operate) && shareholderName == null || "".equals(shareholderName)) {
+			MessageUtils.addErrorMessage("saveHolderMessage", "股东名称：不能为空。");
+			validate = false;
+		}
+		Double fondsTotal = s.getFondsTotal();
+		if (fondsTotal == null) {
+			MessageUtils.addErrorMessage("saveHolderMessage", "注册资金：不能为空。");
+			validate = false;
+		} else if (fondsTotal < 0) {
+			MessageUtils.addErrorMessage("saveHolderMessage", "注册资金：必须大于0。");
+			validate = false;
+		}
+		Double fondsInPlace = s.getFondsInPlace();
+		if (fondsInPlace == null) {
+			MessageUtils.addErrorMessage("saveHolderMessage", "到位资金：不能为空。");
+			validate = false;
+		} else if (fondsInPlace < 0) {
+			MessageUtils.addErrorMessage("saveHolderMessage", "到位资金：必须大于0。");
+			validate = false;
+		}
+		Double notInflace = fondsTotal - fondsInPlace;
+		if(notInflace < 0) {
+			MessageUtils.addErrorMessage("saveHolderMessage", "未到位资金：必须大于0。");
+			validate = false;
+		}
 		return validate;
 	}
-	
+
 	public boolean validateInstance() {
-		System.out.println("RegisterCaptialChangeBean.validateInstance()");
 		boolean validate = true;
-		if(companyId == null) {
-			MessageUtils.addErrorMessage("msg", "公司名称：", "不能为空。");
+		if (companyId == null) {
+			MessageUtils.addErrorMessage("msg", "公司名称：不能为空。");
 			validate = false;
 		}
-		if(getInstance().getInvestTotal() == null) {
-			MessageUtils.addErrorMessage("msg", "投资总额：", "不能为空。");
+		if (getInstance().getInvestTotal() == null) {
+			MessageUtils.addErrorMessage("msg", "投资总额：不能为空。");
 			validate = false;
 		}
-		if(registerCaptialChangeService.hasCapitalChange(getInstance())) {
+		if (getInstance().getInvestRegRemaFunds() == null) {
+			MessageUtils.addErrorMessage("msg", "投注差可用：不能为空。");
+			validate = false;
+		} else if (getInstance().getInvestRegRemaFunds() < 0) {
+			MessageUtils.addErrorMessage("msg", "投注差可用：必须大于0。");
+			validate = false;
+		}
+		if (validate && registerCaptialChangeService.hasCapitalChange(getInstance())) {
 			MessageUtils.addErrorMessage("msg", "已经有该公司的注册资本金审批流程在审批，请不要重复提交。");
 			validate = false;
 		}
-		System.out.println("[validate]" + validate);
 		return validate;
 	}
-	
+
 	public void refreshShareHolders() {
 		if (isEquityPercChange) {
 			try {
 				ChangeShareholderVo csv;
 				for (ChangeShareholderVo sv : changeShareHolders) {
 					List<ChangeShareholderVo> shs = sv.getShareHolders();
-					if(shs.size() == 1) {
+					if (shs.size() == 1) {
 						csv = new ChangeShareholderVo();
 						ConvertUtils.register(new DateConverter(null), java.util.Date.class);
 						BeanUtils.copyProperties(csv, shs.get(0));
@@ -341,62 +390,67 @@ public class RegisterCaptialChangeBean extends FileUpload<ProcRegiCapitalChange>
 		}
 		sumShareHolder();
 		for (ChangeShareholderVo csv : changeShareHolders) {
-			for (ChangeShareholderVo c : csv.getShareHolders()) {
-				caculationEquityPerc(c);
-			}
+			caculationEquityPerc(csv);
 		}
 	}
-	
+
 	public void caculationTotal() {
 		Double total = sumShareHolder();
-		if("edit".equals(operate)) {
+		if ("edit".equals(operate)) {
 			List<ChangeShareholderVo> shs = shareHolder.getShareHolders();
-			ChangeShareholderVo vo = shs.get(shs.size()-1);
+			ChangeShareholderVo vo = shs.get(shs.size() - 1);
 			total = total - (vo.getFondsTotal() == null ? 0d : vo.getFondsTotal()) + shareHolder.getFondsTotal();
 		}
 		if ("add".equals(operate)) {
 			total = total + shareHolder.getFondsTotal();
 		}
 		Double equityPerc = shareHolder.getEquityPerc();
-		shareHolder.setEquityPerc(shareHolder.getFondsTotal()/total);
+		shareHolder.setEquityPerc(shareHolder.getFondsTotal() / total);
 		isEquityPercChange = equityPerc != shareHolder.getEquityPerc();
 	}
-	
+
+	public void caculationInvestRegRemaFunds() {
+		if ("1".equals(getInstance().getIsInvestRegRemaAvai())) {
+			Double investTotal = getInstance().getInvestTotal() == null ? 0d : getInstance().getInvestTotal();
+			getInstance().setInvestRegRemaFunds(investTotal - sumShareHolder());
+		}
+	}
+
 	public Double sumShareHolder() {
 		Double sum = 0d;
 		Double sumOld = 0d;
 		for (ChangeShareholderVo csv : changeShareHolders) {
 			List<ChangeShareholderVo> shs = csv.getShareHolders();
-			ChangeShareholderVo shareholderVo = shs.get(shs.size()-1);
+			ChangeShareholderVo shareholderVo = shs.get(shs.size() - 1);
 			ChangeShareholderVo changeShareholderVo = shs.get(0);
 			sumOld = sumOld + (changeShareholderVo.getFondsTotal() == null ? 0d : changeShareholderVo.getFondsTotal());
-			if(!"删除".equals(csv.getStatus())) {
+			if (!"删除".equals(csv.getStatus())) {
 				sum = sum + (shareholderVo.getFondsTotal() == null ? 0d : shareholderVo.getFondsTotal());
 			}
 		}
 		holderTotal = sum;
 		oldHolderTotal = sumOld;
-		
+
 		return sum;
 	}
-	
+
 	public void caculationEquityPerc(ChangeShareholderVo csv) {
-		
+
 		List<ChangeShareholderVo> shareHolders = csv.getShareHolders();
-		
+
 		for (int i = 0; i < shareHolders.size(); i++) {
 			ChangeShareholderVo vo = shareHolders.get(i);
 			Double fondsTotal = vo.getFondsTotal() == null ? 0d : vo.getFondsTotal();
-			if(i==0) {
+			if (i == 0) {
 				vo.setEquityPerc(fondsTotal / oldHolderTotal);
 			} else {
 				vo.setEquityPerc(fondsTotal / holderTotal);
 			}
 		}
-		
+
 	}
-	
- 	public void convertInstance() {
+
+	public void convertInstance() {
 		ProcRegiCapitalChange change = getInstance();
 		String currentUserName = loginService.getCurrentUserName();
 		Date createdDatetime = new Date();
@@ -404,18 +458,18 @@ public class RegisterCaptialChangeBean extends FileUpload<ProcRegiCapitalChange>
 		change.setCreatedDatetime(createdDatetime);
 		change.setUpdatedBy(currentUserName);
 		change.setUpdatedDatetime(createdDatetime);
-		
+
 		List<ProcRegiCapitalChangeShareholder> css = change.getProcRegiCapitalChangeShareholders();
-		if(css == null) {
+		if (css == null) {
 			css = new ArrayList<ProcRegiCapitalChangeShareholder>();
 		}
 		ProcRegiCapitalChangeShareholder cs = null;
 		for (ChangeShareholderVo csv : changeShareHolders) {
 			List<ChangeShareholderVo> shareHolders = csv.getShareHolders();
-			if(shareHolders != null && shareHolders.size() > 1) {
+			if (shareHolders != null && shareHolders.size() > 1) {
 				ChangeShareholderVo changeShareholderVo = shareHolders.get(1);
 				cs = changeShareholderVo.getChangeShareholder();
-				if(cs == null) {
+				if (cs == null) {
 					cs = new ProcRegiCapitalChangeShareholder();
 					cs.setCreatedBy(currentUserName);
 					cs.setCreatedDatetime(createdDatetime);
@@ -438,10 +492,10 @@ public class RegisterCaptialChangeBean extends FileUpload<ProcRegiCapitalChange>
 				cs.setShareholderName(changeShareholderVo.getShareholderName());
 				cs.setShareholderNameOriginal(changeShareholderVo.getShareholderNameOriginal());
 				cs.setStatus(changeShareholderVo.getStatus());
-				
+
 				cs.setUpdatedBy(currentUserName);
 				cs.setUpdatedDatetime(createdDatetime);
-				
+
 			}
 		}
 		change.setProcRegiCapitalChangeShareholders(css);
@@ -477,7 +531,7 @@ public class RegisterCaptialChangeBean extends FileUpload<ProcRegiCapitalChange>
 				companyId = preg.getCompany().getId();
 				companyNameEn = preg.getCompany().getCompanyEn();
 				changeShareHolders = registerCaptialChangeService.findChangeShareholderVosBy(preg);
-//				refreshShareHolders();
+				refreshShareHolders();
 				this.setInstance(preg);
 			} catch (Exception e) {
 				logger.error("fillData方法 填充数据 出现异常：", e);
@@ -497,7 +551,7 @@ public class RegisterCaptialChangeBean extends FileUpload<ProcRegiCapitalChange>
 		try {
 			Company company = this.entityService.find(Company.class, companyId);
 			getInstance().setCompany(company);
-			if(!validateInstance()) {
+			if (!validateInstance()) {
 				return null;
 			}
 			String workflowClassName = ProcessXmlUtil.getProcessAttribute("id", "RegiCapitalChange", "className");
@@ -532,7 +586,7 @@ public class RegisterCaptialChangeBean extends FileUpload<ProcRegiCapitalChange>
 				ServiceException se = (ServiceException) ((InvocationTargetException) e).getTargetException().getCause();
 				MessageUtils.addErrorMessage("msg", se.getMessage());
 			}
-
+			logger.error(e.getMessage(), e);
 			return null;
 		}
 
@@ -554,8 +608,8 @@ public class RegisterCaptialChangeBean extends FileUpload<ProcRegiCapitalChange>
 			// 保存流程附件
 			this.saveProcessFile(workClassNum);
 			// 设置公司
-//			Company company = this.entityService.find(Company.class, companyId);
-//			getInstance().setCompany(company);
+			// Company company = this.entityService.find(Company.class, companyId);
+			// getInstance().setCompany(company);
 			convertInstance();
 			String findNextStep = ProcessXmlUtil.findNextStep(ProcessXmlUtil.getProcessAttribute("id", "RegiCapitalChange", "className"), title);
 			getInstance().setCurrentNode(findNextStep);
@@ -628,11 +682,11 @@ public class RegisterCaptialChangeBean extends FileUpload<ProcRegiCapitalChange>
 			getInstance().setUpdatedBy(loginService.getCurrentUserName());
 			getInstance().setUpdatedDatetime(new Date());
 			entityService.update(getInstance());
-			
+
 			if ("结束".equals(processFlow)) {
 				registerCaptialChangeService.updateCampanyByChange(getInstance());
 			}
-			
+
 			registerCaptialChangeService.vwDisposeTask(getInstance().getProcInstId(), paramMap,
 					processFlow.concat(getInstance().getPeMemo() == null ? "" : getInstance().getPeMemo()));
 			// 9.3处理下一个任务
@@ -655,7 +709,7 @@ public class RegisterCaptialChangeBean extends FileUpload<ProcRegiCapitalChange>
 			}
 			return null;
 		}
-		
+
 	}
 
 	/**
@@ -831,8 +885,9 @@ public class RegisterCaptialChangeBean extends FileUpload<ProcRegiCapitalChange>
 	 */
 	private void getInputable(String stepName) {
 		inputableFields = ProcessXmlUtil.getInputableDatas("RegiCapitalChange", stepName);
+		System.out.println("[inputableFields]" + inputableFields);
 	}
-	
+
 	public void handleDialogByWidgetVar(String widgetVar, String option) {
 		RequestContext context = RequestContext.getCurrentInstance();
 		context.addCallbackParam("widgetVar", widgetVar);
@@ -986,6 +1041,5 @@ public class RegisterCaptialChangeBean extends FileUpload<ProcRegiCapitalChange>
 	public boolean isViewPage() {
 		return "view".equals(JSFUtils.getParamValue("op"));
 	}
-
 
 }

@@ -63,7 +63,7 @@
 									style="width: 200px;"
 									value="#{registerCaptialChangeBean.instance.investTotal}">
 									<f:convertNumber pattern="#,##0.####" />
-									<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"></f:validateDoubleRange>
+									<p:ajax event="blur" process="@all" listener="#{registerCaptialChangeBean.caculationInvestRegRemaFunds()}" update=":addRegisterChangeForm" />	
 								</p:inputText>
 								<h:outputLabel value="(万)"></h:outputLabel>
 								<h:selectOneMenu id="investCurrency1" name="afcePaidCu"
@@ -79,7 +79,6 @@
 									style="width: 200px;" disabled="true"
 									value="#{registerCaptialChangeBean.instance.investTotalOri}">
 									<f:convertNumber pattern="#,##0.####" />
-									<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"></f:validateDoubleRange>
 								</p:inputText>
 								<h:outputLabel value="(万)"></h:outputLabel>
 								<h:selectOneMenu id="investCurrency2" name="afcePaidCu"
@@ -99,13 +98,13 @@
 								value="#{registerCaptialChangeBean.instance.isInvestRegRemaAvai}">
 								<f:selectItem itemLabel="是" itemValue="1" />
 								<f:selectItem itemLabel="否" itemValue="0" />
+								<p:ajax event="change" process="@all" listener="#{registerCaptialChangeBean.caculationInvestRegRemaFunds()}" update=":addRegisterChangeForm" />	
 							</p:selectOneRadio>
 							<h:panelGroup>
 								<p:inputText id="investRegRemaFunds1"
 									label="#{msgs.lbl_afcePaid}"
 									value="#{registerCaptialChangeBean.instance.investRegRemaFunds}">
 									<f:convertNumber pattern="#,##0.####" />
-									<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"></f:validateDoubleRange>
 								</p:inputText>
 								<h:selectOneMenu id="investRegRemaFundsCu1"
 									name="investRegRemaFundsCu"
@@ -127,7 +126,6 @@
 									label="#{msgs.lbl_afcePaid}" disabled="true"
 									value="#{registerCaptialChangeBean.instance.investRegRemaFundsOri}">
 									<f:convertNumber pattern="#,##0.####" />
-									<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"></f:validateDoubleRange>
 								</p:inputText>
 								<h:selectOneMenu id="investRegRemaFundsCu2"
 									name="investRegRemaFundsCu" disabled="true"

@@ -668,14 +668,15 @@
 			appPage="/faces/process/regiCapitalChange/registerCaptialChange-list.xhtml"
 			viewPage="/faces/process/regiCapitalChange/registerCaptialChange-view.xhtml"
 			cePath="/TMS/Process/注册资本金变更流程">
-			<step name="工厂资金岗位人员申请" entityClass="RegiCapitalChange" copStep="false"
+			<step name="工厂资金岗位人员申请" inputable="investTotal1,investCurrency1,isInvestRegRemaAvai1,investRegRemaFunds1,operateColumn,addButton,editButton,deleteButton,recoverButton"
+			    entityClass="RegiCapitalChange" copStep="false"
 				queueName="TMS_Fac_Fund_Pos" createrCheck="true" upload="true">
 			</step>
 			<step name="工厂财务经理审批" copStep="false" createrCheck="false"
 				queueName="TMS_Fac_Finance" passMemo="批准。" nopassMemo="退回。">
 				<parameter type="java.lang.Boolean">TMS_Fac_Finance_Pass</parameter>
 			</step>
-			<step name="集团项目经理审批" 
+			<step name="集团项目经理审批" inputable="operateColumn,editButton,isEquityRelated"
 				passMemo="结束" nopassMemo="退回。" copStep="true" createrCheck="false"
 				queueName="TMS_Cop_PM">
 				<parameter type="java.lang.Boolean">TMS_Cop_PM_Pass</parameter>

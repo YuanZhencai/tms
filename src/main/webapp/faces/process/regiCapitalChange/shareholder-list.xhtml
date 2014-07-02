@@ -91,17 +91,23 @@
 					</p:column>
 				</h:dataTable>
 			</p:column>
-			<p:column headerText="操作" rendered="#{not registerCaptialChangeBean.viewPage}">
-				<p:commandButton
-					action="#{registerCaptialChangeBean.editShareholder()}" value="编辑" 
+			<p:column id="operateColumn" headerText="操作" rendered="#{(not registerCaptialChangeBean.viewPage) and (registerCaptialChangeBean.checkInputable('operateColumn'))}">
+				<p:commandButton id="editButton" rendered="#{('删除' != stockholder.shareHolders.get(stockholder.shareHolders.size()-1).status) and (registerCaptialChangeBean.checkInputable('editButton'))}"
+					action="#{registerCaptialChangeBean.editShareholder()}" value="编辑"
 					oncomplete="saveHolderDialogVar.show();" update="saveHolderDialog">
 					<f:setPropertyActionListener
-						target="#{registerCaptialChangeBean.selectedHolder}"
-						value="#{stockholder}" />
+						target="#{registerCaptialChangeBean.selectedHolder}" value="#{stockholder}" />
 					<f:setPropertyActionListener
 						target="#{registerCaptialChangeBean.operate}" value="edit" />
 				</p:commandButton>
-				<p:commandButton
+				<p:commandButton id="recoverButton" rendered="#{('删除' == stockholder.shareHolders.get(stockholder.shareHolders.size()-1).status) and (registerCaptialChangeBean.checkInputable('recoverButton'))}"
+					action="#{registerCaptialChangeBean.recoverShareholder()}" value="恢复" update=":addRegisterChangeForm">
+					<f:setPropertyActionListener
+						target="#{registerCaptialChangeBean.selectedHolder}" value="#{stockholder}" />
+					<f:setPropertyActionListener
+						target="#{registerCaptialChangeBean.operate}" value="recover" />
+				</p:commandButton>
+				<p:commandButton id="deleteButton" rendered="#{(registerCaptialChangeBean.checkInputable('deleteButton'))}"
 					action="#{registerCaptialChangeBean.deleteShareholder()}" value="删除" update=":addRegisterChangeForm">
 					<f:setPropertyActionListener
 						target="#{registerCaptialChangeBean.selectedHolder}"
@@ -112,9 +118,9 @@
 			</p:column>
 
 		</p:dataTable>
-		<div>
-			<p:commandButton icon="ui-icon ui-icon-disk" value="添加股东"
-				oncomplete="handleDialog(xhr, status, args);" rendered="#{not registerCaptialChangeBean.viewPage}"
+		<div align="right">
+			<p:commandButton id="addButton" icon="ui-icon ui-icon-disk" value="添加股东"
+				oncomplete="handleDialog(xhr, status, args);" rendered="#{(not registerCaptialChangeBean.viewPage) and (registerCaptialChangeBean.checkInputable('addButton'))}"
 				update="saveHolderDialog,:addRegisterChangeForm:msg"
 				action="#{registerCaptialChangeBean.addShareholder()}">
 				<f:setPropertyActionListener
