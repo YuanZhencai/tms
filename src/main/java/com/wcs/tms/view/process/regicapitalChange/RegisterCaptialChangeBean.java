@@ -147,8 +147,10 @@ public class RegisterCaptialChangeBean extends FileUpload<ProcRegiCapitalChange>
 				currentIndex = Integer.parseInt(JSFUtils.getParamValue("currentIndex"));
 				currentTaskType = (String) JSFUtils.getParamValue("currentTaskType");
 
-				title = JSFUtils.getParamValue("stepName");
 			}
+
+			title = JSFUtils.getParamValue("stepName");
+			getInputable(title);
 			displayProcessDetail();
 			displayDetailAttach(workObjNum);
 			// 查询注册资本金变更对象
@@ -159,12 +161,13 @@ public class RegisterCaptialChangeBean extends FileUpload<ProcRegiCapitalChange>
 			// 注册时清空全局参数
 			workObjNum = null;
 			title = "工厂资金岗位人员申请";
+			getInputable(title);
 			registerDate = DateUtil.dateToStrShort(DateUtil.getNowDateShort());
 			initdata(false);
 			getInstance().setPeMemo("提交");
 			getInstance().setIsInvestRegRemaAvai("0");
 		}
-		getInputable(title);
+		
 	}
 
 	public void findCaptialChangeByCp() {
@@ -307,6 +310,7 @@ public class RegisterCaptialChangeBean extends FileUpload<ProcRegiCapitalChange>
 		newHolderVo.setShareholderName(oldHolder.getShareholderName());
 		newHolderVo.setIsEquityRelated(oldHolder.getIsEquityRelated());
 		if (shareHolders.size() > 1) {
+			newHolderVo.setChangeShareholder(vo.getChangeShareholder());
 			shareHolders.set(1, newHolderVo);
 		} else {
 			shareHolders.add(newHolderVo);
@@ -525,8 +529,9 @@ public class RegisterCaptialChangeBean extends FileUpload<ProcRegiCapitalChange>
 		if (workclassNumber != null) {
 			try {
 				ProcRegiCapitalChange preg = this.registerCaptialChangeService.findProcRegiCaptialChange(workclassNumber);
-				if (preg != null && preg.getCompany() == null) {
+				if (preg == null || preg.getCompany() == null) {
 					MessageUtils.addErrorMessage("msg", MessageUtils.getMessage("regicapital_noBound"));
+					return;
 				}
 				companyId = preg.getCompany().getId();
 				companyNameEn = preg.getCompany().getCompanyEn();
