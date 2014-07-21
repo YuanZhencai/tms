@@ -10,14 +10,15 @@
 
 	<ui:define name="title">查看外债请款</ui:define>
 	<ui:define name="styleAndScript">
-		
-	</ui:define>				
+
+	</ui:define>
 	<ui:define name="content">
 
-		<input type="hidden" id="menuOne" value="15" />	
+		<input type="hidden" id="menuOne" value="15" />
 		<input type="hidden" id="menuTwo" value="20" />
-			<p:panel styleClass="panel1">
-			<h:form id="regiCapForm" prependId="false" onsubmit="statusComplete();">
+		<p:panel styleClass="panel1">
+			<h:form id="regiCapForm" prependId="false"
+				onsubmit="statusComplete();">
 				<p:breadCrumb preview="true" expandEffectDuration="200"
 					previewWidth="24" style="width: 99.1%">
 					<p:menuitem value="#{msgs.menItem_process} " url="#" />
@@ -25,233 +26,287 @@
 					<p:menuitem value="#{msgs.lbl_regiDebtManage}" url="#" />
 				</p:breadCrumb>
 				<p:messages id="msg" />
-				
+
 				<div class="style11">
 					<h:panelGrid columns="6"
-							columnClasses="column41,column2,column2,column2,column45,column2">
+						columnClasses="column41,column2,column2,column2,column45,column2">
 						<h:outputLabel value="#{msgs.lbl_zh_applyCompanyName}：" />
-						<h:panelGroup >
-							<h:selectOneMenu id="companyName" name="companyName" required="true" requiredMessage="#{msgs.msg_required_companyName}!" 
-								value="#{regiDebtManageBean.company.id}" label="#{msgs.lbl_zh_applyCompanyName}" style="width:307px;"
+						<h:panelGroup>
+							<h:selectOneMenu id="companyName" name="companyName"
+								required="true"
+								requiredMessage="#{msgs.msg_required_companyName}!"
+								value="#{regiDebtManageBean.company.id}"
+								label="#{msgs.lbl_zh_applyCompanyName}" style="width:307px;"
 								styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
-								<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" itemValue=""/>
+								<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" itemValue="" />
 								<f:selectItems value="#{regiDebtManageBean.companySelect}" />
-								<p:ajax update="msg,tzze,tzzebz,tzc,tzcbz,zczb,zczbbz,yytzc,yytzcbz,dwzb,dwzbbz,kytzc,kytzcbz,selAcNoTb,selGdTb,dqwz,dqwzbz,zcqwz,zcqwzbz,zqwz,zqwzbz,dqzcq,dqzcqbz,qkje,qkjebz,wdzqk,wdzqkbz" 
-								listener="#{regiDebtManageBean.changeComp}" process="@all" /> 
+								<p:ajax
+									update="msg,tzze,tzzebz,tzc,tzcbz,zczb,zczbbz,yytzc,yytzcbz,dwzb,dwzbbz,kytzc,kytzcbz,selAcNoTb,selGdTb,dqwz,dqwzbz,zcqwz,zcqwzbz,zqwz,zqwzbz,dqzcq,dqzcqbz,qkje,qkjebz,wdzqk,wdzqkbz"
+									listener="#{regiDebtManageBean.changeComp}" process="@all" />
 							</h:selectOneMenu>
-						<h:outputText style="color:blue;" value="*" />
+							<h:outputText style="color:blue;" value="*" />
 						</h:panelGroup>
 					</h:panelGrid>
 					<h:panelGrid columns="1" columnClasses="column2">
-					<h:outputLabel id="deptRegiDis" value="#{msgs.lbl_deptRegiDis}:" style="font-weight: bold;width:500px"/>
+						<h:outputLabel id="deptRegiDis" value="#{msgs.lbl_deptRegiDis}:"
+							style="font-weight: bold;width:500px" />
 					</h:panelGrid>
-					
-					<h:panelGrid columns="8" columnClasses="column41,column2,column21,column41l,column41l,column2,column2,column21">
+
+					<h:panelGrid columns="8"
+						columnClasses="column41,column2,column21,column41l,column41l,column2,column2,column21">
 						<h:outputLabel for="tzze" value="#{msgs.lbl_investment1}：" />
-						<p:inputText id="tzze" 
+						<p:inputText id="tzze"
 							value="#{regiDebtManageBean.company.investTotal}" disabled="true"></p:inputText>
-						
+
 						<h:outputLabel for="tzzebz" value="#{msgs.lbl_wan}" />
-						<h:selectOneMenu id="tzzebz" name="tzzebz" disabled="true" 
+						<h:selectOneMenu id="tzzebz" name="tzzebz" disabled="true"
 							value="#{regiDebtManageBean.company.investCurrency}"
-							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all" style="width:135px">
+							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+							style="width:135px">
 							<f:selectItems value="#{regiDebtManageBean.currencySelect}" />
 						</h:selectOneMenu>
-							
-							<h:outputLabel for="tzc" value="#{msgs.lbl_investBalance1}：" />
-						<p:inputText id="tzc" 
-							value="#{regiDebtManageBean.company.investRegRemaFunds}" disabled="true"></p:inputText>
+
+						<h:outputLabel for="tzc" value="#{msgs.lbl_investBalance1}：" />
+						<p:inputText id="tzc"
+							value="#{regiDebtManageBean.company.investRegRemaFunds}"
+							disabled="true"></p:inputText>
 						<h:outputLabel for="tzcbz" value="#{msgs.lbl_wan}" />
-						<h:selectOneMenu id="tzcbz" name="tzcbz" disabled="true" 
+						<h:selectOneMenu id="tzcbz" name="tzcbz" disabled="true"
 							value="#{regiDebtManageBean.company.investRegRemaFundsCu}"
-							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all" style="width:123px">
+							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+							style="width:123px">
 							<f:selectItems value="#{regiDebtManageBean.currencySelect}" />
 						</h:selectOneMenu>
-					</h:panelGrid>	
-					
-					<h:panelGrid columns="8" columnClasses="column41,column2,column21,column41l,column41l,column2,column2,column21">
+					</h:panelGrid>
+
+					<h:panelGrid columns="8"
+						columnClasses="column41,column2,column21,column41l,column41l,column2,column2,column21">
 						<h:outputLabel for="zczb" value="#{msgs.lbl_fondsSum1}：" />
-						<p:inputText id="zczb" 
+						<p:inputText id="zczb"
 							value="#{regiDebtManageBean.company.fondsSum}" disabled="true"></p:inputText>
-						
+
 						<h:outputLabel for="zczbbz" value="#{msgs.lbl_wan}" />
-						<h:selectOneMenu id="zczbbz" name="zczbbz" disabled="true" 
+						<h:selectOneMenu id="zczbbz" name="zczbbz" disabled="true"
 							value="#{regiDebtManageBean.company.investCurrency}"
-							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all" style="width:135px">
+							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+							style="width:135px">
 							<f:selectItems value="#{regiDebtManageBean.currencySelect}" />
 						</h:selectOneMenu>
-							
-							<h:outputLabel for="yytzc" value="#{msgs.lbl_yytzc}：" />
-						<p:inputText id="yytzc" 
-							value="#{regiDebtManageBean.company.usedInvestRegRema}" disabled="true"></p:inputText>
+
+						<h:outputLabel for="yytzc" value="#{msgs.lbl_yytzc}：" />
+						<p:inputText id="yytzc"
+							value="#{regiDebtManageBean.company.usedInvestRegRema}"
+							disabled="true"></p:inputText>
 						<h:outputLabel for="yytzcbz" value="#{msgs.lbl_wan}" />
-						<h:selectOneMenu id="yytzcbz" name="yytzcbz" disabled="true" 
+						<h:selectOneMenu id="yytzcbz" name="yytzcbz" disabled="true"
 							value="#{regiDebtManageBean.company.investRegRemaFundsCu}"
-							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all" style="width:123px">
+							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+							style="width:123px">
 							<f:selectItems value="#{regiDebtManageBean.currencySelect}" />
 						</h:selectOneMenu>
-					</h:panelGrid>	
-					
-					<h:panelGrid columns="8" columnClasses="column41,column2,column21,column41l,column41l,column2,column2,column21">
+					</h:panelGrid>
+
+					<h:panelGrid columns="8"
+						columnClasses="column41,column2,column21,column41l,column41l,column2,column2,column21">
 						<h:outputLabel for="dwzb" value="#{msgs.lbl_dwzb}：" />
-						<p:inputText id="dwzb" 
-							value="#{regiDebtManageBean.company.fondsInPlaceSum}" disabled="true"></p:inputText>
-						
+						<p:inputText id="dwzb"
+							value="#{regiDebtManageBean.company.fondsInPlaceSum}"
+							disabled="true"></p:inputText>
+
 						<h:outputLabel for="dwzbbz" value="#{msgs.lbl_wan}" />
-						<h:selectOneMenu id="dwzbbz" name="dwzbbz" disabled="true" 
+						<h:selectOneMenu id="dwzbbz" name="dwzbbz" disabled="true"
 							value="#{regiDebtManageBean.company.investCurrency}"
-							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all" style="width:135px">
+							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+							style="width:135px">
 							<f:selectItems value="#{regiDebtManageBean.currencySelect}" />
 						</h:selectOneMenu>
-							
-							<h:outputLabel for="kytzc" value="#{msgs.lbl_availbBebt}：" />
-						<p:inputText id="kytzc" 
-							value="#{regiDebtManageBean.company.canUseInvestRegRema}" disabled="true"></p:inputText>
+
+						<h:outputLabel for="kytzc" value="#{msgs.lbl_availbBebt}：" />
+						<p:inputText id="kytzc"
+							value="#{regiDebtManageBean.company.canUseInvestRegRema}"
+							disabled="true"></p:inputText>
 						<h:outputLabel for="kytzcbz" value="#{msgs.lbl_wan}" />
-						<h:selectOneMenu id="kytzcbz" name="yytzcbz" disabled="true" 
+						<h:selectOneMenu id="kytzcbz" name="yytzcbz" disabled="true"
 							value="#{regiDebtManageBean.company.investRegRemaFundsCu}"
-							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all" style="width:123px">
+							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+							style="width:123px">
 							<f:selectItems value="#{regiDebtManageBean.currencySelect}" />
 						</h:selectOneMenu>
-					</h:panelGrid>		
+					</h:panelGrid>
 				</div>
-				
+
 				<div class="style11">
 					<h:panelGrid columns="1" columnClasses="column2">
-					<h:outputLabel id="debtAccount" value="#{msgs.lbl_debtAccount}:" style="font-weight: bold;width:400px"/>
+						<h:outputLabel id="debtAccount" value="#{msgs.lbl_debtAccount}:"
+							style="font-weight: bold;width:400px" />
 					</h:panelGrid>
-					
-					<p:dataTable id="selAcNoTb" var="selAcNoVar" selectionMode="single" 
-			value="#{regiDebtManageBean.debtAcNoList}" paginator="false"  
-			rowKey="#{selAcNoVar.id}" emptyMessage="#{msgs.no_data_msg}">
-		<p:column headerText="#{msgs.lbl_hklx1}">
+
+					<p:dataTable id="selAcNoTb" var="selAcNoVar" selectionMode="single"
+						value="#{regiDebtManageBean.debtAcNoList}" paginator="false"
+						rowKey="#{selAcNoVar.id}" emptyMessage="#{msgs.no_data_msg}">
+						<p:column headerText="#{msgs.lbl_hklx1}">
         #{selAcNoVar.corrBeneBankName}
         </p:column>
-        <p:column headerText="#{msgs.lbl_hklx2}">
+						<p:column headerText="#{msgs.lbl_hklx2}">
             #{selAcNoVar.swiftCode1}
         </p:column>
-         <p:column headerText="#{msgs.lbl_hklx3}">
+						<p:column headerText="#{msgs.lbl_hklx3}">
             #{selAcNoVar.acNo}
         </p:column>
-             <p:column headerText="#{msgs.lbl_hklx4}">
+						<p:column headerText="#{msgs.lbl_hklx4}">
             #{selAcNoVar.beneBankName}
         </p:column>
-         <p:column headerText="#{msgs.lbl_hklx2}">
+						<p:column headerText="#{msgs.lbl_hklx2}">
             #{selAcNoVar.swiftCode2}
         </p:column>
-        </p:dataTable>
-				
+					</p:dataTable>
+
 				</div>
-				
-				
+
+
 				<div class="style11">
 					<h:panelGrid columns="1" columnClasses="column2">
-					<h:outputLabel id="shareHolder" value="#{msgs.lbl_gdzczbj}:" style="font-weight: bold;width:400px"/>
+						<h:outputLabel id="shareHolder" value="#{msgs.lbl_gdzczbj}:"
+							style="font-weight: bold;width:400px" />
 					</h:panelGrid>
-					
-					<p:dataTable id="selGdTb" var="selGdVar" selectionMode="single" 
-			value="#{regiDebtManageBean.company.shareHolders}" paginator="false"  
-			rowKey="#{selGdVar.id}" emptyMessage="#{msgs.no_data_msg}">
-		<p:column width="" headerText="#{msgs.lbl_shareHolderName}">
+
+					<p:dataTable id="selGdTb" var="selGdVar" selectionMode="single"
+						value="#{regiDebtManageBean.company.shareHolders}"
+						paginator="false" rowKey="#{selGdVar.id}"
+						emptyMessage="#{msgs.no_data_msg}">
+						<p:column width="" headerText="#{msgs.lbl_shareHolderName}">
         #{selGdVar.shareHolderName}
         </p:column>
-        <p:column headerText="#{msgs.col_currency}">
-        <h:outputText value="#{commonBean.getValueByDictCatAndKey('TMS_TAX_PROJECT_CURRENCY_TYPE',selGdVar.fondsCurrency)}" />
-        </p:column>
-         <p:column headerText="#{msgs.item_regAmount}">
+						<p:column headerText="#{msgs.col_currency}">
+							<h:outputText
+								value="#{commonBean.getValueByDictCatAndKey('TMS_TAX_PROJECT_CURRENCY_TYPE',selGdVar.fondsCurrency)}" />
+						</p:column>
+						<p:column headerText="#{msgs.item_regAmount}">
             #{selGdVar.fondsTotal}
         </p:column>
-             <p:column headerText="#{msgs.lbl_dwzb1}">
+						<p:column headerText="#{msgs.lbl_dwzb1}">
             #{selGdVar.fondsInPlace}
         </p:column>
-         <p:column headerText="#{msgs.txt_notReadyAmount1}">
+						<p:column headerText="#{msgs.txt_notReadyAmount1}">
             #{selGdVar.fondsNotTotal}
         </p:column>
-        <p:column headerText="#{msgs.lbl_equityPerc}">
+						<p:column headerText="#{msgs.lbl_equityPerc}">
             #{selGdVar.equityPerc}
         </p:column>
-        </p:dataTable>
-				
+					</p:dataTable>
+
 				</div>
-				<div  class="style11">
-									<h:panelGrid columns="1" columnClasses="column2">
-					<h:outputLabel id="shareHolderDis" value="#{msgs.lbl_gswzed}:" style="font-weight: bold;width:500px"/>
+				<div class="style11">
+					<h:panelGrid columns="1" columnClasses="column2">
+						<h:outputLabel id="shareHolderDis" value="#{msgs.lbl_gswzed}:"
+							style="font-weight: bold;width:500px" />
 					</h:panelGrid>
-					
-					<h:panelGrid columns="8" columnClasses="column41,column2,column21,column41l,column41l,column2,column2,column21">
+
+					<h:panelGrid columns="8"
+						columnClasses="column41,column2,column21,column41l,column41l,column2,column2,column21">
 						<h:outputLabel for="dqwz" value="#{msgs.lbl_dqwz}：" />
-						<p:inputText id="dqwz" 
+						<p:inputText id="dqwz"
 							value="#{regiDebtManageBean.debtQuota.shortDebt}" disabled="true"></p:inputText>
-						
+
 						<h:outputLabel for="dqwzbz" value="#{msgs.lbl_wan}" />
-						<h:selectOneMenu id="dqwzbz" name="dqwzbz" disabled="true" 
+						<h:selectOneMenu id="dqwzbz" name="dqwzbz" disabled="true"
 							value="#{regiDebtManageBean.debtQuota.currency}"
-							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all" style="width:135px">
+							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+							style="width:135px">
 							<f:selectItems value="#{regiDebtManageBean.currencySelect}" />
 						</h:selectOneMenu>
-							
-							<h:outputLabel for="zcqwz" value="#{msgs.lbl_zcqwz}：" />
-						<p:inputText id="zcqwz" 
-							value="#{regiDebtManageBean.debtQuota.midLongDebt}" disabled="true"></p:inputText>
+
+						<h:outputLabel for="zcqwz" value="#{msgs.lbl_zcqwz}：" />
+						<p:inputText id="zcqwz"
+							value="#{regiDebtManageBean.debtQuota.midLongDebt}"
+							disabled="true"></p:inputText>
 						<h:outputLabel for="zcqwzbz" value="#{msgs.lbl_wan}" />
-						<h:selectOneMenu id="zcqwzbz" name="zcqwzbz" disabled="true" 
+						<h:selectOneMenu id="zcqwzbz" name="zcqwzbz" disabled="true"
 							value="#{regiDebtManageBean.debtQuota.currency}"
-							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all" style="width:123px">
+							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+							style="width:123px">
 							<f:selectItems value="#{regiDebtManageBean.currencySelect}" />
 						</h:selectOneMenu>
 					</h:panelGrid>
-					
-					<h:panelGrid columns="8" columnClasses="column41,column2,column21,column41l,column41l,column2,column2,column21">
+
+					<h:panelGrid columns="8"
+						columnClasses="column41,column2,column21,column41l,column41l,column2,column2,column21">
 						<h:outputLabel for="zqwz" value="#{msgs.lbl_zqwz}：" />
-						<p:inputText id="zqwz" 
-							value="#{regiDebtManageBean.debtQuota.extensionDebt}" disabled="true"></p:inputText>
-						
+						<p:inputText id="zqwz"
+							value="#{regiDebtManageBean.debtQuota.extensionDebt}"
+							disabled="true"></p:inputText>
+
 						<h:outputLabel for="zqwzbz" value="#{msgs.lbl_wan}" />
-						<h:selectOneMenu id="zqwzbz" name="zqwzbz" disabled="true" 
+						<h:selectOneMenu id="zqwzbz" name="zqwzbz" disabled="true"
 							value="#{regiDebtManageBean.debtQuota.currency}"
-							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all" style="width:135px">
+							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+							style="width:135px">
 							<f:selectItems value="#{regiDebtManageBean.currencySelect}" />
 						</h:selectOneMenu>
-							
-							<h:outputLabel for="dqzcq" value="#{msgs.lbl_dqzcq}：" />
-						<p:inputText id="dqzcq" 
-							value="#{regiDebtManageBean.debtQuota.termMidLongDebt}" disabled="true"></p:inputText>
+
+						<h:outputLabel for="dqzcq" value="#{msgs.lbl_dqzcq}：" />
+						<p:inputText id="dqzcq"
+							value="#{regiDebtManageBean.debtQuota.termMidLongDebt}"
+							disabled="true"></p:inputText>
 						<h:outputLabel for="dqzcqbz" value="#{msgs.lbl_wan}" />
-						<h:selectOneMenu id="dqzcqbz" name="dqzcqbz" disabled="true" 
+						<h:selectOneMenu id="dqzcqbz" name="dqzcqbz" disabled="true"
 							value="#{regiDebtManageBean.debtQuota.currency}"
-							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all" style="width:123px">
+							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+							style="width:123px">
 							<f:selectItems value="#{regiDebtManageBean.currencySelect}" />
 						</h:selectOneMenu>
 					</h:panelGrid>
-					
-										<h:panelGrid columns="8" columnClasses="column41,column2,column21,column41l,column41l,column2,column2,column21">
+
+					<h:panelGrid columns="8"
+						columnClasses="column41,column2,column21,column41l,column41l,column2,column2,column21">
 						<h:outputLabel for="qkje" value="#{msgs.lbl_qkje}：" />
-						<p:inputText id="qkje" 
-							value="#{regiDebtManageBean.debtQuota.extensionDebt}" disabled="true"></p:inputText>
-						
+						<p:inputText id="qkje"
+							value="#{regiDebtManageBean.debtQuota.extensionDebt}"
+							disabled="true"></p:inputText>
+
 						<h:outputLabel for="qkjebz" value="#{msgs.lbl_wan}" />
-						<h:selectOneMenu id="qkjebz" name="qkjebz" disabled="true" 
+						<h:selectOneMenu id="qkjebz" name="qkjebz" disabled="true"
 							value="#{regiDebtManageBean.debtQuota.currency}"
-							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all" style="width:135px">
+							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+							style="width:135px">
 							<f:selectItems value="#{regiDebtManageBean.currencySelect}" />
 						</h:selectOneMenu>
-							
-							<h:outputLabel for="wdzqk" value="#{msgs.lbl_wdzqk}：" />
-						<p:inputText id="wdzqk" 
-							value="#{regiDebtManageBean.debtQuota.unAccountAmount}" disabled="true"></p:inputText>
+
+						<h:outputLabel for="wdzqk" value="#{msgs.lbl_wdzqk}：" />
+						<p:inputText id="wdzqk"
+							value="#{regiDebtManageBean.debtQuota.unAccountAmount}"
+							disabled="true"></p:inputText>
 						<h:outputLabel for="wdzqkbz" value="#{msgs.lbl_wan}" />
-						<h:selectOneMenu id="wdzqkbz" name="wdzqkbz" disabled="true" 
+						<h:selectOneMenu id="wdzqkbz" name="wdzqkbz" disabled="true"
 							value="#{regiDebtManageBean.debtQuota.currency}"
-							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all" style="width:123px">
+							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+							style="width:123px">
 							<f:selectItems value="#{regiDebtManageBean.currencySelect}" />
 						</h:selectOneMenu>
 					</h:panelGrid>
+
 				</div>
-				</h:form>
-			</p:panel>
-	
-	
-		
+			</h:form>
+			<h:form prependId="false">
+				<p:tabView id="capitalDebtTabView">
+					<p:tab id="capitalChangeTab" title="注册资本金变更">
+						<ui:include src="capitalChange-detail.xhtml" />
+					</p:tab>
+					<p:tab id="capitalRequestTab" title="注册资本金申请">
+						<ui:include src="capitalRequest-detail.xhtml" />
+					</p:tab>
+					<p:tab id="debtRequestTab" title="外债申请">
+						<ui:include src="debtRequest-detail.xhtml" />
+					</p:tab>
+					<p:tab id="debtRequestCashTab" title="外债请款">
+						<ui:include src="debtRequestCash-detail.xhtml" />
+					</p:tab>
+				</p:tabView>
+			</h:form>
+			<ui:include src="/faces/process/common/companySelect-dialog.xhtml" />
+		</p:panel>
+
+
+
 	</ui:define>
 </ui:composition>
-		
