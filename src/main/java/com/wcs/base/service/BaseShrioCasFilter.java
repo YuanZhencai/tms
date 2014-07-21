@@ -96,6 +96,9 @@ public class BaseShrioCasFilter implements Filter {
 					&& userId1 != null) {
 				session.setAttribute(LoginService.SESSION_KEY_CURRENTUSR,
 						doLogin(userId1, response));
+				//add by liushengbin 2014-06-18 把用户的sapCode放入session
+				setCurrentSapCode();
+				
 				envInit.initEnv(session);
 				peManager.initPE();
 
@@ -106,6 +109,8 @@ public class BaseShrioCasFilter implements Filter {
 							.getAttribute(LoginService.SESSION_KEY_CURRENTUSR) == null && userId != null)) {
 				session.setAttribute(LoginService.SESSION_KEY_CURRENTUSR,
 						doLogin(userId, response));
+				//add by liushengbin 2014-06-18 把用户的sapCode放入session
+				setCurrentSapCode();
 				if (!"".equals(userId) && (!"shenbo".equals(userId))) {
 					envInit.logoffPE(session);
 					envInit.initEnv(session);
@@ -116,6 +121,12 @@ public class BaseShrioCasFilter implements Filter {
 		logger.debug("session:" + session.getId() + ",currentUser is "
 				+ session.getAttribute(LoginService.SESSION_KEY_CURRENTUSR));
 		filterChain.doFilter(request, response);
+	}
+	
+	private void setCurrentSapCode(){
+		//add by liushengbin 2014-06-18 把用户的sapCode放入session
+		Subject currentUser = SecurityUtils.getSubject();
+		currentUser.getSession().setAttribute(LoginService.SESSION_KEY_SAPCODE, loginService.findSapCodeByAccount(""));
 	}
 
 	private Subject doLogin(String userId, ServletResponse response)

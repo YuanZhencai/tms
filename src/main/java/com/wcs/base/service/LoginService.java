@@ -6,6 +6,8 @@ package com.wcs.base.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -53,6 +55,8 @@ public class LoginService {
 
 	// add by liushengbin 2012-11-20 当前浏览器语言
 	public static final String SESSION_KEY_LOCALE = "CURRENT_LOCALE";
+	
+	public static final String SESSION_KEY_SAPCODE = "SAP_CODE";
 	/**
 	 * <p>Description: 返回当前用户</p>
 	 * @return
@@ -64,6 +68,16 @@ public class LoginService {
 		} catch (Exception e) {
 			return null;
 		}
+	}
+	
+	/**
+	 * <p>Description: 从session中，获取当前用户sapCode,多个用分号隔开</p>
+	 * @return
+	 */
+	public static String getCurrentUserSapCode() {
+		Subject currentUser = SecurityUtils.getSubject();
+		Object obj = currentUser.getSession().getAttribute(LoginService.SESSION_KEY_SAPCODE);
+		return obj == null ? "all" : (String)obj;
 	}
 
 	/**
@@ -224,6 +238,51 @@ public class LoginService {
 				sapList.add(o.getBukrs());
 			}
 			return sapList;
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		}
+	}
+	
+	/**
+	 * 
+	 * <p>Description: 得到某个用户的公司SAP代码字符串，多个用分号隔开</p>
+	 * 
+	 * 如果是集团用户返回all
+	 * @param userAccount 用户帐号，传入空的字符串则取当前登录的帐号
+	 * @return
+	 */
+	public String findSapCodeByAccount(String acccount) throws ServiceException {
+		try {
+			String userAccount = StringUtils.isBlankOrNull(acccount) ? getCurrentUserName():acccount;
+			List<O> oList = finUserCompany(userAccount);
+			List<String> saps = new ArrayList<String>();
+			
+			StringBuffer sapStr = new StringBuffer();
+			
+			if (oList.isEmpty()) {
+				return "all";
+			}
+			for (O o : oList) {
+				sapStr.append(o.getBukrs()).append(";");
+				saps.add(o.getBukrs());
+			}		
+			//用户是否为集团用户,集团用户返回‘all’
+			Boolean isGroupUser = Boolean.FALSE;
+			
+			String jpql = "select c from Company c where c.defunctInd='N' and c.sapCode in (?1)";
+			List<Company> cs = entityService.find(jpql, saps);
+			if (cs != null && cs.size() > 0) {
+				for (Company c : cs) {
+					if ("Y".equals(c.getCorporationFlag())) {
+						isGroupUser = Boolean.TRUE;
+					}
+				}
+			}			
+			if(isGroupUser){
+				return "all";
+			}			
+			
+			return sapStr.toString();
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}

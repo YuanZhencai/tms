@@ -35,7 +35,7 @@
 								value="#{registerCaptialChangeBean.registerDate}" />
 							<h:outputLabel value="#{msgs.lbl_user_filling}：" />
 							<p:inputText disabled="true" label="#{msgs.lbl_user_filling}"
-								value="#{currentUser.getCurrentCN()}" />
+								value="#{currentUser.currentCN}" />
 							<h:outputLabel value="#{msgs.lbl_companyName_CN}" />
 							<h:panelGroup>
 								<h:selectOneMenu id="companyNameCn" required="true"
@@ -105,7 +105,7 @@
 							</p:selectOneRadio>
 							<h:panelGroup>
 								<p:inputText id="investRegRemaFunds1"
-									label="投注差可用"
+									label="投注差可用" disabled="#{'1' == registerCaptialChangeBean.instance.isInvestRegRemaAvai}"
 									value="#{registerCaptialChangeBean.instance.investRegRemaFunds}">
 									<f:convertNumber pattern="#,##0.####" />
 								</p:inputText>

@@ -11,6 +11,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.wcs.base.model.BaseEntity;
+import com.wcs.base.util.StringUtils;
 
 /**
  * 
@@ -125,7 +126,7 @@ public class Company extends BaseEntity {
 	}
 
 	public String getIsInvestRegRemaAvai() {
-		return isInvestRegRemaAvai;
+		return StringUtils.isBlankOrNull(isInvestRegRemaAvai) ? "1":isInvestRegRemaAvai;
 	}
 
 	public void setIsInvestRegRemaAvai(String isInvestRegRemaAvai) {

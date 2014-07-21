@@ -15,10 +15,19 @@ import javax.persistence.Transient;
 import com.wcs.base.model.BaseEntity;
 
 /**
- * <p>Project: tms</p>
- * <p>Description: 流程_外债股东借款申请</p>
- * <p>Copyright (c) 2012 Wilmar Consultancy Services</p>
- * <p>All Rights Reserved.</p>
+ * <p>
+ * Project: tms
+ * </p>
+ * <p>
+ * Description: 流程_外债股东借款申请
+ * </p>
+ * <p>
+ * Copyright (c) 2012 Wilmar Consultancy Services
+ * </p>
+ * <p>
+ * All Rights Reserved.
+ * </p>
+ * 
  * @author <a href="mailto:huhan@wcs-global.com">huhan</a>
  */
 @Entity
@@ -30,7 +39,7 @@ public class ProcDebtBorrow extends BaseEntity {
 	@JoinColumn(name = "COMPANY_ID")
 	private Company company;
 
-	/***资金提供股东*******/
+	/*** 资金提供股东 *******/
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "SH_ID")
 	private ShareHolder shareHolder;
@@ -196,22 +205,35 @@ public class ProcDebtBorrow extends BaseEntity {
 	@Column(name = "EXCHANGE_RATE", precision = 12, scale = 4)
 	private Double exchangeRate;
 
-	/** 保存PE的备注*/
+	/** 保存PE的备注 */
 	@Transient
 	private String peMemo;
 	// Constructors
 
-	/** 贷款时间*/
+	/** 贷款时间 */
 	@Transient
 	private Date borrowDate;
 
-	/** 还款时间*/
+	/** 还款时间 */
 	@Transient
 	private Date payBackDate;
 
 	/** 资金提供方名称 ****/
 	@Transient
 	private String providerName;
+
+	/** 2014-07-04 add by liushengbin 新加字段 **/
+
+	/*** 外债期限类型 **/
+	private String bebtDeadlineType;
+	/*** 申请类型 **/
+	private String applyType;
+	/*** 展期原外债合同主数据ID 关联 ‘外债合同_主数据(DEBT_CONTRACT)’表 **/
+	private Long debtContractId;
+	/** 当前节点 **/
+	private String currentNode;
+	/** 流程状态 **/
+	private String processStatus;
 
 	/** default constructor */
 	public ProcDebtBorrow() {
@@ -647,6 +669,46 @@ public class ProcDebtBorrow extends BaseEntity {
 	@Transient
 	public String getDisplayText() {
 		return null;
+	}
+
+	public String getBebtDeadlineType() {
+		return bebtDeadlineType;
+	}
+
+	public void setBebtDeadlineType(String bebtDeadlineType) {
+		this.bebtDeadlineType = bebtDeadlineType;
+	}
+
+	public String getApplyType() {
+		return applyType;
+	}
+
+	public void setApplyType(String applyType) {
+		this.applyType = applyType;
+	}
+
+	public Long getDebtContractId() {
+		return debtContractId;
+	}
+
+	public void setDebtContractId(Long debtContractId) {
+		this.debtContractId = debtContractId;
+	}
+
+	public String getCurrentNode() {
+		return currentNode;
+	}
+
+	public void setCurrentNode(String currentNode) {
+		this.currentNode = currentNode;
+	}
+
+	public String getProcessStatus() {
+		return processStatus;
+	}
+
+	public void setProcessStatus(String processStatus) {
+		this.processStatus = processStatus;
 	}
 
 }

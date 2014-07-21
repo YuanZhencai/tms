@@ -620,11 +620,11 @@ a:hover{
 鍦╮owClasses涓畾涔変笉璧蜂綔鐢�
 */
 .row1 { /*background-color:#FFFFFF;*/
-	
+	height:24px;
 }
 
 .row2 { /*background-color:#e9f1f7;*/
-	
+	height:58px;
 }
 
 .column0 {
@@ -935,6 +935,11 @@ input:hover {
 	font-weight:bold;
 
 }
+
+.row1 {
+	height: 24px;
+}
+
 /*鍔犺浇鍥剧墖鏍峰紡缁撴潫*/
 
 /*鎻愮ず妗嗘牱寮忓紑濮�/
@@ -969,7 +974,7 @@ input:hover {
 	border: 1px solid #74b2e2;
 }
 
-
+/*澶嶉�妗嗗ぇ灏忚皟鏁�/
 .ui-tree .ui-tree-checkbox div.ui-tree-checkbox-box {
 	height: 12px;
 	width: 14px;
@@ -996,7 +1001,3 @@ input:hover {
 }
 
 .dialogFileUpload .fileupload-buttonbar .ui-button input {right: 55px; }
-
-.row{
-	height: 24px;
-}

@@ -59,8 +59,8 @@
 					<ui:include src="shareholder-list.xhtml" />
 				</div>
 				<div style="position: relative; margin-top: 5px;">
-
-					<div class="style1">
+					<p:panel id="basic" header="公司资金现状:">
+					
 						<h:panelGrid columns="4"
 							columnClasses="column41,column2,column21,column2">
 							<h:outputLabel value="#{msgs.lbl_presentCompanyAmountRemain}" />
@@ -110,38 +110,13 @@
 								<f:selectItems value="#{registerCaptialBean.currencySelect}" />
 							</h:selectOneMenu>
 						</h:panelGrid>
-					</div>
-					<div class="style1">
-						<h:panelGrid columns="4"
-							columnClasses="column41,column2,column21,column2">
-							<h:outputLabel value="#{msgs.lbl_currentApplyAmount}" />
-							<h:panelGroup>
-								<p:inputText id="thisFonds" disabled="true"
-									value="#{registerCaptialBean.instance.thisFonds}">
-									<f:convertNumber pattern="#,##0.####" type="number" />
-								</p:inputText>
-								<h:outputText value="#{msgs.lbl_tenThousand}" />
-							</h:panelGroup>
-							<h:outputLabel value="" />
-							<h:selectOneMenu
-								value="#{registerCaptialBean.instance.thisFondsCu}"
-								id="thisFondsCu" style="width:140px"
-								styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
-								disabled="true">
-								<f:selectItems value="#{registerCaptialBean.currencySelect}" />
-							</h:selectOneMenu>
-							<h:outputLabel value="#{msgs.lbl_shareholder}" />
-							<h:selectOneMenu value="#{registerCaptialBean.instance.payer}"
-								id="payer" disabled="true"
-								styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
-								style="width:145px">
-								<f:selectItems value="#{registerCaptialBean.shareHolderSelect}" />
-							</h:selectOneMenu>
-							<h:outputLabel value="" />
-							<h:outputLabel value="" />
-						</h:panelGrid>
-					</div>
-					<div class="style1">
+					
+					</p:panel>
+					
+					
+					<p:panel id="basic1" header="公司合同现状:">
+					
+					
 						<h:panelGrid columns="4"
 							columnClasses="column41,column2,column21,column2">
 							<h:outputLabel value="#{msgs.lbl_signedContractAmount}" />
@@ -196,31 +171,91 @@
 								<f:selectItems value="#{registerCaptialBean.currencySelect}" />
 							</h:selectOneMenu>
 						</h:panelGrid>
-					</div>
+					
+					
+					</p:panel>
+					
 					<div class="style1">
-						<h:panelGrid columns="2" columnClasses="column41,column2">
-							<h:outputLabel value="#{msgs.lbl_amountApplication}" />
-							<p:inputTextarea rows="2" style="width:910px;" autoResize="false"
-								value="#{registerCaptialBean.instance.use}"
-								validatorMessage="#{msgs.msg_beyondLength_amountApplication}" id="use" disabled="true">
-								<f:validateLength maximum="200" for="use" />
-							</p:inputTextarea>
-							<h:outputLabel value="#{msgs.lbl_remitRouteAndAccountNo}" />
-							<p:inputTextarea rows="5" style="width:910px;" autoResize="false"
-								value="#{registerCaptialBean.instance.pathAndCount}"
-								validatorMessage="#{msgs.msg_beyondLength_remitRouteAndAccountNo}" id="pathAndCount"
+						<h:panelGrid columns="4"
+							columnClasses="column41,column2,column21,column2">
+							<h:outputLabel value="#{msgs.lbl_currentApplyAmount}" />
+							<h:panelGroup>
+								<p:inputText id="thisFonds" disabled="true"
+									value="#{registerCaptialBean.instance.thisFonds}">
+									<f:convertNumber pattern="#,##0.####" type="number" />
+								</p:inputText>
+								<h:outputText value="#{msgs.lbl_tenThousand}" />
+							</h:panelGroup>
+							<h:outputLabel value="" />
+							<h:selectOneMenu
+								value="#{registerCaptialBean.instance.thisFondsCu}"
+								id="thisFondsCu" style="width:140px"
+								styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
 								disabled="true">
-								<f:validateLength maximum="200" for="pathAndCount" />
-							</p:inputTextarea>
-							<h:outputLabel value="#{msgs.headerText_memo}：" />
-							<p:inputTextarea rows="2" style="width:910px;" autoResize="false"
-								value="#{registerCaptialBean.instance.remark}"
-								validatorMessage="#{msgs.msg_beyondLength_remitRouteAndAccountNo}" id="pe"
-								disabled="true">
-								<f:validateLength maximum="200" for="pe" />
-							</p:inputTextarea>
+								<f:selectItems value="#{registerCaptialBean.currencySelect}" />
+							</h:selectOneMenu>
+							<h:outputLabel value="#{msgs.lbl_shareholder}" />
+							<h:selectOneMenu value="#{registerCaptialBean.instance.payer}"
+								id="payer" disabled="true"
+								styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+								style="width:145px">
+								<f:selectItems value="#{registerCaptialBean.shareHolderSelect}" />
+							</h:selectOneMenu>
+							<h:outputLabel value="" />
+							<h:outputLabel value="" />
 						</h:panelGrid>
+						
+						<h:panelGrid columns="2" columnClasses="column41,column2">
+								<h:outputLabel value="#{msgs.lbl_amountApplication}" />
+								<h:panelGroup >
+									<p:inputTextarea rows="5" style="width:933px;" disabled="true" 
+										autoResize="false" value="#{registerCaptialBean.instance.use}"
+										required="true" requiredMessage="#{msgs.msg_input_amountApplication_current}"
+										validatorMessage="#{msgs.msg_beyondLength_amountApplication}" id="use">
+										<f:validateLength maximum="200" for="use" />
+									</p:inputTextarea>
+									
+									<h:outputLabel value="" />
+								</h:panelGroup>
+							</h:panelGrid>		
 					</div>
+					
+					
+					<div class="style11">
+							<h:outputLabel  value="#{msgs.lbl_remitRoute}：" styleClass="title_2"/>
+							<h:panelGrid columns="2"
+										columnClasses="column170,column2">
+										<h:outputLabel  value="资金提供方Lender：" for="zjtgf"/>
+										<p:inputText id="zjtgf" disabled="true" value="#{registerCaptialBean.zjtgfShareHolderName}" style="width:400px"></p:inputText>
+										
+										<h:outputLabel  value="申请方Borrower：" for="zjsqf"/>
+										<p:inputText id="zjsqf" disabled="true" value="#{registerCaptialBean.instance.company.companyName}" style="width:400px"></p:inputText>
+										
+										<h:outputLabel  value="申请方地址 Address Of Borrower(to be in serted in the loan agreement)：" for="sqfdz"/>
+										<p:inputText id="sqfdz" disabled="true" value="#{registerCaptialBean.instance.company.addrCn}" style="width:400px"></p:inputText>
+							</h:panelGrid>						
+						
+							
+							<h:panelGrid columns="2"
+										columnClasses="column170,column2">
+										<h:outputLabel  value="#{msgs.lbl_hklx1}：" for="corrBeneBankName"/>
+										<p:inputText id="corrBeneBankName"  disabled="true" value="#{registerCaptialBean.instance.remittanceLineAccount.corrBeneBankName}" style="width:400px"></p:inputText>
+										
+										<h:outputLabel  value="#{msgs.lbl_hklx2}：" for="swiftCode1"/>
+										<p:inputText id="swiftCode1" disabled="true" value="#{registerCaptialBean.instance.remittanceLineAccount.swiftCode1}" style="width:400px"></p:inputText>
+										
+										<h:outputLabel  value="#{msgs.lbl_hklx3}：" for="acNo"/>
+										<p:inputText id="acNo" disabled="true" value="#{registerCaptialBean.instance.remittanceLineAccount.acNo}" style="width:400px"></p:inputText>
+										
+										<h:outputLabel  value="#{msgs.lbl_hklx4}：" for="beneBankName"/>
+										<p:inputText id="beneBankName" disabled="true" value="#{registerCaptialBean.instance.remittanceLineAccount.beneBankName}" style="width:400px"></p:inputText>
+										
+										<h:outputLabel  value="#{msgs.lbl_hklx2}：" for="swiftCode2"/>
+										<p:inputText id="swiftCode2" disabled="true" value="#{registerCaptialBean.instance.remittanceLineAccount.swiftCode2}" style="width:400px"></p:inputText>
+							</h:panelGrid>
+						</div>
+					
+					
 					<div class="style1">
 						<h:panelGrid columns="4"
 							columnClasses="column41,column2,column21,column2">

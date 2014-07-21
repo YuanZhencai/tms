@@ -68,7 +68,6 @@ public class FileUpload<T extends BaseEntity> extends ViewBaseBean<T> {
      * @param event
      */
     public void handleFileUpload(FileUploadEvent event) {
-    	System.out.println("FileUpload.handleFileUpload()");
         UploadedFile file = event.getFile();
         try {
             if (file == null) {

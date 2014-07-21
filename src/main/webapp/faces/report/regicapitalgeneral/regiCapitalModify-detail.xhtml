@@ -1,0 +1,304 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/template/template.xhtml">
+	<ui:define name="title">注册资本金变更明细</ui:define>
+
+	<ui:define name="content">
+
+		<input type="hidden" id="menuOne" value="21" />
+		<input type="hidden" id="menuTwo" value="22" />
+
+		<h:form id="purchaseForm" prependId="false"
+			onsubmit="statusComplete();">
+			<p:panel styleClass="panel1">
+				<p:breadCrumb preview="true" expandEffectDuration="200"
+					previewWidth="24" style="width: 99.1%">
+					<p:menuitem value="#{msgs.menItem_form}" url="#" />
+					<p:menuitem value="#{msgs.menItem_form}" url="#" />
+					<p:menuitem value="注册资本金变更明细" url="#" />
+				</p:breadCrumb>
+
+				<p:messages id="doneMsg" />
+
+				<div class="style1">
+					<h:panelGrid columns="8" columnClasses=" ">
+						<h:outputLabel value="申请时间：" />
+						<h:panelGroup>
+							<p:inputText id="applyDateS"
+								value="#{regicapitalGeneralModifyBean.conditionMap['applyDateS']}"
+								styleClass="ui-date" style="font-size: 9px;width:90px;"
+								title="#{msgs.txt_startTime}"
+								onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'applyDateE\')}'});">
+								<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+							</p:inputText>
+							<h:outputText value="~" />
+							<p:inputText id="applyDateE"
+								value="#{regicapitalGeneralModifyBean.conditionMap['applyDateE']}"
+								styleClass="ui-date" style="font-size: 9px;width:90px;"
+								title="#{msgs.txt_endTime}"
+								onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'applyDateS\')}'});">
+								<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+							</p:inputText>
+						</h:panelGroup>
+						
+						<h:outputLabel value="流程编号：" />
+						<h:panelGroup>
+							<p:inputText id="processNo"
+								value="#{regicapitalGeneralModifyBean.conditionMap['processNo']}"
+								style="font-size: 12px;width:90px;">
+							</p:inputText>
+						</h:panelGroup>
+						
+						<h:outputLabel value="公司名称："
+							rendered="#{!regicapitalGeneralModifyBean.isCopUser}" />
+						<h:panelGroup rendered="#{!regicapitalGeneralModifyBean.isCopUser}">
+							<h:selectOneMenu id="companyName" name="companyName"
+								style="width:330px;"
+								value="#{regicapitalGeneralModifyBean.conditionMap['companyId']}"
+								styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+								<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" itemValue="" />
+								<f:selectItems value="#{regicapitalGeneralModifyBean.companySelect}" />
+							</h:selectOneMenu>
+						</h:panelGroup>
+
+						<h:outputLabel value="公司名称："
+							rendered="#{regicapitalGeneralModifyBean.isCopUser}" />
+						<h:panelGroup rendered="#{regicapitalGeneralModifyBean.isCopUser}">
+							<p:inputText id="companyNameTwo" disabled="true"
+								style="width: 320px;"
+								value="#{regicapitalGeneralModifyBean.company.companyName}" />
+						</h:panelGroup>
+						<p:commandButton immediate="true" value="#{msgs.btn_select}"
+							style="width: 70px;" image="ui-icon ui-icon-zoomin"
+							rendered="#{regicapitalGeneralModifyBean.isCopUser}"
+							actionListener="#{regicapitalGeneralModifyBean.clear}"
+							oncomplete="companyDialogVar.show();" update="companyForm">
+							<f:setPropertyActionListener
+								target="#{regicapitalGeneralModifyBean.companySelectBean.method}"
+								value="regicapitalGeneralModifyBean.getSelectedCompany" />
+						</p:commandButton>
+						
+						<h:outputLabel value="流程状态：" />
+						<h:panelGroup>
+							<p:inputText id="processStatus"
+								value="#{regicapitalGeneralModifyBean.conditionMap['processStatus']}"
+								style="font-size: 12px;width:90px;">
+							</p:inputText>
+						</h:panelGroup>
+					</h:panelGrid>
+					<div> 
+						<p:commandButton id="query" value="#{msgs.btn_query}"
+							image="ui-icon ui-icon-search"
+							action="#{regicapitalGeneralModifyBean.searchRegiCaitalModifyDetail}"
+							update="doneMsg,regiCapitalPl" />
+					</div>
+				</div>
+				<br />
+				<p:outputPanel id="regiCapitalPl">
+
+					<p:dataTable id="regiCapitalTable" var="regicapitalMofifyVO"
+						value="#{regicapitalGeneralModifyBean.regicapitalMofifyVOModel}"
+						emptyMessage="#{msgs.dataTable_empty}" paginator="true"
+						paginatorPosition="bottom" rows="5"
+						ortBy="#{regicapitalMofifyVO.companyId}" sortOrder="descending"
+						paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
+						currentPageReportTemplate="{currentPage}/{totalPage}">
+
+						<f:facet name="header">注册资本金变更明细</f:facet>
+
+						<p:column headerText="申请日期" style="white-space:nowrap;">
+							<h:outputText
+								value="#{regicapitalMofifyVO.applyDate}" />
+						</p:column>
+						
+						<p:column headerText="流程编号" style="white-space:nowrap;">
+							<h:outputText
+								value="#{regicapitalMofifyVO.processNo}" />
+						</p:column>
+						
+						<p:column headerText="公司名称" style="white-space:nowrap;">
+							<h:outputText
+								value="#{regicapitalMofifyVO.companyName}" />
+						</p:column>
+						
+						<p:column headerText="投资总额（万）">
+							<h:outputText value="#{regicapitalMofifyVO.companyAmount}">
+								<f:convertNumber pattern="#,##0.00" />
+							</h:outputText>
+						</p:column>
+						
+						<p:column headerText="币种" style="white-space:nowrap;">
+							<h:outputText
+								value="#{commonBean.getValueByDictCatAndKey('TMS_TAX_PROJECT_CURRENCY_TYPE',regicapitalMofifyVO.companyCu)}" />
+						</p:column>
+						
+						<p:column headerText="流程状态" style="white-space:nowrap;">
+							<h:outputText
+								value="#{regicapitalMofifyVO.processStatus}" />
+						</p:column>
+						
+						<p:column headerText="股东名称">
+							<h:dataTable var="shareHolder"
+								value="#{regicapitalMofifyVO.shareholders}" rowClasses="row2"
+								style="border-bottom-color:#DCDCDC;border-top-color:Transparent;border-left-color:Transparent;border-right-color:Transparent;">
+								<p:column>
+									<h:outputText value="#{shareHolder.name}" />
+								</p:column>
+							</h:dataTable>
+						</p:column>
+						
+						<p:column headerText="状态">
+							<h:dataTable var="shareHolder"
+								value="#{regicapitalMofifyVO.shareholders}" rowClasses="row2"
+								style="border-bottom-color:#DCDCDC;border-top-color:Transparent;border-left-color:Transparent;border-right-color:Transparent;">
+								<p:column>
+									<h:outputText value="#{shareHolder.status}" />
+								</p:column>
+							</h:dataTable>
+						</p:column>
+						
+						<p:column headerText="币种" style="white-space:nowrap;">
+							<h:dataTable var="shareHolder"
+								value="#{regicapitalMofifyVO.shareholders}"
+								style="border-bottom-color:#DCDCDC;border-top-color:Transparent;border-left-color:Transparent;border-right-color:Transparent;">
+								<p:column>
+									<h:dataTable var="currency" rowClasses="row1"
+										value="#{shareHolder.currencys}"
+										style="border-bottom-color:#DCDCDC;border-top-color:Transparent;border-left-color:Transparent;border-right-color:Transparent;">
+										<p:column>
+											#{currency}
+										</p:column>
+									</h:dataTable>
+								</p:column>
+							</h:dataTable>
+						</p:column>
+						
+						<p:column headerText="注册金额" style="white-space:nowrap;">
+							<h:dataTable var="shareHolder"
+								value="#{regicapitalMofifyVO.shareholders}"
+								style="border-bottom-color:#DCDCDC;border-top-color:Transparent;border-left-color:Transparent;border-right-color:Transparent;">
+								<p:column>
+									<h:dataTable var="fondsTotal"
+										value="#{shareHolder.fondsTotals}" rowClasses="row1"
+										style="border-bottom-color:#DCDCDC;border-top-color:Transparent;border-left-color:Transparent;border-right-color:Transparent;">
+										<p:column>
+											#{fondsTotal}
+										</p:column>
+									</h:dataTable>
+								</p:column>
+							</h:dataTable>
+						</p:column>
+						
+						<p:column headerText="到位金额" style="white-space:nowrap;">
+							<h:dataTable var="shareHolder"
+								value="#{regicapitalMofifyVO.shareholders}"
+								style="border-bottom-color:#DCDCDC;border-top-color:Transparent;border-left-color:Transparent;border-right-color:Transparent;">
+								<p:column>
+									<h:dataTable var="fondsInPlace"
+										value="#{shareHolder.fondsInPlaces}" rowClasses="row1"
+										style="border-bottom-color:#DCDCDC;border-top-color:Transparent;border-left-color:Transparent;border-right-color:Transparent;">
+										<p:column>
+											#{fondsInPlace}
+										</p:column>
+									</h:dataTable>
+								</p:column>
+							</h:dataTable>
+						</p:column>
+						
+						<p:column headerText="未到位金额" style="white-space:nowrap;">
+							<h:dataTable var="shareHolder"
+								value="#{regicapitalMofifyVO.shareholders}"
+								style="border-bottom-color:#DCDCDC;border-top-color:Transparent;border-left-color:Transparent;border-right-color:Transparent;">
+								<p:column>
+									<h:dataTable var="fondsNotInPlace"
+										value="#{shareHolder.fondsNotInPlaces}" rowClasses="row1"
+										style="border-bottom-color:#DCDCDC;border-top-color:Transparent;border-left-color:Transparent;border-right-color:Transparent;">
+										<p:column>
+											#{fondsNotInPlace}
+										</p:column>
+									</h:dataTable>
+								</p:column>
+							</h:dataTable>
+						</p:column>
+						
+						<p:column headerText="股权比例" style="white-space:nowrap;">
+							<h:dataTable var="shareHolder"
+								value="#{regicapitalMofifyVO.shareholders}"
+								style="border-bottom-color:#DCDCDC;border-top-color:Transparent;border-left-color:Transparent;border-right-color:Transparent;">
+								<p:column>
+									<h:dataTable var="equityPerc"
+										value="#{shareHolder.equityPercs}" rowClasses="row1"
+										style="border-bottom-color:#DCDCDC;border-top-color:Transparent;border-left-color:Transparent;border-right-color:Transparent;">
+										<p:column>
+											#{equityPerc}
+										</p:column>
+									</h:dataTable>
+								</p:column>
+							</h:dataTable>
+						</p:column>
+						
+						<p:column headerText="股权关联" style="white-space:nowrap;">
+							<h:dataTable var="shareHolder"
+								value="#{regicapitalMofifyVO.shareholders}"
+								style="border-bottom-color:#DCDCDC;border-top-color:Transparent;border-left-color:Transparent;border-right-color:Transparent;">
+								<p:column>
+									<h:dataTable var="isEquityRela"
+										value="#{shareHolder.isEquityRelas}" rowClasses="row1"
+										style="border-bottom-color:#DCDCDC;border-top-color:Transparent;border-left-color:Transparent;border-right-color:Transparent;">
+										<p:column>
+											#{isEquityRela}
+										</p:column>
+									</h:dataTable>
+								</p:column>
+							</h:dataTable>
+						</p:column>
+						
+						<p:column headerText="实际股权比例" style="white-space:nowrap;">
+							<h:dataTable var="shareHolder"
+								value="#{regicapitalMofifyVO.shareholders}"
+								style="border-bottom-color:#DCDCDC;border-top-color:Transparent;border-left-color:Transparent;border-right-color:Transparent;">
+								<p:column>
+									<h:dataTable var="actualEquityPerc"
+										value="#{shareHolder.actualEquityPercs}" rowClasses="row1"
+										style="border-bottom-color:#DCDCDC;border-top-color:Transparent;border-left-color:Transparent;border-right-color:Transparent;">
+										<p:column>
+											#{actualEquityPerc}
+										</p:column>
+									</h:dataTable>
+								</p:column>
+							</h:dataTable>
+						</p:column>
+						
+					</p:dataTable>
+				</p:outputPanel>
+			</p:panel>
+		</h:form>
+		<ui:include src="/faces/process/common/companySelect-dialog.xhtml" />
+
+		<script type="text/javascript">
+			function handleSaveRequest(xhr, status, args) {
+				if (args.issucc == "yes") {
+					companyDialogVar.hide();
+				}
+			}
+
+			function handleUpdateRequest(xhr, status, args) {
+				if (args.issucc == "yes") {
+					companyDialogVar.hide();
+				}
+			}
+
+			function handleTreeRequest(xhr, status, args) {
+				if (args.issucc == "yes") {
+					companyDialogVar.hide();
+				}
+			}
+		</script>
+
+	</ui:define>
+</ui:composition>

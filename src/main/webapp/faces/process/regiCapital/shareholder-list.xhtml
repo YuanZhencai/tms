@@ -15,11 +15,7 @@
 			<p:column headerText="#{msgs.lbl_shareHolderName}">
 				<h:outputText value="#{stockholder.shareHolderName}" />
 			</p:column>
-			<p:column headerText="#{msgs.lbl_equityPerc}(%)">
-				<h:outputText id="equityPercTable" value="#{stockholder.equityPerc}">
-					<f:convertNumber type="number" pattern="###.##" />
-				</h:outputText>
-			</p:column>
+			
 			<p:column headerText="#{msgs.txt_currency}">
 				<h:outputText
 					value="#{commonBean.getValueByDictCatAndKey('TMS_TAX_PROJECT_CURRENCY_TYPE',stockholder.fondsCurrency)}" />
@@ -37,6 +33,23 @@
 			<p:column headerText="#{msgs.txt_notReadyAmount}">
 				<h:outputText
 					value="#{stockholder.fondsTotal-stockholder.fondsInPlace}">
+					<f:convertNumber pattern="#,##0.####" type="number"/>
+				</h:outputText>
+			</p:column>
+			<p:column headerText="#{msgs.lbl_equityPerc}(%)">
+				<h:outputText id="equityPercTable" value="#{stockholder.equityPerc}">
+					<f:convertNumber type="number" pattern="###.##" />
+				</h:outputText>
+			</p:column>
+			<p:column headerText="关联比例">
+				<h:outputText
+					value="#{stockholder.relatedPerc}">
+					<f:convertNumber pattern="#,##0.####" type="number"/>
+				</h:outputText>
+			</p:column>
+			<p:column headerText="实际股权比例">
+				<h:outputText
+					value="#{stockholder.isEquityRelated == '1' ? stockholder.equityPerc * stockholder.relatedPerc : stockholder.equityPerc}">
 					<f:convertNumber pattern="#,##0.####" type="number"/>
 				</h:outputText>
 			</p:column>

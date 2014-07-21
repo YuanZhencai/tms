@@ -49,10 +49,10 @@ public class ShareHolder extends BaseEntity {
     private Double fondsTotal;
     @Transient
     private Double fondsNotTotal;
-    
+    /** 是否股权关联*/
     @Column(name = "IS_EQUITY_RELATED", length = 1)
     private String isEquityRelated;
-    
+    /** 关联比例*/
     @Column(name = "RELATED_PERC", precision = 12, scale = 4)
     private Double relatedPerc;
     

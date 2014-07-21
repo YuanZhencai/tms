@@ -717,7 +717,7 @@ public class PEManager {
 			}
 			se.doDispatch();
 		} catch (VWException e) {
-			logger.error("注册资金变更流程创建失败，并关联相关附件文档出现异常", e);
+			logger.error("vwLauchStep方法 提交申请方法，并关联相关附件文档出现异常", e);
 			throw new Exception(e);
 		}
 	}

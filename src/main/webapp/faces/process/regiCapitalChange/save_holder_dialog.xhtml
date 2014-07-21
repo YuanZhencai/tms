@@ -62,13 +62,13 @@
 			<div style="text-align: center; margin-top: 5px;">
 				<p:commandButton icon="ui-icon ui-icon-check"
 					rendered="#{registerCaptialChangeBean.operate == 'add' ? 'true':'false'}"
-					value="确定" update=":addRegisterChangeForm:stockholderListId,:saveHolderForm"
+					value="确定" update=":addRegisterChangeForm:stockholderListId,:addRegisterChangeForm:investRegRemaFunds1,:saveHolderForm"
 					action="#{registerCaptialChangeBean.createShareholder()}"
 					style="margin-right: 5px;"
 					oncomplete="handleDialog(xhr, status, args);" />
-				<p:commandButton icon="ui-icon ui-icon-check"
+				<p:commandButton icon="ui-icon ui-icon-check" 
 					rendered="#{registerCaptialChangeBean.operate == 'edit'  ? 'true':'false'}"
-					value="确定" update=":addRegisterChangeForm:stockholderListId,:saveHolderForm"
+					value="确定" update=":addRegisterChangeForm:stockholderListId,:addRegisterChangeForm:investRegRemaFunds1,:saveHolderForm"
 					action="#{registerCaptialChangeBean.updateShareholder()}"
 					style="margin-right: 5px;"
 					oncomplete="handleDialog(xhr, status, args);" />

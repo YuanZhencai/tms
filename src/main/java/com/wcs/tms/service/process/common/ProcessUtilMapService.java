@@ -1,6 +1,7 @@
 package com.wcs.tms.service.process.common;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -142,6 +143,33 @@ public class ProcessUtilMapService implements Serializable {
     		return pidTms;
     	}
     	return pm.getPidFn();
+    }
+    
+    public List<String> getFnIdsByTmsId(String pidTms){
+        String jpql = "select pm from ProcessMap pm where pm.pidTms like '%"+ pidTms +"%'";
+        List<ProcessMap> pms = entityService.find(jpql);
+        List<String> fnIds = new ArrayList<String>();
+        if(pms!=null && pms.size()>0){
+            for(ProcessMap pm : pms) {
+                fnIds.add(pm.getPidFn());
+            }
+        }
+        return fnIds;
+    }
+    
+    /**
+     * 根据流程编号获取流程实例id
+     * @param tmsId
+     * @return
+     */
+    public String getProcInstIdByTmsId(String tmsId) {
+        String jpql = "select pm.id from ProcessMap pm where pm.pidTms = '" + tmsId + "'";
+        List<Object> find = entityService.find(jpql);
+        if(find.get(0) != null) {
+            return find.get(0).toString();
+        }else {
+            return null;
+        }
     }
 
 }

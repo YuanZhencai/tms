@@ -287,20 +287,21 @@ public class RegisterCaptialChangeService implements Serializable {
 		}
 		List<ProcRegiCapitalChangeShareholder> css = preg.getProcRegiCapitalChangeShareholders();
 		for (ProcRegiCapitalChangeShareholder cs : css) {
-			ChangeShareholderVo oldSolderVo = shareHolderVoMap.get(cs.getShareholderIdOriginal());
-			if (oldSolderVo == null) {
-				oldSolderVo = new ChangeShareholderVo();
-				oldSolderVo.setShareholderName(cs.getShareholderName());
-				oldSolderVo.getShareHolders().add(oldSolderVo);
-			} 
-			oldSolderVo.getShareHolders().add(new ChangeShareholderVo(cs));
-			changeShareholderVos.add(oldSolderVo);
+			if("N".equals(cs.getDefunctInd())) {
+				ChangeShareholderVo oldSolderVo = shareHolderVoMap.get(cs.getShareholderIdOriginal());
+				if (oldSolderVo == null) {
+					oldSolderVo = new ChangeShareholderVo();
+					oldSolderVo.setShareholderName(cs.getShareholderName());
+					oldSolderVo.getShareHolders().add(oldSolderVo);
+				} 
+				oldSolderVo.getShareHolders().add(new ChangeShareholderVo(cs));
+				changeShareholderVos.add(oldSolderVo);
+			}
 		}
 		return changeShareholderVos;
 	}
 
 	public void updateCampanyByChange(ProcRegiCapitalChange preg) {
-		System.out.println("RegisterCaptialChangeService.updateCampanyByChange()");
 		String user = loginService.getCurrentUserName();
 		Date date = new Date();
 		Company company = preg.getCompany();
@@ -322,27 +323,29 @@ public class RegisterCaptialChangeService implements Serializable {
 		List<ProcRegiCapitalChangeShareholder> shareholders = preg.getProcRegiCapitalChangeShareholders();
 		
 		for (ProcRegiCapitalChangeShareholder sh : shareholders) {
-			ShareHolder shareHolder = shareHolderMap.get(sh.getShareholderIdOriginal());
-			if(shareHolder == null) {
-				shareHolder = new ShareHolder();
-				shareHolder.setCompany(company);
-				shareHolder.setCreatedBy(user);
-				shareHolder.setCreatedDatetime(date);
+			if("N".equals(sh.getDefunctInd())) {
+				ShareHolder shareHolder = shareHolderMap.get(sh.getShareholderIdOriginal());
+				if(shareHolder == null) {
+					shareHolder = new ShareHolder();
+					shareHolder.setCompany(company);
+					shareHolder.setCreatedBy(user);
+					shareHolder.setCreatedDatetime(date);
+				}
+				shareHolder.setUpdatedBy(user);
+				shareHolder.setUpdatedDatetime(date);
+				
+				shareHolder.setDefunctInd("删除".equals(sh.getStatus()) ? "Y": "N");
+				
+				shareHolder.setEquityPerc(sh.getEquityPerc());
+				shareHolder.setFondsCurrency(sh.getFondsCurrency());
+				shareHolder.setFondsInPlace(sh.getFondsInPlace());
+				shareHolder.setFondsTotal(sh.getFondsTotal());
+				shareHolder.setIsEquityRelated(sh.getIsEquityRelated());
+				shareHolder.setRelatedPerc(sh.getRelatedPerc());
+				shareHolder.setShareHolderName(sh.getShareholderName());
+				
+				entityService.update(shareHolder);
 			}
-			shareHolder.setUpdatedBy(user);
-			shareHolder.setUpdatedDatetime(date);
-			
-			shareHolder.setDefunctInd("删除".equals(sh.getStatus()) ? "Y": "N");
-			
-			shareHolder.setEquityPerc(sh.getEquityPerc());
-			shareHolder.setFondsCurrency(sh.getFondsCurrency());
-			shareHolder.setFondsInPlace(sh.getFondsInPlace());
-			shareHolder.setFondsTotal(sh.getFondsTotal());
-			shareHolder.setIsEquityRelated(sh.getIsEquityRelated());
-			shareHolder.setRelatedPerc(sh.getRelatedPerc());
-			shareHolder.setShareHolderName(sh.getShareholderName());
-			
-			entityService.update(shareHolder);
 		}
 		
 		preg.setProcessStatus("0");

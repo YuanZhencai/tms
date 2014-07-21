@@ -2,17 +2,21 @@ package com.wcs.tms.service.process.debtborrow;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.wcs.base.service.EntityService;
 import com.wcs.base.service.LoginService;
+import com.wcs.base.util.DateUtil;
 import com.wcs.base.util.MathUtil;
 import com.wcs.common.filenet.pe.PEManager;
 import com.wcs.tms.conf.xml.ProcessXmlUtil;
@@ -23,7 +27,9 @@ import com.wcs.tms.mail.MailUtil;
 import com.wcs.tms.mail.SendMailService;
 import com.wcs.tms.message.ExceptionMessage;
 import com.wcs.tms.model.Company;
+import com.wcs.tms.model.DebtContract;
 import com.wcs.tms.model.ProcDebtBorrow;
+import com.wcs.tms.model.RemittanceLineAccount;
 import com.wcs.tms.model.ShareHolder;
 import com.wcs.tms.service.process.common.ProcessUtilMapService;
 import com.wcs.tms.util.MessageUtils;
@@ -44,7 +50,9 @@ import filenet.vw.api.VWWorkObjectNumber;
 public class DebtBorrowService implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
-
+	
+	@PersistenceContext(unitName = "pu")
+	protected EntityManager entityManager;
     @Inject
     EntityService entityService;
     @Inject
@@ -59,6 +67,18 @@ public class DebtBorrowService implements Serializable{
     ProcessUtilMapService processUtilMapService;//9.10
     
     private static final Log log = LogFactory.getLog(DebtBorrowService.class);
+    
+    
+    /**
+	 * 查询所有外债合同
+	 * */
+	public List<DebtContract> getDebtContractList(Long comId) {
+		StringBuilder jpql = new StringBuilder(
+				"select dc from DebtContract dc join fetch dc.company join fetch dc.shareHolder where ");
+		jpql.append("dc.defunctInd='N' AND dc.isExpired = '0'");
+		jpql.append(" and dc.company.id=" + comId);
+		return entityService.find(jpql.toString());
+	}
     
     /**
      * 查询公司以及相关股东信息,并计算外债申请相关数据
@@ -106,12 +126,22 @@ public class DebtBorrowService implements Serializable{
     		procDebtBorrow.setCompany(company);
     		
     		//公司投注差 = 公司投资总额 - 公司注册资本
+    		//add by liushengbin 2014-07-08 公司表增加 ‘投注差是否可用’字段
+    		//如果字段值为0不可用，公司投注差 = ‘指定的投注差’字段值
+    		//如果字段值为1可用，公司投注差 = 公司投资总额 - 公司注册资本
     		Double investBalance = 0d;
-    		if(company.getInvestTotal()!=null && company.getInvestTotal()-fondsInPlaceSum > 0d){
-    			investBalance = company.getInvestTotal() - fondsSum;
+    		if("0".equals(company.getIsInvestRegRemaAvai())){
+    			investBalance = company.getInvestRegRemaFunds()==null ?0d:company.getInvestRegRemaFunds();
+    			procDebtBorrow.setInvestBalance(investBalance);
+        		procDebtBorrow.setInvestBalanceCu(company.getInvestRegRemaFundsCu());
+    		}else{    		
+	    		if(company.getInvestTotal()!=null && company.getInvestTotal()-fondsInPlaceSum > 0d){
+	    			investBalance = company.getInvestTotal() - fondsSum;
+	    			procDebtBorrow.setInvestBalance(investBalance);
+	        		procDebtBorrow.setInvestBalanceCu(company.getInvestCurrency());
+	    		}
     		}
-    		procDebtBorrow.setInvestBalance(investBalance);
-    		procDebtBorrow.setInvestBalanceCu(company.getInvestCurrency());
+    		
     		procDebtBorrow.setAvailbBebtCu(company.getInvestCurrency());
     		//已到位股东借款 币种连带 已使用投注差 和 已到位海外外债
     		procDebtBorrow.setFornBebtCu(procDebtBorrow.getShBorrowCu());
@@ -277,6 +307,11 @@ public class DebtBorrowService implements Serializable{
 			if(memoTitle!=null){
 				procDebtBorrow.setPeMemo(memoTitle + (procDebtBorrow.getPeMemo()==null ? "" : procDebtBorrow.getPeMemo()));
 			}
+			//add by liushengbin date:2014-07-15 增加流程走到财务总监节点后，自动更新外债主数据
+			if("财务总监审批".equals(stepName) && pass){
+				saveDebtContract(procDebtBorrow);
+			}
+			
 			
 			peManager.vwDisposeTask(procDebtBorrow.getProcInstId(), pass, procDebtBorrow.getPeMemo());
 			
@@ -284,6 +319,53 @@ public class DebtBorrowService implements Serializable{
 			log.error("doApprove方法 审批保存 出现异常：",e);
 			throw new ServiceException(ExceptionMessage.FN_CONNECT, e);
 		}
+	}
+	
+	//保存外债合同主数据
+	private void saveDebtContract(ProcDebtBorrow procDebtBorrow ){
+		DebtContract debtContract = new DebtContract();
+		debtContract.setCompany(procDebtBorrow.getCompany());
+		debtContract.setProcDebtBorrow(procDebtBorrow);
+		debtContract.setIsConfirmed("0");
+		debtContract.setDebtContractFunds(procDebtBorrow.getThisShBorrow());
+		debtContract.setDebtContractFundsCu(procDebtBorrow.getThisShBorrowCu());
+		debtContract.setContractRate(Double.valueOf(procDebtBorrow.getThisShBorrowRa()));
+		debtContract.setContractStartDate(procDebtBorrow.getThisShBorrowLis());
+		debtContract.setContractEndDate(procDebtBorrow.getThisShBorrowLie());
+		
+		
+		debtContract.setApprovalFunds(procDebtBorrow.getCorpAudit());
+		debtContract.setApprovalFundsCu(procDebtBorrow.getCorpAuditCu());
+		debtContract.setApprovalStartDate(procDebtBorrow.getCorpAuditLis());
+		debtContract.setApprovalEndDate(procDebtBorrow.getCorpAuditLie());
+		debtContract.setApprovalRate(Double.valueOf(procDebtBorrow.getCorpAuditRa()));
+		//如果申请类型（1、首次申请，默认值2、展期申请）是展期，
+		//外债期限类型(1、短期 （借款期限一年以下）2、中长期（超过一年的）)是中长期；
+		//非展期，集团开始结束日期少于一年，就是短期，大于一年为中长期
+		String debtDeadlineType = "1";
+		if("2".equals(procDebtBorrow.getApplyType())){
+			debtDeadlineType = "2";
+			//为展期申请，则更新原有的外债合同主数据，已被展期的标识的字段
+			String updateFlagSql = "update DEBT_CONTRACT set IS_BY_EXTEND = '1' where id="+procDebtBorrow.getDebtContractId();
+			entityManager.createNativeQuery(updateFlagSql).executeUpdate();
+			
+		}else{
+			Date startDate = procDebtBorrow.getCorpAuditLis();
+			Date endDate = procDebtBorrow.getCorpAuditLie();
+			long between = endDate.getTime() - startDate.getTime();
+			long day = between / (24 * 60 * 60 * 1000);
+			debtDeadlineType = day < 365 ?"1":"2";
+		}
+		debtContract.setDebtDeadlineType(debtDeadlineType);
+		debtContract.setShareHolder(procDebtBorrow.getShareHolder());
+		debtContract.setAppliedFunds(0d);
+		debtContract.setReceivedFunds(0d);
+		debtContract.setIsByExtend("2".equals(procDebtBorrow.getApplyType())?"1":"0");
+		
+		entityService.create(debtContract);
+		
+		
+		
 	}
 	
 	

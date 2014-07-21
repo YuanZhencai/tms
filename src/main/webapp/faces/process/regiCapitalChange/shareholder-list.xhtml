@@ -14,14 +14,14 @@
 			emptyMessage="#{msgs.no_data_msg}">
 			<f:facet name="header">#{msgs.shareholder_list_msg}</f:facet>
 			<p:column headerText="#{msgs.lbl_shareHolderName}">
-				<h:outputText value="#{stockholder.shareHolders.get(stockholder.shareHolders.size()-1).shareholderName}" />
+				<h:outputText value="#{stockholder.shareHolders[stockholder.shareHolders.size()-1].shareholderName}" />
 			</p:column>
 			<p:column headerText="状态">
-				<h:outputText value="#{stockholder.shareHolders.get(stockholder.shareHolders.size()-1).status}" />
+				<h:outputText value="#{stockholder.shareHolders[stockholder.shareHolders.size()-1].status}" />
 			</p:column>
 			<p:column headerText="#{msgs.txt_currency}">
 				<h:dataTable var="shareHolder" value="#{stockholder.shareHolders}"
-					rowClasses="row"
+					rowClasses="row1"
 					style="border-bottom-color:#DCDCDC;border-top-color:Transparent;border-left-color:Transparent;border-right-color:Transparent">
 					<p:column>
 						<h:outputText
@@ -32,7 +32,7 @@
 			</p:column>
 			<p:column headerText="#{msgs.txt_registerAmount}">
 				<h:dataTable var="shareHolder" value="#{stockholder.shareHolders}"
-					rowClasses="row"
+					rowClasses="row1"
 					style="border-bottom-color:#DCDCDC;border-top-color:Transparent;border-left-color:Transparent;border-right-color:Transparent">
 					<p:column>
 						<h:outputText value="#{shareHolder.fondsTotal}">
@@ -43,7 +43,7 @@
 			</p:column>
 			<p:column headerText="#{msgs.txt_alreadyAmount}">
 				<h:dataTable var="shareHolder" value="#{stockholder.shareHolders}"
-					rowClasses="row"
+					rowClasses="row1"
 					style="border-bottom-color:#DCDCDC;border-top-color:Transparent;border-left-color:Transparent;border-right-color:Transparent">
 					<p:column>
 						<h:outputText value="#{shareHolder.fondsInPlace}">
@@ -54,7 +54,7 @@
 			</p:column>
 			<p:column headerText="#{msgs.txt_notReadyAmount}">
 				<h:dataTable var="shareHolder" value="#{stockholder.shareHolders}"
-					rowClasses="row"
+					rowClasses="row1"
 					style="border-bottom-color:#DCDCDC;border-top-color:Transparent;border-left-color:Transparent;border-right-color:Transparent">
 					<p:column>
 						<h:outputText
@@ -67,7 +67,7 @@
 			</p:column>
 			<p:column headerText="#{msgs.lbl_equityPerc}">
 				<h:dataTable var="shareHolder" value="#{stockholder.shareHolders}"
-					rowClasses="row"
+					rowClasses="row1"
 					style="border-bottom-color:#DCDCDC;border-top-color:Transparent;border-left-color:Transparent;border-right-color:Transparent">
 					<p:column>
 						<h:outputText value="#{shareHolder.equityPerc}">
@@ -77,11 +77,12 @@
 				</h:dataTable>
 			</p:column>
 			<p:column headerText="股权关联">
-				<h:outputText value="#{stockholder.shareHolders.get(stockholder.shareHolders.size()-1).isEquityRelated}" />
+				<h:outputText rendered="#{'1' == stockholder.shareHolders[stockholder.shareHolders.size()-1].isEquityRelated}" value="是" />
+				<h:outputText rendered="#{'0' == stockholder.shareHolders[stockholder.shareHolders.size()-1].isEquityRelated}" value="否" />
 			</p:column>
 			<p:column headerText="实际股权比例">
 				<h:dataTable var="shareHolder" value="#{stockholder.shareHolders}"
-					rowClasses="row"
+					rowClasses="row1"
 					style="border-bottom-color:#DCDCDC;border-top-color:Transparent;border-left-color:Transparent;border-right-color:Transparent">
 					<p:column>
 						<h:outputText
@@ -92,7 +93,7 @@
 				</h:dataTable>
 			</p:column>
 			<p:column id="operateColumn" headerText="操作" rendered="#{(not registerCaptialChangeBean.viewPage) and (registerCaptialChangeBean.checkInputable('operateColumn'))}">
-				<p:commandButton id="editButton" rendered="#{('删除' != stockholder.shareHolders.get(stockholder.shareHolders.size()-1).status) and (registerCaptialChangeBean.checkInputable('editButton'))}"
+				<p:commandButton id="editButton" rendered="#{('删除' != stockholder.shareHolders[stockholder.shareHolders.size()-1].status) and (registerCaptialChangeBean.checkInputable('editButton'))}"
 					action="#{registerCaptialChangeBean.editShareholder()}" value="编辑"
 					oncomplete="saveHolderDialogVar.show();" update="saveHolderDialog">
 					<f:setPropertyActionListener
@@ -100,7 +101,7 @@
 					<f:setPropertyActionListener
 						target="#{registerCaptialChangeBean.operate}" value="edit" />
 				</p:commandButton>
-				<p:commandButton id="recoverButton" rendered="#{('删除' == stockholder.shareHolders.get(stockholder.shareHolders.size()-1).status) and (registerCaptialChangeBean.checkInputable('recoverButton'))}"
+				<p:commandButton id="recoverButton" rendered="#{('删除' == stockholder.shareHolders[stockholder.shareHolders.size()-1].status) and (registerCaptialChangeBean.checkInputable('recoverButton'))}"
 					action="#{registerCaptialChangeBean.recoverShareholder()}" value="恢复" update=":addRegisterChangeForm">
 					<f:setPropertyActionListener
 						target="#{registerCaptialChangeBean.selectedHolder}" value="#{stockholder}" />

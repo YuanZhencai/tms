@@ -144,7 +144,7 @@ public class RegicapitalChargeService implements Serializable{
 //				+ "left outer join fetch db.debtContract.shareHolder "
 			//	+ "left outer join fetch co.fundsProvider ";
 //				+ "where db.defunctInd = 'N'");
-		jpql.append(" where db.regiCapitalChangeId="+regiCapitalChangeId+"");
+		jpql.append(" where db.procRegiCapitalChange.id="+regiCapitalChangeId+"");
 		System.out.println(jpql);
 		return entityService.find(jpql.toString());
 	}

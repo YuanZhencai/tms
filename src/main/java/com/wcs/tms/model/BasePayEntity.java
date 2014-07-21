@@ -13,10 +13,19 @@ import javax.persistence.TemporalType;
 import com.wcs.base.model.BaseEntity;
 
 /**
- * <p>Project: tms</p>
- * <p>Description:付款的基础entity，付款相关流程的Entity继承此类 </p>
- * <p>Copyright © 2012 Wilmar Consultancy Services</p>
- * <p>All Rights Reserved.</p>
+ * <p>
+ * Project: tms
+ * </p>
+ * <p>
+ * Description:付款的基础entity，付款相关流程的Entity继承此类
+ * </p>
+ * <p>
+ * Copyright © 2012 Wilmar Consultancy Services
+ * </p>
+ * <p>
+ * All Rights Reserved.
+ * </p>
+ * 
  * @author <a href="mailto:liushengbin@wcs-global.com">Liu Shengbin</a>
  */
 @MappedSuperclass
@@ -73,15 +82,14 @@ public class BasePayEntity extends BaseEntity {
 	/* 品种3 */
 	@Column(name = "VARIETY_THR", length = 101)
 	protected String varietyThr;
-	
-	/* 发起人手动终止流程标识  */
+
+	/* 发起人手动终止流程标识 */
 	@Column(name = "TERMINATE_FLAG", length = 1)
 	private String terminateFlag;
-	
-	/* 剩余需要 支付金额*/
+
+	/* 剩余需要 支付金额 */
 	@Column(name = "LAST_PAIED_AMOUNT", precision = 12, scale = 4)
 	private Double lastPaiedAmount;
-	
 
 	@Override
 	public String getDisplayText() {
@@ -185,7 +193,7 @@ public class BasePayEntity extends BaseEntity {
 	}
 
 	public String getTerminateFlag() {
-		return terminateFlag;
+		return terminateFlag == null ? "N" : terminateFlag;
 	}
 
 	public void setTerminateFlag(String terminateFlag) {

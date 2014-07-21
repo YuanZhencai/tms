@@ -81,8 +81,10 @@ public class ProcessWaitAcceptService implements Serializable {
             if (list.isEmpty()) { return null; }
             return list.get(0);
         } catch (Exception e) {
-            throw new ServiceException(e);
+//            throw new ServiceException(e);
+        	e.printStackTrace();
         }
+		return null;
     }
 
     /**
@@ -93,7 +95,7 @@ public class ProcessWaitAcceptService implements Serializable {
      * @return
      * @throws ServiceException
      */
-    public String findCompanyByProcee(String processInd, String entityClass) throws ServiceException {
+    public String findCompanyByProcee(String processInd, String entityClass) {
         Validate.notNull(processInd, "流程编号为空");
         Validate.notNull(entityClass, "查询实体为空");
         try {
@@ -105,8 +107,10 @@ public class ProcessWaitAcceptService implements Serializable {
             if (comList.isEmpty()) { return null; }
             return comList.get(0);
         } catch (Exception e) {
-            throw new ServiceException(e);
+//            throw new ServiceException(e);
+        	e.printStackTrace();
         }
+		return null;
     }
 
     /**
@@ -150,8 +154,10 @@ public class ProcessWaitAcceptService implements Serializable {
             if (list.isEmpty()) { return null; }
             return list.get(0);
         } catch (Exception e) {
-            throw new ServiceException(e);
+//            throw new ServiceException(e);
+        	e.printStackTrace();
         }
+		return null;
 
     }
 

@@ -83,7 +83,7 @@
 									<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" />
 									<f:selectItems value="#{registerCaptialBean.companyNameSelect}" />
 									<p:ajax listener="#{registerCaptialBean.companyEnName}"
-										update="companyNameEn,stockholderOutTable,payer" />
+										update="companyNameEn,stockholderOutTable,payer,zjsqf,sqfdz" />
 								</h:selectOneMenu>
 								<h:outputText style="color:red;" value=" *" />
 							</h:panelGroup>
@@ -98,7 +98,7 @@
 						<ui:include src="shareholder-list.xhtml" />
 					</div>
 					<div style="position: relative; margin-top: 5px;">
-						<div class="style1">
+						<p:panel id="basic" header="公司资金现状:">
 							<h:panelGrid columns="4"
 								columnClasses="column41,column2,column21,column2">
 
@@ -179,50 +179,11 @@
 									<f:selectItems value="#{registerCaptialBean.currencySelect}" />
 								</h:selectOneMenu>
 							</h:panelGrid>
-						</div>
-						<div class="style1">
-							<h:panelGrid columns="4"
-								columnClasses="column41,column2,column21,column2">
-								<h:outputLabel value="#{msgs.lbl_currentApplyAmount}" />
-								<h:panelGroup>
-									<p:inputText id="thisFonds" required="true"
-										requiredMessage="#{msgs.msg_input_currentApplyAmount}" label="#{msgs.lbl_currentApplyAmount_1}"
-										value="#{registerCaptialBean.instance.thisFonds}"
-										converterMessage="#{msgs.msg_currentApplyAmount_mustbe}"
-										validatorMessage="#{msgs.msg_currentApplyAmount_mustBetween}">
-										<f:validateDoubleRange maximum="99999999.9999"
-											minimum="0.00" />
-										<f:convertNumber pattern="#,##0.####" />
-
-									</p:inputText>
-									<h:outputText value="#{msgs.lbl_tenThousand}" />
-									<h:outputText style="color:red;" value="  *" />
-								</h:panelGroup>
-								<h:outputLabel value="" />
-								<h:panelGroup>
-									<h:selectOneMenu
-										value="#{registerCaptialBean.instance.thisFondsCu}"
-										id="thisFondsCu" required="true" requiredMessage="#{msgs.msg_select_currency}"
-										styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
-										style="width:140px">
-										<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" />
-										<f:selectItems value="#{registerCaptialBean.currencySelect}" />
-									</h:selectOneMenu>
-									<h:outputText style="color:red;" value="  *" />
-								</h:panelGroup>
-
-								<h:outputLabel value="#{msgs.lbl_shareholder}" />
-								<h:selectOneMenu value="#{registerCaptialBean.instance.payer}"
-									id="payer"
-									styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
-									style="width:145px">
-									<f:selectItems value="#{registerCaptialBean.shareHolderSelect}" />
-								</h:selectOneMenu>
-								<h:outputLabel value="" />
-								<h:outputLabel value="" />
-							</h:panelGrid>
-						</div>
-						<div class="style1">
+						
+						</p:panel>
+						
+						<p:panel id="basic1" header="公司合同现状:">
+						
 							<h:panelGrid columns="4"
 								columnClasses="column41,column2,column21,column2">
 
@@ -295,20 +256,120 @@
 									<f:selectItems value="#{registerCaptialBean.currencySelect}" />
 								</h:selectOneMenu>
 							</h:panelGrid>
-						</div>
+						
+						</p:panel>
 						<div class="style1">
+							<h:panelGrid columns="4"
+								columnClasses="column41,column2,column21,column2">
+								<h:outputLabel value="#{msgs.lbl_currentApplyAmount}" />
+								<h:panelGroup>
+									<p:inputText id="thisFonds" required="true"
+										requiredMessage="#{msgs.msg_input_currentApplyAmount}" label="#{msgs.lbl_currentApplyAmount_1}"
+										value="#{registerCaptialBean.instance.thisFonds}"
+										converterMessage="#{msgs.msg_currentApplyAmount_mustbe}"
+										validatorMessage="#{msgs.msg_currentApplyAmount_mustBetween}">
+										<f:validateDoubleRange maximum="99999999.9999"
+											minimum="0.00" />
+										<f:convertNumber pattern="#,##0.####" />
+
+									</p:inputText>
+									<h:outputText value="#{msgs.lbl_tenThousand}" />
+									<h:outputText style="color:red;" value="  *" />
+								</h:panelGroup>
+								<h:outputLabel value="" />
+								<h:panelGroup>
+									<h:selectOneMenu
+										value="#{registerCaptialBean.instance.thisFondsCu}"
+										id="thisFondsCu" required="true" requiredMessage="#{msgs.msg_select_currency}"
+										styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+										style="width:140px">
+										<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" />
+										<f:selectItems value="#{registerCaptialBean.currencySelect}" />
+									</h:selectOneMenu>
+									<h:outputText style="color:red;" value="  *" />
+								</h:panelGroup>
+
+								<h:outputLabel value="#{msgs.lbl_shareholder}" />
+								<h:panelGroup>
+									<h:selectOneMenu value="#{registerCaptialBean.instance.payer}"
+										id="payer" required="true"  requiredMessage="请选择股东方"
+										styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
+										style="width:145px">
+										<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" />
+										<f:selectItems value="#{registerCaptialBean.shareHolderSelect}" />
+										<p:ajax listener="#{registerCaptialBean.ajaxPayer}"
+										update="zjtgf" />
+									</h:selectOneMenu>
+								</h:panelGroup>
+								<h:outputLabel value="" />
+								<h:outputLabel value="" />
+								
+								
+								
+							</h:panelGrid>	
+							
 							<h:panelGrid columns="2" columnClasses="column41,column2">
 								<h:outputLabel value="#{msgs.lbl_amountApplication}" />
-								<h:panelGroup>
-									<p:inputTextarea rows="2" style="width:933px;"
+								<h:panelGroup >
+									<p:inputTextarea rows="5" style="width:933px;"
 										autoResize="false" value="#{registerCaptialBean.instance.use}"
 										required="true" requiredMessage="#{msgs.msg_input_amountApplication_current}"
 										validatorMessage="#{msgs.msg_beyondLength_amountApplication}" id="use">
 										<f:validateLength maximum="200" for="use" />
 									</p:inputTextarea>
 									<h:outputText style="color:red;" value="  *" />
+									<h:outputLabel value="" />
 								</h:panelGroup>
-
+							</h:panelGrid>						
+								
+						</div>
+						
+						<div class="style11">
+							<h:outputLabel  value="#{msgs.lbl_remitRoute}：" styleClass="title_2"/>
+							<h:panelGrid columns="2"
+										columnClasses="column170,column2">
+										<h:outputLabel  value="资金提供方Lender：" for="zjtgf"/>
+										<p:inputText id="zjtgf" disabled="true" value="#{registerCaptialBean.zjtgfShareHolderName}" style="width:400px"></p:inputText>
+										
+										<h:outputLabel  value="申请方Borrower：" for="zjsqf"/>
+										<p:inputText id="zjsqf" disabled="true" value="#{registerCaptialBean.instance.company.companyName}" style="width:400px"></p:inputText>
+										
+										<h:outputLabel  value="申请方地址 Address Of Borrower(to be in serted in the loan agreement)：" for="sqfdz"/>
+										<p:inputText id="sqfdz" disabled="true" value="#{registerCaptialBean.instance.company.addrCn}" style="width:400px"></p:inputText>
+							</h:panelGrid>
+							
+							<h:panelGrid columns="3" columnClasses="column170,column43,column43">
+								<h:outputLabel  style="color:black;font-weight:bold;" value="#{msgs.lbl_hklxsl}：" />
+								<p:commandButton update="msg,selAcNoTb" 
+								action="#{registerCaptialBean.ajaxSelAcNoList}" oncomplete="selAcNoVar.show()" value="#{msgs.lbl_hklxbt1}" style="width:170px" immediate="true" />
+								<p:commandButton oncomplete="addAcNoVar.show()" update="corrBeneBankNameAdd,swiftCode1Add,acNoAdd,beneBankNameAdd,swiftCode2Add" action="#{registerCaptialBean.ajaxShowAcWin}" value="#{msgs.lbl_hklxbt2}" width="150px" immediate="true" />
+								
+							</h:panelGrid>
+							
+							<h:panelGrid columns="2"
+										columnClasses="column170,column2">
+										<h:outputLabel  value="#{msgs.lbl_hklx1}：" for="corrBeneBankName"/>
+										<p:inputText id="corrBeneBankName"  disabled="true" value="#{registerCaptialBean.instance.remittanceLineAccount.corrBeneBankName}" style="width:400px"></p:inputText>
+										
+										<h:outputLabel  value="#{msgs.lbl_hklx2}：" for="swiftCode1"/>
+										<p:inputText id="swiftCode1" disabled="true" value="#{registerCaptialBean.instance.remittanceLineAccount.swiftCode1}" style="width:400px"></p:inputText>
+										
+										<h:outputLabel  value="#{msgs.lbl_hklx3}：" for="acNo"/>
+										<p:inputText id="acNo" disabled="true" value="#{registerCaptialBean.instance.remittanceLineAccount.acNo}" style="width:400px"></p:inputText>
+										
+										<h:outputLabel  value="#{msgs.lbl_hklx4}：" for="beneBankName"/>
+										<p:inputText id="beneBankName" disabled="true" value="#{registerCaptialBean.instance.remittanceLineAccount.beneBankName}" style="width:400px"></p:inputText>
+										
+										<h:outputLabel  value="#{msgs.lbl_hklx2}：" for="swiftCode2"/>
+										<p:inputText id="swiftCode2" disabled="true" value="#{registerCaptialBean.instance.remittanceLineAccount.swiftCode2}" style="width:400px"></p:inputText>
+							</h:panelGrid>
+						</div>
+						
+						<div class="style1">
+							<!-- 
+							<h:panelGrid columns="2" columnClasses="column41,column2">
+								
+							
 								<h:outputLabel value="#{msgs.lbl_remitRouteAndAccountNo}" />
 								<h:panelGroup>
 									<p:inputTextarea rows="5" style="width:933px;"
@@ -332,6 +393,7 @@
 									<h:outputText style="color:red;" value="  *" />
 								</h:panelGroup>
 							</h:panelGrid>
+							 -->
 							<div>
 								<p:commandButton icon="ui-icon ui-icon-arrowthick-1-n"
 									value="#{msgs.btn_upload}" title="#{msgs.title_AFCE_attach}" immediate="true"
@@ -344,7 +406,7 @@
 									action="#{registerCaptialBean.applyRegister}" ajax="false" />
 							</div>
 						</div>
-
+						
 
 					</div>
 				</div>
@@ -367,6 +429,65 @@
 						</p:outputPanel>
 					</ui:fragment>
 				</div>
+			</h:form>
+			
+			<h:form prependId="false" id="selAcNoForm">
+			<p:dialog header="#{msgs.lbl_xzhkzh}" id="selAcNoDg" 
+					widgetVar="selAcNoVar" resizable="false" width="1000" modal="true">
+					<p:outputPanel id="selAcNoPanel">
+						<p:dataTable id="selAcNoTb" var="selAcNoVar" selectionMode="single" 
+			value="#{registerCaptialBean.acNoList}" paginator="false" selection="#{registerCaptialBean.selAcNo}" 
+			rowKey="#{selAcNoVar.id}" emptyMessage="#{msgs.no_data_msg}">
+<p:column headerText="#{msgs.lbl_hklx1}">
+        #{selAcNoVar.corrBeneBankName}
+        </p:column>
+        <p:column headerText="#{msgs.lbl_hklx2}">
+            #{selAcNoVar.swiftCode1}
+        </p:column>
+         <p:column headerText="#{msgs.lbl_hklx3}">
+            #{selAcNoVar.acNo}
+        </p:column>
+             <p:column headerText="#{msgs.lbl_hklx4}">
+            #{selAcNoVar.beneBankName}
+        </p:column>
+         <p:column headerText="#{msgs.lbl_hklx2}">
+            #{selAcNoVar.swiftCode2}
+        </p:column>
+        </p:dataTable>
+        <div align="right">
+     <p:commandButton  id="selAcNoOk" action="#{registerCaptialBean.ajaxSelAc}" oncomplete="selAcNoVar.hide()" update="swiftCode1,corrBeneBankName,beneBankName,acNo,swiftCode2" 
+     value="#{msgs.btn_ok}" image="ui-icon ui-icon-disk" />
+     </div>
+					</p:outputPanel>
+				</p:dialog>
+				</h:form>
+				
+				<h:form prependId="false" id="addAcNoForm">
+			<p:dialog header="#{msgs.lbl_tjhkzh}" id="addAcNoDg" 
+					widgetVar="addAcNoVar" resizable="false" width="700" modal="true">
+									<h:panelGrid columns="2"
+							columnClasses="column170,column2">
+							<h:outputLabel  value="#{msgs.lbl_hklx1}：" for="corrBeneBankNameAdd"/>
+							<p:inputText id="corrBeneBankNameAdd"   value="#{registerCaptialBean.addAcNo.corrBeneBankName}" style="width:400px"></p:inputText>
+							
+							<h:outputLabel  value="#{msgs.lbl_hklx2}：" for="swiftCode1Add"/>
+							<p:inputText id="swiftCode1Add" value="#{registerCaptialBean.addAcNo.swiftCode1}" style="width:400px"></p:inputText>
+							
+							<h:outputLabel  value="#{msgs.lbl_hklx3}：" for="acNoAdd"/>
+							<p:inputText id="acNoAdd"  value="#{registerCaptialBean.addAcNo.acNo}" style="width:400px"></p:inputText>
+							
+							<h:outputLabel  value="#{msgs.lbl_hklx4}：" for="beneBankNameAdd"/>
+							<p:inputText id="beneBankNameAdd"  value="#{registerCaptialBean.addAcNo.beneBankName}" style="width:400px"></p:inputText>
+							
+							<h:outputLabel  value="#{msgs.lbl_hklx2}：" for="swiftCode2Add"/>
+							<p:inputText id="swiftCode2Add"  value="#{registerCaptialBean.addAcNo.swiftCode2}" style="width:400px"></p:inputText>
+				</h:panelGrid>
+				
+					<div align="right">
+     					<p:commandButton  id="addAcNoOk" action="#{registerCaptialBean.ajaxAddAcNo}" oncomplete="addAcNoVar.hide()" update="msg,corrBeneBankName,swiftCode1,acNo,beneBankName,swiftCode2" 
+     					value="#{msgs.btn_ok}" image="ui-icon ui-icon-disk" />
+     					</div>
+				</p:dialog>
 			</h:form>
 		</p:panel>
 		<script type="text/javascript">
