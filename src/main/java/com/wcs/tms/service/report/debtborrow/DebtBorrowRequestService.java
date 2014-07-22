@@ -143,6 +143,7 @@ public class DebtBorrowRequestService implements Serializable {
 	    // 申请日期(创建时间)
         dbrVO.setApplyDate(DateUtil.convertDateToString(pdp.getCreatedDatetime(), "yyyy-MM-dd"));
         // 流程编号
+        dbrVO.setProcInstId(pdp.getProcInstId());
         dbrVO.setProcessNo(processUtilMapService.getTmsIdByFnId(pdp.getProcInstId()));
         // 公司名称
         dbrVO.setCompanyName(pdp.getCompany().getCompanyName());

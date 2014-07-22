@@ -25,6 +25,7 @@ public class RegicapitalRequestVO extends IdModel implements Serializable {
     private String applyDate;
     // 流程编号
     private String processNo;
+    private String procInstId;
     // 公司名称
     private String companyName;
     // 流程状态
@@ -189,5 +190,11 @@ public class RegicapitalRequestVO extends IdModel implements Serializable {
     public void setRequestCurrency(String requestCurrency) {
         this.requestCurrency = requestCurrency;
     }
+	public String getProcInstId() {
+		return procInstId;
+	}
+	public void setProcInstId(String procInstId) {
+		this.procInstId = procInstId;
+	}
     
 }

@@ -147,6 +147,7 @@ public class RegicapitalGeneralRequestService implements Serializable {
 	    // 申请日期(创建时间)
 	    rrVO.setApplyDate(DateUtil.convertDateToString(prc.getCreatedDatetime(), "yyyy-MM-dd"));
 	    // 流程编号
+	    rrVO.setProcInstId(prc.getProcInstId());
 	    rrVO.setProcessNo(processUtilMapService.getTmsIdByFnId(prc.getProcInstId()));
 	    // 公司名称
 	    rrVO.setCompanyName(prc.getCompany().getCompanyName());

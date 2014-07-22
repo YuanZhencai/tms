@@ -164,7 +164,13 @@
 				<h:outputText
 					value="#{commonBean.getValueByDictCatAndKey('TMS_TAX_PROJECT_CURRENCY_TYPE',regicapitalRequestVO.requestCurrency)}" />
 			</p:column>
-
+			<p:column headerText="#{msgs.col_operate}">
+				<p:commandButton
+					action="#{regicapitalGeneralRequestBean.toViewDetail(regicapitalRequestVO.procInstId)}"
+					process="@this" oncomplete="doPopup(xhr, status, args);"
+					image="ui-icon ui-icon-zoomin" title="#{msgs.txt_checkAll}">
+				</p:commandButton>
+			</p:column>
 		</p:dataTable>
 	</p:outputPanel>
 </ui:composition>

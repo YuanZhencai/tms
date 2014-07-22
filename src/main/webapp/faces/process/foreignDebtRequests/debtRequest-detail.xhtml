@@ -161,6 +161,13 @@
 			</p:column>
 			<p:column headerText="是否到账">
 			</p:column>
+			<p:column headerText="#{msgs.col_operate}">
+				<p:commandButton
+					action="#{debtBorrowManagerBean.toViewDetail(procDebtBorrow.procInstId)}"
+					process="@this" oncomplete="doPopup(xhr, status, args);"
+					image="ui-icon ui-icon-zoomin" title="#{msgs.txt_checkAll}">
+				</p:commandButton>
+			</p:column>
 
 		</p:dataTable>
 	</p:outputPanel>

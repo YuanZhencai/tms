@@ -25,6 +25,7 @@ public class DebtBorrowRequestVO extends IdModel implements Serializable {
     private String applyDate;
     // 流程编号
     private String processNo;
+    private String procInstId;
     // 公司名称
     private String companyName;
     // 流程状态
@@ -191,6 +192,12 @@ public class DebtBorrowRequestVO extends IdModel implements Serializable {
     public void setReceivedFunds(String receivedFunds) {
         this.receivedFunds = receivedFunds;
     }
+	public String getProcInstId() {
+		return procInstId;
+	}
+	public void setProcInstId(String procInstId) {
+		this.procInstId = procInstId;
+	}
 
     
 }
