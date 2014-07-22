@@ -15,11 +15,14 @@ import javax.inject.Inject;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.primefaces.context.RequestContext;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
 import com.wcs.base.service.EntityService;
 import com.wcs.base.service.LoginService;
+import com.wcs.base.util.JSFUtils;
+import com.wcs.base.util.StringUtils;
 import com.wcs.tms.model.Company;
 import com.wcs.tms.service.report.regicapitalgeneral.RegicapitalGeneralModifyService;
 import com.wcs.tms.service.report.regicapitalgeneral.RegicapitalGeneralReService;
@@ -166,6 +169,23 @@ public class RegicapitalGeneralModifyBean implements Serializable {
 		return lazyDataModel;
 	}
 
+	public void toViewDetail(String procInstId) {
+		procInstId = procInstId == null ? "" : procInstId;
+		JSFUtils.getRequest().setAttribute("op", "view");
+		JSFUtils.getRequest().setAttribute("menu2", JSFUtils.getParamValue("menu2"));
+		JSFUtils.getRequest().setAttribute("procInstId", procInstId);
+		JSFUtils.getRequest().setAttribute("stepName", "");
+		JSFUtils.getRequest().setAttribute("isPatch", "");
+		String viewPage = "/faces/process/regiCapitalChange/registerCaptialChange-view.xhtml";
+		// 设置弹出窗口url的参数
+		RequestContext.getCurrentInstance().addCallbackParam("viewPage", StringUtils.safeString(JSFUtils.contextPath() + viewPage));
+		RequestContext.getCurrentInstance().addCallbackParam("op", "view");
+		RequestContext.getCurrentInstance().addCallbackParam("menu2", StringUtils.safeString(JSFUtils.getParamValue("menu2")));
+		RequestContext.getCurrentInstance().addCallbackParam("procInstId", procInstId);
+		RequestContext.getCurrentInstance().addCallbackParam("stepName", "");
+		RequestContext.getCurrentInstance().addCallbackParam("isPatch", "");
+		
+	}
 	/**************************setter、getter方法*************************/
 	public EntityService getEntityService() {
 		return entityService;
