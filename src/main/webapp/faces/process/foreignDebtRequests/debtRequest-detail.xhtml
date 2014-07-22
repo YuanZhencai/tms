@@ -167,6 +167,9 @@
 					process="@this" oncomplete="doPopup(xhr, status, args);"
 					image="ui-icon ui-icon-zoomin" title="#{msgs.txt_checkAll}">
 				</p:commandButton>
+				<p:commandButton oncomplete="debtConfirmDialogVar.show();"
+					image="ui-icon ui-icon-pencil" title="确认到账">
+				</p:commandButton>
 			</p:column>
 
 		</p:dataTable>
