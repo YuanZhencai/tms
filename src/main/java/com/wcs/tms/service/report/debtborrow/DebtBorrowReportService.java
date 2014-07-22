@@ -227,7 +227,7 @@ public class DebtBorrowReportService implements Serializable {
 	public HashMap<String, Object> findDebtBorrowRequestDetail(int first, int pageSize, String sortField, SortOrder sortOrder,
 			Map<String, Object> conditionMap) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		Query query;
+		Query query = null;
 		try {
 			StringBuilder jpql = new StringBuilder("select db from ProcDebtBorrow db join fetch db.company where db.defunctInd='N' ");
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
