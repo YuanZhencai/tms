@@ -11,7 +11,7 @@
 			<h:outputLabel value="#{msgs.lab_debtTime}：" />
 			<h:panelGroup>
 				<p:inputText id="startDateS"
-					value="#{debtBorrowReportBean.conditionMap['startDateS']}"
+					value="#{debtBorrowManagerBean.conditionMap['startDateS']}"
 					styleClass="ui-date" style="font-size: 12px;width:90px;"
 					title="#{msgs.txt_startTime}"
 					onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM',maxDate:'#F{$dp.$D(\'capitalDebtTabView:startDateE\')}',autoUpdateOnChanged:false});">
@@ -19,7 +19,7 @@
 				</p:inputText>
 				<h:outputText value="~" />
 				<p:inputText id="startDateE"
-					value="#{debtBorrowReportBean.conditionMap['startDateE']}"
+					value="#{debtBorrowManagerBean.conditionMap['startDateE']}"
 					styleClass="ui-date" style="font-size: 12px;width:90px;"
 					title="#{msgs.txt_endTime}"
 					onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM',minDate:'#F{$dp.$D(\'capitalDebtTabView:startDateS\')}',autoUpdateOnChanged:false});">
@@ -29,7 +29,7 @@
 			<h:outputLabel value="还款时间：" />
 			<h:panelGroup>
 				<p:inputText id="endDateS"
-					value="#{debtBorrowReportBean.conditionMap['endDateS']}"
+					value="#{debtBorrowManagerBean.conditionMap['endDateS']}"
 					styleClass="ui-date" style="font-size: 12px;width:90px;"
 					title="#{msgs.txt_startTime}"
 					onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM',maxDate:'#F{$dp.$D(\'endDateE\')}',autoUpdateOnChanged:false});">
@@ -37,7 +37,7 @@
 				</p:inputText>
 				<h:outputText value="~" />
 				<p:inputText id="endDateE"
-					value="#{debtBorrowReportBean.conditionMap['endDateE']}"
+					value="#{debtBorrowManagerBean.conditionMap['endDateE']}"
 					styleClass="ui-date" style="font-size: 12px;width:90px;"
 					title="#{msgs.txt_endTime}"
 					onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM',minDate:'#F{$dp.$D(\'endDateS\')}',autoUpdateOnChanged:false});">
@@ -46,43 +46,43 @@
 			</h:panelGroup>
 
 			<h:outputLabel value="#{msgs.col_companyName}："
-				rendered="#{!debtBorrowReportBean.isCopUser}" />
-			<h:panelGroup rendered="#{!debtBorrowReportBean.isCopUser}">
+				rendered="#{!debtBorrowManagerBean.isCopUser}" />
+			<h:panelGroup rendered="#{!debtBorrowManagerBean.isCopUser}">
 				<h:selectOneMenu id="debtCompanyName" name="companyName"
 					style="width:330px;"
-					value="#{debtBorrowReportBean.conditionMap['companyId']}"
+					value="#{debtBorrowManagerBean.conditionMap['companyId']}"
 					styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
 					<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" itemValue="" />
-					<f:selectItems value="#{debtBorrowReportBean.companySelect}" />
+					<f:selectItems value="#{debtBorrowManagerBean.companySelect}" />
 				</h:selectOneMenu>
 			</h:panelGroup>
 
 			<h:outputLabel value="#{msgs.col_companyName}："
-				rendered="#{debtBorrowReportBean.isCopUser}" />
-			<h:panelGroup rendered="#{debtBorrowReportBean.isCopUser}">
+				rendered="#{debtBorrowManagerBean.isCopUser}" />
+			<h:panelGroup rendered="#{debtBorrowManagerBean.isCopUser}">
 				<p:inputText id="debtCompanyNameTwo" disabled="true"
 					style="width: 320px;"
-					value="#{debtBorrowReportBean.company.companyName}" />
+					value="#{debtBorrowManagerBean.company.companyName}" />
 			</h:panelGroup>
 			<p:commandButton immediate="true" value="#{msgs.btn_select}"
 				style="width: 70px;" image="ui-icon ui-icon-zoomin"
-				rendered="#{debtBorrowReportBean.isCopUser}"
-				actionListener="#{debtBorrowReportBean.clear}"
+				rendered="#{debtBorrowManagerBean.isCopUser}"
+				actionListener="#{debtBorrowManagerBean.clear}"
 				oncomplete="companyDialogVar.show();" update="companyForm">
 				<f:setPropertyActionListener
-					target="#{debtBorrowReportBean.companySelectBean.method}"
-					value="debtBorrowReportBean.getSelectedCompany" />
+					target="#{debtBorrowManagerBean.companySelectBean.method}"
+					value="debtBorrowManagerBean.getSelectedCompany" />
 			</p:commandButton>
 
 		</h:panelGrid>
 		<div>
 			<p:commandButton 
-				action="#{debtBorrowReportBean.searchDebtBorrow}"
+				action="#{debtBorrowManagerBean.searchDebtBorrow}"
 				update="doneMsg,debtBorrowReportPl" value="#{msgs.btn_query}"
 				image="ui-icon ui-icon-search" />
 			<p:commandButton value="#{msgs.btn_reset}" style="margin: 5px;"
 				icon="ui-icon ui-icon-arrowrefresh-1-e"
-				action="#{debtBorrowReportBean.reset}"
+				action="#{debtBorrowManagerBean.reset}"
 				update="debtSearchPanel,debtCompanyName,debtCompanyNameTwo" />
 		</div>
 	</div>
@@ -90,7 +90,7 @@
 
 	<p:outputPanel id="debtBorrowReportPl">
 		<p:dataTable var="procDebtBorrow" id="debtBorrowReports"
-			value="#{debtBorrowReportBean.procDebtBorrows}"
+			value="#{debtBorrowManagerBean.debtBorrowRequestVOModel}"
 			rowKey="#{procDebtBorrow.id}" emptyMessage="#{msgs.dataTable_empty}">
 
 			<f:facet name="header">#{msgs.menItem_extDebtBorForm}</f:facet>
@@ -117,12 +117,6 @@
 				<h:outputText value="#{procDebtBorrow.corpAudit}">
 					<f:convertNumber pattern="#,##0.####" />
 				</h:outputText>
-				<f:facet name="footer">
-					<h:outputText value="#{debtBorrowReportBean.corpAuditSum}"
-						style="text-align:right">
-						<f:convertNumber pattern="#,##0.####" />
-					</h:outputText>
-				</f:facet>
 			</p:column>
 
 			<p:column headerText="#{msgs.col_debtTime}">
