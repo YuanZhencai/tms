@@ -145,7 +145,7 @@ public class DebtBorrowReportService implements Serializable {
 	public List<ProcDebtBorrow> findProcDebtBorrowListByWob(List<String> procIds, Map<String, Object> conditionMap) throws ServiceException {
 		List<ProcDebtBorrow> resultList = new ArrayList<ProcDebtBorrow>();
 		try {
-			StringBuilder jpql = new StringBuilder("select db from ProcDebtBorrow db join fetch db.company where db.defunctInd='N' ");
+			StringBuilder jpql = new StringBuilder("select db from ProcDebtBorrow db join fetch db.company where db.defunctInd='N' and db.company.defunctInd = 'N' and db.company.status = 'Y' ");
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			if (null != conditionMap.get("creditStartS")) {
 				String start = sdf.format(conditionMap.get("startDateS"));
@@ -229,7 +229,7 @@ public class DebtBorrowReportService implements Serializable {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		Query query = null;
 		try {
-			StringBuilder jpql = new StringBuilder("select db from ProcDebtBorrow db join fetch db.company where db.defunctInd='N' ");
+			StringBuilder jpql = new StringBuilder("select db from ProcDebtBorrow db join fetch db.company where db.defunctInd='N' and db.company.defunctInd = 'N' and db.company.status = 'Y' ");
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			if (null != conditionMap.get("creditStartS")) {
 				String start = sdf.format(conditionMap.get("startDateS"));
@@ -295,27 +295,45 @@ public class DebtBorrowReportService implements Serializable {
 	 */
 	public DebtRequestVo getDebtRequestVo(ProcDebtBorrow pdb) {
 		DebtRequestVo debtRequestVo = new DebtRequestVo(pdb);
-		
+
 		// 流程编号
 		debtRequestVo.setProcessNo(processUtilMapService.getTmsIdByFnId(pdb.getProcInstId()));
 		// 申请金额
-		debtRequestVo.setRequestMoney(pdb.getCorpAudit()== null ? "/" : pdb.getCorpAudit().toString());
+		debtRequestVo.setRequestMoney(pdb.getCorpAudit() == null ? "/" : pdb.getCorpAudit().toString());
 		// 币别
 		debtRequestVo.setCurrency(pdb.getCorpAuditCu());
 		// 是否到账
-		/** 外债合同_主数据DEBT_CONTRACT **/
-		// 外债合同 = 合同编号 + 出资方 + 开始-结束日期 + 利率
-		DebtContract debtContract = entityService.find(DebtContract.class, pdb.getDebtContractId());
-		String debtContractStr = debtContract.getDebtContractNo() + " + " + debtContract.getShareHolder().getShareHolderName() + " + " + DateUtil.convertDateToString(debtContract.getContractStartDate(), "yyyy-MM-dd") + "-" + DateUtil.convertDateToString(debtContract.getContractEndDate(), "yyyy-MM-dd") + " + " + (debtContract.getApprovalRate() == null ? "" : debtContract.getApprovalRate());
-		debtRequestVo.setDebtContract(debtContractStr);
-		// 外债合同金额
-		debtRequestVo.setDebtContractFunds(debtContract.getDebtContractFunds() == null ? "/" : debtContract.getDebtContractFunds().toString());
-		// 未请款金额 = 外债合同金额 - 未请款金额
-		Double noAppliedFunds = (debtContract.getDebtContractFunds() == null ? 0 : debtContract.getDebtContractFunds()) - (debtContract.getAppliedFunds() == null ? 0 : debtContract.getAppliedFunds());
-		debtRequestVo.setNoAppliedFunds(noAppliedFunds == 0 ? "/" : noAppliedFunds.toString());
-		// 已请款金额
-		debtRequestVo.setApplyFunds(debtContract.getAppliedFunds() == null ? "/" : debtContract.getAppliedFunds().toString());
+		if (pdb.getDebtContractId() != null) {
 
+			/** 外债合同_主数据DEBT_CONTRACT **/
+			// 外债合同 = 合同编号 + 出资方 + 开始-结束日期 + 利率
+			DebtContract debtContract = entityService.find(DebtContract.class, pdb.getDebtContractId());
+			String debtContractStr = debtContract.getDebtContractNo() + " + " + debtContract.getShareHolder().getShareHolderName() + " + "
+					+ DateUtil.convertDateToString(debtContract.getContractStartDate(), "yyyy-MM-dd") + "-"
+					+ DateUtil.convertDateToString(debtContract.getContractEndDate(), "yyyy-MM-dd") + " + "
+					+ (debtContract.getApprovalRate() == null ? "" : debtContract.getApprovalRate());
+			debtRequestVo.setDebtContract(debtContractStr);
+			// 外债合同金额
+			debtRequestVo.setDebtContractFunds(debtContract.getDebtContractFunds() == null ? "/" : debtContract.getDebtContractFunds().toString());
+			// 未请款金额 = 外债合同金额 - 未请款金额
+			Double noAppliedFunds = (debtContract.getDebtContractFunds() == null ? 0 : debtContract.getDebtContractFunds())
+					- (debtContract.getAppliedFunds() == null ? 0 : debtContract.getAppliedFunds());
+			debtRequestVo.setNoAppliedFunds(noAppliedFunds == 0 ? "/" : noAppliedFunds.toString());
+			// 已请款金额
+			debtRequestVo.setApplyFunds(debtContract.getAppliedFunds() == null ? "/" : debtContract.getAppliedFunds().toString());
+		}
+		String providerType = pdb.getProviderType();
+		if (providerType != null) {
+			// 股东类型
+			if ("G".equals(providerType)) {
+				if (pdb.getShareHolder() != null) {
+					debtRequestVo.setProviderName(pdb.getShareHolder().getShareHolderName());
+				}
+			} else {
+				// 海外外债 和 展期 类型
+				debtRequestVo.setProviderName(dictBean.getValueByDictCatAndKey("TMS_FUND_PROVIDER_COM_NAME", pdb.getProviderKey()));
+			}
+		}
 		return debtRequestVo;
 	}
 }

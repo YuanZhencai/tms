@@ -91,13 +91,31 @@
 	<p:outputPanel id="debtBorrowReportPl">
 		<p:dataTable var="procDebtBorrow" id="debtBorrowReports"
 			value="#{debtBorrowManagerBean.debtBorrowRequestVOModel}"
-			rowKey="#{procDebtBorrow.id}" emptyMessage="#{msgs.dataTable_empty}">
+			rowKey="#{procDebtBorrow.debtBorrow.id}" emptyMessage="#{msgs.dataTable_empty}" paginator="true"
+			paginatorPosition="bottom" rows="5"
+			ortBy="#{procDebtBorrow.debtBorrow.id}" sortOrder="descending"
+			paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
+			currentPageReportTemplate="{currentPage}/{totalPage}">
 
 			<f:facet name="header">#{msgs.menItem_extDebtBorForm}</f:facet>
 
 
+			<p:column headerText="申请日期">
+				<h:outputText value="#{procDebtBorrow.debtBorrow.createdDatetime}" >
+					<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+				</h:outputText>
+			</p:column>
 			<p:column headerText="#{msgs.col_procInstId}">
-				<h:outputText value="#{procDebtBorrow.procInstId}" />
+				<h:outputText value="#{procDebtBorrow.processNo}" />
+			</p:column>
+			<p:column headerText="流程状态">
+				<h:outputText value="#{procDebtBorrow.processStatus}" />
+			</p:column>
+			<p:column headerText="申请类型">
+				<h:outputText value="#{procDebtBorrow.applyType}" />
+			</p:column>
+			<p:column headerText="借款类型">
+				<h:outputText value="" />
 			</p:column>
 
 			<p:column headerText="#{msgs.col_companyName}">
@@ -119,13 +137,10 @@
 				</h:outputText>
 			</p:column>
 
-			<p:column headerText="#{msgs.col_debtTime}">
+			<p:column headerText="开始结束日期">
 				<h:outputText value="#{procDebtBorrow.corpAuditLis}">
 					<f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM" />
-				</h:outputText>
-			</p:column>
-
-			<p:column headerText="#{msgs.col_refuntTime}">
+				</h:outputText>~
 				<h:outputText value="#{procDebtBorrow.corpAuditLie}">
 					<f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM" />
 				</h:outputText>
@@ -135,6 +150,16 @@
 				<h:outputText value="#{procDebtBorrow.corpAuditRa}">
 					<f:convertNumber pattern="0.####" />
 				</h:outputText>
+			</p:column>
+			<p:column headerText="外债合同编号">
+				<h:outputText value="#{procDebtBorrow.debtContract}">
+				</h:outputText>
+			</p:column>
+			<p:column headerText="展期原合同编号">
+				<h:outputText value="#{procDebtBorrow.debtContract}">
+				</h:outputText>
+			</p:column>
+			<p:column headerText="是否到账">
 			</p:column>
 
 		</p:dataTable>

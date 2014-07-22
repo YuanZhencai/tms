@@ -59,7 +59,7 @@ public class DebtBorrowManagerBean extends ViewBaseBean<ProcDebtBorrow> {
 	private Map<String, Object> conditionMap = new HashMap<String, Object>();
 	// 外债列表
 	private List<ProcDebtBorrow> procDebtBorrows = new ArrayList<ProcDebtBorrow>();
-	private LazyDataModel<DebtRequestVo> debtBorrowRequestVOModel;
+	private LazyDataModel<DebtRequestVo> debtBorrowRequestVOModel = null;
 	// 申请金额之和
 	private Double corpAuditSum = 0d;
 	// 公司下拉菜单
@@ -183,6 +183,7 @@ public class DebtBorrowManagerBean extends ViewBaseBean<ProcDebtBorrow> {
 				Map<String, Object> map = new HashMap<String, Object>();
 				map = debtBorrowReportService.findDebtBorrowRequestDetail(first, pageSize, sortField, sortOrder, conditionMap);
 				List<DebtRequestVo> list = new ArrayList<DebtRequestVo>();
+				System.out.println("[map]" + map);
 				if (map.size() != 0) {
 					list = (List<DebtRequestVo>) map.get("list");
 					this.setRowCount((Integer) map.get("count"));
