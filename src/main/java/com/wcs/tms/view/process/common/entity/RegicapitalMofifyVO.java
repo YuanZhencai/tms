@@ -34,6 +34,8 @@ public class RegicapitalMofifyVO extends IdModel implements Serializable {
     // 流程状态
     private String processStatus;
     
+    private String procInstId;
+    
     private List<RegicapitalMofifyShareholderVO> shareholders;
     
     /**
@@ -120,5 +122,11 @@ public class RegicapitalMofifyVO extends IdModel implements Serializable {
     public void setShareholders(List<RegicapitalMofifyShareholderVO> shareholders) {
         this.shareholders = shareholders;
     }
+	public String getProcInstId() {
+		return procInstId;
+	}
+	public void setProcInstId(String procInstId) {
+		this.procInstId = procInstId;
+	}
     
 }

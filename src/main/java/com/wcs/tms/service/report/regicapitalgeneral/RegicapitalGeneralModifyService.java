@@ -137,6 +137,7 @@ public class RegicapitalGeneralModifyService implements Serializable {
 	    // 申请日期(创建时间)
 	    rcmVO.setApplyDate(DateUtil.convertDateToString(prcc.getCreatedDatetime(), "yyyy-MM-dd"));
 	    // 流程编号
+	    rcmVO.setProcInstId(prcc.getProcInstId());
 	    rcmVO.setProcessNo(processUtilMapService.getTmsIdByFnId(prcc.getProcInstId()));
 	    // 公司名称
 	    rcmVO.setCompanyName(prcc.getCompany().getCompanyName());

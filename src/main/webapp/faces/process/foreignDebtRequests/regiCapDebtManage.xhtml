@@ -306,6 +306,31 @@
 			<ui:include src="/faces/process/common/companySelect-dialog.xhtml" />
 		</p:panel>
 
+		<script type="text/javascript">
+		//<![CDATA[	
+			function doPopup(xhr, status, args) {
+
+				if (args.viewPage != null || args.viewPage != "") {
+					var url = args.viewPage;
+					var op = args.op;
+					var menu2 = args.menu2;
+					var procInstId = args.procInstId;
+					var stepName = args.stepName;
+					var isPatch = args.isPatch;
+
+					var h = screen.height - 200;
+					var w = screen.width - 200;
+
+					var left = (screen.width - w) / 2;
+					var top = (screen.height - h) / 2;
+
+					var param = encodeURI("?op=" + op + "&menu2=" + menu2 + "&procInstId=" + procInstId + "&stepName=" + stepName+ "&isPatch=" + isPatch);
+					var popup = window.open(url + param, "popup", "height=" + h + ",width=" + w + ",left=" + left + ",top=" + top + ",toolbar=no,status=yes,menubar=no,scrollbars=yes,,resizable=yes");
+					popup.focus();
+				}
+			}
+			//]]>
+		</script>
 
 
 	</ui:define>

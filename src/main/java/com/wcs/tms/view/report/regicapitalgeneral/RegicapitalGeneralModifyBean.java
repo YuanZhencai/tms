@@ -176,7 +176,7 @@ public class RegicapitalGeneralModifyBean implements Serializable {
 		JSFUtils.getRequest().setAttribute("procInstId", procInstId);
 		JSFUtils.getRequest().setAttribute("stepName", "");
 		JSFUtils.getRequest().setAttribute("isPatch", "");
-		String viewPage = "/faces/process/regiCapitalChange/registerCaptialChange-view.xhtml";
+		String viewPage = "/faces/process/foreignDebtRequests/registerCaptialChange-view.xhtml";
 		// 设置弹出窗口url的参数
 		RequestContext.getCurrentInstance().addCallbackParam("viewPage", StringUtils.safeString(JSFUtils.contextPath() + viewPage));
 		RequestContext.getCurrentInstance().addCallbackParam("op", "view");

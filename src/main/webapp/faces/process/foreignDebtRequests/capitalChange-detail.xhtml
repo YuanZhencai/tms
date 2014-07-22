@@ -254,7 +254,14 @@
 					</p:column>
 				</h:dataTable>
 			</p:column>
+			<p:column headerText="#{msgs.col_operate}">
 
+
+				<p:commandButton action="#{regicapitalGeneralModifyBean.toViewDetail(regicapitalMofifyVO.procInstId)}"
+					process="@this" oncomplete="doPopup(xhr, status, args);"
+					image="ui-icon ui-icon-zoomin" title="#{msgs.txt_checkAll}">
+				</p:commandButton>
+			</p:column>
 		</p:dataTable>
 	</p:outputPanel>
 </ui:composition>
