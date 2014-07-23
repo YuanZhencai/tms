@@ -16,7 +16,7 @@ public class RegiDebtConfirmVo {
 	private Date borrowEndDate;
 
 	// 合同金额
-	private String contractAccount;
+	private Double contractAccount;
 	// 币别
 	private String currency;
 
@@ -50,10 +50,10 @@ public class RegiDebtConfirmVo {
 	public void setBorrowEndDate(Date borrowEndDate) {
 		this.borrowEndDate = borrowEndDate;
 	}
-	public String getContractAccount() {
+	public Double getContractAccount() {
 		return contractAccount;
 	}
-	public void setContractAccount(String contractAccount) {
+	public void setContractAccount(Double contractAccount) {
 		this.contractAccount = contractAccount;
 	}
 	public String getCurrency() {

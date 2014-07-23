@@ -1,34 +1,33 @@
 package com.wcs.tms.service.process.debtpayment;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
+import javax.persistence.Column;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.primefaces.model.SortOrder;
 
 import com.wcs.base.service.EntityService;
-import com.wcs.base.util.StringUtils;
 import com.wcs.tms.model.Company;
+import com.wcs.tms.model.DebtContract;
 import com.wcs.tms.model.DebtQuota;
+import com.wcs.tms.model.ProcDebtBorrow;
+import com.wcs.tms.model.ProcDebtPayment;
 import com.wcs.tms.model.ProcRegiCapital;
 import com.wcs.tms.model.ShareHolder;
 import com.wcs.tms.service.process.common.ProcessUtilMapService;
-import com.wcs.tms.service.report.regicapitalgeneral.RegicapitalGeneralRequestService;
 import com.wcs.tms.util.MessageUtils;
 import com.wcs.tms.view.process.common.entity.RegiCapitalConfirmVo;
 import com.wcs.tms.view.process.common.entity.RegiDebtCashConfirmVo;
 import com.wcs.tms.view.process.common.entity.RegiDebtConfirmVo;
-import com.wcs.tms.view.process.common.entity.RegicapitalRequestVO;
 
 public class RegiDebtManageService {
 	
@@ -134,14 +133,57 @@ public class RegiDebtManageService {
 	}
 	
 	public void confirmRegiCapital(RegiCapitalConfirmVo confirmVo) {
+		ProcRegiCapital regiCapital = confirmVo.getRegiCapital();
+		
+		ShareHolder shareHolder = entityService.find(ShareHolder.class, regiCapital.getPayer());
+		// 已到账金额
+		Double realReceivedFunds = confirmVo.getAlreadyAccount() + (shareHolder.getRealReceivedFunds() == null ? 0d : shareHolder.getRealReceivedFunds());
+		shareHolder.setRealReceivedFunds(realReceivedFunds);
+		entityService.update(shareHolder);
 		
 	}
 	
 	public void confirmRegiDebt(RegiDebtConfirmVo confirmVo) {
+		ProcDebtBorrow debtBorrow = confirmVo.getDebtBorrow();
+		DebtContract debtContract = entityService.find(DebtContract.class, debtBorrow.getDebtContractId());
+		debtContract.setIsConfirmed("Y");
+		// 实际金额
+		debtContract.setRealFunds(confirmVo.getContractAccount());
+		// 实际金额币别
+		debtContract.setRealFundsCu(confirmVo.getCurrency());
+		// 借款开始时间
+		debtContract.setApprovalStartDate(confirmVo.getBorrowStartDate());
+		// 借款结束时间
+		debtContract.setApprovalEndDate(confirmVo.getBorrowEndDate());
+		// 借款利率
+		debtContract.setRealFundsRate(confirmVo.getInterestRate());
+		// 合同编号
+		debtContract.setDebtContractNo(confirmVo.getContractNo());
+		// 登记人员
+		debtContract.setContractRegistedBy(confirmVo.getRegistrant());
+		// 登记时间
+		debtContract.setContractRegistedTime(confirmVo.getRegisterDate());
+		entityService.update(debtContract);
 		
+
 	}
 	
 	public void confirmRegiDebtCash(RegiDebtCashConfirmVo confirmVo) {
+		ProcDebtPayment debtPayment = confirmVo.getDebtPayment();
+		// 是否到账
+		debtPayment.setIsReceivedFunds("Y");
+		// 已到账金额
+		debtPayment.setReceivedFunds(confirmVo.getRequestAccount());
+		// 已到账金额币别
+		debtPayment.setReceivedFundsCu(confirmVo.getCurrency());
+		// 到账时间
+		debtPayment.setReceivedFundsTime(confirmVo.getInAccountDate());
+		// 登记人员
+		debtPayment.setRegistedBy(confirmVo.getRegistrant());
+		// 登记时间
+		debtPayment.setRegistedTime(confirmVo.getRegisterDate());
+		
+		entityService.update(debtPayment);
 		
 	}
 	
