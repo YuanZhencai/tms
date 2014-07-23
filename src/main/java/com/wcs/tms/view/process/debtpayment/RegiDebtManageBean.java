@@ -42,12 +42,12 @@ public class RegiDebtManageBean {
     /** 资金币种下拉*/
     private List<SelectItem> currencySelect = new ArrayList<SelectItem>(); 
     /*** 汇款线路* */
-    private List<RemittanceLineAccount> debtAcNoList;
+    private List<RemittanceLineAccount> debtAcNoList = new ArrayList<RemittanceLineAccount>();
     /**股东*/
-    private List<ShareHolder> shareHolderList;
+    private List<ShareHolder> shareHolderList = new ArrayList<ShareHolder>();
     
     /**公司外债额度详情*/
-    private DebtQuota debtQuota;
+    private DebtQuota debtQuota = new DebtQuota();
     
 	public DebtQuota getDebtQuota() {
 		return debtQuota;

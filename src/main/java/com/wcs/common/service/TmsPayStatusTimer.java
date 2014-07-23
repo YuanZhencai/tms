@@ -16,6 +16,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.wcs.base.util.des.DESEncrypt;
 import com.wcs.common.filenet.env.SysCfg;
+import com.wcs.common.util.ExceptionUtil;
 import com.wcs.common.util.FtpUtil;
 import com.wcs.sys.ejbtimer.annotation.WCSTimerClass;
 import com.wcs.sys.ejbtimer.annotation.WCSTimerMethod;
@@ -25,6 +26,7 @@ import com.wcs.tms.mail.Mail;
 import com.wcs.tms.mail.MailService;
 import com.wcs.tms.mail.SendMailService;
 import com.wcs.tms.model.ProcTMSStatus;
+import com.wcs.tms.model.ProcTMSStatusError;
 import com.wcs.tms.service.process.common.TmsImportStatusService;
 import com.wcs.tms.service.process.common.TmsStatusService;
 
@@ -81,11 +83,13 @@ public class TmsPayStatusTimer {
 		for (Map.Entry<String, String> entry : filesMap.entrySet()) {
 			String fileName = entry.getKey();
 			String fileContent = entry.getValue();
-			try {
-				log.info("file:" + fileName);
-				String decryptStr = desEncrypt.decrypt(fileContent);
-				String[] lins = decryptStr.split(LINE_SPLIT);
-				for (int i = 0; i < lins.length; i++) {
+
+			log.info("file:" + fileName);
+			String decryptStr = desEncrypt.decrypt(fileContent);
+			String[] lins = decryptStr.split(LINE_SPLIT);
+			for (int i = 0; i < lins.length; i++) {	
+				String bpmno = "";
+				try {
 					String[] str = lins[i].split(TAB_SPLIT);
 					String sysId = str[0];
 					String bpmId = str[1];
@@ -108,7 +112,7 @@ public class TmsPayStatusTimer {
 							+ " payDate:" + payDate + " applicationDate:"
 							+ applicationDate);
 
-					String bpmno = "BPM" + bpmId.trim();
+					bpmno = "BPM" + bpmId.trim();
 
 					if (equalDate(applicationDate)) {
 
@@ -116,12 +120,13 @@ public class TmsPayStatusTimer {
 								.getTmsStatusByBpmId(bpmno);
 						log.info("tmsStatus:" + tmsStatus);
 						if (tmsStatus != null) {
-							//ProcTMSStatus表中TMS_STATUS :TMS状态(1. 未导入 2. 导入成功 3. 导入失败 4. 支付成功 5. 支付失败)
+							// ProcTMSStatus表中TMS_STATUS :TMS状态(1. 未导入 2. 导入成功
+							// 3. 导入失败 4. 支付成功 5. 支付失败)
 							boolean flag = false;
 							tmsStatus.setTmsRefNumber(tmsRefNumber);
 							tmsStatus.setPayDetail(payDetail);
 							String state = "4";
-							//TMS文件中的status：3 支付成功
+							// TMS文件中的status：3 支付成功
 							if ("3".equals(status)) {
 								state = "4";
 							} else {
@@ -150,9 +155,9 @@ public class TmsPayStatusTimer {
 											.getCashPoolPayEmail(tmsStatus);
 									sendMailService.send(mailList);
 								} catch (Exception ex) {
-									ex.printStackTrace();
+									log.error("支付状态通知邮件发送失败!",ex);
 									logContext.logBusiInfo(BusiLogLevel.ERROR,
-											bpmno+"支付状态通知邮件发送失败", "");
+											bpmno + "支付状态通知邮件发送失败", "");
 								}
 							}
 						} else {
@@ -160,26 +165,35 @@ public class TmsPayStatusTimer {
 									"定时任务支付状态更新失败", bpmno + "数据更新失败，找不到该数据");
 						}
 					} else {
-						logContext.logBusiInfo(BusiLogLevel.INFO,bpmno + "申请日期超出时间，导入支付状态失败!","");
+						logContext.logBusiInfo(BusiLogLevel.INFO, bpmno
+								+ "申请日期超出时间，导入支付状态失败!", "");
 					}
+				} catch (Exception e) {
+					//如果哪一行，解析出现异常，记录到状态异常表
+					ProcTMSStatusError statusError = new ProcTMSStatusError();
+					statusError.setBpmNo(bpmno);
+					statusError.setFileName(fileName);
+					statusError.setErrorLine(Integer.toString(i+1));
+					statusError.setErrorLineContent(lins[i]);
+					statusError.setErrorInfo(ExceptionUtil.getExceptionString(e));
+					statusError.setCreatedDatetime(new Date());
+					tmsStatusService.saveTmsStatusError(statusError);
+					log.error("支付状态更新失败!", e);
+					logContext.logBusiInfo(BusiLogLevel.ERROR, "支付状态更新失败",
+							fileName+"中，第"+Integer.toString(i+1)+"行，解析出错");
 				}
+			}
 
-				// 成功更新支付状态后，把tmsInPath下文件，迁移到tmsBakPath的路径下
-				String fromfileName = tmsInPath + "/" + fileName;
-				String toFileName = tmsBakPath + "/" + fileName;
-				log.info("fromFileName:" + fromfileName + "     toFileName:"
-						+ toFileName);
-				if(ftpUtil.cutFile(fromfileName, toFileName)){
-					logContext.logBusiInfo(BusiLogLevel.INFO, "支付状态文件备份成功",
-							fromfileName+"成功备份至"+toFileName);
-				}else{
-					logContext.logBusiInfo(BusiLogLevel.ERROR, "支付状态文件备份失败",
-							"");
-				}
-			} catch (Exception e) {
-				log.error("定时任务支付状态更新失败!", e);
-				logContext.logBusiInfo(BusiLogLevel.ERROR, "定时任务支付状态更新失败",
-						"格式解析错误");
+			// 成功更新支付状态后，把tmsInPath下文件，迁移到tmsBakPath的路径下
+			String fromfileName = tmsInPath + "/" + fileName;
+			String toFileName = tmsBakPath + "/" + fileName;
+			log.info("fromFileName:" + fromfileName + "     toFileName:"
+					+ toFileName);
+			if (ftpUtil.cutFile(fromfileName, toFileName)) {
+				logContext.logBusiInfo(BusiLogLevel.INFO, "支付状态文件备份成功",
+						fromfileName + "成功备份至" + toFileName);
+			} else {
+				logContext.logBusiInfo(BusiLogLevel.ERROR, "支付状态文件备份失败", "");
 			}
 
 		}

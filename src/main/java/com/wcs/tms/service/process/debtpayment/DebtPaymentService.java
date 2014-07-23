@@ -232,7 +232,7 @@ public class DebtPaymentService implements Serializable{
 		StringBuilder jpql = new StringBuilder("select dc from DebtContract dc left join fetch dc.shareHolder "
 				+ "left join fetch dc.procDebtBorrow where ");
 		jpql.append("dc.company.id="+comId);
-		jpql.append(" and dc.isExpired='N'");
+		jpql.append(" and dc.isExpired='0'");
 		jpql.append(" and dc.debtContractFunds-dc.appliedFunds>0");
 		return entityService.find(jpql.toString()); 
 	}

@@ -19,6 +19,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.wcs.base.service.EntityService;
 import com.wcs.tms.model.ProcTMSStatus;
+import com.wcs.tms.model.ProcTMSStatusError;
 
 /**
  * TMS回传Service
@@ -51,6 +52,18 @@ public class TmsStatusService implements Serializable{
 	}
 	
 	/**
+	 * 保存TMS回传异常表
+	 * @param tmsStatus
+	 */
+	public void saveTmsStatusError(ProcTMSStatusError tmsStatus) {
+		try {
+			entityService.create(tmsStatus);
+		} catch (Exception e) {
+			log.error("保存TMS回传异常表出错！", e);
+		}
+	}
+	
+	/**
 	 * 根据BPMID查询TMS回传记录
 	 * @param bpmId
 	 * @return
@@ -60,7 +73,6 @@ public class TmsStatusService implements Serializable{
 		String hql = "SELECT o FROM ProcTMSStatus o WHERE o.bpmId = ?1";
 		List<ProcTMSStatus> list = entityService.find(hql, bpmId);
 		if(list != null && list.size() > 0) {
-			log.info("list size:"+ list.size());
 			return list.get(0);
 		}
 		return null;

@@ -172,6 +172,7 @@ public class DebtBorrowService implements Serializable{
     		if(availbBebt < 0d ){
     			MessageUtils.addErrorMessage("doneMsg", "可用投注差不可小于0!");
     		}
+    		procDebtBorrow.setThisShBorrowSe("H");
     		
     	}
     }

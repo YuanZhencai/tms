@@ -321,9 +321,10 @@ public class DebtBorrowBean extends FileUpload<ProcDebtBorrow> {
 			procDebtBorrow.setThisShBorrowCu(selDebtContract.getAppliedFundsCu());			
 			procDebtBorrow.setThisShBorrowLis(selDebtContract.getContractStartDate());
 			procDebtBorrow.setThisShBorrowLie(selDebtContract.getContractEndDate());
-			
+			procDebtBorrow.setThisShBorrowSe(selDebtContract.getThisShBorrowSe());
 			procDebtBorrow.setThisShBorrowRa(selDebtContract.getContractRate().toString());
 			procDebtBorrow.setDebtContractId(selDebtContract.getId());
+			
 		}
 	}
 	
@@ -400,11 +401,11 @@ public class DebtBorrowBean extends FileUpload<ProcDebtBorrow> {
 		}
 		// 附件检查
 		List files = this.getProcessFileList();
-		if (files == null || files.size() == 0) {
-			MessageUtils.addErrorMessage("msg",
-					MessageUtils.getMessage("msg_fileUpload_require"));
-			return null;
-		}
+		//if (files == null || files.size() == 0) {
+		//	MessageUtils.addErrorMessage("msg",
+		//			MessageUtils.getMessage("msg_fileUpload_require"));
+		//	return null;
+		//}
 
 		Company company = entityService.find(Company.class, procDebtBorrow
 				.getCompany().getId());

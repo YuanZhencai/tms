@@ -458,7 +458,7 @@ public class ProcDebtBorrow extends BaseEntity {
 	}
 
 	public String getThisShBorrowSe() {
-		return thisShBorrowSe;
+		return thisShBorrowSe == null ? "H" : thisShBorrowSe;
 	}
 
 	public void setThisShBorrowSe(String thisShBorrowSe) {
@@ -680,7 +680,7 @@ public class ProcDebtBorrow extends BaseEntity {
 	}
 
 	public String getApplyType() {
-		return applyType;
+		return applyType == null ? "1" : applyType;
 	}
 
 	public void setApplyType(String applyType) {

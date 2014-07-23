@@ -30,7 +30,7 @@ public class DebtContract extends BaseEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "DEBT_BORROW_PROC_INST_ID", referencedColumnName = "PROC_INST_ID")
 	private ProcDebtBorrow procDebtBorrow;
-
+	// 是否已确认合同
 	@Column(name = "IS_CONFIRMED")
 	private String isConfirmed;
 
@@ -60,10 +60,10 @@ public class DebtContract extends BaseEntity {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "CONTRACT_SUMMITED_DATE")
 	private Date contractSummitedDate;
-
+	// 合同登记人员
 	@Column(name = "CONTRACT_REGISTED_BY")
 	private String contractRegistedBy;
-
+	// 合同登记时间
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "CONTRACT_REGISTED_TIME")
 	private Date contractRegistedTime;
@@ -110,12 +110,27 @@ public class DebtContract extends BaseEntity {
 
 	@Column(name = "DEFUNCT_IND")
 	private String defunctInd;
-	//是否为展期
-	@Column(name = "IS_EXTEND",length=1)
+	// 是否为展期
+	@Column(name = "IS_EXTEND", length = 1)
 	private String isExtend;
-	//是否已被展期
-	@Column(name = "IS_BY_EXTEND",length=1)
+	// 是否已被展期
+	@Column(name = "IS_BY_EXTEND", length = 1)
 	private String isByExtend;
+	// 本次股东申请借款类型（G 申请股东借款 H 申请海外外债 Z 申请展期 ，以后不用了，要支持历史数据能展示）
+	@Column(name = "THIS_SH_BORROW_SE", length = 1)
+	private String thisShBorrowSe;
+	// 实际金额
+	@Column(name = "REAL_FUNDS", precision = 12, scale = 4)
+	private Double realFunds;
+	// 实际金额币别
+	@Column(name = "REAL_FUNDS_CU", length = 101)
+	private String realFundsCu;
+	// 实际利率
+	@Column(name = "REAL_FUNDS_RATE", precision = 12, scale = 4)
+	private Double realFundsRate;
+	// 时间期限
+	@Column(name = "REAL_FUNDS_LIMIT", precision = 4, scale = 0)
+	private Double realFundsLimit;
 
 	/** 未请款金额 */
 	@Transient
@@ -366,6 +381,46 @@ public class DebtContract extends BaseEntity {
 
 	public void setIsByExtend(String isByExtend) {
 		this.isByExtend = isByExtend;
+	}
+
+	public String getThisShBorrowSe() {
+		return thisShBorrowSe;
+	}
+
+	public void setThisShBorrowSe(String thisShBorrowSe) {
+		this.thisShBorrowSe = thisShBorrowSe;
+	}
+
+	public Double getRealFunds() {
+		return realFunds;
+	}
+
+	public void setRealFunds(Double realFunds) {
+		this.realFunds = realFunds;
+	}
+
+	public String getRealFundsCu() {
+		return realFundsCu;
+	}
+
+	public void setRealFundsCu(String realFundsCu) {
+		this.realFundsCu = realFundsCu;
+	}
+
+	public Double getRealFundsRate() {
+		return realFundsRate;
+	}
+
+	public void setRealFundsRate(Double realFundsRate) {
+		this.realFundsRate = realFundsRate;
+	}
+
+	public Double getRealFundsLimit() {
+		return realFundsLimit;
+	}
+
+	public void setRealFundsLimit(Double realFundsLimit) {
+		this.realFundsLimit = realFundsLimit;
 	}
 
 }
