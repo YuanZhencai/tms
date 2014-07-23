@@ -23,11 +23,16 @@ import com.wcs.base.service.EntityService;
 import com.wcs.base.service.LoginService;
 import com.wcs.base.util.JSFUtils;
 import com.wcs.base.util.StringUtils;
+import com.wcs.common.consts.DictConsts;
+import com.wcs.common.controller.CommonBean;
 import com.wcs.tms.model.Company;
+import com.wcs.tms.model.ProcDebtPayment;
+import com.wcs.tms.service.process.debtpayment.RegiDebtManageService;
 import com.wcs.tms.service.report.debtborrow.DebtBorrowRequestService;
 import com.wcs.tms.service.system.company.CompanyTmsService;
 import com.wcs.tms.view.process.common.CompanySelectBean;
 import com.wcs.tms.view.process.common.entity.DebtBorrowRequestVO;
+import com.wcs.tms.view.process.common.entity.RegiDebtCashConfirmVo;
 
 /** 
 * <p>Project: tms</p> 
@@ -52,18 +57,28 @@ public class DebtBorrowRequestBean implements Serializable {
 	CompanyTmsService companyTmsService;
 	@Inject
 	DebtBorrowRequestService debtBorrowRequestService;
+	@Inject
+	RegiDebtManageService regiDebtManageService;
 	// 查询条件
 	private Map<String, Object> conditionMap = new HashMap<String, Object>();
 	// 公司下拉菜单
 	private List<SelectItem> companySelect = new ArrayList<SelectItem>();
+	/** 资金币种下拉 */
+	private List<SelectItem> currencySelect = new ArrayList<SelectItem>();
 	private LazyDataModel<DebtBorrowRequestVO> debtBorrowRequestVOModel;
 	// 公司股东信息列表VO
 	private List<DebtBorrowRequestVO> debtBorrowRequestVOs = new ArrayList<DebtBorrowRequestVO>();
 	@ManagedProperty(value = "#{companySelectBean}")
 	private CompanySelectBean companySelectBean;
+	@Inject
+	private CommonBean dictBean;
 	private Company company;
 	// 判断是否是集团用户
 	private Boolean isCopUser = false;
+
+	private RegiDebtCashConfirmVo confirmVo;
+
+	private ProcDebtPayment debtPayment;
 
 	/**
 	 * <p>Description:工厂用户要执行下拉功能，集团用户是弹框功能 </p>
@@ -82,6 +97,7 @@ public class DebtBorrowRequestBean implements Serializable {
 		if (debtBorrowRequestVOs.size() == 0) {
 			this.searchDebtBorrowRequestDetail();
 		}
+		currencySelect = dictBean.getDictByCode(DictConsts.TMS_TAX_PROJECT_CURRENCY_TYPE);
 	}
 
 	public void clear() {
@@ -181,6 +197,15 @@ public class DebtBorrowRequestBean implements Serializable {
 		
 	}
 
+	public void initConfirmRegiDebtCash(){
+		confirmVo  = new RegiDebtCashConfirmVo();
+		// ....
+		confirmVo.setDebtPayment(debtPayment);
+	}
+	
+	public void confirmRegiDebtCash(){
+		regiDebtManageService.confirmRegiDebtCash(confirmVo);
+	}
 	/**************************setter、getter方法*************************/
 	public EntityService getEntityService() {
 		return entityService;
@@ -273,5 +298,29 @@ public class DebtBorrowRequestBean implements Serializable {
     public void setDebtBorrowRequestVOs(List<DebtBorrowRequestVO> DebtBorrowRequestVOs) {
         this.debtBorrowRequestVOs = DebtBorrowRequestVOs;
     }
+
+	public RegiDebtCashConfirmVo getConfirmVo() {
+		return confirmVo;
+	}
+
+	public void setConfirmVo(RegiDebtCashConfirmVo confirmVo) {
+		this.confirmVo = confirmVo;
+	}
+
+	public ProcDebtPayment getDebtPayment() {
+		return debtPayment;
+	}
+
+	public void setDebtPayment(ProcDebtPayment debtPayment) {
+		this.debtPayment = debtPayment;
+	}
+
+	public List<SelectItem> getCurrencySelect() {
+		return currencySelect;
+	}
+
+	public void setCurrencySelect(List<SelectItem> currencySelect) {
+		this.currencySelect = currencySelect;
+	}
 	
 }

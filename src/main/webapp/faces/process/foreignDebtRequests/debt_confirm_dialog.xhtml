@@ -13,46 +13,46 @@
 			<h:panelGrid columns="6"
 				columnClasses="column1,column2,column1,column2">
 				<h:outputLabel value="合同编号：" />
-				<p:inputText />
+				<p:inputText value="#{debtBorrowManagerBean.confirmVo.contractNo}"/>
 				<h:outputLabel value="" />
 				<h:outputLabel value="" />
 				<h:outputLabel value="借款期限" />
 				<h:column>
 					<p:inputText id="startDate" styleClass="ui-date"
-						style="font-size: 9px;width:90px;"
+						style="font-size: 9px;width:90px;" value="#{debtBorrowManagerBean.confirmVo.borrowStartDate}"
 						onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'endDate\')}'});">
 						<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
 					</p:inputText>
 					<h:outputText value="~" />
 					<p:inputText id="endDate" styleClass="ui-date"
-						style="font-size: 9px;width:90px;"
+						style="font-size: 9px;width:90px;" value="#{debtBorrowManagerBean.confirmVo.borrowEndDate}"
 						onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'startDate\')}'});">
 						<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
 					</p:inputText>
 				</h:column>
 				<h:outputLabel value="合同金额：" />
-				<p:inputText />
+				<p:inputText value="#{debtBorrowManagerBean.confirmVo.contractAccount}" />
 				<h:outputLabel value="(万)"></h:outputLabel>
 				<h:column>
 					<h:selectOneMenu
-						value="#{registerCaptialChangeBean.instance.investCurrency}"
+						value="#{debtBorrowManagerBean.confirmVo.currency}"
 						styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
-						<f:selectItems value="#{registerCaptialChangeBean.currencySelect}" />
+						<f:selectItems value="#{debtBorrowManagerBean.currencySelect}" />
 					</h:selectOneMenu>
 					<h:outputText style="color:red;" value=" *" />
 				</h:column>
 				<h:outputLabel value="借款利率：" />
 				<h:column>
-					<p:inputText />
+					<p:inputText value="#{debtBorrowManagerBean.confirmVo.interestRate}"/>
 					<h:outputText style="color:red;" value=" *" />
 				</h:column>
 				<h:outputLabel value="报备人员：" />
-				<p:inputText label="报备人员" value="#{currentUser.currentCN}" />
+				<p:inputText label="报备人员" value="#{debtBorrowManagerBean.confirmVo.filler}" />
 				<h:outputLabel value="" />
 				<h:outputLabel value="" />
 				<h:outputLabel value="报备日期：" />
 				<h:column>
-					<p:inputText styleClass="ui-date"
+					<p:inputText styleClass="ui-date" value="#{debtBorrowManagerBean.confirmVo.fillDate}"
 						style="font-size: 9px;width:90px;" title="到账时间"
 						onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd'});">
 						<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
@@ -60,19 +60,19 @@
 				</h:column>
 				<h:outputLabel value="登记人员：" />
 				<p:inputText disabled="true" label="登记人员"
-					value="#{currentUser.currentCN}" />
+					value="#{debtBorrowManagerBean.confirmVo.registrant}" />
 				<h:outputLabel value="" />
 				<h:outputLabel value="" />
 				<h:outputLabel value="登记时间：" />
 				<p:inputText styleClass="ui-date" style="font-size: 9px;width:90px;"
-					title="登记时间"
+					title="登记时间" value="#{debtBorrowManagerBean.confirmVo.registerDate}"
 					onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd'});">
 					<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
 				</p:inputText>
 			</h:panelGrid>
 			<div style="text-align: center; margin-top: 5px;">
 				<p:commandButton icon="ui-icon ui-icon-check" value="确定"
-					style="margin-right: 5px;"
+					style="margin-right: 5px;" action="#{debtBorrowManagerBean.confirmRegiDebt()}"
 					oncomplete="handleDialog(xhr, status, args);" />
 				<p:commandButton icon="ui-icon ui-icon-cancel"
 					value="#{msgs.btn_cancel}" type="button"
@@ -83,7 +83,7 @@
 			<div style="position: relative; margin-top: 5px;">
 				<p:outputPanel id="attachmentPanel">
 					<commentProcess:filedownload updateComenId="attachmentPanel"
-						isDisable="true" dataList="#{registerCaptialBean.processFileList}" />
+						isDisable="true" dataList="#{debtBorrowManagerBean.processFileList}" />
 				</p:outputPanel>
 			</div>
 		</h:form>

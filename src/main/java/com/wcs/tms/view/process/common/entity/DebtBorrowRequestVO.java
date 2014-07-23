@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.wcs.common.controller.helper.IdModel;
+import com.wcs.tms.model.ProcDebtPayment;
 
 /** 
  * <p>Project: tms</p> 
@@ -21,6 +22,8 @@ import com.wcs.common.controller.helper.IdModel;
 public class DebtBorrowRequestVO extends IdModel implements Serializable {
     
     private static final long serialVersionUID = 1L;
+    
+    private ProcDebtPayment debtPayment;
     // 申请日期
     private String applyDate;
     // 流程编号
@@ -197,6 +200,12 @@ public class DebtBorrowRequestVO extends IdModel implements Serializable {
 	}
 	public void setProcInstId(String procInstId) {
 		this.procInstId = procInstId;
+	}
+	public ProcDebtPayment getDebtPayment() {
+		return debtPayment;
+	}
+	public void setDebtPayment(ProcDebtPayment debtPayment) {
+		this.debtPayment = debtPayment;
 	}
 
     

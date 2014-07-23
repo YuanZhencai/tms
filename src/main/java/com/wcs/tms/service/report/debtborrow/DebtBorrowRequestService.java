@@ -140,6 +140,7 @@ public class DebtBorrowRequestService implements Serializable {
 	 */
 	public DebtBorrowRequestVO  getDBRVO(ProcDebtPayment pdp) {
 	    DebtBorrowRequestVO dbrVO = new DebtBorrowRequestVO();
+	    dbrVO.setDebtPayment(pdp);
 	    // 申请日期(创建时间)
         dbrVO.setApplyDate(DateUtil.convertDateToString(pdp.getCreatedDatetime(), "yyyy-MM-dd"));
         // 流程编号

@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.wcs.common.controller.helper.IdModel;
+import com.wcs.tms.model.ProcRegiCapital;
 
 /** 
  * <p>Project: tms</p> 
@@ -21,6 +22,8 @@ import com.wcs.common.controller.helper.IdModel;
 public class RegicapitalRequestVO extends IdModel implements Serializable {
     
     private static final long serialVersionUID = 1L;
+    // 注册资本金流程实例
+ 	private ProcRegiCapital regiCapital;
     // 申请日期
     private String applyDate;
     // 流程编号
@@ -195,6 +198,12 @@ public class RegicapitalRequestVO extends IdModel implements Serializable {
 	}
 	public void setProcInstId(String procInstId) {
 		this.procInstId = procInstId;
+	}
+	public ProcRegiCapital getRegiCapital() {
+		return regiCapital;
+	}
+	public void setRegiCapital(ProcRegiCapital regiCapital) {
+		this.regiCapital = regiCapital;
 	}
     
 }

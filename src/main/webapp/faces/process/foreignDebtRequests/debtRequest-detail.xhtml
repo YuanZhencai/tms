@@ -152,7 +152,7 @@
 				</h:outputText>
 			</p:column>
 			<p:column headerText="外债合同编号">
-				<h:outputText value="#{procDebtBorrow.debtContract}">
+				<h:outputText value="#{procDebtBorrow.oldDebtContract}">
 				</h:outputText>
 			</p:column>
 			<p:column headerText="展期原合同编号">
@@ -168,7 +168,10 @@
 					image="ui-icon ui-icon-zoomin" title="#{msgs.txt_checkAll}">
 				</p:commandButton>
 				<p:commandButton oncomplete="debtConfirmDialogVar.show();"
+					action="#{debtBorrowManagerBean.initConfirmRegiDebt()}"
+					update=":debtConfirmForm"
 					image="ui-icon ui-icon-pencil" title="确认到账">
+					<f:setPropertyActionListener target="#{debtBorrowManagerBean.debtBorrow}" value="#{procDebtBorrow.debtBorrow}" />
 				</p:commandButton>
 			</p:column>
 

@@ -173,7 +173,10 @@
 					image="ui-icon ui-icon-zoomin" title="#{msgs.txt_checkAll}">
 				</p:commandButton>
 				<p:commandButton oncomplete="debtCashConfirmDialogVar.show();"
+					action="#{debtBorrowRequestBean.initConfirmRegiDebtCash()}"
+					update=":debtCashConfirmForm"
 					image="ui-icon ui-icon-pencil" title="确认到账">
+					<f:setPropertyActionListener target="#{debtBorrowRequestBean.debtPayment}" value="#{debtBorrowRequestVO.debtPayment}" />
 				</p:commandButton>
 			</p:column>
 

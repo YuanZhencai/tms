@@ -164,6 +164,7 @@ public class DebtRequestVo extends IdModel implements Serializable {
 	/** 外债合同_主数据DEBT_CONTRACT**/
     // 外债合同 = 合同编号+出资方+开始-结束日期+利率
     private String debtContract; 
+    private String oldDebtContract; 
     // 外债合同金额
     private String debtContractFunds;
     // 未请款金额
@@ -861,6 +862,14 @@ public class DebtRequestVo extends IdModel implements Serializable {
 
 	public void setCurrency(String currency) {
 		this.currency = currency;
+	}
+
+	public String getOldDebtContract() {
+		return oldDebtContract;
+	}
+
+	public void setOldDebtContract(String oldDebtContract) {
+		this.oldDebtContract = oldDebtContract;
 	}
 
 }

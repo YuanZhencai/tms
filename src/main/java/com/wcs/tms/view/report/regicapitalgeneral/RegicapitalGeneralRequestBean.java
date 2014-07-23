@@ -23,10 +23,15 @@ import com.wcs.base.service.EntityService;
 import com.wcs.base.service.LoginService;
 import com.wcs.base.util.JSFUtils;
 import com.wcs.base.util.StringUtils;
+import com.wcs.common.consts.DictConsts;
+import com.wcs.common.controller.CommonBean;
 import com.wcs.tms.model.Company;
+import com.wcs.tms.model.ProcRegiCapital;
+import com.wcs.tms.service.process.debtpayment.RegiDebtManageService;
 import com.wcs.tms.service.report.regicapitalgeneral.RegicapitalGeneralRequestService;
 import com.wcs.tms.service.system.company.CompanyTmsService;
 import com.wcs.tms.view.process.common.CompanySelectBean;
+import com.wcs.tms.view.process.common.entity.RegiCapitalConfirmVo;
 import com.wcs.tms.view.process.common.entity.RegicapitalRequestVO;
 
 /** 
@@ -52,6 +57,8 @@ public class RegicapitalGeneralRequestBean implements Serializable {
 	CompanyTmsService companyTmsService;
 	@Inject
 	RegicapitalGeneralRequestService regicapitalGeneralRequestService;
+	@Inject
+	RegiDebtManageService regiDebtManageService;
 	// 查询条件
 	private Map<String, Object> conditionMap = new HashMap<String, Object>();
 	// 公司下拉菜单
@@ -63,9 +70,21 @@ public class RegicapitalGeneralRequestBean implements Serializable {
 	private List<RegicapitalRequestVO> regicapitalRequestVOs = new ArrayList<RegicapitalRequestVO>();
 	@ManagedProperty(value = "#{companySelectBean}")
 	private CompanySelectBean companySelectBean;
+	@Inject
+	private CommonBean dictBean;
+	
 	private Company company;
 	// 判断是否是集团用户
 	private Boolean isCopUser = false;
+	
+	//注册资本金确认
+	private RegiCapitalConfirmVo confirmVo = new RegiCapitalConfirmVo();
+
+	private ProcRegiCapital regiCapital;
+	
+	/** 资金币种下拉 */
+	private List<SelectItem> currencySelect = new ArrayList<SelectItem>();
+	
 
 	/**
 	 * <p>Description:工厂用户要执行下拉功能，集团用户是弹框功能 </p>
@@ -84,6 +103,7 @@ public class RegicapitalGeneralRequestBean implements Serializable {
 		if (regicapitalRequestVOs.size() == 0) {
 			this.searchRegiCaitalRequestDetail();
 		}
+		currencySelect = dictBean.getDictByCode(DictConsts.TMS_TAX_PROJECT_CURRENCY_TYPE);
 	}
 
 	public void clear() {
@@ -181,6 +201,16 @@ public class RegicapitalGeneralRequestBean implements Serializable {
 		RequestContext.getCurrentInstance().addCallbackParam("stepName", "");
 		RequestContext.getCurrentInstance().addCallbackParam("isPatch", "");
 		
+	}
+	
+	public void initConfirmRegiCapital(){
+		confirmVo = new RegiCapitalConfirmVo();
+		// ....
+		confirmVo.setRegiCapital(regiCapital);
+	}
+	
+	public void confirmRegiCapital(){
+		regiDebtManageService.confirmRegiCapital(confirmVo);
 	}
 	
 	/**************************setter、getter方法*************************/
@@ -283,5 +313,29 @@ public class RegicapitalGeneralRequestBean implements Serializable {
     public void setRegicapitalRequestVOs(List<RegicapitalRequestVO> regicapitalRequestVOs) {
         this.regicapitalRequestVOs = regicapitalRequestVOs;
     }
+
+	public RegiCapitalConfirmVo getConfirmVo() {
+		return confirmVo;
+	}
+
+	public void setConfirmVo(RegiCapitalConfirmVo confirmVo) {
+		this.confirmVo = confirmVo;
+	}
+
+	public ProcRegiCapital getRegiCapital() {
+		return regiCapital;
+	}
+
+	public void setRegiCapital(ProcRegiCapital regiCapital) {
+		this.regiCapital = regiCapital;
+	}
+
+	public List<SelectItem> getCurrencySelect() {
+		return currencySelect;
+	}
+
+	public void setCurrencySelect(List<SelectItem> currencySelect) {
+		this.currencySelect = currencySelect;
+	}
 	
 }

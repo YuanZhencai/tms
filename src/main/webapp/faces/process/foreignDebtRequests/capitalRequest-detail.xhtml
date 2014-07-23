@@ -171,7 +171,10 @@
 					image="ui-icon ui-icon-zoomin" title="#{msgs.txt_checkAll}">
 				</p:commandButton>
 				<p:commandButton oncomplete="regiCapitalConfirmDialogVar.show();"
+					action="#{regicapitalGeneralRequestBean.initConfirmRegiCapital()}"
+					update=":regiCapitalConfirmForm"
 					image="ui-icon ui-icon-pencil" title="确认到账">
+					<f:setPropertyActionListener target="#{regicapitalGeneralRequestBean.regiCapital}" value="#{regicapitalRequestVO.regiCapital}" />
 				</p:commandButton>
 			</p:column>
 		</p:dataTable>

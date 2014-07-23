@@ -144,6 +144,7 @@ public class RegicapitalGeneralRequestService implements Serializable {
 
 	public RegicapitalRequestVO  getRRVO(ProcRegiCapital prc) {
 	    RegicapitalRequestVO rrVO = new RegicapitalRequestVO();
+	    rrVO.setRegiCapital(prc);
 	    // 申请日期(创建时间)
 	    rrVO.setApplyDate(DateUtil.convertDateToString(prc.getCreatedDatetime(), "yyyy-MM-dd"));
 	    // 流程编号

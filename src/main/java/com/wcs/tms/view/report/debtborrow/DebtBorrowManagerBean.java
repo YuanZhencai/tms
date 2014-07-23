@@ -23,14 +23,19 @@ import com.wcs.base.service.LoginService;
 import com.wcs.base.util.JSFUtils;
 import com.wcs.base.util.StringUtils;
 import com.wcs.base.view.ViewBaseBean;
+import com.wcs.common.consts.DictConsts;
+import com.wcs.common.controller.CommonBean;
 import com.wcs.tms.model.Company;
 import com.wcs.tms.model.ProcDebtBorrow;
 import com.wcs.tms.model.ProcessMap;
 import com.wcs.tms.service.process.common.ProcessUtilMapService;
+import com.wcs.tms.service.process.debtpayment.RegiDebtManageService;
 import com.wcs.tms.service.report.debtborrow.DebtBorrowReportService;
 import com.wcs.tms.service.system.company.CompanyTmsService;
 import com.wcs.tms.view.process.common.CompanySelectBean;
+import com.wcs.tms.view.process.common.FileUpload;
 import com.wcs.tms.view.process.common.entity.DebtRequestVo;
+import com.wcs.tms.view.process.common.entity.RegiDebtConfirmVo;
 
 /**
  * 
@@ -42,7 +47,7 @@ import com.wcs.tms.view.process.common.entity.DebtRequestVo;
  */
 @ManagedBean
 @ViewScoped
-public class DebtBorrowManagerBean extends ViewBaseBean<ProcDebtBorrow> {
+public class DebtBorrowManagerBean extends FileUpload<ProcDebtBorrow> {
 
 	private static final long serialVersionUID = 1L;
 	private Log log = LogFactory.getLog(DebtBorrowManagerBean.class);
@@ -56,6 +61,8 @@ public class DebtBorrowManagerBean extends ViewBaseBean<ProcDebtBorrow> {
 	CompanyTmsService companyTmsService;
 	@Inject
 	ProcessUtilMapService processUtilMapService;
+	@Inject
+	RegiDebtManageService regiDebtManageService;
 
 	// 查询条件
 	private Map<String, Object> conditionMap = new HashMap<String, Object>();
@@ -66,11 +73,20 @@ public class DebtBorrowManagerBean extends ViewBaseBean<ProcDebtBorrow> {
 	private Double corpAuditSum = 0d;
 	// 公司下拉菜单
 	private List<SelectItem> companySelect = new ArrayList<SelectItem>();
+	/** 资金币种下拉 */
+	private List<SelectItem> currencySelect = new ArrayList<SelectItem>();
+	
 	@ManagedProperty(value = "#{companySelectBean}")
 	private CompanySelectBean companySelectBean;
+	@Inject
+	private CommonBean dictBean;
+	
 	private Company company;
 	// 判断是否是集团用户
 	private Boolean isCopUser = false;
+	// 外债申请确认
+	private RegiDebtConfirmVo confirmVo = new RegiDebtConfirmVo();
+	private ProcDebtBorrow debtBorrow;
 
 	/**
 	 * <p>Description:Bean init </p>
@@ -88,6 +104,7 @@ public class DebtBorrowManagerBean extends ViewBaseBean<ProcDebtBorrow> {
 		if (procDebtBorrows.size() == 0) {
 			searchDebtBorrowRequestDetail();
 		}
+		currencySelect = dictBean.getDictByCode(DictConsts.TMS_TAX_PROJECT_CURRENCY_TYPE);
 	}
 
 	public void clear() {
@@ -216,6 +233,16 @@ public class DebtBorrowManagerBean extends ViewBaseBean<ProcDebtBorrow> {
 		
 	}
 	
+	public void initConfirmRegiDebt(){
+		confirmVo  = new RegiDebtConfirmVo();
+		// ....
+		confirmVo.setDebtBorrow(debtBorrow);
+	}
+	
+	public void confirmRegiDebt(){
+		regiDebtManageService.confirmRegiDebt(confirmVo);
+	}
+	
 	/******set@get*******************************************************/
 	public Double getCorpAuditSum() {
 		return corpAuditSum;
@@ -279,6 +306,30 @@ public class DebtBorrowManagerBean extends ViewBaseBean<ProcDebtBorrow> {
 
 	public void setDebtBorrowRequestVOModel(LazyDataModel<DebtRequestVo> debtBorrowRequestVOModel) {
 		this.debtBorrowRequestVOModel = debtBorrowRequestVOModel;
+	}
+
+	public RegiDebtConfirmVo getConfirmVo() {
+		return confirmVo;
+	}
+
+	public void setConfirmVo(RegiDebtConfirmVo confirmVo) {
+		this.confirmVo = confirmVo;
+	}
+
+	public ProcDebtBorrow getDebtBorrow() {
+		return debtBorrow;
+	}
+
+	public void setDebtBorrow(ProcDebtBorrow debtBorrow) {
+		this.debtBorrow = debtBorrow;
+	}
+
+	public List<SelectItem> getCurrencySelect() {
+		return currencySelect;
+	}
+
+	public void setCurrencySelect(List<SelectItem> currencySelect) {
+		this.currencySelect = currencySelect;
 	}
 
 }
