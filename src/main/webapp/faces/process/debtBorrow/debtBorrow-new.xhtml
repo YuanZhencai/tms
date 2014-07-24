@@ -33,17 +33,21 @@
 		//
 		function changeApplyType(value){
 			if(value=="1"){			
-				$("#contractInfo").hide();
-				$("#selDebtContractButton").hide();
+				//$("#contractInfo").hide();
+				//$("#selDebtContractButton").hide();
 				$("#thisShBorrow").attr("disabled","false");
+				$("#thisShBorrowCu").attr("disabled","false");
 				$("#thisShBorrowRa").attr("disabled","false");
+				$("#shareHolderSelect").attr("disabled","false");
 				$("#thisShBorrowSe").attr("disabled","false");
 			}
 					
 			if(value == "2"){				
-				$("#contractInfo").show();
-				$("#selDebtContractButton").show();
+				//$("#contractInfo").show();
+				//$("#selDebtContractButton").show();
 				$("#thisShBorrow").attr("disabled","true");
+				$("#thisShBorrowCu").attr("disabled","true");
+				$("#shareHolderSelect").attr("disabled","true");
 				$("#thisShBorrowRa").attr("disabled","true");
 				$("#thisShBorrowSe").attr("disabled","true");			
 			}			
@@ -88,7 +92,7 @@
 								styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all" required="true" requiredMessage="#{msgs.msg_required_companyName}!">
 								<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" itemValue=""/>
 								<f:selectItems value="#{debtBorrowBean.companySelect}" />
-								<p:ajax update="msg,companyEn,isInvestRegRemaAvai,investTotal,investCurrency,regTotal,redCurrency,regInplace,regInplaceCu,investBalance,investBalanceCu,bebtInPlace,availbBebt,availbBebtCu,stockholderListId,provider"
+								<p:ajax update="msg,companyEn,isInvestRegRemaAvai,investTotal,investCurrency,regTotal,redCurrency,regInplace,regInplaceCu,investBalance,investBalanceCu,bebtInPlace,availbBebt,availbBebtCu,stockholderListId,provider,thisShBorrowSe"
 									listener="#{debtBorrowBean.ajaxDebt}">
 								</p:ajax>
 							</h:selectOneMenu>
@@ -150,12 +154,12 @@
 						</h:selectOneMenu>
 						
 						<h:outputLabel value="投注差是否可用：" />
-						<h:panelGroup>
-										
-							<h:selectOneRadio id="isInvestRegRemaAvai" value="#{debtBorrowBean.procDebtBorrow.company.isInvestRegRemaAvai}" styleClass="checkbox" >
+						<h:panelGroup>					
+							
+							<p:selectOneRadio disabled="true" id="isInvestRegRemaAvai" value="#{debtBorrowBean.procDebtBorrow.company.isInvestRegRemaAvai}">
 								<f:selectItem itemLabel="可用" itemValue="1" ></f:selectItem>
 								<f:selectItem itemLabel="不可用" itemValue="0"></f:selectItem>
-							</h:selectOneRadio>
+							</p:selectOneRadio>
 						</h:panelGroup>
 						
 						
@@ -205,13 +209,13 @@
 						
 						<h:outputLabel value="#{msgs.lbl_shBorrow}：" />
 						<h:panelGroup>
-							<p:inputText id="shBorrow" value="#{debtBorrowBean.procDebtBorrow.shBorrow}" label="#{msgs.lbl_shBorrow}" required="true" requiredMessage="#{msgs.msg_required_shBorrow}!">
+							<p:inputText id="shBorrow" value="#{debtBorrowBean.procDebtBorrow.shBorrow}" label="#{msgs.lbl_shBorrow}">
 								<f:convertNumber pattern="#,##0.####"/>
 								<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"></f:validateDoubleRange>
 								<p:ajax event="blur" update="msg,shBorrow,bebtInPlace,availbBebt" listener="#{debtBorrowBean.ajaxDebt}"></p:ajax>	
 							</p:inputText>
 							<h:outputLabel value="#{msgs.lbl_tenThousand}"></h:outputLabel>
-							<h:outputText style="color:red;" value="*" />
+							
 						</h:panelGroup>
 						<h:selectOneMenu id="shBorrowCu" name="shBorrowCu"
 							value="#{debtBorrowBean.procDebtBorrow.shBorrowCu}"
@@ -228,13 +232,13 @@
 						<h:outputLabel value="#{msgs.lbl_fornBebt}：" />
 						<h:panelGroup>
 							<p:inputText id="fornBebt"
-								value="#{debtBorrowBean.procDebtBorrow.fornBebt}" label="#{msgs.lbl_fornBebt}" required="true" requiredMessage="#{msgs.msg_required_fornBebt}!">
+								value="#{debtBorrowBean.procDebtBorrow.fornBebt}" label="#{msgs.lbl_fornBebt}" >
 								<f:convertNumber pattern="#,##0.####"/>
 								<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"></f:validateDoubleRange>
 								<p:ajax event="blur" update="msg,fornBebt,bebtInPlace,availbBebt" listener="#{debtBorrowBean.ajaxDebt}"></p:ajax>
 							</p:inputText>
 							<h:outputLabel value="#{msgs.lbl_tenThousand}"></h:outputLabel>
-							<h:outputText style="color:red;" value="*" />
+							
 						</h:panelGroup>
 						<h:selectOneMenu id="fornBebtCu" name="fornBebtCu"
 							value="#{debtBorrowBean.procDebtBorrow.fornBebtCu}"
@@ -274,20 +278,44 @@
 						<h:outputLabel value="#{msgs.lbl_shareHolder}：" />
 							<p:dataTable id="stockholderListId" var="stockholder"
 								value="#{debtBorrowBean.procDebtBorrow.company.shareHolders}" rows="100" rowKey="#{stockholder.id}" emptyMessage="#{msgs.empty_data_msg}" style="width:780px">
-								<p:column headerText="#{msgs.lbl_shareHolderName}">
+													<p:column headerText="#{msgs.lbl_shareHolderName}">
 									<h:outputText value="#{stockholder.shareHolderName}" />
+								</p:column>
+								
+								<p:column headerText="#{msgs.txt_currency}">
+									<h:outputText
+										value="#{commonBean.getValueByDictCatAndKey('TMS_TAX_PROJECT_CURRENCY_TYPE',stockholder.fondsCurrency)}" />
+								</p:column>
+								<p:column headerText="#{msgs.txt_registerAmount}">
+									<h:outputText value="#{stockholder.fondsTotal}">
+										<f:convertNumber pattern="#,##0.####" type="number"/>
+									</h:outputText>
+								</p:column>
+								<p:column headerText="#{msgs.txt_alreadyAmount}">
+									<h:outputText value="#{stockholder.fondsInPlace}" >
+										<f:convertNumber pattern="#,##0.####" type="number"/>
+									</h:outputText>
+								</p:column>
+								<p:column headerText="#{msgs.txt_notReadyAmount}">
+									<h:outputText
+										value="#{stockholder.fondsTotal-stockholder.fondsInPlace}">
+										<f:convertNumber pattern="#,##0.####" type="number"/>
+									</h:outputText>
 								</p:column>
 								<p:column headerText="#{msgs.lbl_equityPerc}(%)">
 									<h:outputText id="equityPercTable" value="#{stockholder.equityPerc}">
 										<f:convertNumber type="number" pattern="###.##" />
 									</h:outputText>
 								</p:column>
-								<p:column headerText="#{msgs.lbl_fondsCurrency}">
+								<p:column headerText="关联比例">
 									<h:outputText
-										value="#{commonBean.getValueByDictCatAndKey('TMS_TAX_PROJECT_CURRENCY_TYPE',stockholder.fondsCurrency)}" />
+										value="#{stockholder.relatedPerc}">
+										<f:convertNumber pattern="#,##0.####" type="number"/>
+									</h:outputText>
 								</p:column>
-								<p:column headerText="#{msgs.lbl_fondsTotal}">
-									<h:outputText value="#{stockholder.fondsTotal}">
+								<p:column headerText="实际股权比例">
+									<h:outputText
+										value="#{stockholder.isEquityRelated == '1' ? stockholder.equityPerc * stockholder.relatedPerc : stockholder.equityPerc}">
 										<f:convertNumber pattern="#,##0.####" type="number"/>
 									</h:outputText>
 								</p:column>
@@ -301,14 +329,17 @@
 						<h:outputLabel value="申请类型：" />
 						<h:panelGroup>					
 							
-							<h:selectOneRadio id="applyType" value="#{debtBorrowBean.procDebtBorrow.applyType}" styleClass="checkbox"  required="true" requiredMessage="请选择申请类型" onchange="changeApplyType(this.value)">
-								<f:selectItem itemLabel="首次申请" itemValue="1" ></f:selectItem>
-								<f:selectItem itemLabel="展期申请" itemValue="2"></f:selectItem>
-								<p:ajax update="msg,contractStartDate,contractEndDate,debtContractNo,thisShBorrow,thisShBorrowCu,thisShBorrowLis,thisShBorrowLie,thisShBorrowRa,contractStartDate,contractEndDate,debtContractNo" listener="#{debtBorrowBean.ajaxSelApplyType}"></p:ajax>
-							</h:selectOneRadio>
 							
-							<p:commandButton update="msg,selDebtContractTb" id="selDebtContractButton"
-								action="#{debtBorrowBean.ajaxSelDebtPaymentList}" oncomplete="selDebtContractDgVar.show()" value="选择已有外债合同" style="width:170px;display:none" immediate="true" />
+							<p:selectOneRadio id="applyType" required="true" 
+									requiredMessage="#{请选择申请类型}"
+									value="#{debtBorrowBean.procDebtBorrow.applyType}">
+									<f:selectItem itemLabel="首次申请" itemValue="1" ></f:selectItem>
+									<f:selectItem itemLabel="展期申请" itemValue="2"></f:selectItem>
+									<p:ajax update="msg,contractInfo,thisShBorrowSe,contractStartDate,shareHolderSelect,contractEndDate,selDebtContractButton,dirComSelect,debtContractNo,thisShBorrow,thisShBorrowCu,thisShBorrowLis,thisShBorrowLie,thisShBorrowRa,contractStartDate,contractEndDate,debtContractNo,shareHolderSelect,dirComSelect" listener="#{debtBorrowBean.ajaxSelApplyType}"></p:ajax>
+								</p:selectOneRadio>
+							<h:outputLabel value=""/>
+							<p:commandButton update="msg,selDebtContractTb" id="selDebtContractButton" name="selDebtContractButton"  style="#{debtBorrowBean.procDebtBorrow.applyType == '1' || debtBorrowBean.procDebtBorrow.applyType == null?'display:none;':'display:block;'}"
+								action="#{debtBorrowBean.ajaxSelDebtPaymentList}" oncomplete="selDebtContractDgVar.show()" value="选择已有外债合同"  process="@this"/>
 							
 						</h:panelGroup>
 						
@@ -319,11 +350,13 @@
 						<h:outputLabel value="借款类型：" />
 						<h:panelGroup>							
 							
-							<h:selectOneRadio id="thisShBorrowSe" styleClass="checkbox"  required="true" requiredMessage="请选择借款类型" value="#{debtBorrowBean.procDebtBorrow.thisShBorrowSe}">
+						
+							<p:selectOneRadio value="#{debtBorrowBean.procDebtBorrow.thisShBorrowSe}" id="thisShBorrowSe" disabled="#{debtBorrowBean.procDebtBorrow.applyType =='2'}" required="true" requiredMessage="请选择借款类型" >
 								<f:selectItem itemLabel="股东借款" itemValue="G" ></f:selectItem>
-								<f:selectItem itemLabel="海外外债" itemValue="H"></f:selectItem>
-								
-							</h:selectOneRadio>				
+								<f:selectItem itemLabel="海外外债" itemValue="H" ></f:selectItem>
+								<p:ajax update="provider,shareHolderSelect,dirComSelect"></p:ajax>
+							</p:selectOneRadio>
+										
 						</h:panelGroup>
 						
 						<h:outputLabel value=""/>
@@ -332,7 +365,7 @@
 						
 							<h:outputLabel value="申请金额：" />
 						<h:panelGroup>
-							<p:inputText id="thisShBorrow" label="#{msgs.lbl_thisShBorrow}"
+							<p:inputText id="thisShBorrow" label="#{msgs.lbl_thisShBorrow}" disabled="#{debtBorrowBean.procDebtBorrow.applyType =='2'}"
 								value="#{debtBorrowBean.procDebtBorrow.thisShBorrow}" required="true" requiredMessage="#{msgs.msg_required_thisShBorrow}!">
 								<f:convertNumber pattern="#,##0.####"/>
 								<f:validateDoubleRange maximum="99999999.9999" minimum="0.00"></f:validateDoubleRange>
@@ -340,7 +373,7 @@
 							<h:outputLabel value="#{msgs.lbl_tenThousand}"></h:outputLabel>
 							<h:outputText style="color:red;" value="*" />
 						</h:panelGroup>
-						<h:selectOneMenu id="thisShBorrowCu" name="thisShBorrowCu"
+						<h:selectOneMenu id="thisShBorrowCu" name="thisShBorrowCu" disabled="#{debtBorrowBean.procDebtBorrow.applyType =='2'}" 
 							value="#{debtBorrowBean.procDebtBorrow.thisShBorrowCu}"
 							styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
 							<f:selectItems value="#{debtBorrowBean.currencySelect}" />
@@ -352,11 +385,13 @@
 						<h:panelGroup id="provider">
 							<h:selectOneMenu id="shareHolderSelect" name="shareHolderSelect" required="true" requiredMessage="#{msgs.msg_required_fundProvider}!" style="width:307px;"
 								value="#{debtBorrowBean.procDebtBorrow.shareHolder.id}" rendered="#{debtBorrowBean.procDebtBorrow.thisShBorrowSe==null || debtBorrowBean.procDebtBorrow.thisShBorrowSe=='G'}"
+								disabled="#{debtBorrowBean.procDebtBorrow.applyType =='2'}"
 								styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
 								<f:selectItems value="#{debtBorrowBean.shareHolderSelect}"/>
 							</h:selectOneMenu>
 							<h:selectOneMenu id="dirComSelect" name="dirComSelect" required="true" requiredMessage="#{msgs.msg_required_fundProvider}!" style="width:307px;"
 								value="#{debtBorrowBean.procDebtBorrow.providerKey}" rendered="#{debtBorrowBean.procDebtBorrow.thisShBorrowSe=='H' || debtBorrowBean.procDebtBorrow.thisShBorrowSe=='Z'}"
+								disabled="#{debtBorrowBean.procDebtBorrow.applyType =='2'}"
 								styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
 								<f:selectItems value="#{debtBorrowBean.dirComSelect}"/>
 							</h:selectOneMenu>
@@ -395,7 +430,7 @@
 					
 					</h:panelGrid>					
 					
-					<h:panelGrid columns="8" id="contractInfo" style="display:none"
+					<h:panelGrid columns="8" id="contractInfo" style="#{debtBorrowBean.procDebtBorrow.applyType == '1' || debtBorrowBean.procDebtBorrow.applyType == null?'display:none;':'display:block;'}"
 							columnClasses="column41l,column2,column2,column2,column12,column2,column42,column2">
 						
 						<h:outputLabel value="原合同日期："/>
@@ -626,7 +661,7 @@
 									rowKey="#{selDebtContractVar.id}" emptyMessage="#{msgs.no_data_msg}">
 												<p:column headerText="外债申请日期">
 													<h:outputText value="#{selDebtContractVar.createdDatetime}">
-														<f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd HH:mm:ss" />
+														<f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd" />
 													</h:outputText>
 										        
 										        </p:column>
@@ -648,12 +683,12 @@
 										         <p:column headerText="未请款金额">
 										           #{selDebtContractVar.approvalFunds}
 										        </p:column>
-										         <p:column headerText="开始-结束时间">
+										         <p:column headerText="开始-结束日期">
 										           <h:outputText value="#{selDebtContractVar.contractStartDate}">
-														<f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd HH:mm:ss" />
+														<f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd" />
 													</h:outputText>~
 													<h:outputText value="#{selDebtContractVar.contractEndDate}">
-														<f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd HH:mm:ss" />
+														<f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd" />
 													</h:outputText>
 										        </p:column>
 										         <p:column headerText="利率">
@@ -662,8 +697,10 @@
 										     </p:dataTable>
 										 <div align="right">
 										     <p:commandButton  id="selDebtContractOk" action="#{debtBorrowBean.ajaxSelDebtPayment}" oncomplete="selDebtContractDgVar.hide()" 
-										     update="thisShBorrow,thisShBorrowCu,thisShBorrowLis,thisShBorrowLie,thisShBorrowRa,contractStartDate,contractEndDate,debtContractNo" 
+										     update="thisShBorrow,thisShBorrowSe,thisShBorrowCu,thisShBorrowLis,thisShBorrowLie,thisShBorrowRa,contractStartDate,contractEndDate,debtContractNo" 
 										     value="#{msgs.btn_ok}" image="ui-icon ui-icon-disk" />
+										     
+									
 										 </div>
 									</p:outputPanel>
 						</p:dialog>
