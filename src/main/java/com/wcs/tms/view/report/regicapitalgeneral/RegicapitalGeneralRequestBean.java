@@ -206,7 +206,6 @@ public class RegicapitalGeneralRequestBean implements Serializable {
 	
 	public void initConfirmRegiCapital(){
 		confirmVo = new RegiCapitalConfirmVo();
-		// ....
 		confirmVo.setRegiCapital(regiCapital);
 		confirmVo.setRegistrant(loginService.getCurrentUserName());
 	}
@@ -220,6 +219,7 @@ public class RegicapitalGeneralRequestBean implements Serializable {
 			MessageUtils.addSuccessMessage("msg", "操作成功。");
 		} catch (Exception e) {
 			MessageUtils.addErrorMessage("msg", "注册资本金到账确认失败，请重新操作。");
+			log.error(e.getMessage(), e);
 		}
 	}
 	

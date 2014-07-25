@@ -1,19 +1,13 @@
 package com.wcs.tms.service.process.debtpayment;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.persistence.Column;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import com.wcs.base.service.EntityService;
 import com.wcs.tms.model.Company;
@@ -31,7 +25,6 @@ import com.wcs.tms.view.process.common.entity.RegiDebtConfirmVo;
 
 public class RegiDebtManageService {
 	
-	private Log log = LogFactory.getLog(RegiDebtManageService.class);
 	
 	@PersistenceContext(unitName = "pu")
 	private EntityManager em;

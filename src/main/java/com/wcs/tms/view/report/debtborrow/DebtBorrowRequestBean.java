@@ -200,7 +200,6 @@ public class DebtBorrowRequestBean implements Serializable {
 
 	public void initConfirmRegiDebtCash(){
 		confirmVo  = new RegiDebtCashConfirmVo();
-		// ....
 		confirmVo.setDebtPayment(debtPayment);
 		confirmVo.setRegistrant(loginService.getCurrentUserName());
 	}
@@ -214,6 +213,7 @@ public class DebtBorrowRequestBean implements Serializable {
 			MessageUtils.addSuccessMessage("msg", "操作成功。");
 		} catch (Exception e) {
 			MessageUtils.addErrorMessage("msg", "外债请款确认失败，请重新操作。");
+			log.error(e.getMessage(), e);
 		}
 	}
 	/**************************setter、getter方法*************************/

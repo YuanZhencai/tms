@@ -258,7 +258,7 @@ public class DebtBorrowManagerBean extends FileUpload<ProcDebtBorrow> {
 	public void confirmRegiDebt(){
 		try {
 			if(confirmVo.getDebtContract() == null) {
-				MessageUtils.addErrorMessage("msg", "数据错误：没有关联合同");
+				MessageUtils.addErrorMessage("msg", "数据错误：没有关联合同。");
 				return;
 			}
 			regiDebtManageService.confirmRegiDebt(confirmVo);
@@ -270,6 +270,7 @@ public class DebtBorrowManagerBean extends FileUpload<ProcDebtBorrow> {
 			MessageUtils.addSuccessMessage("msg", "操作成功。");
 		} catch (Exception e) {
 			MessageUtils.addErrorMessage("msg", "外债合同信息报备登记失败，请重新操作。");
+			log.error(e.getMessage(), e);
 		}
 	}
 	
