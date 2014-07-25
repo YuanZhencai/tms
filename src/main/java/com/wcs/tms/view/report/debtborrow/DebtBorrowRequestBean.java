@@ -77,7 +77,7 @@ public class DebtBorrowRequestBean implements Serializable {
 	// 判断是否是集团用户
 	private Boolean isCopUser = false;
 
-	private RegiDebtCashConfirmVo confirmVo;
+	private RegiDebtCashConfirmVo confirmVo = new RegiDebtCashConfirmVo();
 
 	private ProcDebtPayment debtPayment;
 
