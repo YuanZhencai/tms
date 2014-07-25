@@ -162,7 +162,7 @@
 			</p:column>
 
 			<p:column headerText="到账金额">
-				<h:outputText value="#{debtBorrowRequestVO.receivedFunds}">
+				<h:outputText value="#{debtBorrowRequestVO.debtPayment.receivedFunds}">
 					<f:convertNumber pattern="#,##0.00" />
 				</h:outputText>
 			</p:column>
@@ -174,7 +174,7 @@
 				</p:commandButton>
 				<p:commandButton oncomplete="debtCashConfirmDialogVar.show();"
 					action="#{debtBorrowRequestBean.initConfirmRegiDebtCash()}"
-					update=":debtCashConfirmForm"
+					update=":debtCashConfirmForm" disabled="#{'Y' == debtBorrowRequestVO.debtPayment.isReceivedFunds}"
 					image="ui-icon ui-icon-pencil" title="确认到账">
 					<f:setPropertyActionListener target="#{debtBorrowRequestBean.debtPayment}" value="#{debtBorrowRequestVO.debtPayment}" />
 				</p:commandButton>

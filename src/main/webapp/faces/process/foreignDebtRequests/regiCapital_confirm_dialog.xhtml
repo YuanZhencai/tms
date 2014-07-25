@@ -10,21 +10,29 @@
 		<h:form id="regiCapitalConfirmForm" prependId="false">
 			<p:messages id="regiCapitalConfirmMessage" autoUpdate="false" />
 			<h:panelGrid columns="6"
-				columnClasses="column1,column2,column1,column2">
+				columnClasses="column1,column2,column21,column2">
 				<h:outputLabel value="到账金额：" />
-				<p:inputText value="#{regicapitalGeneralRequestBean.confirmVo.alreadyAccount}"/>
+				<h:column>
+					<p:inputText
+						value="#{regicapitalGeneralRequestBean.confirmVo.alreadyAccount}"
+						required="true" requiredMessage="到账金额：不能为空。" />
+					<h:outputText style="color:red;" value=" *" />
+				</h:column>
 				<h:outputLabel value="(万)"></h:outputLabel>
 				<h:column>
 					<h:selectOneMenu
 						value="#{regicapitalGeneralRequestBean.confirmVo.currency}"
 						styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
-						<f:selectItems value="#{regicapitalGeneralRequestBean.currencySelect}" />
+						<f:selectItems
+							value="#{regicapitalGeneralRequestBean.currencySelect}" />
 					</h:selectOneMenu>
 					<h:outputText style="color:red;" value=" *" />
 				</h:column>
 				<h:outputLabel value="到账日期：" />
 				<h:column>
-					<p:inputText styleClass="ui-date" value="#{regicapitalGeneralRequestBean.confirmVo.inAccountDate}"
+					<p:inputText styleClass="ui-date"
+						value="#{regicapitalGeneralRequestBean.confirmVo.inAccountDate}"
+						required="true" requiredMessage="到账日期：不能为空。"
 						style="font-size: 9px;width:90px;" title="到账时间"
 						onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd'});">
 						<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
@@ -33,19 +41,22 @@
 				</h:column>
 				<h:outputLabel value="登记人员：" />
 				<p:inputText disabled="true" label="登记人员"
-					value="#{regicapitalGeneralRequestBean.confirmVo.registrant}" />
+					value="#{currentUser.exchange2CN(regicapitalGeneralRequestBean.confirmVo.registrant)}" />
 				<h:outputLabel value="" />
 				<h:outputLabel value="" />
 				<h:outputLabel value="登记时间：" />
 				<p:inputText styleClass="ui-date" style="font-size: 9px;width:90px;"
-					title="登记时间" value="#{regicapitalGeneralRequestBean.confirmVo.registerDate}"
+					title="登记时间" disabled="true"
+					value="#{regicapitalGeneralRequestBean.confirmVo.registerDate}"
 					onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd'});">
 					<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
 				</p:inputText>
 			</h:panelGrid>
 			<div style="text-align: center; margin-top: 5px;">
 				<p:commandButton icon="ui-icon ui-icon-check" value="确定"
-					style="margin-right: 5px;" action="#{regicapitalGeneralRequestBean.confirmRegiCapital()}"
+					style="margin-right: 5px;"
+					action="#{regicapitalGeneralRequestBean.confirmRegiCapital()}"
+					update=":regiCapitalConfirmForm,capitalDebtTabView:capitalRequestPanel"
 					oncomplete="handleDialog(xhr, status, args);" />
 				<p:commandButton icon="ui-icon ui-icon-cancel"
 					value="#{msgs.btn_cancel}" type="button"

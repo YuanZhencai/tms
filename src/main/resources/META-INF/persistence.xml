@@ -11,11 +11,11 @@
 		<class>com.wcs.tms.model.ProcRegiCapitalChange</class>
 		<class>com.wcs.tms.model.ProcRegiCapitalChangeShareholder</class>
 		<properties>
-			<!-- <property name="openjpa.Log"
+		<property name="openjpa.Log"
 				value="DefaultLevel=WARN, 
 				Runtime=INFO, Tool=INFO, SQL=TRACE" />
 			<property name="openjpa.jdbc.SynchronizeMappings" value="buildSchema(ForeignKeys=true)" />
- -->
+
 		</properties>
 	</persistence-unit>
 

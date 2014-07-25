@@ -5,6 +5,7 @@ import java.util.Date;
 
 import com.wcs.common.controller.helper.IdModel;
 import com.wcs.tms.model.Company;
+import com.wcs.tms.model.DebtContract;
 import com.wcs.tms.model.ProcDebtBorrow;
 import com.wcs.tms.model.ShareHolder;
 
@@ -17,6 +18,8 @@ public class DebtRequestVo extends IdModel implements Serializable {
 	
 
 	private ProcDebtBorrow debtBorrow;
+	private DebtContract contract;
+	
 
 	private Company company;
 
@@ -870,6 +873,14 @@ public class DebtRequestVo extends IdModel implements Serializable {
 
 	public void setOldDebtContract(String oldDebtContract) {
 		this.oldDebtContract = oldDebtContract;
+	}
+
+	public DebtContract getContract() {
+		return contract;
+	}
+
+	public void setContract(DebtContract contract) {
+		this.contract = contract;
 	}
 
 }

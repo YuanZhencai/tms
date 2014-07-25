@@ -30,6 +30,7 @@ import com.wcs.tms.model.ProcRegiCapital;
 import com.wcs.tms.service.process.debtpayment.RegiDebtManageService;
 import com.wcs.tms.service.report.regicapitalgeneral.RegicapitalGeneralRequestService;
 import com.wcs.tms.service.system.company.CompanyTmsService;
+import com.wcs.tms.util.MessageUtils;
 import com.wcs.tms.view.process.common.CompanySelectBean;
 import com.wcs.tms.view.process.common.entity.RegiCapitalConfirmVo;
 import com.wcs.tms.view.process.common.entity.RegicapitalRequestVO;
@@ -207,10 +208,19 @@ public class RegicapitalGeneralRequestBean implements Serializable {
 		confirmVo = new RegiCapitalConfirmVo();
 		// ....
 		confirmVo.setRegiCapital(regiCapital);
+		confirmVo.setRegistrant(loginService.getCurrentUserName());
 	}
 	
 	public void confirmRegiCapital(){
-		regiDebtManageService.confirmRegiCapital(confirmVo);
+		try {
+			regiDebtManageService.confirmRegiCapital(confirmVo);
+			RequestContext context = RequestContext.getCurrentInstance();
+			context.addCallbackParam("widgetVar", "regiCapitalConfirmDialogVar");
+			context.addCallbackParam("option", "close");
+			MessageUtils.addSuccessMessage("msg", "操作成功。");
+		} catch (Exception e) {
+			MessageUtils.addErrorMessage("msg", "注册资本金到账确认失败，请重新操作。");
+		}
 	}
 	
 	/**************************setter、getter方法*************************/

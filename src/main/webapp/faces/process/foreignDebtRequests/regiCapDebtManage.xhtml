@@ -287,7 +287,7 @@
 
 				</div>
 			</h:form>
-			<h:form prependId="false">
+			<h:form id="regiCapitalDebtManagerForm" prependId="false">
 				<p:tabView id="capitalDebtTabView">
 					<p:tab id="capitalChangeTab" title="注册资本金变更">
 						<ui:include src="capitalChange-detail.xhtml" />
@@ -302,6 +302,11 @@
 						<ui:include src="debtRequestCash-detail.xhtml" />
 					</p:tab>
 				</p:tabView>
+			</h:form>
+			<h:form enctype="multipart/form-data" id="fileuploadForm">
+				<wcs:fileUpload updateComponet="msg,attachmentPanel,fileForm"
+					docTableId="fileForm" upListener="#{debtBorrowManagerBean}">
+				</wcs:fileUpload>
 			</h:form>
 			<ui:include src="/faces/process/common/companySelect-dialog.xhtml" />
 			<ui:include src="regiCapital_confirm_dialog.xhtml" />

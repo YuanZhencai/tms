@@ -2,12 +2,15 @@ package com.wcs.tms.view.process.common.entity;
 
 import java.util.Date;
 
+import com.wcs.tms.model.DebtContract;
 import com.wcs.tms.model.ProcDebtBorrow;
 
 public class RegiDebtConfirmVo {
 
 	// 外债申请流程实例
 	private ProcDebtBorrow debtBorrow;
+	// 外债合同
+	private DebtContract debtContract;
 	
 	// 合同编号
 	private String contractNo;
@@ -97,6 +100,12 @@ public class RegiDebtConfirmVo {
 	}
 	public void setDebtBorrow(ProcDebtBorrow debtBorrow) {
 		this.debtBorrow = debtBorrow;
+	}
+	public DebtContract getDebtContract() {
+		return debtContract;
+	}
+	public void setDebtContract(DebtContract debtContract) {
+		this.debtContract = debtContract;
 	}
 	
 }

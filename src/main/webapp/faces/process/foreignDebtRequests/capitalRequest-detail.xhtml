@@ -172,7 +172,7 @@
 				</p:commandButton>
 				<p:commandButton oncomplete="regiCapitalConfirmDialogVar.show();"
 					action="#{regicapitalGeneralRequestBean.initConfirmRegiCapital()}"
-					update=":regiCapitalConfirmForm"
+					update=":regiCapitalConfirmForm" disabled="#{'Y' == regicapitalRequestVO.regiCapital.isReceivedFunds}"
 					image="ui-icon ui-icon-pencil" title="确认到账">
 					<f:setPropertyActionListener target="#{regicapitalGeneralRequestBean.regiCapital}" value="#{regicapitalRequestVO.regiCapital}" />
 				</p:commandButton>

@@ -132,8 +132,25 @@ public class RegiDebtManageService {
 		return debtQuota;
 	}
 	
+	/**
+	 * 注册资本金到账确认
+	 * @param confirmVo
+	 */
 	public void confirmRegiCapital(RegiCapitalConfirmVo confirmVo) {
 		ProcRegiCapital regiCapital = confirmVo.getRegiCapital();
+		/** 是否到账 */
+		regiCapital.setIsReceivedFunds("Y");
+		/** 到账金额 */
+		regiCapital.setReceivedFunds(confirmVo.getAlreadyAccount());
+		/** 到账金额币别 */
+		regiCapital.setReceivedFundsCu(confirmVo.getCurrency());
+		/** 到账日期 */
+		regiCapital.setReceivedFundsDate(confirmVo.getInAccountDate());
+		/** 到账登记人员 */
+		regiCapital.setRegisterBy(confirmVo.getRegistrant());
+		/** 到账登记日期 */
+		regiCapital.setRegisterDateTime(confirmVo.getRegisterDate());
+		entityService.update(regiCapital);
 		
 		ShareHolder shareHolder = entityService.find(ShareHolder.class, regiCapital.getPayer());
 		// 已到账金额
@@ -143,31 +160,44 @@ public class RegiDebtManageService {
 		
 	}
 	
+	/**
+	 * 外债合同信息报备登记
+	 * @param confirmVo
+	 */
 	public void confirmRegiDebt(RegiDebtConfirmVo confirmVo) {
 		ProcDebtBorrow debtBorrow = confirmVo.getDebtBorrow();
-		DebtContract debtContract = entityService.find(DebtContract.class, debtBorrow.getDebtContractId());
+		DebtContract debtContract = confirmVo.getDebtContract();
 		debtContract.setIsConfirmed("Y");
 		// 实际金额
 		debtContract.setRealFunds(confirmVo.getContractAccount());
 		// 实际金额币别
 		debtContract.setRealFundsCu(confirmVo.getCurrency());
 		// 借款开始时间
-		debtContract.setApprovalStartDate(confirmVo.getBorrowStartDate());
+		debtBorrow.setThisShBorrowLis(confirmVo.getBorrowStartDate());
 		// 借款结束时间
-		debtContract.setApprovalEndDate(confirmVo.getBorrowEndDate());
+		debtBorrow.setThisShBorrowLie(confirmVo.getBorrowEndDate());
 		// 借款利率
 		debtContract.setRealFundsRate(confirmVo.getInterestRate());
 		// 合同编号
 		debtContract.setDebtContractNo(confirmVo.getContractNo());
+		// 报备人员
+		debtContract.setContractSummitedBy(confirmVo.getFiller());
+		// 报备时间
+		debtContract.setContractSummitedDate(confirmVo.getFillDate());
 		// 登记人员
 		debtContract.setContractRegistedBy(confirmVo.getRegistrant());
 		// 登记时间
 		debtContract.setContractRegistedTime(confirmVo.getRegisterDate());
 		entityService.update(debtContract);
+		entityService.update(debtBorrow);
 		
 
 	}
 	
+	/**
+	 * 外债请款确认
+	 * @param confirmVo
+	 */
 	public void confirmRegiDebtCash(RegiDebtCashConfirmVo confirmVo) {
 		ProcDebtPayment debtPayment = confirmVo.getDebtPayment();
 		// 是否到账

@@ -30,6 +30,7 @@ import com.wcs.tms.model.ProcDebtPayment;
 import com.wcs.tms.service.process.debtpayment.RegiDebtManageService;
 import com.wcs.tms.service.report.debtborrow.DebtBorrowRequestService;
 import com.wcs.tms.service.system.company.CompanyTmsService;
+import com.wcs.tms.util.MessageUtils;
 import com.wcs.tms.view.process.common.CompanySelectBean;
 import com.wcs.tms.view.process.common.entity.DebtBorrowRequestVO;
 import com.wcs.tms.view.process.common.entity.RegiDebtCashConfirmVo;
@@ -201,10 +202,19 @@ public class DebtBorrowRequestBean implements Serializable {
 		confirmVo  = new RegiDebtCashConfirmVo();
 		// ....
 		confirmVo.setDebtPayment(debtPayment);
+		confirmVo.setRegistrant(loginService.getCurrentUserName());
 	}
 	
 	public void confirmRegiDebtCash(){
-		regiDebtManageService.confirmRegiDebtCash(confirmVo);
+		try {
+			regiDebtManageService.confirmRegiDebtCash(confirmVo);
+			RequestContext context = RequestContext.getCurrentInstance();
+			context.addCallbackParam("widgetVar", "debtCashConfirmDialogVar");
+			context.addCallbackParam("option", "close");
+			MessageUtils.addSuccessMessage("msg", "操作成功。");
+		} catch (Exception e) {
+			MessageUtils.addErrorMessage("msg", "外债请款确认失败，请重新操作。");
+		}
 	}
 	/**************************setter、getter方法*************************/
 	public EntityService getEntityService() {

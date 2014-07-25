@@ -308,23 +308,24 @@ public class DebtBorrowReportService implements Serializable {
 			/** 外债合同_主数据DEBT_CONTRACT **/
 			// 外债合同 = 合同编号 + 出资方 + 开始-结束日期 + 利率
 			DebtContract debtContract = entityService.find(DebtContract.class, pdb.getDebtContractId());
+			debtRequestVo.setContract(debtContract);
 			ProcDebtBorrow procDebtBorrow = debtContract.getProcDebtBorrow();
-			DebtContract oldDebtContract = entityService.find(DebtContract.class, procDebtBorrow.getDebtContractId());
-			
-			
 			String debtContractStr = debtContract.getDebtContractNo() + " + " + debtContract.getShareHolder().getShareHolderName() + " + "
 					+ DateUtil.convertDateToString(debtContract.getContractStartDate(), "yyyy-MM-dd") + "-"
 					+ DateUtil.convertDateToString(debtContract.getContractEndDate(), "yyyy-MM-dd") + " + "
 					+ (debtContract.getApprovalRate() == null ? "" : debtContract.getApprovalRate());
-			
-			String oldDebtContractStr = oldDebtContract.getDebtContractNo() + " + " + oldDebtContract.getShareHolder().getShareHolderName() + " + "
-					+ DateUtil.convertDateToString(oldDebtContract.getContractStartDate(), "yyyy-MM-dd") + "-"
-					+ DateUtil.convertDateToString(oldDebtContract.getContractEndDate(), "yyyy-MM-dd") + " + "
-					+ (oldDebtContract.getApprovalRate() == null ? "" : oldDebtContract.getApprovalRate());
-			
-			
 			debtRequestVo.setDebtContract(debtContractStr);
-			debtRequestVo.setOldDebtContract(oldDebtContractStr);
+			
+			if(procDebtBorrow != null && procDebtBorrow.getDebtContractId() != null) {
+				DebtContract oldDebtContract = entityService.find(DebtContract.class, procDebtBorrow.getDebtContractId());
+				
+				String oldDebtContractStr = oldDebtContract.getDebtContractNo() + " + " + oldDebtContract.getShareHolder().getShareHolderName() + " + "
+						+ DateUtil.convertDateToString(oldDebtContract.getContractStartDate(), "yyyy-MM-dd") + "-"
+						+ DateUtil.convertDateToString(oldDebtContract.getContractEndDate(), "yyyy-MM-dd") + " + "
+						+ (oldDebtContract.getApprovalRate() == null ? "" : oldDebtContract.getApprovalRate());
+				debtRequestVo.setOldDebtContract(oldDebtContractStr);
+			}
+			
 			// 外债合同金额
 			debtRequestVo.setDebtContractFunds(debtContract.getDebtContractFunds() == null ? "/" : debtContract.getDebtContractFunds().toString());
 			// 未请款金额 = 外债合同金额 - 未请款金额

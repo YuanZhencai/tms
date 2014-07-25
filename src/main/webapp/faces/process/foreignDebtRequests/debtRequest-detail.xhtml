@@ -32,7 +32,7 @@
 					value="#{debtBorrowManagerBean.conditionMap['endDateS']}"
 					styleClass="ui-date" style="font-size: 12px;width:90px;"
 					title="#{msgs.txt_startTime}"
-					onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM',maxDate:'#F{$dp.$D(\'endDateE\')}',autoUpdateOnChanged:false});">
+					onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM',maxDate:'#F{$dp.$D(\'capitalDebtTabView:endDateE\')}',autoUpdateOnChanged:false});">
 					<f:convertDateTime pattern="yyyy-MM" timeZone="GMT+8" />
 				</p:inputText>
 				<h:outputText value="~" />
@@ -40,7 +40,7 @@
 					value="#{debtBorrowManagerBean.conditionMap['endDateE']}"
 					styleClass="ui-date" style="font-size: 12px;width:90px;"
 					title="#{msgs.txt_endTime}"
-					onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM',minDate:'#F{$dp.$D(\'endDateS\')}',autoUpdateOnChanged:false});">
+					onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM',minDate:'#F{$dp.$D(\'capitalDebtTabView:endDateS\')}',autoUpdateOnChanged:false});">
 					<f:convertDateTime pattern="yyyy-MM" timeZone="GMT+8" />
 				</p:inputText>
 			</h:panelGroup>
@@ -160,6 +160,8 @@
 				</h:outputText>
 			</p:column>
 			<p:column headerText="是否到账">
+				<h:outputText value="#{procDebtBorrow.contract == null ? '否':('Y' == procDebtBorrow.contract.isConfirmed ? '是' : '否')}">
+				</h:outputText>
 			</p:column>
 			<p:column headerText="#{msgs.col_operate}">
 				<p:commandButton
@@ -169,7 +171,7 @@
 				</p:commandButton>
 				<p:commandButton oncomplete="debtConfirmDialogVar.show();"
 					action="#{debtBorrowManagerBean.initConfirmRegiDebt()}"
-					update=":debtConfirmForm"
+					update=":debtConfirmForm,:fileForm" disabled="#{procDebtBorrow.contract == null ? 'fasle':('Y' == procDebtBorrow.contract.isConfirmed)}"
 					image="ui-icon ui-icon-pencil" title="确认到账">
 					<f:setPropertyActionListener target="#{debtBorrowManagerBean.debtBorrow}" value="#{procDebtBorrow.debtBorrow}" />
 				</p:commandButton>

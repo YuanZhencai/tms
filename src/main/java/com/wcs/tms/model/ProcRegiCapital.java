@@ -148,7 +148,32 @@ public class ProcRegiCapital extends BaseEntity {
 	private Double relatedPerc;
 	/** 流程状态 */
 	@Column(name = "PROCESS_STATUS")
-    private String processStatus;
+	private String processStatus;
+
+	/** 是否到账 */
+	@Column(name = "IS_RECEIVED_FUNDS", length = 1)
+	private String isReceivedFunds;
+
+	/** 到账金额 */
+	@Column(name = "RECEIVED_FUNDS", precision = 12, scale = 4)
+	private Double receivedFunds;
+	/** 到账金额币别 */
+	@Column(name = "RECEIVED_FUNDS_CU", length = 101)
+	private String receivedFundsCu;
+
+	/** 到账日期 */
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "RECEIVED_FUNDS_DATE")
+	private Date receivedFundsDate;
+
+	/** 到账登记人员 */
+	@Column(name = "REGISTER_BY", length = 50)
+	private String registerBy;
+
+	/** 到账登记日期 */
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "REGISTER_DATETIME")
+	private Date registerDateTime;
 
 	/** default constructor */
 	public ProcRegiCapital() {
@@ -428,12 +453,60 @@ public class ProcRegiCapital extends BaseEntity {
 		this.relatedPerc = relatedPerc;
 	}
 
-    public String getProcessStatus() {
-        return processStatus;
-    }
+	public String getProcessStatus() {
+		return processStatus;
+	}
 
-    public void setProcessStatus(String processStatus) {
-        this.processStatus = processStatus;
-    }
+	public void setProcessStatus(String processStatus) {
+		this.processStatus = processStatus;
+	}
+
+	public String getIsReceivedFunds() {
+		return isReceivedFunds;
+	}
+
+	public void setIsReceivedFunds(String isReceivedFunds) {
+		this.isReceivedFunds = isReceivedFunds;
+	}
+
+	public Double getReceivedFunds() {
+		return receivedFunds;
+	}
+
+	public void setReceivedFunds(Double receivedFunds) {
+		this.receivedFunds = receivedFunds;
+	}
+
+	public String getReceivedFundsCu() {
+		return receivedFundsCu;
+	}
+
+	public void setReceivedFundsCu(String receivedFundsCu) {
+		this.receivedFundsCu = receivedFundsCu;
+	}
+
+	public Date getReceivedFundsDate() {
+		return receivedFundsDate;
+	}
+
+	public void setReceivedFundsDate(Date receivedFundsDate) {
+		this.receivedFundsDate = receivedFundsDate;
+	}
+
+	public String getRegisterBy() {
+		return registerBy;
+	}
+
+	public void setRegisterBy(String registerBy) {
+		this.registerBy = registerBy;
+	}
+
+	public Date getRegisterDateTime() {
+		return registerDateTime;
+	}
+
+	public void setRegisterDateTime(Date registerDateTime) {
+		this.registerDateTime = registerDateTime;
+	}
 
 }

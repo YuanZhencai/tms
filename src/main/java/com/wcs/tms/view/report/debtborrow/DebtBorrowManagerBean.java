@@ -1,6 +1,7 @@
 package com.wcs.tms.view.report.debtborrow;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,12 +27,15 @@ import com.wcs.base.view.ViewBaseBean;
 import com.wcs.common.consts.DictConsts;
 import com.wcs.common.controller.CommonBean;
 import com.wcs.tms.model.Company;
+import com.wcs.tms.model.DebtContract;
 import com.wcs.tms.model.ProcDebtBorrow;
 import com.wcs.tms.model.ProcessMap;
+import com.wcs.tms.service.process.common.FileUploadService;
 import com.wcs.tms.service.process.common.ProcessUtilMapService;
 import com.wcs.tms.service.process.debtpayment.RegiDebtManageService;
 import com.wcs.tms.service.report.debtborrow.DebtBorrowReportService;
 import com.wcs.tms.service.system.company.CompanyTmsService;
+import com.wcs.tms.util.MessageUtils;
 import com.wcs.tms.view.process.common.CompanySelectBean;
 import com.wcs.tms.view.process.common.FileUpload;
 import com.wcs.tms.view.process.common.entity.DebtRequestVo;
@@ -202,7 +206,6 @@ public class DebtBorrowManagerBean extends FileUpload<ProcDebtBorrow> {
 				Map<String, Object> map = new HashMap<String, Object>();
 				map = debtBorrowReportService.findDebtBorrowRequestDetail(first, pageSize, sortField, sortOrder, conditionMap);
 				List<DebtRequestVo> list = new ArrayList<DebtRequestVo>();
-				System.out.println("[map]" + map);
 				if (map.size() != 0) {
 					list = (List<DebtRequestVo>) map.get("list");
 					this.setRowCount((Integer) map.get("count"));
@@ -235,12 +238,39 @@ public class DebtBorrowManagerBean extends FileUpload<ProcDebtBorrow> {
 	
 	public void initConfirmRegiDebt(){
 		confirmVo  = new RegiDebtConfirmVo();
-		// ....
 		confirmVo.setDebtBorrow(debtBorrow);
+		confirmVo.setInterestRate(debtBorrow.getCorpAuditRa() == null ? 0d : Double.valueOf(debtBorrow.getCorpAuditRa()));
+		confirmVo.setBorrowStartDate(debtBorrow.getThisShBorrowLis());
+		confirmVo.setBorrowStartDate(debtBorrow.getThisShBorrowLie());
+		if(debtBorrow.getDebtContractId() != null) {
+			DebtContract debtContract = entityService.find(DebtContract.class, debtBorrow.getDebtContractId());
+			confirmVo.setDebtContract(debtContract);
+			confirmVo.setContractNo(debtContract.getDebtContractNo());
+			confirmVo.setContractAccount(debtContract.getDebtContractFunds());
+			confirmVo.setCurrency(debtContract.getDebtContractFundsCu());
+		}
+		confirmVo.setFiller(loginService.getCurrentUserName());
+		confirmVo.setFillDate(new Date());
+		confirmVo.setRegistrant(loginService.getCurrentUserName());
+		displayDetailAttach(debtBorrow.getProcInstId());
 	}
 	
 	public void confirmRegiDebt(){
-		regiDebtManageService.confirmRegiDebt(confirmVo);
+		try {
+			if(confirmVo.getDebtContract() == null) {
+				MessageUtils.addErrorMessage("msg", "数据错误：没有关联合同");
+				return;
+			}
+			regiDebtManageService.confirmRegiDebt(confirmVo);
+			// 保存流程附件
+			this.saveProcessFile(confirmVo.getDebtBorrow().getProcInstId());
+			RequestContext context = RequestContext.getCurrentInstance();
+			context.addCallbackParam("widgetVar", "debtConfirmDialogVar");
+			context.addCallbackParam("option", "close");
+			MessageUtils.addSuccessMessage("msg", "操作成功。");
+		} catch (Exception e) {
+			MessageUtils.addErrorMessage("msg", "外债合同信息报备登记失败，请重新操作。");
+		}
 	}
 	
 	/******set@get*******************************************************/

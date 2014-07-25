@@ -3,6 +3,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
+	xmlns:wcs="http://www.wcs-global.com/customtaglib"
 	xmlns:commentProcess="http://java.sun.com/jsf/composite/commentProcess"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 	<p:dialog header="外债合同信息报备登记" id="debtConfirmDialog"
@@ -11,27 +12,39 @@
 		<h:form id="debtConfirmForm" prependId="false">
 			<p:messages id="debtConfirmMessage" autoUpdate="false" />
 			<h:panelGrid columns="6"
-				columnClasses="column1,column2,column1,column2">
+				columnClasses="column1,column2,column21,column2">
 				<h:outputLabel value="合同编号：" />
-				<p:inputText value="#{debtBorrowManagerBean.confirmVo.contractNo}"/>
+				<h:column>
+					<p:inputText value="#{debtBorrowManagerBean.confirmVo.contractNo}"
+						required="true" requiredMessage="合同编号：不能为空。" />
+					<h:outputText style="color:red;" value=" *" />
+				</h:column>
 				<h:outputLabel value="" />
 				<h:outputLabel value="" />
 				<h:outputLabel value="借款期限" />
 				<h:column>
-					<p:inputText id="startDate" styleClass="ui-date"
-						style="font-size: 9px;width:90px;" value="#{debtBorrowManagerBean.confirmVo.borrowStartDate}"
-						onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'endDate\')}'});">
-						<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+					<p:inputText id="startDate" styleClass="ui-date" required="true"
+						requiredMessage="借款开始日期：不能为空。" style="font-size: 9px;width:90px;"
+						value="#{debtBorrowManagerBean.confirmVo.borrowStartDate}"
+						onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM',maxDate:'#F{$dp.$D(\'endDate\')}'});">
+						<f:convertDateTime pattern="yyyy-MM" timeZone="GMT+8" />
 					</p:inputText>
 					<h:outputText value="~" />
-					<p:inputText id="endDate" styleClass="ui-date"
-						style="font-size: 9px;width:90px;" value="#{debtBorrowManagerBean.confirmVo.borrowEndDate}"
-						onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'startDate\')}'});">
-						<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+					<p:inputText id="endDate" styleClass="ui-date" required="true"
+						requiredMessage="借款结束日期：不能为空。" style="font-size: 9px;width:90px;"
+						value="#{debtBorrowManagerBean.confirmVo.borrowEndDate}"
+						onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM',minDate:'#F{$dp.$D(\'startDate\')}'});">
+						<f:convertDateTime pattern="yyyy-MM" timeZone="GMT+8" />
 					</p:inputText>
+					<h:outputText style="color:red;" value=" *" />
 				</h:column>
 				<h:outputLabel value="合同金额：" />
-				<p:inputText value="#{debtBorrowManagerBean.confirmVo.contractAccount}" />
+				<h:column>
+					<p:inputText
+						value="#{debtBorrowManagerBean.confirmVo.contractAccount}"
+						required="true" requiredMessage="合同金额：不能为空。" />
+					<h:outputText style="color:red;" value=" *" />
+				</h:column>
 				<h:outputLabel value="(万)"></h:outputLabel>
 				<h:column>
 					<h:selectOneMenu
@@ -43,16 +56,20 @@
 				</h:column>
 				<h:outputLabel value="借款利率：" />
 				<h:column>
-					<p:inputText value="#{debtBorrowManagerBean.confirmVo.interestRate}"/>
+					<p:inputText
+						value="#{debtBorrowManagerBean.confirmVo.interestRate}"
+						required="true" requiredMessage="借款利率：不能为空。" />
 					<h:outputText style="color:red;" value=" *" />
 				</h:column>
 				<h:outputLabel value="报备人员：" />
-				<p:inputText label="报备人员" value="#{debtBorrowManagerBean.confirmVo.filler}" />
+				<p:inputText label="报备人员"
+					value="#{debtBorrowManagerBean.confirmVo.filler}" />
 				<h:outputLabel value="" />
 				<h:outputLabel value="" />
 				<h:outputLabel value="报备日期：" />
 				<h:column>
-					<p:inputText styleClass="ui-date" value="#{debtBorrowManagerBean.confirmVo.fillDate}"
+					<p:inputText styleClass="ui-date"
+						value="#{debtBorrowManagerBean.confirmVo.fillDate}"
 						style="font-size: 9px;width:90px;" title="到账时间"
 						onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd'});">
 						<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
@@ -60,19 +77,29 @@
 				</h:column>
 				<h:outputLabel value="登记人员：" />
 				<p:inputText disabled="true" label="登记人员"
-					value="#{debtBorrowManagerBean.confirmVo.registrant}" />
+					value="#{currentUser.exchange2CN(debtBorrowManagerBean.confirmVo.registrant)}" />
 				<h:outputLabel value="" />
 				<h:outputLabel value="" />
 				<h:outputLabel value="登记时间：" />
 				<p:inputText styleClass="ui-date" style="font-size: 9px;width:90px;"
-					title="登记时间" value="#{debtBorrowManagerBean.confirmVo.registerDate}"
+					disabled="true" title="登记时间"
+					value="#{debtBorrowManagerBean.confirmVo.registerDate}"
 					onfocus="javascript:WdatePicker({dateFmt:'yyyy-MM-dd'});">
 					<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
 				</p:inputText>
 			</h:panelGrid>
 			<div style="text-align: center; margin-top: 5px;">
+				<p:commandButton icon="ui-icon ui-icon-arrowthick-1-n"
+					value="#{msgs.btn_upload}" title="#{msgs.btn_upload}"
+					immediate="true" oncomplete="fileUploadDialog.show()"
+					update="fileuploadForm">
+					<f:setPropertyActionListener value="TMS_DebtBorrow"
+						target="#{debtBorrowManagerBean.workClassName}" />
+				</p:commandButton>
 				<p:commandButton icon="ui-icon ui-icon-check" value="确定"
-					style="margin-right: 5px;" action="#{debtBorrowManagerBean.confirmRegiDebt()}"
+					style="margin-right: 5px;"
+					action="#{debtBorrowManagerBean.confirmRegiDebt()}"
+					update=":debtConfirmForm,capitalDebtTabView:debtBorrowReportPl"
 					oncomplete="handleDialog(xhr, status, args);" />
 				<p:commandButton icon="ui-icon ui-icon-cancel"
 					value="#{msgs.btn_cancel}" type="button"
@@ -83,7 +110,8 @@
 			<div style="position: relative; margin-top: 5px;">
 				<p:outputPanel id="attachmentPanel">
 					<commentProcess:filedownload updateComenId="attachmentPanel"
-						isDisable="true" dataList="#{debtBorrowManagerBean.processFileList}" />
+						isDisable="true"
+						dataList="#{debtBorrowManagerBean.processFileList}" />
 				</p:outputPanel>
 			</div>
 		</h:form>
