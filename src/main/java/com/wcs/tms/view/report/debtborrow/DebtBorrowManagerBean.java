@@ -28,6 +28,7 @@ import com.wcs.common.controller.CommonBean;
 import com.wcs.tms.model.Company;
 import com.wcs.tms.model.DebtContract;
 import com.wcs.tms.model.ProcDebtBorrow;
+import com.wcs.tms.model.ProcessFile;
 import com.wcs.tms.model.ProcessMap;
 import com.wcs.tms.service.process.common.ProcessUtilMapService;
 import com.wcs.tms.service.process.debtpayment.RegiDebtManageService;
@@ -249,6 +250,7 @@ public class DebtBorrowManagerBean extends FileUpload<ProcDebtBorrow> {
 		}
 		confirmVo.setFiller(loginService.getCurrentUserName());
 		confirmVo.setRegistrant(loginService.getCurrentUserName());
+		setProcessFileList(new ArrayList<ProcessFile>());
 		displayDetailAttach(debtBorrow.getProcInstId());
 	}
 	
