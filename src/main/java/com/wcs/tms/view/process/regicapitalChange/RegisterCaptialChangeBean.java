@@ -184,6 +184,9 @@ public class RegisterCaptialChangeBean extends FileUpload<ProcRegiCapitalChange>
 		getInstance().setIsInvestRegRemaAvaiOri(company.getIsInvestRegRemaAvai());
 		getInstance().setInvestRegRemaFundsOri(company.getInvestRegRemaFunds());
 		getInstance().setInvestRegRemaFundsCuOri(company.getInvestRegRemaFundsCu());
+		getInstance().setIsInvestRegRemaAvai(company.getIsInvestRegRemaAvai());
+		getInstance().setInvestRegRemaFunds(company.getInvestRegRemaFunds());
+		getInstance().setInvestRegRemaFundsCu(company.getInvestRegRemaFundsCu());
 		changeShareHolders = registerCaptialChangeService.findChangeShareholderVosBy(getInstance());
 		refreshShareHolders();
 	}
