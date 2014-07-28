@@ -207,6 +207,8 @@ public class RegicapitalGeneralRequestBean implements Serializable {
 	public void initConfirmRegiCapital(){
 		confirmVo = new RegiCapitalConfirmVo();
 		confirmVo.setRegiCapital(regiCapital);
+		confirmVo.setAlreadyAccount(regiCapital.getThisFonds());
+		confirmVo.setCurrency(regiCapital.getThisFondsCu());
 		confirmVo.setRegistrant(loginService.getCurrentUserName());
 	}
 	

@@ -166,9 +166,9 @@ public class RegiDebtManageService {
 		// 实际金额币别
 		debtContract.setRealFundsCu(confirmVo.getCurrency());
 		// 借款开始时间
-		debtBorrow.setThisShBorrowLis(confirmVo.getBorrowStartDate());
+		debtBorrow.setCorpAuditLis(confirmVo.getBorrowStartDate());
 		// 借款结束时间
-		debtBorrow.setThisShBorrowLie(confirmVo.getBorrowEndDate());
+		debtBorrow.setCorpAuditLie(confirmVo.getBorrowEndDate());
 		// 借款利率
 		debtContract.setRealFundsRate(confirmVo.getInterestRate());
 		// 合同编号

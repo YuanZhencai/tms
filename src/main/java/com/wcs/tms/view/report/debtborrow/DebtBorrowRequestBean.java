@@ -201,6 +201,8 @@ public class DebtBorrowRequestBean implements Serializable {
 	public void initConfirmRegiDebtCash(){
 		confirmVo  = new RegiDebtCashConfirmVo();
 		confirmVo.setDebtPayment(debtPayment);
+		confirmVo.setRequestAccount(debtPayment.getApplyFunds());
+		confirmVo.setCurrency(debtPayment.getApplyFundsCu());
 		confirmVo.setRegistrant(loginService.getCurrentUserName());
 	}
 	

@@ -14,7 +14,7 @@ public class RegiDebtCashConfirmVo {
 	// 币别
 	private String currency;
 	// 到账日期
-	private Date inAccountDate;
+	private Date inAccountDate = new Date();
 	// 登记人员
 	private String registrant;
 	// 登记时间

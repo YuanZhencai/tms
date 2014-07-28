@@ -237,9 +237,11 @@ public class DebtBorrowManagerBean extends FileUpload<ProcDebtBorrow> {
 	public void initConfirmRegiDebt(){
 		confirmVo  = new RegiDebtConfirmVo();
 		confirmVo.setDebtBorrow(debtBorrow);
+		confirmVo.setContractAccount(debtBorrow.getCorpAudit());
+		confirmVo.setCurrency(debtBorrow.getCorpAuditCu());
 		confirmVo.setInterestRate(debtBorrow.getCorpAuditRa() == null ? 0d : Double.valueOf(debtBorrow.getCorpAuditRa()));
-		confirmVo.setBorrowStartDate(debtBorrow.getThisShBorrowLis());
-		confirmVo.setBorrowStartDate(debtBorrow.getThisShBorrowLie());
+		confirmVo.setBorrowStartDate(debtBorrow.getCorpAuditLis());
+		confirmVo.setBorrowStartDate(debtBorrow.getCorpAuditLie());
 		if(debtBorrow.getDebtContractId() != null) {
 			DebtContract debtContract = entityService.find(DebtContract.class, debtBorrow.getDebtContractId());
 			confirmVo.setDebtContract(debtContract);
@@ -248,7 +250,6 @@ public class DebtBorrowManagerBean extends FileUpload<ProcDebtBorrow> {
 			confirmVo.setCurrency(debtContract.getDebtContractFundsCu());
 		}
 		confirmVo.setFiller(loginService.getCurrentUserName());
-		confirmVo.setFillDate(new Date());
 		confirmVo.setRegistrant(loginService.getCurrentUserName());
 		displayDetailAttach(debtBorrow.getProcInstId());
 	}
