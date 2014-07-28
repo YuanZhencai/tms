@@ -237,8 +237,6 @@ public class DebtBorrowManagerBean extends FileUpload<ProcDebtBorrow> {
 	public void initConfirmRegiDebt(){
 		confirmVo  = new RegiDebtConfirmVo();
 		confirmVo.setDebtBorrow(debtBorrow);
-		confirmVo.setContractAccount(debtBorrow.getCorpAudit());
-		confirmVo.setCurrency(debtBorrow.getCorpAuditCu());
 		confirmVo.setInterestRate(debtBorrow.getCorpAuditRa() == null ? 0d : Double.valueOf(debtBorrow.getCorpAuditRa()));
 		confirmVo.setBorrowStartDate(debtBorrow.getCorpAuditLis());
 		confirmVo.setBorrowStartDate(debtBorrow.getCorpAuditLie());
